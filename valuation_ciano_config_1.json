@@ -1,0 +1,52 @@
+{
+  "projeto": "Valuation Ciano",
+  "descricao": "Calculadora de valuation por EBIT projetado, combinando método P/L trazido a valor presente e FCD do EBIT (anuidade crescente em duas fases), replicando a metodologia da planilha Valuation_Empresas.xlsx do Rafael/Ciano Investimentos.",
+  "instrucoes_de_uso": [
+    "Este JSON documenta a metodologia e fórmulas exatas usadas no valuation. Cole este arquivo como contexto no início de uma conversa para que o assistente replique a calculadora interativa para qualquer empresa.",
+    "Para gerar a calculadora, informe o ticker. O assistente deve: 1) ler os dados da aba correspondente na planilha Valuation_Empresas.xlsx (se disponível), 2) buscar o preço atual atualizado via web search, 3) gerar o widget interativo pré-preenchido."
+  ],
+  "metodologia": {
+    "premissas_padrao": {
+      "tma": 0.14,
+      "ipca": 0.06,
+      "anos_fase_1": 5,
+      "anos_fase_2": 10,
+      "retorno_alvo_pl": 0.06,
+      "cenarios": {
+        "pessimista": { "crescimento_fase_1": 0.05, "crescimento_fase_2": 0.00 },
+        "intermediario": { "crescimento_fase_1": 0.10, "crescimento_fase_2": 0.023 },
+        "otimista": { "crescimento_fase_1": 0.15, "crescimento_fase_2": 0.036 }
+      }
+    },
+    "formulas": {
+      "lucro_projetado": "EBIT_atual * (1 + g1)^anos1 * (1 + g2)^anos2",
+      "eps_futuro": "lucro_projetado / acoes_em_circulacao",
+      "preco_futuro": "eps_futuro * (1 / retorno_alvo)",
+      "metodo_pl_valor_presente": "preco_futuro / (1 + TMA)^(anos1 + anos2)",
+      "fcd_ebit_fase1": "EBIT_atual * (1 - ((1+g1)/(1+TMA))^(anos1+1)) / (1 - (1+g1)/(1+TMA))",
+      "fcd_ebit_fase2": "EBIT_fim_fase1 * ((1+g2)/(1+TMA)) * (1 - ((1+g2)/(1+TMA))^anos2) / (1 - (1+g2)/(1+TMA))",
+      "ebit_fim_fase1": "EBIT_atual * ((1+g1)/(1+TMA))^anos1",
+      "fcd_ebit_total": "fcd_ebit_fase1 + fcd_ebit_fase2",
+      "fcd_ebit_por_acao": "fcd_ebit_total / acoes_em_circulacao",
+      "valuation_final_por_acao": "metodo_pl_valor_presente_por_acao + fcd_ebit_por_acao"
+    },
+    "observacao_validacao": "Fórmulas validadas contra os dados originais da planilha (aba Dashboard/BRSR6 e Aure3) e reproduzem os valores exatos calculados manualmente pelo Rafael."
+  },
+  "campos_de_entrada": [
+    { "campo": "ticker", "tipo": "string", "exemplo": "AURE3" },
+    { "campo": "preco_atual", "tipo": "number", "unidade": "R$ ou US$ conforme mercado", "fonte": "web search atualizado" },
+    { "campo": "acoes_em_circulacao", "tipo": "number", "unidade": "mesma unidade da planilha (geralmente milhares ou milhões)" },
+    { "campo": "ebit_atual", "tipo": "number", "unidade": "mesma unidade das ações" },
+    { "campo": "tma", "tipo": "percentual", "default": 0.14 },
+    { "campo": "retorno_alvo", "tipo": "percentual", "default": 0.06, "observacao": "inverso do P/L alvo de saída" }
+  ],
+  "saida": {
+    "por_cenario": ["valor_metodo_pl", "valor_fcd_ebit", "valuation_final_por_acao", "upside_percentual_vs_preco_atual"],
+    "veredito_automatico": "compara preco_atual contra os 3 cenarios: acima de todos = sobrepreco, abaixo de todos = desconto, entre = dentro da faixa"
+  },
+  "empresas_ja_analisadas": [
+    { "ticker": "NEE", "mercado": "NYSE", "moeda": "USD", "data_analise": "2026-07-03" },
+    { "ticker": "AURE3", "mercado": "B3", "moeda": "BRL", "data_analise": "2026-07-03" }
+  ],
+  "fonte_original": "Valuation_Empresas.xlsx - aba Dashboard (fórmulas mestre) e abas individuais por ticker"
+}
