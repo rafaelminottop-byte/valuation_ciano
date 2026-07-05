@@ -4,6 +4,7 @@ Cobre a metodologia Ciano (P/L a valor presente + FCD do EBIT) usando os
 números do PETR4 já validados manualmente no chat (ver README.md).
 """
 
+import math
 import sys
 import unittest
 from pathlib import Path
@@ -61,6 +62,34 @@ class TestValuationEngine(unittest.TestCase):
             preco_atual=preco_no_meio,
         )
         self.assertEqual(resultado["veredito"], "dentro_da_faixa")
+
+
+class TestCrescimentoIgualTma(unittest.TestCase):
+    """Regressão: crescimento == TMA fazia r = 1 e dividia por zero."""
+
+    def test_crescimento_fase_1_igual_tma_nao_quebra(self):
+        r = calcular_valuation_completo(
+            ticker="X",
+            ebit_atual=1.0,
+            acoes_em_circulacao=1.0,
+            preco_atual=10.0,
+            tma=0.14,
+            cenarios={"t": {"crescimento_fase_1": 0.14, "crescimento_fase_2": 0.0}},
+        )
+        valor = r["resultados"]["t"].valuation_final_por_acao
+        self.assertTrue(math.isfinite(valor))
+
+    def test_crescimento_fase_2_igual_tma_nao_quebra(self):
+        r = calcular_valuation_completo(
+            ticker="X",
+            ebit_atual=1.0,
+            acoes_em_circulacao=1.0,
+            preco_atual=10.0,
+            tma=0.14,
+            cenarios={"t": {"crescimento_fase_1": 0.10, "crescimento_fase_2": 0.14}},
+        )
+        valor = r["resultados"]["t"].valuation_final_por_acao
+        self.assertTrue(math.isfinite(valor))
 
 
 if __name__ == "__main__":

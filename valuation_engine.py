@@ -32,6 +32,18 @@ class ResultadoCenario:
     upside_percentual: float
 
 
+def _soma_geometrica(r: float, n_termos: int) -> float:
+    """Soma 1 + r + r² + ... + r^(n_termos-1) = (1 - rⁿ) / (1 - r).
+
+    Trata o caso r == 1 (que ocorre quando o crescimento é igual à TMA):
+    aí cada termo vale 1 e a soma é simplesmente o número de termos, evitando
+    a divisão por zero da forma fechada.
+    """
+    if abs(r - 1.0) < 1e-12:
+        return float(n_termos)
+    return (1 - r ** n_termos) / (1 - r)
+
+
 def calcular_cenario(
     ebit_atual: float,
     acoes_em_circulacao: float,
@@ -53,12 +65,14 @@ def calcular_cenario(
     metodo_pl_valor_presente = preco_futuro / (1 + tma) ** (anos_fase_1 + anos_fase_2)
 
     # --- FCD do EBIT (anuidade crescente em duas fases) ---
+    # Cada fase é uma soma geométrica; _soma_geometrica evita divisão por zero
+    # quando o crescimento iguala a TMA (r == 1).
     r1 = (1 + g1) / (1 + tma)
-    fcd_ebit_fase1 = ebit_atual * (1 - r1 ** (anos_fase_1 + 1)) / (1 - r1)
+    fcd_ebit_fase1 = ebit_atual * _soma_geometrica(r1, anos_fase_1 + 1)
     ebit_fim_fase1 = ebit_atual * r1 ** anos_fase_1
 
     r2 = (1 + g2) / (1 + tma)
-    fcd_ebit_fase2 = ebit_fim_fase1 * r2 * (1 - r2 ** anos_fase_2) / (1 - r2)
+    fcd_ebit_fase2 = ebit_fim_fase1 * r2 * _soma_geometrica(r2, anos_fase_2)
 
     fcd_ebit_total = fcd_ebit_fase1 + fcd_ebit_fase2
     fcd_ebit_por_acao = fcd_ebit_total / acoes_em_circulacao
