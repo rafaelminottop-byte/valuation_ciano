@@ -12,6 +12,10 @@ import pandas as pd
 
 from valuation_engine import CENARIOS_PADRAO, calcular_valuation_completo
 
+# P/EBIT abaixo disto costuma indicar EBIT distorcido (não-recorrente) ou preço
+# deprimido; o upside fica irreal. Não excluímos por padrão — só sinalizamos.
+LIMITE_ALERTA_PEBIT = 2.0
+
 
 def rodar_screener(
     df: pd.DataFrame,
@@ -23,6 +27,7 @@ def rodar_screener(
     liquidez_minima: float = 0.0,
     crescimento_minimo: float = None,
     pebit_minimo: float = 0.0,
+    alerta_pebit: float = LIMITE_ALERTA_PEBIT,
 ) -> pd.DataFrame:
     """Calcula o valuation de cada ticker de ``df`` e devolve um DataFrame
     ordenado por upside (decrescente) no cenário de referência.
@@ -96,6 +101,9 @@ def rodar_screener(
         linhas.append(
             {
                 "ticker": res["ticker"],
+                "alerta": "⚠️ P/EBIT baixo"
+                if (p_ebit is not None and math.isfinite(p_ebit) and p_ebit < alerta_pebit)
+                else "",
                 "preco_atual": round(preco, 2),
                 "p_ebit": round(p_ebit, 2) if p_ebit is not None and math.isfinite(p_ebit) else None,
                 "veredito": res["veredito"],

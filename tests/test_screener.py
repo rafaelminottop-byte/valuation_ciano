@@ -55,6 +55,15 @@ class TestScreener(unittest.TestCase):
         self.assertNotIn("CCC3", set(rk["ticker"]))
         self.assertIn("AAA3", set(rk["ticker"]))
 
+    def test_alerta_pebit_baixo_por_padrao_nao_exclui(self):
+        # Sem piso, CCC3 (P/EBIT 0.5) aparece, mas com alerta preenchido
+        rk = rodar_screener(_df(), crescimento_minimo=None)
+        self.assertIn("CCC3", set(rk["ticker"]))
+        alerta_ccc = rk[rk["ticker"] == "CCC3"]["alerta"].iloc[0]
+        alerta_aaa = rk[rk["ticker"] == "AAA3"]["alerta"].iloc[0]
+        self.assertTrue(alerta_ccc)  # P/EBIT 0.5 < 2 -> alertado
+        self.assertFalse(alerta_aaa)  # P/EBIT 5 -> sem alerta
+
 
 if __name__ == "__main__":
     unittest.main()
