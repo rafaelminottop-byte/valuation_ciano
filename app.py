@@ -284,46 +284,7 @@ def _render_tese(ticker: str) -> None:
     st.caption("Fonte: Relatório de Teses da Ciano Investimentos.")
 
 
-def main() -> None:
-    st.set_page_config(page_title="Valuation Ciano", page_icon="📈", layout="wide")
-    _injetar_css()
-    _cabecalho()
-
-    # --- Barra lateral: premissas e cenários editáveis ---
-    st.sidebar.header("Premissas")
-    tma = _pct_para_fracao(
-        st.sidebar.number_input("TMA (%)", value=PREMISSAS_PADRAO["tma"] * 100, step=0.5)
-    )
-    retorno_alvo = _pct_para_fracao(
-        st.sidebar.number_input(
-            "Retorno alvo P/L (%)", value=PREMISSAS_PADRAO["retorno_alvo_pl"] * 100, step=0.5
-        )
-    )
-    anos_fase_1 = int(
-        st.sidebar.number_input("Anos fase 1", value=PREMISSAS_PADRAO["anos_fase_1"], step=1, min_value=1)
-    )
-    anos_fase_2 = int(
-        st.sidebar.number_input("Anos fase 2", value=PREMISSAS_PADRAO["anos_fase_2"], step=1, min_value=1)
-    )
-
-    st.sidebar.header("Cenários (crescimento do EBIT)")
-    valores_cenarios = {}
-    for nome, params in CENARIOS_PADRAO.items():
-        st.sidebar.subheader(nome.capitalize())
-        g1 = _pct_para_fracao(
-            st.sidebar.number_input(
-                f"{nome} — fase 1 (%)", value=params["crescimento_fase_1"] * 100, step=0.5, key=f"{nome}_g1"
-            )
-        )
-        g2 = _pct_para_fracao(
-            st.sidebar.number_input(
-                f"{nome} — fase 2 (%)", value=params["crescimento_fase_2"] * 100, step=0.5, key=f"{nome}_g2"
-            )
-        )
-        valores_cenarios[nome] = {"g1": g1, "g2": g2}
-
-    # --- Entrada de dados da empresa ---
-    st.markdown('<div class="ciano-label">Empresa</div>', unsafe_allow_html=True)
+def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) -> None:
     modo = st.radio(
         "Origem dos dados", ["Buscar no Fundamentus", "Digitar manualmente"],
         horizontal=True, label_visibility="collapsed",
@@ -389,8 +350,7 @@ def main() -> None:
                     "ebit_por_acao": ebit_por_acao,
                 }
 
-    # --- Cálculo e resultado (persistido em session_state; recalcula ao vivo
-    #     quando as premissas da barra lateral mudam) ---
+    # Resultado persistido em session_state; recalcula ao vivo com as premissas.
     emp = st.session_state.get("empresa")
     if emp:
         resultado = calcular_valuation_completo(
@@ -406,6 +366,118 @@ def main() -> None:
         )
         _render_resultado(emp["ticker"], emp["preco_atual"], resultado)
         _render_tese(emp["ticker"])
+
+
+def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) -> None:
+    from fundamentus_scraper import baixar_tabela_fundamentus
+    from screener import rodar_screener
+
+    st.caption(
+        "Roda o valuation em todas as ações da B3 (com EBIT positivo) e ranqueia "
+        "por upside no cenário intermediário, usando as premissas da barra lateral."
+    )
+    c1, c2, c3 = st.columns(3)
+    liq_min = c1.number_input(
+        "Liquidez mín. (R$/dia)", value=1_000_000, step=500_000, min_value=0,
+        help="Filtra ações pouco negociadas — sem isso o topo vira lixo ilíquido.",
+    )
+    cresc_min = c2.number_input(
+        "Cresc. receita 5a mín. (%)", value=0.0, step=1.0,
+        help="O modelo pressupõe EBIT crescente. Filtra empresas cujo crescimento "
+        "de receita em 5 anos (proxy) ficou abaixo disso. Empresas sem o dado saem.",
+    )
+    exigir_crescimento = c2.checkbox("Exigir crescimento", value=True)
+    c1.write("")
+    so_desconto = c3.checkbox("Só em desconto", value=True)
+    atualizar = c3.checkbox("Atualizar dados", value=False, key="scr_atualizar")
+
+    if st.button("Rodar screener", type="primary"):
+        with st.spinner("Avaliando todas as ações da B3..."):
+            df = baixar_tabela_fundamentus(usar_cache=not atualizar)
+            ranking = rodar_screener(
+                df,
+                tma=tma,
+                retorno_alvo=retorno_alvo,
+                cenarios=montar_cenarios(valores_cenarios),
+                anos_fase_1=anos_fase_1,
+                anos_fase_2=anos_fase_2,
+                liquidez_minima=float(liq_min),
+                crescimento_minimo=(cresc_min / 100.0) if exigir_crescimento else None,
+            )
+            st.session_state.screener = ranking
+
+    ranking = st.session_state.get("screener")
+    if ranking is None or ranking.empty:
+        if ranking is not None:
+            st.info("Nenhuma ação passou nos filtros.")
+        return
+
+    tabela = ranking.copy()
+    if so_desconto:
+        tabela = tabela[tabela["veredito"] == "desconto"]
+
+    st.markdown(
+        f'<div class="ciano-label">Ranking — {len(tabela)} ações</div>',
+        unsafe_allow_html=True,
+    )
+    exibir = tabela.rename(
+        columns={
+            "ticker": "Ticker",
+            "preco_atual": "Preço (R$)",
+            "veredito": "Veredito",
+            "upside_pct": "Upside (%)",
+            "valuation": "Valuation (R$)",
+            "cresc_receita_5a_pct": "Cresc. Rec. 5a (%)",
+            "liquidez": "Liquidez (R$)",
+        }
+    ).set_index("Ticker")
+    st.dataframe(exibir, use_container_width=True, height=560)
+
+
+def main() -> None:
+    st.set_page_config(page_title="Valuation Ciano", page_icon="📈", layout="wide")
+    _injetar_css()
+    _cabecalho()
+
+    # --- Barra lateral: premissas e cenários editáveis ---
+    st.sidebar.header("Premissas")
+    tma = _pct_para_fracao(
+        st.sidebar.number_input("TMA (%)", value=PREMISSAS_PADRAO["tma"] * 100, step=0.5)
+    )
+    retorno_alvo = _pct_para_fracao(
+        st.sidebar.number_input(
+            "Retorno alvo P/L (%)", value=PREMISSAS_PADRAO["retorno_alvo_pl"] * 100, step=0.5
+        )
+    )
+    anos_fase_1 = int(
+        st.sidebar.number_input("Anos fase 1", value=PREMISSAS_PADRAO["anos_fase_1"], step=1, min_value=1)
+    )
+    anos_fase_2 = int(
+        st.sidebar.number_input("Anos fase 2", value=PREMISSAS_PADRAO["anos_fase_2"], step=1, min_value=1)
+    )
+
+    st.sidebar.header("Cenários (crescimento do EBIT)")
+    valores_cenarios = {}
+    for nome, params in CENARIOS_PADRAO.items():
+        st.sidebar.subheader(nome.capitalize())
+        g1 = _pct_para_fracao(
+            st.sidebar.number_input(
+                f"{nome} — fase 1 (%)", value=params["crescimento_fase_1"] * 100, step=0.5, key=f"{nome}_g1"
+            )
+        )
+        g2 = _pct_para_fracao(
+            st.sidebar.number_input(
+                f"{nome} — fase 2 (%)", value=params["crescimento_fase_2"] * 100, step=0.5, key=f"{nome}_g2"
+            )
+        )
+        valores_cenarios[nome] = {"g1": g1, "g2": g2}
+
+    # --- Abas: análise de uma empresa e screener da B3 ---
+    aba_empresa, aba_screener = st.tabs(["🔎 Empresa", "📊 Screener B3"])
+    with aba_empresa:
+        _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
+    with aba_screener:
+        _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
 
 
 if __name__ == "__main__":
