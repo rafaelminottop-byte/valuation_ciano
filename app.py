@@ -100,12 +100,21 @@ def main() -> None:
 
     if modo == "Buscar no Fundamentus":
         ticker = st.text_input("Ticker (B3)", value="PETR4").strip().upper()
+        atualizar = st.checkbox(
+            "Atualizar dados (ignorar cache)",
+            value=False,
+            help="Por padrão usa o cache local (até 6h). Marque para rebaixar do Fundamentus.",
+        )
         if st.button("Buscar e calcular", type="primary"):
             with st.spinner(f"Buscando {ticker} no Fundamentus..."):
                 try:
-                    from fundamentus_scraper import buscar_dados_ticker
+                    from fundamentus_scraper import (
+                        baixar_tabela_fundamentus,
+                        buscar_dados_ticker,
+                    )
 
-                    dados = buscar_dados_ticker(ticker)
+                    df_fonte = baixar_tabela_fundamentus(usar_cache=not atualizar)
+                    dados = buscar_dados_ticker(ticker, df=df_fonte)
                     preco_atual = dados["preco_atual"]
                     ebit_por_acao = dados["ebit_atual"] / dados["acoes_em_circulacao"]
                 except Exception as e:  # noqa: BLE001 - mostra o erro na UI

@@ -22,6 +22,14 @@ Isso gera `valuation_resultado.xlsx` com uma linha por ticker, os 3 cenários
 (pessimista/intermediário/otimista) e o veredito automático (sobrepreço /
 desconto / dentro da faixa).
 
+A tabela do Fundamentus é guardada em cache local (`.cache/fundamentus.pkl`,
+válido por 6h), então execuções seguidas não rebaixam tudo de novo. Para
+forçar uma atualização, use `--atualizar`:
+
+```bash
+python main.py --atualizar PETR4
+```
+
 ### Interface web local (Streamlit)
 
 ```bash
@@ -43,8 +51,8 @@ com o preço atual.
 
 ## Próximos passos sugeridos
 
-1. **Cache/agendamento**: salvar a tabela do Fundamentus localmente (ela muda
-   pouco intradia) e agendar atualização diária via cron/Task Scheduler.
+1. **Agendamento**: atualizar o cache automaticamente uma vez por dia via
+   cron/Task Scheduler (hoje o cache é preenchido sob demanda, válido por 6h).
 2. **Ajuste de colunas**: se o Fundamentus mudar o HTML da tabela, o
    `fundamentus_scraper.py` precisa de ajuste nos nomes de coluna
    (`COLUNAS_UTEIS` no topo do arquivo).
