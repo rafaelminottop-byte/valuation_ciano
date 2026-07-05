@@ -36,13 +36,15 @@ desconto / dentro da faixa).
    pouco intradia) e agendar atualização diária via cron/Task Scheduler.
 3. **Ajuste de colunas**: se o Fundamentus mudar o HTML da tabela, o
    `fundamentus_scraper.py` precisa de ajuste nos nomes de coluna
-   (`colunas_uteis` no topo do arquivo).
+   (`COLUNAS_UTEIS` no topo do arquivo).
 4. **Fontes alternativas**: para ADRs ou ações fora da B3 (ex: NEE), este
    scraper não serve — seria preciso outra fonte (ex: Yahoo Finance API).
 
 ## Observação sobre o EBIT
 
 O Fundamentus não expõe EBIT diretamente na tabela de resultado — ele é
-derivado via `EBIT por ação = Preço / (P/EBIT)`, depois multiplicado pelo
-número de ações. Isso reproduz o EBIT dos últimos 12 meses usado na
-metodologia original.
+derivado via `EBIT por ação = Preço / (P/EBIT)`. O valuation final é sempre
+por ação e o número de ações se cancela na conta (ver `valuation_engine.py`),
+então o scraper normaliza o total para 1 ação. Isso também dispensa a coluna
+"Valor de mercado", que a tabela `resultado.php` do Fundamentus deixou de
+expor.
