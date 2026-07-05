@@ -115,8 +115,15 @@ def main() -> None:
         col1, col2 = st.columns(2)
         preco_atual = col1.number_input("Preço atual (R$)", value=4.45, step=0.01, min_value=0.01)
         p_ebit = col2.number_input("P/EBIT", value=2.30, step=0.1)
-        if st.button("Calcular", type="primary") and p_ebit != 0:
-            ebit_por_acao = preco_atual / p_ebit
+        if st.button("Calcular", type="primary"):
+            if p_ebit <= 0:
+                st.error(
+                    "P/EBIT deve ser positivo. Empresas com EBIT negativo ou zero "
+                    "não têm valuation por este método."
+                )
+                preco_atual = None
+            else:
+                ebit_por_acao = preco_atual / p_ebit
 
     # --- Cálculo e resultado ---
     if preco_atual is not None and ebit_por_acao is not None:

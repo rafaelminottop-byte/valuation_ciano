@@ -80,6 +80,23 @@ class TestBuscarDadosTicker(unittest.TestCase):
         with self.assertRaises(ValueError):
             buscar_dados_ticker("XXXX9", df=df)
 
+    def test_ebit_negativo_gera_erro(self):
+        # P/EBIT < 0 -> EBIT por ação negativo -> valuation sem sentido.
+        df = _processar_tabela(pd.DataFrame({"Papel": ["BBTG12"], "Cotação": [3.15], "P/EBIT": [-170.72]}))
+        with self.assertRaises(ValueError):
+            buscar_dados_ticker("BBTG12", df=df)
+
+    def test_ebit_zero_gera_erro(self):
+        # P/EBIT == 0 -> divisão por zero -> EBIT por ação infinito.
+        df = _processar_tabela(pd.DataFrame({"Papel": ["CSTB4"], "Cotação": [147.69], "P/EBIT": [0.0]}))
+        with self.assertRaises(ValueError):
+            buscar_dados_ticker("CSTB4", df=df)
+
+    def test_preco_invalido_gera_erro(self):
+        df = _processar_tabela(pd.DataFrame({"Papel": ["ZZZZ3"], "Cotação": [0.0], "P/EBIT": [5.0]}))
+        with self.assertRaises(ValueError):
+            buscar_dados_ticker("ZZZZ3", df=df)
+
 
 if __name__ == "__main__":
     unittest.main()
