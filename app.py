@@ -536,6 +536,60 @@ def _aba_carteira(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
         st.dataframe(resultado.set_index("Ticker"), use_container_width=True)
 
 
+def _aba_ranking() -> None:
+    from fundamentus_scraper import baixar_tabela_fundamentus
+    from ranking import rankear_qualidade
+
+    st.caption(
+        "Ranking de qualidade/risco (independe do valuation): solidez financeira "
+        "(Dív.Líq/EBIT, Dív.Líq/Patrim., Liquidez Corrente) + qualidade do negócio "
+        "(ROIC, ROE, Margem EBIT). Bancos e empresas sem EBIT positivo ficam de fora."
+    )
+    c1, c2, c3 = st.columns(3)
+    liq_min = c1.number_input(
+        "Liquidez mín. (R$/dia)", value=1_000_000, step=500_000, min_value=0, key="rk_liq"
+    )
+    peso_sol = c2.slider("Peso solidez (%)", 0, 100, 50, step=5)
+    c3.write("")
+    c3.caption(f"Qualidade: {100 - peso_sol}%")
+    atualizar = c1.checkbox("Atualizar dados", value=False, key="rk_atualizar")
+
+    if st.button("Rodar ranking", type="primary"):
+        with st.spinner("Avaliando qualidade e solidez de todas as ações..."):
+            df = baixar_tabela_fundamentus(usar_cache=not atualizar)
+            st.session_state.ranking = rankear_qualidade(
+                df,
+                peso_solidez=peso_sol / 100.0,
+                peso_qualidade=(100 - peso_sol) / 100.0,
+                liquidez_minima=float(liq_min),
+            )
+
+    ranking = st.session_state.get("ranking")
+    if ranking is None:
+        return
+    if ranking.empty:
+        st.info("Nenhuma ação passou nos filtros.")
+        return
+
+    st.markdown(
+        f'<div class="ciano-label">Ranking — {len(ranking)} empresas</div>',
+        unsafe_allow_html=True,
+    )
+    exibir = ranking.rename(
+        columns={
+            "ticker": "Ticker",
+            "score": "Score",
+            "solidez": "Solidez",
+            "qualidade": "Qualidade",
+            "div_liq_ebit": "Dív.Líq/EBIT",
+            "roic_pct": "ROIC (%)",
+            "roe_pct": "ROE (%)",
+            "margem_ebit_pct": "Margem EBIT (%)",
+        }
+    ).set_index("Ticker")
+    st.dataframe(exibir, use_container_width=True, height=560)
+
+
 def main() -> None:
     st.set_page_config(page_title="Valuation Ciano", page_icon="📈", layout="wide")
     _injetar_css()
@@ -574,9 +628,9 @@ def main() -> None:
         )
         valores_cenarios[nome] = {"g1": g1, "g2": g2}
 
-    # --- Abas: empresa, screener e carteira ---
-    aba_empresa, aba_screener, aba_carteira = st.tabs(
-        ["🔎 Empresa", "📊 Screener B3", "⭐ Carteira"]
+    # --- Abas: empresa, screener, carteira e ranking ---
+    aba_empresa, aba_screener, aba_carteira, aba_ranking = st.tabs(
+        ["🔎 Empresa", "📊 Screener B3", "⭐ Carteira", "🏅 Ranking"]
     )
     with aba_empresa:
         _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
@@ -584,6 +638,8 @@ def main() -> None:
         _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
     with aba_carteira:
         _aba_carteira(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
+    with aba_ranking:
+        _aba_ranking()
 
 
 if __name__ == "__main__":

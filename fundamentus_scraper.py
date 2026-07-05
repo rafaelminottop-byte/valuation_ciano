@@ -31,7 +31,7 @@ HEADERS = {
 # O nome do cache tem uma versão: ao mudar as colunas produzidas (ex.: incluir
 # liquidez/crescimento), incremente CACHE_VERSAO para invalidar caches antigos.
 CACHE_DIR = Path(__file__).resolve().parent / ".cache"
-CACHE_VERSAO = 2
+CACHE_VERSAO = 3
 CACHE_FILE = CACHE_DIR / f"fundamentus_v{CACHE_VERSAO}.pkl"
 CACHE_TTL_SEGUNDOS = 6 * 60 * 60  # 6 horas
 
@@ -67,6 +67,12 @@ COLUNAS_UTEIS = {
     "Div. Yield": "dividend_yield",
     "Liq.2meses": "liquidez",  # liquidez média diária (R$) — filtra ilíquidas
     "Cresc. Rec.5a": "cresc_receita_5a",  # crescimento de receita em 5 anos (proxy de crescimento)
+    # Métricas de qualidade/risco (ranking):
+    "ROIC": "roic",
+    "ROE": "roe",
+    "Mrg Ebit": "margem_ebit",
+    "Dív.Líq/ Patrim.": "div_liq_patrim",
+    "Liq. Corr.": "liquidez_corrente",
 }
 
 
@@ -84,7 +90,12 @@ def _processar_tabela(df: pd.DataFrame) -> pd.DataFrame:
     # o formato brasileiro (dtype numérico), converter de novo distorceria os
     # valores (ex.: 4,45 viraria 445). Checamos "não numérico" em vez de
     # "== object" para cobrir também o dtype de string do backend pyarrow.
-    for col in ["preco_atual", "p_ebit", "ev_ebit", "patrimonio_liquido", "liquidez", "cresc_receita_5a"]:
+    numericas = [
+        "preco_atual", "p_ebit", "ev_ebit", "patrimonio_liquido", "liquidez",
+        "cresc_receita_5a", "roic", "roe", "margem_ebit", "div_liq_patrim",
+        "liquidez_corrente",
+    ]
+    for col in numericas:
         if col in df.columns and not pd.api.types.is_numeric_dtype(df[col]):
             df[col] = _para_numero(df[col])
 
