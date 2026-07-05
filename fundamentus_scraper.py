@@ -7,6 +7,7 @@ IMPORTANTE: este script precisa de acesso à internet real (fora do sandbox do C
 Rode-o no seu computador: python fundamentus_scraper.py
 """
 
+import math
 from io import StringIO
 
 import pandas as pd
@@ -96,10 +97,24 @@ def buscar_dados_ticker(ticker: str, df: pd.DataFrame = None) -> dict:
         raise ValueError(f"Ticker {ticker} não encontrado no Fundamentus.")
 
     linha = linha.iloc[0]
+    preco_atual = float(linha["preco_atual"])
+    ebit_atual = float(linha["ebit_atual"])
+
+    # A metodologia por EBIT só faz sentido com preço e EBIT positivos e
+    # finitos. Empresas com EBIT negativo (P/EBIT < 0) ou zerado (P/EBIT = 0,
+    # que gera divisão por zero -> infinito) produziriam valuation sem sentido.
+    if not math.isfinite(preco_atual) or preco_atual <= 0:
+        raise ValueError(f"Ticker {ticker.upper()} tem preço inválido no Fundamentus.")
+    if not math.isfinite(ebit_atual) or ebit_atual <= 0:
+        raise ValueError(
+            f"Ticker {ticker.upper()} tem EBIT não-positivo (P/EBIT <= 0); "
+            "o valuation por EBIT não se aplica a esta empresa."
+        )
+
     return {
         "ticker": ticker.upper(),
-        "preco_atual": float(linha["preco_atual"]),
-        "ebit_atual": float(linha["ebit_atual"]),
+        "preco_atual": preco_atual,
+        "ebit_atual": ebit_atual,
         "acoes_em_circulacao": float(linha["acoes_em_circulacao"]),
     }
 
