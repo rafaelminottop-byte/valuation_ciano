@@ -18,9 +18,10 @@ from fundamentus_scraper import baixar_tabela_fundamentus, buscar_dados_ticker
 from valuation_engine import calcular_valuation_completo
 
 
-def rodar_para_tickers(tickers: list[str]) -> pd.DataFrame:
-    print("Baixando tabela do Fundamentus (uma vez para todos os tickers)...")
-    df_fundamentus = baixar_tabela_fundamentus()
+def rodar_para_tickers(tickers: list[str], usar_cache: bool = True) -> pd.DataFrame:
+    origem = "cache local, se recente" if usar_cache else "forçando atualização"
+    print(f"Carregando tabela do Fundamentus ({origem})...")
+    df_fundamentus = baixar_tabela_fundamentus(usar_cache=usar_cache)
 
     linhas = []
     for ticker in tickers:
@@ -57,13 +58,16 @@ def exportar_excel(df: pd.DataFrame, caminho_saida: str = "valuation_resultado.x
 
 
 if __name__ == "__main__":
-    tickers = sys.argv[1:]
+    args = sys.argv[1:]
+    # --atualizar força rebaixar a tabela, ignorando o cache local
+    usar_cache = "--atualizar" not in args
+    tickers = [a for a in args if not a.startswith("--")]
     if not tickers:
-        print("Uso: python main.py TICKER1 TICKER2 TICKER3 ...")
+        print("Uso: python main.py [--atualizar] TICKER1 TICKER2 TICKER3 ...")
         print("Exemplo: python main.py PETR4 VALE3 ITSA4")
         sys.exit(1)
 
-    df_resultado = rodar_para_tickers(tickers)
+    df_resultado = rodar_para_tickers(tickers, usar_cache=usar_cache)
     exportar_excel(df_resultado)
     print("\nResumo:")
     print(df_resultado.to_string(index=False))

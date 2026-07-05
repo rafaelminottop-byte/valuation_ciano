@@ -1,14 +1,17 @@
 """
 Scraper do Fundamentus (www.fundamentus.com.br)
-Puxa a tabela completa de ações da B3, incluindo EBIT, preço e valor de mercado.
-Calcula nº de ações em circulação = Valor de Mercado / Preço.
+Puxa a tabela completa de ações da B3 (preço, P/EBIT etc.) e deriva o EBIT
+por ação usado no valuation. Guarda um cache local (.cache/fundamentus.pkl)
+para não rebaixar tudo a cada consulta.
 
-IMPORTANTE: este script precisa de acesso à internet real (fora do sandbox do Claude).
+IMPORTANTE: a primeira busca precisa de acesso à internet real.
 Rode-o no seu computador: python fundamentus_scraper.py
 """
 
 import math
+import time
 from io import StringIO
+from pathlib import Path
 
 import pandas as pd
 import requests
@@ -22,6 +25,20 @@ HEADERS = {
         "(KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
     )
 }
+
+# A tabela do Fundamentus muda pouco durante o dia, então guardamos uma cópia
+# local para não rebaixar tudo a cada consulta (e permitir uso offline).
+CACHE_DIR = Path(__file__).resolve().parent / ".cache"
+CACHE_FILE = CACHE_DIR / "fundamentus.pkl"
+CACHE_TTL_SEGUNDOS = 6 * 60 * 60  # 6 horas
+
+
+def _cache_valido(caminho: Path, ttl_segundos: float) -> bool:
+    """True se o arquivo de cache existe e é mais novo que o TTL."""
+    if not caminho.exists():
+        return False
+    idade = time.time() - caminho.stat().st_mtime
+    return idade < ttl_segundos
 
 
 def _para_numero(serie: pd.Series) -> pd.Series:
@@ -77,14 +94,31 @@ def _processar_tabela(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def baixar_tabela_fundamentus() -> pd.DataFrame:
-    """Baixa e limpa a tabela completa de ações do Fundamentus."""
+def baixar_tabela_fundamentus(
+    usar_cache: bool = True, ttl_segundos: float = CACHE_TTL_SEGUNDOS
+) -> pd.DataFrame:
+    """Baixa e limpa a tabela completa de ações do Fundamentus.
+
+    Se ``usar_cache`` for True e houver um cache local mais novo que
+    ``ttl_segundos``, devolve o cache em vez de acessar a rede. O resultado
+    baixado é sempre gravado no cache. Passe ``usar_cache=False`` (ou
+    ``ttl_segundos=0``) para forçar uma atualização.
+    """
+    if usar_cache and _cache_valido(CACHE_FILE, ttl_segundos):
+        return pd.read_pickle(CACHE_FILE)
+
     resp = requests.get(URL_RESULTADO, headers=HEADERS, timeout=30)
     resp.raise_for_status()
     resp.encoding = "iso-8859-1"
 
     tabelas = pd.read_html(StringIO(resp.text), decimal=",", thousands=".")
-    return _processar_tabela(tabelas[0])
+    df = _processar_tabela(tabelas[0])
+
+    if usar_cache:
+        CACHE_DIR.mkdir(exist_ok=True)
+        df.to_pickle(CACHE_FILE)
+
+    return df
 
 
 def buscar_dados_ticker(ticker: str, df: pd.DataFrame = None) -> dict:
