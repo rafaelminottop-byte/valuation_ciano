@@ -443,7 +443,14 @@ def _aba_carteira(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
     col_a, col_b = st.columns([4, 1])
     novo = col_a.text_input("Adicionar ticker", value="", key="cart_novo", placeholder="ex.: PRIO3").strip().upper()
     if col_b.button("Adicionar", type="primary") and novo:
-        cart.adicionar(novo)
+        # Valida que o ticker existe no Fundamentus antes de salvar (evita typos
+        # como "WEOE3" — a Weg é WEGE3 — entrarem na carteira).
+        df_val = baixar_tabela_fundamentus()
+        if (df_val["ticker"].str.upper() == novo).any():
+            cart.adicionar(novo)
+            st.success(f"{novo} adicionado à carteira.")
+        else:
+            st.warning(f"{novo} não foi encontrado no Fundamentus — verifique o ticker (não adicionado).")
 
     tickers = cart.carregar_carteira()
     if not tickers:
