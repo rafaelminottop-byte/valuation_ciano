@@ -11,12 +11,14 @@ cenários, e ver o valuation por ação com o veredito automático.
 """
 
 import base64
+import html
 from pathlib import Path
 
 import altair as alt
 import pandas as pd
 import streamlit as st
 
+from teses import buscar_tese
 from valuation_engine import (
     CENARIOS_PADRAO,
     PREMISSAS_PADRAO,
@@ -129,6 +131,23 @@ def _injetar_css() -> None:
         section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {color: #fff;}
 
         div[data-testid="stDataFrame"] {border: 1px solid #2A3F8A; border-radius: 14px;}
+
+        .tese-setor {color: #CBD5E1; margin: -2px 0 8px 0; font-size: 0.95rem;}
+        .tese-texto {color: #E2E8F0; line-height: 1.55; margin-bottom: 14px;}
+        .tese-box {
+            background: #1A2F72; border: 1.5px solid #2A3F8A; border-radius: 16px;
+            padding: 16px 20px; height: 100%;
+        }
+        .tese-box .tese-h {
+            font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+            font-size: 0.80rem; margin-bottom: 8px;
+        }
+        .tese-box ul {margin: 0; padding-left: 18px;}
+        .tese-box li {color: #E2E8F0; font-size: 0.90rem; margin-bottom: 7px; line-height: 1.42;}
+        .tese-fortes {border-left: 4px solid #22C55E;}
+        .tese-fortes .tese-h {color: #22C55E;}
+        .tese-fracos {border-left: 4px solid #EF4444;}
+        .tese-fracos .tese-h {color: #EF4444;}
         </style>
         """,
         unsafe_allow_html=True,
@@ -227,6 +246,42 @@ def _render_resultado(ticker: str, preco_atual: float, resultado: dict) -> None:
             for nome, r in resultado["resultados"].items()
         ]
         st.dataframe(pd.DataFrame(linhas).set_index("Cenário"), use_container_width=True)
+
+
+def _render_tese(ticker: str) -> None:
+    """Mostra a tese Ciano (setor, tese, pontos fortes/fracos) se houver para o ticker."""
+    tese = buscar_tese(ticker)
+    if not tese:
+        return
+
+    st.markdown('<div class="ciano-label">Tese Ciano</div>', unsafe_allow_html=True)
+    if tese.get("setor"):
+        st.markdown(
+            f'<div class="tese-setor">Setor: {html.escape(tese["setor"])}</div>',
+            unsafe_allow_html=True,
+        )
+    if tese.get("tese"):
+        st.markdown(
+            f'<div class="tese-texto">{html.escape(tese["tese"])}</div>',
+            unsafe_allow_html=True,
+        )
+
+    col_f, col_r = st.columns(2)
+    with col_f:
+        itens = "".join(f"<li>{html.escape(p)}</li>" for p in tese.get("pontos_fortes", []))
+        st.markdown(
+            f'<div class="tese-box tese-fortes"><div class="tese-h">Pontos fortes</div>'
+            f"<ul>{itens}</ul></div>",
+            unsafe_allow_html=True,
+        )
+    with col_r:
+        itens = "".join(f"<li>{html.escape(p)}</li>" for p in tese.get("pontos_fracos", []))
+        st.markdown(
+            f'<div class="tese-box tese-fracos"><div class="tese-h">Pontos fracos</div>'
+            f"<ul>{itens}</ul></div>",
+            unsafe_allow_html=True,
+        )
+    st.caption("Fonte: Relatório de Teses da Ciano Investimentos.")
 
 
 def main() -> None:
@@ -350,6 +405,7 @@ def main() -> None:
             anos_fase_2=anos_fase_2,
         )
         _render_resultado(emp["ticker"], emp["preco_atual"], resultado)
+        _render_tese(emp["ticker"])
 
 
 if __name__ == "__main__":
