@@ -7,6 +7,8 @@ IMPORTANTE: este script precisa de acesso à internet real (fora do sandbox do C
 Rode-o no seu computador: python fundamentus_scraper.py
 """
 
+from io import StringIO
+
 import pandas as pd
 import requests
 
@@ -33,41 +35,55 @@ def _para_numero(serie: pd.Series) -> pd.Series:
     return numeros
 
 
+# Colunas relevantes para o valuation (nomes conforme o site;
+# se o Fundamentus renomear colunas, ajuste aqui)
+COLUNAS_UTEIS = {
+    "Papel": "ticker",
+    "Cotação": "preco_atual",
+    "P/EBIT": "p_ebit",
+    "EV/EBIT": "ev_ebit",
+    "Patrim. Líq": "patrimonio_liquido",
+    "Div. Yield": "dividend_yield",
+}
+
+
+def _processar_tabela(df: pd.DataFrame) -> pd.DataFrame:
+    """Renomeia colunas, converte números e deriva as colunas do valuation.
+
+    Recebe a tabela crua do Fundamentus (com os nomes de coluna do site) e
+    devolve o DataFrame pronto para o valuation. Isolado de baixar_tabela_*
+    para ser testável sem acesso à internet.
+    """
+    presentes = {k: v for k, v in COLUNAS_UTEIS.items() if k in df.columns}
+    df = df.rename(columns=presentes)
+
+    # _para_numero só deve rodar sobre texto cru; se pd.read_html já converteu
+    # o formato brasileiro (dtype numérico), converter de novo distorceria os
+    # valores (ex.: 4,45 viraria 445). Checamos "não numérico" em vez de
+    # "== object" para cobrir também o dtype de string do backend pyarrow.
+    for col in ["preco_atual", "p_ebit", "ev_ebit", "patrimonio_liquido"]:
+        if col in df.columns and not pd.api.types.is_numeric_dtype(df[col]):
+            df[col] = _para_numero(df[col])
+
+    # EBIT por ação = Preço / P_EBIT.
+    # O nº de ações se cancela no cálculo final por ação (ver valuation_engine),
+    # então normalizamos para 1. A tabela resultado.php do Fundamentus não expõe
+    # mais "Valor de mercado" para derivar o total de ações.
+    df["ebit_por_acao"] = df["preco_atual"] / df["p_ebit"]
+    df["acoes_em_circulacao"] = 1.0
+    df["ebit_atual"] = df["ebit_por_acao"]
+
+    return df
+
+
 def baixar_tabela_fundamentus() -> pd.DataFrame:
     """Baixa e limpa a tabela completa de ações do Fundamentus."""
     resp = requests.get(URL_RESULTADO, headers=HEADERS, timeout=30)
     resp.raise_for_status()
     resp.encoding = "iso-8859-1"
 
-    tabelas = pd.read_html(resp.text, decimal=",", thousands=".")
-    df = tabelas[0]
-
-    # Colunas relevantes para o valuation (nomes conforme o site em jul/2026;
-    # se o Fundamentus renomear colunas, ajuste aqui)
-    colunas_uteis = {
-        "Papel": "ticker",
-        "Cotação": "preco_atual",
-        "P/EBIT": "p_ebit",
-        "EV/EBIT": "ev_ebit",
-        "Valor de mercado": "valor_mercado",
-        "Patrim. Líq": "patrimonio_liquido",
-        "Div. Yield": "dividend_yield",
-    }
-    presentes = {k: v for k, v in colunas_uteis.items() if k in df.columns}
-    df = df.rename(columns=presentes)
-
-    for col in ["preco_atual", "p_ebit", "ev_ebit", "valor_mercado", "patrimonio_liquido"]:
-        if col in df.columns and df[col].dtype == object:
-            df[col] = _para_numero(df[col])
-
-    # EBIT implícito = Preço da ação / P_EBIT  (isso dá o EBIT POR AÇÃO)
-    # EBIT total = EBIT por ação * nº de ações
-    # nº de ações = Valor de Mercado / Preço
-    df["acoes_em_circulacao"] = df["valor_mercado"] / df["preco_atual"]
-    df["ebit_por_acao"] = df["preco_atual"] / df["p_ebit"]
-    df["ebit_atual"] = df["ebit_por_acao"] * df["acoes_em_circulacao"]
-
-    return df
+    tabelas = pd.read_html(StringIO(resp.text), decimal=",", thousands=".")
+    return _processar_tabela(tabelas[0])
 
 
 def buscar_dados_ticker(ticker: str, df: pd.DataFrame = None) -> dict:
