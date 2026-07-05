@@ -274,10 +274,6 @@ def main() -> None:
         horizontal=True, label_visibility="collapsed",
     )
 
-    ticker = "EMPRESA"
-    preco_atual = None
-    ebit_por_acao = None
-
     if modo == "Buscar no Fundamentus":
         col_t, col_c = st.columns([2, 3])
         ticker = col_t.text_input("Ticker (B3)", value="PETR4").strip().upper()
@@ -295,39 +291,65 @@ def main() -> None:
 
                     df_fonte = baixar_tabela_fundamentus(usar_cache=not atualizar)
                     dados = buscar_dados_ticker(ticker, df=df_fonte)
-                    preco_atual = dados["preco_atual"]
-                    ebit_por_acao = dados["ebit_atual"] / dados["acoes_em_circulacao"]
+                    st.session_state.empresa = {
+                        "ticker": ticker,
+                        "preco_atual": dados["preco_atual"],
+                        "ebit_por_acao": dados["ebit_atual"] / dados["acoes_em_circulacao"],
+                    }
                 except Exception as e:  # noqa: BLE001 - mostra o erro na UI
                     st.error(f"Não foi possível buscar {ticker}: {e}")
     else:
         ticker = st.text_input("Nome/Ticker (rótulo)", value="EMPRESA").strip().upper()
-        col1, col2 = st.columns(2)
-        preco_atual = col1.number_input("Preço atual (R$)", value=4.45, step=0.01, min_value=0.01)
-        p_ebit = col2.number_input("P/EBIT", value=2.30, step=0.1)
-        if st.button("Calcular", type="primary"):
-            if p_ebit <= 0:
-                st.error(
-                    "P/EBIT deve ser positivo. Empresas com EBIT negativo ou zero "
-                    "não têm valuation por este método."
-                )
-                preco_atual = None
-            else:
-                ebit_por_acao = preco_atual / p_ebit
+        preco_atual = st.number_input("Preço atual (R$)", value=52.96, step=0.01, min_value=0.01)
+        metodo_ebit = st.radio(
+            "Como informar o EBIT?",
+            ["Via P/EBIT", "Via EBIT total e nº de ações"],
+            horizontal=True,
+        )
 
-    # --- Cálculo e resultado ---
-    if preco_atual is not None and ebit_por_acao is not None:
+        if metodo_ebit == "Via P/EBIT":
+            p_ebit = st.number_input("P/EBIT", value=6.84, step=0.1)
+            valido = p_ebit > 0
+            ebit_por_acao = (preco_atual / p_ebit) if valido else None
+            aviso = "P/EBIT deve ser positivo (EBIT negativo/zero não se aplica ao modelo)."
+        else:
+            col1, col2 = st.columns(2)
+            ebit_total = col1.number_input("EBIT atual (12 meses)", value=100.0, step=1.0)
+            acoes = col2.number_input("Nº de ações em circulação", value=1.0, step=0.01, min_value=0.0)
+            st.caption(
+                "Use a mesma unidade para EBIT e nº de ações (ex.: ambos em milhões). "
+                "O valuation é por ação, então a unidade se cancela."
+            )
+            valido = ebit_total > 0 and acoes > 0
+            ebit_por_acao = (ebit_total / acoes) if valido else None
+            aviso = "EBIT e nº de ações devem ser positivos."
+
+        if st.button("Calcular", type="primary"):
+            if ebit_por_acao is None:
+                st.error(aviso)
+            else:
+                st.session_state.empresa = {
+                    "ticker": ticker,
+                    "preco_atual": preco_atual,
+                    "ebit_por_acao": ebit_por_acao,
+                }
+
+    # --- Cálculo e resultado (persistido em session_state; recalcula ao vivo
+    #     quando as premissas da barra lateral mudam) ---
+    emp = st.session_state.get("empresa")
+    if emp:
         resultado = calcular_valuation_completo(
-            ticker=ticker,
-            ebit_atual=ebit_por_acao,
+            ticker=emp["ticker"],
+            ebit_atual=emp["ebit_por_acao"],
             acoes_em_circulacao=1.0,
-            preco_atual=preco_atual,
+            preco_atual=emp["preco_atual"],
             tma=tma,
             retorno_alvo=retorno_alvo,
             cenarios=montar_cenarios(valores_cenarios),
             anos_fase_1=anos_fase_1,
             anos_fase_2=anos_fase_2,
         )
-        _render_resultado(ticker, preco_atual, resultado)
+        _render_resultado(emp["ticker"], emp["preco_atual"], resultado)
 
 
 if __name__ == "__main__":
