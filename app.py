@@ -30,7 +30,7 @@ COR_LIGHT = "#CBD5E1"
 COR_CARD = "#1A2F72"
 COR_BORDA = "#2A3F8A"
 
-LOGO_PATH = Path(__file__).resolve().parent / "assets" / "ciano_logo_branco.svg"
+LOGO_PATH = Path(__file__).resolve().parent / "assets" / "ciano_logo_branco.png"
 
 VEREDITO_CONFIG = {
     "desconto": {"rotulo": "Desconto", "cor": "#22C55E", "emoji": "▲",
@@ -66,8 +66,9 @@ def _fmt_brl(valor: float) -> str:
 def _logo_data_uri() -> str | None:
     if not LOGO_PATH.exists():
         return None
+    mime = "image/svg+xml" if LOGO_PATH.suffix == ".svg" else "image/png"
     b64 = base64.b64encode(LOGO_PATH.read_bytes()).decode("ascii")
-    return f"data:image/svg+xml;base64,{b64}"
+    return f"data:{mime};base64,{b64}"
 
 
 def _injetar_css() -> None:
@@ -85,8 +86,12 @@ def _injetar_css() -> None:
 
         h1, h2, h3, h4 {color: #FFFFFF; font-weight: 800; letter-spacing: -0.01em;}
 
-        .ciano-header {display: flex; align-items: center; gap: 18px; margin-bottom: 6px;}
-        .ciano-header img {height: 46px; width: auto;}
+        .ciano-brand {display: inline-block; margin-bottom: 10px;}
+        .ciano-brand img {height: 56px; width: auto; display: block;}
+        .ciano-invest {
+            color: #4B8DEF; font-size: 0.86rem; font-weight: 500;
+            letter-spacing: 0.16em; text-align: right; margin-top: -8px; padding-right: 2px;
+        }
         .ciano-sub {color: #CBD5E1; font-size: 1.02rem; margin: 0 0 4px 0;}
 
         .ciano-label {
@@ -132,10 +137,18 @@ def _injetar_css() -> None:
 
 def _cabecalho() -> None:
     uri = _logo_data_uri()
-    logo_html = f'<img src="{uri}" alt="Ciano"/>' if uri else '<span style="color:#fff;font-weight:800;font-size:1.6rem">CIANO</span>'
+    if uri:
+        marca = (
+            f'<div class="ciano-brand">'
+            f'<img src="{uri}" alt="Ciano"/>'
+            f'<div class="ciano-invest">Investimentos</div>'
+            f"</div>"
+        )
+    else:
+        marca = '<div class="ciano-brand"><span style="color:#fff;font-weight:800;font-size:1.6rem">CIANO</span></div>'
     st.markdown(
         f"""
-        <div class="ciano-header">{logo_html}</div>
+        {marca}
         <h1 style="margin:2px 0 0 0;">Valuation por EBIT projetado</h1>
         <p class="ciano-sub">P/L a valor presente + FCD do EBIT, em 3 cenários · dados via Fundamentus</p>
         """,
