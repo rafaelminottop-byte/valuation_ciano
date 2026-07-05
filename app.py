@@ -248,13 +248,9 @@ def _render_resultado(ticker: str, preco_atual: float, resultado: dict) -> None:
         st.dataframe(pd.DataFrame(linhas).set_index("Cenário"), use_container_width=True)
 
 
-def _render_tese(ticker: str) -> None:
-    """Mostra a tese Ciano (setor, tese, pontos fortes/fracos) se houver para o ticker."""
-    tese = buscar_tese(ticker)
-    if not tese:
-        return
-
-    st.markdown('<div class="ciano-label">Tese Ciano</div>', unsafe_allow_html=True)
+def _render_corpo_tese(tese: dict, titulo: str, fonte: str) -> None:
+    """Renderiza setor, tese e as caixas de pontos fortes/fracos."""
+    st.markdown(f'<div class="ciano-label">{titulo}</div>', unsafe_allow_html=True)
     if tese.get("setor"):
         st.markdown(
             f'<div class="tese-setor">Setor: {html.escape(tese["setor"])}</div>',
@@ -265,7 +261,6 @@ def _render_tese(ticker: str) -> None:
             f'<div class="tese-texto">{html.escape(tese["tese"])}</div>',
             unsafe_allow_html=True,
         )
-
     col_f, col_r = st.columns(2)
     with col_f:
         itens = "".join(f"<li>{html.escape(p)}</li>" for p in tese.get("pontos_fortes", []))
@@ -281,7 +276,36 @@ def _render_tese(ticker: str) -> None:
             f"<ul>{itens}</ul></div>",
             unsafe_allow_html=True,
         )
-    st.caption("Fonte: Relatório de Teses da Ciano Investimentos.")
+    st.caption(fonte)
+
+
+def _render_tese(ticker: str) -> None:
+    """Mostra a tese: primeiro a curada da Ciano; senão a gerada por IA (cache
+    ou sob demanda via web search)."""
+    from tese_ia import buscar_tese_ia_cache, gerar_tese_ia
+
+    curada = buscar_tese(ticker)
+    if curada:
+        _render_corpo_tese(curada, "Tese Ciano", "Fonte: Relatório de Teses da Ciano Investimentos.")
+        return
+
+    ia = buscar_tese_ia_cache(ticker)
+    if ia:
+        _render_corpo_tese(ia, "Tese (gerada por IA)", "⚠️ Gerada por IA via web search — não é do relatório da Ciano. Confira antes de decidir.")
+        return
+
+    st.markdown('<div class="ciano-label">Tese</div>', unsafe_allow_html=True)
+    st.caption(f"{ticker} não está no relatório da Ciano.")
+    if st.button("🔎 Pesquisar tese com IA", key=f"tese_ia_{ticker}"):
+        with st.spinner(f"Pesquisando {ticker} na web e sintetizando a tese..."):
+            try:
+                gerar_tese_ia(ticker)
+                st.rerun()
+            except Exception as e:  # noqa: BLE001 - mostra o erro na UI
+                st.error(
+                    f"Não foi possível gerar a tese: {e}. "
+                    "Verifique se a variável de ambiente ANTHROPIC_API_KEY está configurada."
+                )
 
 
 def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) -> None:

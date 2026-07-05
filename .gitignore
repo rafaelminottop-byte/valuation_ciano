@@ -6,3 +6,4 @@ venv/
 .claude/
 .cache/
 data/carteira.json
+data/teses_ia.json

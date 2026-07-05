@@ -58,6 +58,9 @@ com o preço atual. O visual segue o design system da Ciano Investimentos
   (o JSON é local/pessoal, fora do versionamento).
 - `teses.py` + `data/teses.json` — teses de investimento por ticker (setor, tese,
   pontos fortes e fracos), extraídas do relatório da Ciano e exibidas no app.
+- `tese_ia.py` + `data/teses_ia.json` — para empresas fora do relatório, gera a
+  tese via IA (Claude Opus 4.8 + web search) sob demanda no app e faz cache local.
+  Requer a variável de ambiente `ANTHROPIC_API_KEY` (ou `ant auth login`).
 - `assets/` — logo da Ciano; `.streamlit/config.toml` — tema base.
 
 ## Próximos passos sugeridos
