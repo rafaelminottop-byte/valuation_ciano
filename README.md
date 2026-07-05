@@ -39,7 +39,8 @@ streamlit run app.py
 Abre uma página no navegador onde você busca um ticker no Fundamentus (ou
 digita Preço e P/EBIT à mão), edita as premissas e os 3 cenários na barra
 lateral, e vê o valuation por ação com o veredito e um gráfico comparando
-com o preço atual.
+com o preço atual. O visual segue o design system da Ciano Investimentos
+(cores em `.streamlit/config.toml` e `app.py`; logo em `assets/`).
 
 ## Arquivos
 
@@ -47,7 +48,8 @@ com o preço atual.
   contra os números do PETR4 conferidos no chat).
 - `fundamentus_scraper.py` — busca preço, EBIT e nº de ações no Fundamentus.
 - `main.py` — junta os dois e exporta Excel.
-- `app.py` — interface web local (Streamlit).
+- `app.py` — interface web local (Streamlit), com a identidade visual da Ciano.
+- `assets/` — logo da Ciano; `.streamlit/config.toml` — tema base.
 
 ## Próximos passos sugeridos
 
