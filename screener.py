@@ -22,6 +22,7 @@ def rodar_screener(
     anos_fase_2: int = None,
     liquidez_minima: float = 0.0,
     crescimento_minimo: float = None,
+    pebit_minimo: float = 0.0,
 ) -> pd.DataFrame:
     """Calcula o valuation de cada ticker de ``df`` e devolve um DataFrame
     ordenado por upside (decrescente) no cenário de referência.
@@ -35,6 +36,9 @@ def rodar_screener(
       crescente, filtra empresas com crescimento de receita em 5 anos abaixo
       do mínimo (coluna ``cresc_receita_5a``, proxy do crescimento do EBIT).
       Empresas sem esse dado são excluídas quando o filtro está ativo.
+    - ``pebit_minimo``: P/EBIT mínimo. Um P/EBIT muito baixo (< ~1) costuma ser
+      anomalia (EBIT inflado por evento não-recorrente ou preço deprimido) e o
+      modelo projeta upsides irreais. Filtrar por um piso (ex.: 3) limpa o topo.
     """
     cenarios = cenarios if cenarios is not None else CENARIOS_PADRAO
     nomes = list(cenarios.keys())
@@ -50,6 +54,13 @@ def rodar_screener(
         if not (math.isfinite(preco) and preco > 0):
             continue
         if not (math.isfinite(ebit_por_acao) and ebit_por_acao > 0):
+            continue
+
+        try:
+            p_ebit = float(row["p_ebit"])
+        except (KeyError, TypeError, ValueError):
+            p_ebit = None
+        if pebit_minimo > 0 and (p_ebit is None or not math.isfinite(p_ebit) or p_ebit < pebit_minimo):
             continue
 
         liquidez = row.get("liquidez") if hasattr(row, "get") else None
@@ -86,6 +97,7 @@ def rodar_screener(
             {
                 "ticker": res["ticker"],
                 "preco_atual": round(preco, 2),
+                "p_ebit": round(p_ebit, 2) if p_ebit is not None and math.isfinite(p_ebit) else None,
                 "veredito": res["veredito"],
                 "upside_pct": round(r.upside_percentual, 1),
                 "valuation": round(r.valuation_final_por_acao, 2),
