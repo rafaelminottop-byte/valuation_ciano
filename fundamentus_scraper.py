@@ -28,8 +28,11 @@ HEADERS = {
 
 # A tabela do Fundamentus muda pouco durante o dia, então guardamos uma cópia
 # local para não rebaixar tudo a cada consulta (e permitir uso offline).
+# O nome do cache tem uma versão: ao mudar as colunas produzidas (ex.: incluir
+# liquidez/crescimento), incremente CACHE_VERSAO para invalidar caches antigos.
 CACHE_DIR = Path(__file__).resolve().parent / ".cache"
-CACHE_FILE = CACHE_DIR / "fundamentus.pkl"
+CACHE_VERSAO = 2
+CACHE_FILE = CACHE_DIR / f"fundamentus_v{CACHE_VERSAO}.pkl"
 CACHE_TTL_SEGUNDOS = 6 * 60 * 60  # 6 horas
 
 
@@ -62,6 +65,8 @@ COLUNAS_UTEIS = {
     "EV/EBIT": "ev_ebit",
     "Patrim. Líq": "patrimonio_liquido",
     "Div. Yield": "dividend_yield",
+    "Liq.2meses": "liquidez",  # liquidez média diária (R$) — filtra ilíquidas
+    "Cresc. Rec.5a": "cresc_receita_5a",  # crescimento de receita em 5 anos (proxy de crescimento)
 }
 
 
@@ -79,7 +84,7 @@ def _processar_tabela(df: pd.DataFrame) -> pd.DataFrame:
     # o formato brasileiro (dtype numérico), converter de novo distorceria os
     # valores (ex.: 4,45 viraria 445). Checamos "não numérico" em vez de
     # "== object" para cobrir também o dtype de string do backend pyarrow.
-    for col in ["preco_atual", "p_ebit", "ev_ebit", "patrimonio_liquido"]:
+    for col in ["preco_atual", "p_ebit", "ev_ebit", "patrimonio_liquido", "liquidez", "cresc_receita_5a"]:
         if col in df.columns and not pd.api.types.is_numeric_dtype(df[col]):
             df[col] = _para_numero(df[col])
 
