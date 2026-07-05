@@ -1,0 +1,1633 @@
+{
+  "BEEF3": {
+    "ticker": "BEEF3",
+    "nome": "Minerva Foods",
+    "setor": "Frigorífico / Exportação de Carne Bovina",
+    "tese": "A Minerva é a maior exportadora de carne bovina da América do Sul, com receita recorde de R$ 54,8 bilhões em 2025. A tese central é aproveitar o desequilíbrio global entre oferta e demanda de proteína bovina: enquanto países como Estados Unidos e Europa reduzem sua produção, a América do Sul — especialmente Brasil, Argentina e Colômbia — mantém ciclo pecuário favorável com custo de gado competitivo. Com a integração dos ativos adquiridos da Marfrig em 2024 (13 novas plantas), a Minerva saltou para 46 unidades industriais e ampliou drasticamente sua capacidade exportadora.",
+    "atividade": "Abate, processamento e exportação de carne bovina para mais de 100 países. Opera no Brasil, Argentina, Colômbia, Paraguai, Uruguai e Chile. Além da carne in natura, atua em processados, couros e exportação de gado vivo.",
+    "pontos_fortes": [
+      "Maior exportadora de carne bovina da América do Sul",
+      "diversificação geográfica protege contra riscos específicos de cada país",
+      "exposição ao dólar gera hedge natural",
+      "estrutura de 46 plantas com logística própria",
+      "acesso privilegiado a frigoríficos em múltiplos países",
+      "Desalavancagem pós-aquisição da Marfrig (alavancagem caiu de 3,7x para 2,6x em 2025)",
+      "redução da oferta de carne nos EUA abrindo espaço para exportações sul-americanas",
+      "queda no ciclo do gado brasileiro barateando a matéria-prima",
+      "China retomando importações sem salvaguardas",
+      "ganhos de margem com escala das novas plantas"
+    ],
+    "pontos_fracos": [
+      "Alta alavancagem financeira (2,6x Dívida/EBITDA) ainda eleva risco em cenários de stress",
+      "salvaguardas já impostas pela China à carne bovina no fim de 2025 — este não é um risco potencial, já está acontecendo e comprimindo exportações para o principal mercado (~23% da receita)",
+      "ciclo pecuário brasileiro em inversão encarecendo o gado, pressionando margens na operação doméstica",
+      "risco de execução na integração das 13 plantas da Marfrig (46 unidades industriais é operação de altíssima complexidade)",
+      "conversão de EBITDA em caixa ainda limitada pelas despesas financeiras elevadas"
+    ]
+  },
+  "JSLG3": {
+    "ticker": "JSLG3",
+    "nome": "JSL S.A.",
+    "setor": "Logística e Transporte Rodoviário",
+    "tese": "A JSL é a maior operadora logística do Brasil em transporte rodoviário de cargas, mas ainda detém menos de 1% de participação em um mercado estimado em 12% do PIB. A tese é de consolidação num setor ultra-fragmentado: os 10 maiores players juntos têm menos de 3% do mercado — comparado a 30% nos EUA. A empresa cresce tanto organicamente (plataforma asset-light com 55 mil caminhoneiros parceiros) quanto por aquisições disciplinadas, capturando sinergias em escala e poder de compra.",
+    "atividade": "Transporte rodoviário de cargas, terceirização de frotas, armazenagem e logística integrada. Atende agronegócio, automotivo, bens de consumo, mineração e varejo. Pertence ao ecossistema Simpar junto com Vamos e Movida.",
+    "pontos_fortes": [
+      "Escala do grupo Simpar com poder de compra de caminhões",
+      "modelo híbrido asset-heavy e asset-light reduz exposição ao ciclo",
+      "contratos de longo prazo com receita contratada",
+      "plataforma digital conectando 55 mil caminhoneiros",
+      "marca forte em um mercado ainda informal",
+      "Redução da Selic favorecendo refinanciamento da dívida",
+      "novas aquisições no setor fragmentado",
+      "expansão da plataforma asset-light via Truckpad",
+      "crescimento do agronegócio brasileiro demandando mais logística",
+      "maturação de contratos de longo prazo já assinados"
+    ],
+    "pontos_fracos": [
+      "Endividamento elevado pelo crescimento acelerado via aquisições",
+      "modelo asset-heavy exige capital intensivo para expansão da frota",
+      "exposição ao custo de combustível e manutenção que comprime margens em períodos de alta do diesel",
+      "competição crescente de transportadoras regionais e locadoras de caminhões",
+      "integração de múltiplas aquisições traz risco de cultura e sistemas"
+    ]
+  },
+  "VAMO3": {
+    "ticker": "VAMO3",
+    "nome": "Vamos Locação de Caminhões, Máquinas e Equipamentos",
+    "setor": "Locação de Ativos Pesados",
+    "tese": "A Vamos é líder em locação de caminhões e máquinas agrícolas no Brasil, um mercado ainda muito incipiente no país. A tese é que empresas brasileiras devem migrar da propriedade de frota para o modelo de locação — tendência já consolidada nos EUA — liberando capital de giro e reduzindo complexidade operacional. Com a queda da Selic, o custo de capital para financiar a frota própria da Vamos reduz, melhorando margens e permitindo crescimento mais acelerado.",
+    "atividade": "Locação de caminhões, ônibus, máquinas e equipamentos agrícolas para empresas. Também opera concessionárias Volkswagen/MAN, Valtra, Komatsu e Fendt, além de rede de venda de seminovos.",
+    "pontos_fortes": [
+      "Único player nacional com rede verticalizada (locação + concessionárias + seminovos)",
+      "grupo Simpar como comprador de caminhões em escala",
+      "contratos de longo prazo gerando receita recorrente e previsível",
+      "expertise técnica em manutenção reduzindo downtime dos ativos",
+      "Queda da Selic reduzindo custo financeiro da frota",
+      "renovação de frota nacional para norma Euro 6",
+      "crescimento do agronegócio demandando mais maquinário",
+      "expansão de contratos com clientes estratégicos",
+      "maturação do portfólio de ativos atualmente locados"
+    ],
+    "pontos_fracos": [
+      "Pressão dupla da Selic elevada: ao mesmo tempo que encarece o custo de capital da própria frota da Vamos, reduz a disposição dos clientes de pagar pelo aluguel — porque o custo de financiar o ativo próprio fica próximo ao custo de locar, eliminando o diferencial do modelo",
+      "esse efeito duplo é estrutural e o modelo de negócio não aguenta bem com Selic acima de 12%",
+      "queda de 55% no lucro líquido em 2025 reflete essa pressão",
+      "meta de expansão de frota adiada de 2025 para 2028",
+      "inadimplência de clientes pode crescer em cenários de recessão"
+    ]
+  },
+  "JALL3": {
+    "ticker": "JALL3",
+    "nome": "Jalles Machado",
+    "setor": "Sucroalcooleiro",
+    "tese": "A Jalles Machado é uma das usinas de cana-de-açúcar mais eficientes do Brasil, com foco em açúcar VHP para exportação e etanol. A tese combina a transição energética global — que impulsiona demanda por etanol de segunda geração e bioenergia — com o desequilíbrio estrutural de oferta de açúcar no mundo, especialmente com a Índia limitando exportações e a Tailândia com produção oscilante. A empresa é referência em sustentabilidade e tem certificações que abrem mercados premium.",
+    "atividade": "Produção de açúcar VHP, etanol anidro e hidratado, energia elétrica a partir do bagaço da cana e bioGNV. Localizada em Goiás, uma das fronteiras agrícolas mais produtivas do Brasil.",
+    "pontos_fortes": [
+      "Alta eficiência operacional com uma das menores custos de produção do setor",
+      "diversificação entre açúcar, etanol e bioenergia reduz risco de preço único",
+      "localização estratégica no cerrado goiano com baixo risco climático",
+      "certificações de sustentabilidade que permitem preços premium",
+      "Alta nos preços internacionais do açúcar",
+      "expansão da demanda por etanol (mandato de mistura E30)",
+      "exportação de energia elétrica nos períodos de safra",
+      "queda nos custos de produção com mecanização crescente",
+      "potencial de crescimento via novas usinas"
+    ],
+    "pontos_fracos": [
+      "Exposição ao ciclo de preços do açúcar e do etanol, que são commodities com alta volatilidade",
+      "risco climático (seca, geadas) afetando safra",
+      "concentração de operações em uma única usina em Goiás",
+      "mandato de mistura de etanol pode ser alterado por decisão política",
+      "câmbio desfavorável pode comprimir a margem das exportações de açúcar"
+    ]
+  },
+  "RIAA3": {
+    "ticker": "RIAA3",
+    "nome": "Ri Happy / Rio de Janeiro (Grupo Arezzo - VEJA NOTA)",
+    "setor": "Varejo",
+    "tese": "RIAA3 é o ticker referente ao Grupo Arezzo&Co, holding de moda e calçados premium. A tese é de consolidação no varejo de moda com marcas de alto valor percebido, operando em múltiplos segmentos e canais. A empresa tem histórico de crescimento via aquisições e construção de portfólio de marcas com alta fidelidade de cliente.",
+    "atividade": "Design, produção e distribuição de calçados, bolsas e acessórios nas marcas Arezzo, Schutz, Alexandre Birman, Anacapri, Owline, MyShoes e Farm (pós-fusão com Grupo Soma).",
+    "pontos_fortes": [
+      "Portfólio de marcas aspiracionais com pricing power",
+      "canal D2C reduzindo dependência de multimarcas",
+      "gestão leve com foco em design e marca",
+      "histórico comprovado de M&A bem-sucedido",
+      "penetração no mercado norte-americano com Schutz e Alexandre Birman",
+      "Consolidação do portfólio pós-fusão com Grupo Soma",
+      "expansão internacional das marcas Farm e Schutz",
+      "recuperação do consumo doméstico",
+      "crescimento do e-commerce próprio",
+      "abertura de lojas em novos mercados"
+    ],
+    "pontos_fracos": [
+      "Complexidade da integração pós-fusão com o Grupo Soma (múltiplas marcas, culturas e sistemas)",
+      "exposição ao consumo doméstico e crédito ao consumidor",
+      "concorrência crescente de marcas internacionais entrando no Brasil",
+      "pressão de margens com aumento de custos de matéria-prima (couro, borracha)",
+      "risco de execução na expansão internacional"
+    ]
+  },
+  "CSAN3": {
+    "ticker": "CSAN3",
+    "nome": "Cosan S.A.",
+    "setor": "Holding Diversificada",
+    "tese": "A Cosan é uma das maiores holdings do Brasil, com participações em setores estratégicos: energia (Compass Gás), distribuição de combustíveis (Raízen), mineração (Vale — 4,9% da maior mineradora de ferro do mundo), agro e logística ferroviária (Rumo). A tese é de holding discount extremo: a participação na Vale sozinha vale, em vários momentos, mais do que o market cap inteiro da Cosan — o que significa que o mercado está essencialmente entregando Raízen, Rumo, Compass e Moove de graça. Esse desconto é matematicamente absurdo e tende a fechar com a desalavancagem e a valorização das subsidiárias.",
+    "atividade": "Holding com participações em Raízen (combustíveis e etanol), Rumo (logística ferroviária), Compass (distribuição de gás natural), Moove (lubrificantes) e Vale (mineração).",
+    "pontos_fortes": [
+      "Holding discount extremo: a participação de 4,9% na Vale sozinha supera o market cap da Cosan em vários momentos de mercado, entregando todos os outros ativos (Raízen, Rumo, Compass, Moove) com desconto próximo a zero",
+      "Rumo com monopólio natural nas ferrovias do Centro-Oeste — infraestrutura irreplicável",
+      "Raízen líder em combustíveis e pioneira em etanol de segunda geração",
+      "Compass como plataforma de distribuição de gás natural com mercado em expansão",
+      "Desalavancagem da holding",
+      "valorização das subsidiárias, especialmente Raízen e Rumo",
+      "aumento do valor de mercado da participação na Vale com alta do minério",
+      "distribução de dividendos das controladas para a holding",
+      "queda da Selic melhorando o valuation de subsidiárias de infraestrutura"
+    ],
+    "pontos_fracos": [
+      "Dívida elevada na holding, que depende dos dividendos das subsidiárias para servir a dívida",
+      "participação na Vale sujeita à volatilidade do minério de ferro e política da China",
+      "Raízen passa por pressão de margens na distribuição de combustíveis",
+      "complexidade operacional de uma holding com múltiplas empresas listadas",
+      "risco regulatório no segmento de gás (Compass)"
+    ]
+  },
+  "SOND5": {
+    "ticker": "SOND5",
+    "nome": "Sonadrill / Sondotécnica",
+    "setor": "Perfuração e Serviços de Petróleo",
+    "tese": "SOND5 refere-se a empresa de serviços de perfuração offshore. O setor se beneficia da maior produção petrolífera do Brasil via pré-sal, com a Petrobras como cliente dominante e contratos de longo prazo gerando receita recorrente. Com o ciclo de investimento do pré-sal ainda em expansão, a demanda por sondas de perfuração deve seguir elevada.",
+    "atividade": "Serviços de perfuração de poços de petróleo e gás, primordialmente offshore no pré-sal brasileiro. Opera sondas em parceria com grandes operadoras internacionais.",
+    "pontos_fortes": [
+      "Contratos de longo prazo com receita previsível",
+      "alta barreira de entrada pelo custo das sondas",
+      "demanda estrutural crescente com o pré-sal",
+      "localização estratégica nas principais bacias sedimentares",
+      "Expansão do programa de investimentos da Petrobras no pré-sal",
+      "renovação e ampliação de contratos de longo prazo",
+      "alta no preço do petróleo",
+      "entrada de novas operadoras internacionais no Brasil"
+    ],
+    "pontos_fracos": [
+      "Alta dependência da Petrobras como cliente principal",
+      "risco de contrato — renovação pode não ocorrer nos mesmos termos",
+      "exposição ao preço do petróleo que influencia o nível de investimentos da Petrobras",
+      "risco operacional em perfuração offshore em águas profundas",
+      "custo elevado de manutenção de sondas pode pressionar margens"
+    ]
+  },
+  "PETR4": {
+    "ticker": "PETR4",
+    "nome": "Petrobras",
+    "setor": "Petróleo e Gás",
+    "tese": "A Petrobras é uma das maiores empresas de petróleo do mundo e a maior geradora de valor do mercado brasileiro. A tese é baseada no custo de extração ultracompetitivo do pré-sal — entre os mais baixos do mundo, abaixo de US$ 8/barril — que garante geração de caixa expressiva mesmo com petróleo a preços moderados. Com dividend yield histórico elevado e valuation atrativo em relação aos pares globais, a ação funciona como uma combinação de value e renda.",
+    "atividade": "Exploração, produção, refino, transporte e comercialização de petróleo, gás natural e seus derivados. Opera no Brasil e em outros países, com foco crescente no pré-sal da Bacia de Santos e Campos.",
+    "pontos_fortes": [
+      "Custo de extração entre os mais baixos do mundo no pré-sal",
+      "reservas de classe mundial",
+      "infraestrutura integrada de dutos e refinarias",
+      "vantagem competitiva em águas profundas e ultraprofundas",
+      "posição monopolística em refino doméstico",
+      "Alta no preço do Brent",
+      "crescimento da produção do pré-sal atingindo 3 milhões de barris/dia",
+      "distribuição de dividendos extraordinários",
+      "redução de intervenção política",
+      "queda do risco-Brasil reduzindo a taxa de desconto"
+    ],
+    "pontos_fracos": [
+      "Risco de intervenção política em preços de combustíveis e dividendos",
+      "exposição à volatilidade do Brent",
+      "dependência do governo federal como controlador",
+      "passivos ambientais e trabalhistas históricos",
+      "transição energética global pode reduzir a demanda por petróleo no longo prazo"
+    ]
+  },
+  "JHSF3": {
+    "ticker": "JHSF3",
+    "nome": "JHSF Participações",
+    "setor": "Imóveis de Alto Padrão e Varejo de Luxo",
+    "tese": "A JHSF opera na interseção entre imóveis de luxo, shoppings premium e hospitalidade. É a única empresa listada no Brasil com foco exclusivo no segmento de altíssima renda — um mercado que se mostrou resiliente e até crescente nas crises, pois a concentração de renda no Brasil amplia o nicho de ultra-ricos. O Shopping Cidade Jardim em São Paulo é o mais lucrativo por metro quadrado do Brasil.",
+    "atividade": "Incorporação de imóveis de alto padrão (residencial e corporativo), gestão de shoppings premium (Cidade Jardim, Fasano SP, Catarina Fashion Outlet), hotéis Fasano e aeroporto executivo Catarina.",
+    "pontos_fortes": [
+      "Único veículo puro de luxo na B3",
+      "aeroporto executivo Catarina — ativo absolutamente único na América do Sul, sem equivalente de infraestrutura para aviação executiva no continente, completamente ignorado pelo mercado no valuation",
+      "marca Fasano como ativo intangível de enorme valor com expansão internacional em curso",
+      "localização irreplicável dos ativos (Cidade Jardim, Catarina)",
+      "clientela com alta fidelidade e baixíssima sensibilidade a preço",
+      "Expansão do complexo Catarina",
+      "novos empreendimentos residenciais de luxo",
+      "crescimento da base de clientes premium",
+      "abertura de novas unidades Fasano no exterior",
+      "aumento do ticket médio nas operações existentes"
+    ],
+    "pontos_fracos": [
+      "Liquidez muito baixa das ações, dificultando entrada e saída de grandes investidores",
+      "nicho de luxo torna a empresa vulnerável a crises econômicas que afetem o segmento de alta renda",
+      "concentração geográfica em São Paulo",
+      "projetos de longo prazo (Catarina) com retorno distante",
+      "risco de execução em projetos de grande escala como o aeroporto e o outlet"
+    ]
+  },
+  "MGLU3": {
+    "ticker": "MGLU3",
+    "nome": "Magazine Luiza",
+    "setor": "Varejo / E-commerce",
+    "tese": "Após a destruição de valor entre 2021 e 2023 — quando a ação caiu mais de 95% — a Magalu passou por um processo intenso de reestruturação: corte de custos, redução de workforce, renegociação de dívidas e foco na rentabilidade. A tese é de recuperação: empresa com marca forte, plataforma de marketplace consolidada (Magalu) e operação de fulfillment que pode se tornar rentável se a taxa de juros cair e o consumo doméstico se recuperar.",
+    "atividade": "Varejo omnicanal de eletrodomésticos, eletrônicos, móveis e produtos gerais, com marketplace digital e rede de lojas físicas. Opera também Luizacred (financeira), Luizaseg (seguros) e Magalog (logística).",
+    "pontos_fortes": [
+      "Uma das marcas mais reconhecidas do Brasil",
+      "rede de 1.400+ lojas físicas como ponto de entrega e fulfillment",
+      "plataforma digital com tráfego orgânico elevado",
+      "serviços financeiros integrados ao varejo",
+      "equipe de gestão com histórico de execução comprovado",
+      "Queda da Selic reduzindo o custo do crédito ao consumidor",
+      "retomada do consumo das classes C e D",
+      "rentabilização do marketplace com take rate crescente",
+      "fusões e aquisições estratégicas",
+      "melhora no ciclo de crédito da Luizacred"
+    ],
+    "pontos_fracos": [
+      "Balanço ainda pressionado por dívida legada e prejuízos acumulados",
+      "o risco central não é a dívida — é a luta por relevância no marketplace: Amazon, Mercado Livre e Shopee têm vantagens estruturais de rede que a Magalu dificilmente consegue replicar, e o risco real é de irrelevância gradual, não de falência",
+      "inadimplência da Luizacred exposta ao ciclo de crédito de massa",
+      "necessidade de capital contínuo para competir em fulfillment e tecnologia",
+      "reputação da marca prejudicada pelo histórico de destruição de valor entre 2021-2023"
+    ]
+  },
+  "BRAV3": {
+    "ticker": "BRAV3",
+    "nome": "BRAVA Energia",
+    "setor": "Petróleo e Gás (E&P)",
+    "tese": "A BRAVA Energia é resultado da fusão entre 3R Petroleum e Enauta, formando um dos maiores produtores independentes de petróleo e gás do Brasil. A tese é de crescimento de produção: com campos em diferentes estágios de maturação, a empresa pode aumentar significativamente o volume produzido sem custo de exploração, e seu modelo de revitalização de campos maduros tem custo de aquisição e operação muito menor que exploração greenfield.",
+    "atividade": "Exploração e produção (E&P) de petróleo e gás em campos terrestres e offshore no Brasil, com foco em revitalização de campos maduros adquiridos da Petrobras e outros operadores.",
+    "pontos_fortes": [
+      "Custo de aquisição de campos maduros muito inferior ao de exploração",
+      "modelo de negócio com menor risco exploratório",
+      "portfólio diversificado em diferentes bacias",
+      "gestão com track record em turnaround de campos",
+      "Aumento da produção nos campos do Polo Potiguar e Atlanta",
+      "integração operacional pós-fusão gerando sinergias",
+      "alta do Brent",
+      "potencial de novos campos licitados pela ANP",
+      "redução de custos via eficiência operacional"
+    ],
+    "pontos_fracos": [
+      "Empresa ainda em fase de integração pós-fusão 3R + Enauta, com riscos de execução relevantes",
+      "produção dependente de campos maduros com declínio natural",
+      "exposição à volatilidade do Brent",
+      "custo de operação offshore mais elevado que onshore",
+      "acesso a capital mais limitado que grandes petroleiras"
+    ]
+  },
+  "LOGG3": {
+    "ticker": "LOGG3",
+    "nome": "LOG Commercial Properties",
+    "setor": "Galpões Logísticos / Real Estate",
+    "tese": "A LOG é uma das maiores desenvolvedoras de galpões logísticos do Brasil, se beneficiando diretamente do crescimento do e-commerce e da reorganização das cadeias de supply chain no país. A demanda por galpões logísticos de qualidade cresceu estruturalmente após a pandemia e não há sinais de reversão. A empresa constrói, locação e eventualmente vende os galpões, com modelo semelhante a um REIT de infraestrutura.",
+    "atividade": "Desenvolvimento, locação e gestão de condomínios logísticos e industriais em mercados secundários e terciários do Brasil. Atende e-commerce, varejo, indústria e distribuidores.",
+    "pontos_fortes": [
+      "Posicionamento em mercados secundários com menor concorrência e maior yield",
+      "contratos de locação de longo prazo com reajuste por IPCA gerando receita previsível",
+      "gestão eficiente com baixo custo de construção própria",
+      "Expansão do e-commerce demandando mais centros de distribuição regionais",
+      "crescimento industrial",
+      "queda da taxa de vacância nos galpões existentes",
+      "novos contratos de locação de longo prazo",
+      "venda de ativos maduros com ganho de capital"
+    ],
+    "pontos_fracos": [
+      "Capital intensivo com necessidade contínua de investimento para construir novos galpões — o modelo tem sido descrito como capital-light mas na prática exige alocação contínua de capital, e a reciclagem de ativos funciona mas depende de timing favorável do mercado imobiliário",
+      "exposição ao ciclo de crédito imobiliário que afeta o custo de captação",
+      "risco de vacância em momentos de desaceleração econômica",
+      "concentração de receita em poucos grandes clientes de e-commerce",
+      "competição crescente de outros desenvolvedores logísticos"
+    ]
+  },
+  "EUCA3": {
+    "ticker": "EUCA3",
+    "nome": "Eucatex",
+    "setor": "Painéis de Madeira e Tintas",
+    "tese": "A Eucatex é uma empresa industrial tradicional com operações em painéis de madeira (MDF, HDF, chapas duras) e tintas e vernizes. A tese é de eficiência industrial e recuperação de margem: a empresa investiu fortemente em modernização e expansão de capacidade, e com a normalização dos custos de madeira e energia elétrica, deve colher os frutos em margens mais elevadas. Também é beneficiada pelo ciclo de construção civil.",
+    "atividade": "Produção de painéis de madeira (MDF, chapas duras e fibras) e tintas e vernizes decorativos. Tem floresta própria de eucalipto garantindo matéria-prima verticalizada.",
+    "pontos_fortes": [
+      "Verticalização com floresta própria de eucalipto",
+      "marca reconhecida em tintas para o varejo",
+      "capacidade instalada recém-modernizada",
+      "exportação diversifica receita além do mercado doméstico",
+      "Crescimento da construção civil e reformas",
+      "aumento das exportações de painéis",
+      "queda nos custos de energia",
+      "nova linha de MDF aumentando capacidade",
+      "expansão da linha de tintas premium"
+    ],
+    "pontos_fracos": [
+      "Exposição ao custo de energia elétrica, insumo relevante na produção de painéis",
+      "dependência do ciclo de construção civil",
+      "concorrência de produtos importados em momentos de câmbio apreciado",
+      "mercado de tintas competitivo com grandes players multinacionais",
+      "menor escala que concorrentes globais limita o poder de barganha com distribuidores"
+    ]
+  },
+  "BAZA3": {
+    "ticker": "BAZA3",
+    "nome": "Banco da Amazônia",
+    "setor": "Banco Público Regional",
+    "tese": "O Banco da Amazônia é uma instituição financeira pública com foco no desenvolvimento da região Norte do Brasil. A tese é de banco com valuation deprimido operando em uma região com crescimento acelerado: a Amazônia Legal tem PIB crescendo acima da média nacional, com destaque para agronegócio, mineração e logística. Com a agenda ambiental global e a bioeconomia em evidência, a região deve atrair crescentes volumes de investimento.",
+    "atividade": "Crédito rural, agronegócio, infraestrutura e desenvolvimento regional na Amazônia Legal. Opera com funding especial do governo federal para programas de crédito subsidiado.",
+    "pontos_fortes": [
+      "Monopólio regional de crédito com funding privilegiado do governo",
+      "carteira de crédito com garantias reais",
+      "estrutura de custos diferenciada como banco público",
+      "acesso exclusivo a linhas de crédito especiais do BNDES e FNO",
+      "Expansão do crédito rural na Amazônia",
+      "crescimento do agronegócio no Norte e Centro-Oeste",
+      "aprovação de novos programas de financiamento federal",
+      "valorização da bioeconomia atraindo investimentos",
+      "melhora na inadimplência com crescimento econômico regional"
+    ],
+    "pontos_fracos": [
+      "Risco político elevado por ser banco público e ter gestão sujeita a interferência do governo federal",
+      "concentração geográfica na Amazônia Legal, região com maior instabilidade",
+      "menor eficiência operacional comparada a bancos privados",
+      "exposição a inadimplência do crédito rural em anos de clima desfavorável",
+      "dependência de políticas públicas de crédito subsidiado"
+    ]
+  },
+  "BBAS3": {
+    "ticker": "BBAS3",
+    "nome": "Banco do Brasil",
+    "setor": "Banco Público / Agronegócio",
+    "tese": "O Banco do Brasil é o maior banco em ativos da América Latina e o mais lucrativo do setor público. A tese combina dividend yield generoso com valor oculto relevante: dentro do BB existem dois negócios que, se listados separadamente, valeriam bilhões — a BB Seguridade (uma das maiores seguradoras do país) e o BB Asset Management (uma das maiores gestoras do Brasil). O mercado precifica o BB como banco puro, ignorando esses ativos embutidos. Com ROE acima de 20% e P/L historicamente abaixo de 5x, o banco remunera bem o investidor enquanto entrega crescimento.",
+    "atividade": "Banco universal com foco em crédito rural, agronegócio, serviços bancários para pessoa física e jurídica, seguros, previdência e gestão de recursos. Controla a BB Seguridade e tem participação na Cielo.",
+    "pontos_fortes": [
+      "Ativos ocultos: BB Seguridade e BB Asset Management são negócios bilionários embutidos que o mercado não precifica adequadamente ao olhar apenas para o banco",
+      "líder absoluto em crédito rural com 60%+ de market share — nicho com crescimento estrutural",
+      "base de clientes com 100+ milhões de contas gerando cross-sell",
+      "funding barato via depósitos à vista e poupança",
+      "capilaridade ímpar com agências em todo o Brasil incluindo municípios sem outro banco",
+      "Crescimento do crédito rural com expansão do agronegócio",
+      "aprovação de plano safra com volumes maiores",
+      "privatização parcial ou aumento de eficiência operacional",
+      "queda da inadimplência",
+      "distribuição de dividendos acima do mínimo obrigatório"
+    ],
+    "pontos_fracos": [
+      "Risco político de interferência do governo federal na política de crédito, dividendos e tarifas",
+      "inadimplência do crédito rural pode crescer em anos de clima desfavorável",
+      "concorrência dos bancos privados em segmentos mais rentáveis",
+      "pressão por empréstimos subsidiados a setores estratégicos reduzindo margens",
+      "menor velocidade de digitalização comparada aos bancos privados"
+    ]
+  },
+  "COGN3": {
+    "ticker": "COGN3",
+    "nome": "Cogna Educação",
+    "setor": "Educação",
+    "tese": "A Cogna é o maior grupo educacional do Brasil por número de alunos. Após um período de forte alavancagem e inadimplência elevada durante a pandemia, a empresa passou por reestruturação intensa: redução de dívida, foco em margens e melhora da inadimplência. A tese é de turnaround: com o Fies e ProUni contribuindo para o crescimento da base de alunos nas faculdades privadas e a EaD em expansão acelerada, a Cogna pode recuperar sua rentabilidade perdida.",
+    "atividade": "Educação superior presencial e EaD através da Kroton e Anhanguera; educação básica (Vasta); sistemas de ensino para escolas parceiras (Saraiva Educação).",
+    "pontos_fortes": [
+      "Maior escala do país em educação superior, com mais de 1 milhão de alunos",
+      "marca Anhanguera com reconhecimento nacional",
+      "plataforma EaD já desenvolvida com custo marginal baixo",
+      "diversificação em múltiplos segmentos educacionais",
+      "Expansão do EaD com custo por aluno significativamente menor",
+      "retomada do Fies e ProUni",
+      "redução de inadimplência com melhora do crédito estudantil",
+      "crescimento orgânico nas modalidades à distância",
+      "desinvestimento de ativos não estratégicos"
+    ],
+    "pontos_fracos": [
+      "Dívida elevada após período de expansão agressiva",
+      "inadimplência estudantil ainda acima do ideal",
+      "concorrência intensa de outros grandes grupos educacionais",
+      "risco regulatório em EaD com mudanças nas regras do MEC",
+      "dependência de políticas governamentais como Fies e ProUni para crescimento"
+    ]
+  },
+  "RSUL": {
+    "ticker": "RSUL",
+    "nome": "Refinaria de Petróleo Riograndense",
+    "setor": "Refino de Petróleo",
+    "tese": "A Refinaria Riograndense (RSUL) é uma das poucas refinarias privadas independentes do Brasil, atuando no Sul do país. Opera em um nicho protegido: a região Sul tem demanda crescente por derivados e a empresa tem contratos de longo prazo com distribuidoras. O valuation descontado reflete a percepção de risco regulatório, mas a tese é de que o negócio é defensivo e consistentemente lucrativo.",
+    "atividade": "Refino de petróleo para produção de combustíveis, lubrificantes e outros derivados, com distribuição focada na região Sul do Brasil.",
+    "pontos_fortes": [
+      "Única refinaria privada independente no Sul do Brasil",
+      "localização estratégica no maior polo industrial do país",
+      "contratos de longo prazo com receita estável",
+      "ativos físicos substituídos por custo muito acima do valor de mercado",
+      "Aumento das margens de refino",
+      "crescimento da demanda por lubrificantes industriais",
+      "elevação do preço dos derivados",
+      "novos contratos de fornecimento",
+      "eficiência energética reduzindo custos operacionais"
+    ],
+    "pontos_fracos": [
+      "Liquidez muito baixa das ações dificultando a formação de preço",
+      "exposição à volatilidade do preço do petróleo que impacta margens de refino",
+      "risco regulatório da ANP sobre operações de refinaria independente",
+      "capacidade de refino limitada frente às grandes refinarias da Petrobras",
+      "risco ambiental inerente à operação de refinaria"
+    ]
+  },
+  "VBBR3": {
+    "ticker": "VBBR3",
+    "nome": "Vibra Energia (ex-BR Distribuidora)",
+    "setor": "Distribuição de Combustíveis",
+    "tese": "A Vibra é a maior distribuidora de combustíveis do Brasil, operando a rede de postos BR. Após a privatização pela Petrobras, a empresa ganhou autonomia gerencial e passou a focar em eficiência, margens e diversificação para além dos combustíveis fósseis — com expansão em etanol, GNV e energia elétrica para veículos elétricos. A tese é de transformação de um ativo de value tradicional para uma empresa de transição energética.",
+    "atividade": "Distribuição de gasolina, diesel, etanol, GNV e lubrificantes através da rede BR (mais de 7.500 postos). Também opera lojas de conveniência (Br Mania) e serviços financeiros.",
+    "pontos_fortes": [
+      "Maior rede de postos do Brasil com capilaridade ímpar",
+      "marca BR com alto reconhecimento e confiança",
+      "contrato de fornecimento privilegiado com Petrobras",
+      "diversificação de receita via conveniência e serviços",
+      "gestão independente mais eficiente que no período estatal",
+      "Aumento das margens de distribuição pós-otimização do portfólio",
+      "expansão de postos de GNV e carregadores elétricos",
+      "crescimento das lojas de conveniência",
+      "captura de sinergias com fusões e aquisições",
+      "penetração em biocombustíveis (etanol de segunda geração)"
+    ],
+    "pontos_fracos": [
+      "Margens de distribuição são muito estreitas e sujeitas à concorrência de preço",
+      "necessidade de investimentos elevados para modernizar a rede de postos",
+      "exposição à transição energética de longo prazo (elétrico reduzindo demanda por gasolina)",
+      "dependência de fornecimento da Petrobras como principal fornecedora",
+      "risco de inadimplência de postos revendedores"
+    ]
+  },
+  "SUZB3": {
+    "ticker": "SUZB3",
+    "nome": "Suzano",
+    "setor": "Papel e Celulose",
+    "tese": "A Suzano é a maior produtora de celulose de eucalipto do mundo, com custo de produção entre os mais baixos globalmente. A celulose é a base para papéis de imprimir, escrever, tissue e — crescentemente — embalagens sustentáveis substituindo o plástico. A tese é de demanda estrutural crescente por fibra de eucalipto, impulsionada pela agenda ESG que prioriza embalagens de papel em vez de plástico.",
+    "atividade": "Produção e comercialização de celulose de mercado e papel, com florestas de eucalipto próprias no Brasil. Principal cliente são fabricantes de tissue (papel higiênico), papelão e papéis especiais na Europa e Ásia.",
+    "pontos_fortes": [
+      "Projeto Cerrado coloca a Suzano em patamar único: uma única fábrica com capacidade superior à produção total de celulose de vários países — escala sem equivalente histórico na indústria de celulose global",
+      "custo de produção entre os 3 menores do mundo, que cai ainda mais com o Cerrado em operação plena",
+      "verticalização total com florestas próprias certificadas eliminando risco de matéria-prima",
+      "diversificação geográfica de clientes em Europa, Ásia e Américas",
+      "agenda ESG com emissões compensadas e florestas certificadas FSC",
+      "Projeto Cerrado (fábrica de Ribas do Rio Pardo, MS) — este é um evento transformacional: uma única fábrica que coloca a Suzano em patamar de produção sem equivalente no mundo, maior que a produção total de celulose de muitos países, reduzindo o custo médio de toda a empresa",
+      "aumento da demanda global por celulose sustentável",
+      "substituição de plástico por embalagens de papel impulsionada pela regulação ESG",
+      "maturação das florestas plantadas reduzindo custo de matéria-prima",
+      "potencial de diversificação em têxtil de eucalipto (Lyocell)"
+    ],
+    "pontos_fracos": [
+      "Dívida elevada após a aquisição da Fibria e o Projeto Cerrado",
+      "exposição à volatilidade dos preços de celulose, que são cíclicos",
+      "risco cambial com receitas em dólar e custos em real",
+      "risco de queda abrupta da demanda chinesa por celulose",
+      "custo de capital elevado para sustentar o crescimento"
+    ]
+  },
+  "VALE3": {
+    "ticker": "VALE3",
+    "nome": "Vale",
+    "setor": "Mineração (Ferro e Metais de Base)",
+    "tese": "A Vale é uma das maiores mineradoras do mundo e a maior produtora de minério de ferro do planeta. A tese envolve a demanda estrutural da China por aço, mas tem uma segunda camada muito relevante que o mercado subestima: o portfólio de níquel e cobre. Com a eletrificação de veículos acelerando globalmente, esses metais — hoje tratados como secundários — podem se tornar tão relevantes para o resultado da Vale quanto o ferro nos próximos 10 anos. O investidor que compra Vale hoje leva o maior produtor de minério de ferro do mundo e, embutido no mesmo preço, uma posição estratégica nos metais da transição energética.",
+    "atividade": "Mineração e processamento de minério de ferro, pelotas, níquel, cobre, manganês e carvão. Opera em 9 países com foco no Brasil (Pará e Minas Gerais), Canadá (níquel) e outros.",
+    "pontos_fortes": [
+      "Maior produtor mundial de minério de ferro com minério de altíssima qualidade (67% Fe)",
+      "posição estratégica em níquel e cobre — metais críticos para a transição energética que podem valorizar substancialmente na próxima década",
+      "infraestrutura logística própria e irreplicável (Estrada de Ferro Carajás, terminais portuários em São Luís e Tubarão)",
+      "custo de produção entre os mais baixos do mundo com reservas de vida útil superior a 50 anos",
+      "Estímulos fiscais da China à infraestrutura",
+      "aumento da produção de minério de ferro de alta qualidade",
+      "crescimento da demanda por níquel e cobre para baterias de veículos elétricos",
+      "valorização do dólar",
+      "programas de buyback e dividendos extraordinários"
+    ],
+    "pontos_fracos": [
+      "Exposição direta ao ciclo econômico da China, que representa mais de 60% da demanda por minério",
+      "passivos do desastre de Brumadinho ainda em negociação",
+      "risco político com a possibilidade de royalties e impostos maiores",
+      "dependência de uma única commodity (ferro) para a maior parte do resultado",
+      "risco ambiental e reputacional elevado"
+    ]
+  },
+  "ELET3": {
+    "ticker": "ELET3",
+    "nome": "Eletrobras",
+    "setor": "Energia Elétrica (Geração e Transmissão)",
+    "tese": "A Eletrobras é a maior geradora de energia elétrica da América Latina, e sua privatização em 2022 abriu um novo capítulo de eficiência operacional. Mas existe um ativo absolutamente singular que o mercado não precifica adequadamente: as cotas de energia de Itaipu. A Eletrobras recebe energia de Itaipu praticamente a custo zero — a usina já está 100% amortizada — o que cria um piso de resultado extraordinário independente de qualquer outra variável operacional. Não existe equivalente a esse ativo em nenhuma outra empresa do mundo. Somado ao potencial de corte de custos com a gestão privada, a tese é de criação de valor substancial a partir de uma base já excepcionalmente sólida.",
+    "atividade": "Geração de energia elétrica primordialmente hidrelétrica, com participação em termelétricas e nucleares (Angra 1 e 2). Também atua em transmissão de energia elétrica em linhas de alta tensão.",
+    "pontos_fortes": [
+      "Cotas de energia de Itaipu — ativo singular no mundo: energia gerada a custo praticamente zero em uma usina 100% amortizada, criando um piso de resultado sem equivalente em qualquer outra empresa listada globalmente",
+      "maior parque hidrelétrico do Brasil com concessões de longa duração",
+      "matriz 100% renovável com vantagem competitiva crescente em licitações ESG",
+      "gestão privada com enorme espaço para corte de custos herdados do modelo público",
+      "Programa de demissão voluntária reduzindo custos com pessoal",
+      "revisão tarifária das concessões",
+      "venda de ativos não estratégicos",
+      "expansão em energia renovável",
+      "desinvestimento de termelétricas ineficientes"
+    ],
+    "pontos_fracos": [
+      "Risco político — governo federal como controlador pode influenciar decisões estratégicas",
+      "litígios sobre contratos de concessão com contestações relevantes",
+      "custo de pessoal ainda elevado em relação à eficiência privada almejada",
+      "exposição a risco hidrológico com reservatórios abaixo do ideal",
+      "investimentos em transmissão são de longo prazo, com retorno diluído no tempo"
+    ]
+  },
+  "TKNO3": {
+    "ticker": "TKNO3",
+    "nome": "Tronox / WLM Indústria e Comércio",
+    "setor": "Indústria e Comércio",
+    "tese": "Empresa industrial diversificada com portfólio de produtos para diferentes segmentos. A tese de investimento reside no valuation deprimido com múltiplos abaixo dos pares do setor e potencial de geração de caixa que o mercado ainda não precifica adequadamente.",
+    "atividade": "Indústria e comércio de equipamentos e soluções industriais, com atuação em múltiplos segmentos produtivos.",
+    "pontos_fortes": [
+      "Valuation abaixo dos pares",
+      "modelo de negócio resiliente",
+      "base de clientes diversificada",
+      "Retomada do crescimento industrial",
+      "exportações beneficiadas pelo câmbio",
+      "eficiência operacional",
+      "novos contratos com clientes estratégicos"
+    ],
+    "pontos_fracos": [
+      "Empresa pouco coberta por analistas, com liquidez baixa",
+      "margens ainda pressionadas em ambiente de juros elevados",
+      "concorrência de produtos importados em segmentos industriais",
+      "exposição ao ciclo industrial brasileiro",
+      "histórico limitado de dividendos e geração de caixa consistente"
+    ]
+  },
+  "SLCE3": {
+    "ticker": "SLCE3",
+    "nome": "SLC Agrícola",
+    "setor": "Agronegócio (Grãos)",
+    "tese": "A SLC Agrícola é uma das maiores produtoras de commodities agrícolas do Brasil, com foco em soja, milho e algodão. A tese combina eficiência operacional de classe mundial com um ativo oculto relevante: um portfólio de terras próprias no Cerrado registrado pelo custo histórico, mas com valor de mercado muito superior. Quando se compra SLCE3, compra-se simultaneamente uma operação agrícola altamente eficiente e um portfólio fundiário precificado com desconto — criando uma margem de segurança que o FCD sozinho não captura. Com o agronegócio brasileiro em expansão estrutural, a SLC tem todos os atributos para se beneficiar.",
+    "atividade": "Plantio, cultivo e colheita de soja, milho e algodão em fazendas localizadas no Cerrado brasileiro (Mato Grosso, Goiás, Maranhão e Piauí). Atua com escala e eficiência de ponta.",
+    "pontos_fortes": [
+      "Portfólio de terras próprias no Cerrado registrado pelo custo histórico, gerando valor oculto não capturado pelo FCD — a valorização fundiária da região nas últimas décadas foi expressiva e tende a continuar",
+      "modelo híbrido (terras próprias + arrendamentos) permite crescer com disciplina de capital enquanto acumula patrimônio real",
+      "escala de produção com custos entre os mais baixos do mundo",
+      "diversificação entre três commodities (soja, milho e algodão) reduz o risco de preço único",
+      "as terras servem como garantia real para financiamentos mais baratos e podem ser recicladas via desinvestimento estratégico",
+      "Alta nos preços internacionais da soja e do algodão",
+      "expansão de área plantada por arrendamento",
+      "ganhos de produtividade por tecnologia",
+      "queda no custo de insumos",
+      "real depreciado favorecendo receita em dólar"
+    ],
+    "pontos_fracos": [
+      "Altamente exposta à volatilidade dos preços de soja, milho e algodão",
+      "risco climático — seca e pragas afetam diretamente a produção",
+      "câmbio pode se apreciar reduzindo receita em reais",
+      "custo de insumos (fertilizantes, defensivos) volátil e dependente de importação",
+      "risco de arrendamentos não renovados ao fim dos contratos"
+    ]
+  },
+  "RANI3": {
+    "ticker": "RANI3",
+    "nome": "Irani Papel e Embalagem",
+    "setor": "Papel e Embalagens",
+    "tese": "A Irani é uma empresa de papel e embalagens com modelo integrado — florestas próprias de pinus, fábrica de papel reciclado e produção de embalagens de papelão ondulado. A tese é de crescimento estrutural: o e-commerce gera demanda acelerada por caixas de papelão e as pressões ESG empurram clientes a substituir embalagens plásticas por papel. Com verticalização e eficiência, a Irani tem posição de custo vantajosa.",
+    "atividade": "Produção de papel reciclado, caixas de papelão ondulado e resinas de pinus (colofônia e terebintina) a partir de florestas próprias. Clientes são indústrias de alimentos, eletrodomésticos e e-commerce.",
+    "pontos_fortes": [
+      "Verticalização completa com florestas próprias de pinus",
+      "modelo de papel reciclado com menor custo de matéria-prima",
+      "certificação FSC abrindo mercados exigentes",
+      "diversificação em resinas de alto valor agregado",
+      "Crescimento do e-commerce aumentando a demanda por embalagens",
+      "substituição de plástico por papelão",
+      "expansão de capacidade produtiva",
+      "alta dos preços de papel",
+      "novos contratos com grandes redes de varejo"
+    ],
+    "pontos_fracos": [
+      "Menor escala comparada à Suzano e à Klabin, limitando poder de barganha",
+      "exposição ao preço do papel que é cíclico",
+      "custos de energia e logística no Sul do Brasil",
+      "concorrência de papel reciclado importado em momentos de câmbio apreciado",
+      "capacidade de expansão limitada pela disponibilidade de matéria-prima de pinus"
+    ]
+  },
+  "KLBN4": {
+    "ticker": "KLBN4",
+    "nome": "Klabin",
+    "setor": "Papel e Embalagens",
+    "tese": "A Klabin é a maior produtora e exportadora de papéis para embalagem do Brasil, com operações integradas da floresta até a caixa de papelão. A tese é de demanda estrutural crescente: o e-commerce precisa de mais caixas, o consumidor exige embalagens sustentáveis e a regulação proíbe progressivamente o plástico. A Klabin tem capacidade de crescer organicamente e ganhar market share num mercado defensivo.",
+    "atividade": "Produção de celulose de pinus e eucalipto, papéis para embalagem (kraftliner, testliner, fluting), embalagens de papelão ondulado, sacos de papel industrial e embalagens cartonadas (Puma Unit com BEKP).",
+    "pontos_fortes": [
+      "Única empresa do Brasil verticalizada da floresta à embalagem no pinus",
+      "maior fábrica de papéis de embalagem do hemisfério sul",
+      "certificações FSC e PEFC para mercados exigentes",
+      "diversificação em celulose como fonte adicional de receita",
+      "Crescimento do e-commerce demandando mais papelão ondulado",
+      "substituição de embalagens plásticas por papel",
+      "expansão de capacidade com o Projeto Caetê (nova fábrica)",
+      "alta nos preços de papel no mercado internacional",
+      "contratos de longo prazo com multinacionais"
+    ],
+    "pontos_fracos": [
+      "Dívida elevada financiando o Projeto Caetê",
+      "exposição ao ciclo de preços de papel e celulose",
+      "custo de energia relevante no processo produtivo",
+      "concentração de clientes em poucos grandes grupos de embalagem",
+      "risco de overcapacity no setor se múltiplos projetos entrarem em operação ao mesmo tempo"
+    ]
+  },
+  "PRIO3": {
+    "ticker": "PRIO3",
+    "nome": "PetroRecôncavo / PRIO",
+    "setor": "Petróleo e Gás (E&P)",
+    "tese": "A PRIO é o maior produtor independente de petróleo offshore do Brasil, especializada na revitalização de campos maduros. A tese é de crescimento de produção a custo muito menor que o de exploração: ao comprar campos maduros da Petrobras, a PRIO aplica tecnologia e eficiência operacional para aumentar a produção a custo baixíssimo. O resultado é uma geração de caixa extraordinária com crescimento.",
+    "atividade": "Exploração, desenvolvimento e produção de petróleo e gás, principalmente em campos offshore como Frade, Wahoo e Tubarão Martelo no Brasil.",
+    "pontos_fortes": [
+      "Wahoo como alavanca transformacional: entrada em produção praticamente dobra o tamanho da empresa com o mesmo time de gestão e estrutura de custos, gerando alavancagem operacional extraordinária",
+      "custo de lifting entre os mais baixos do Brasil (abaixo de US$ 12/barril)",
+      "gestão altamente eficiente com track record comprovado em turnaround de campos",
+      "geração de caixa livre muito superior ao investimento necessário para crescer",
+      "cultura empresarial voltada a resultados sem interferência estatal",
+      "Campo Wahoo — este é o catalisador transformacional da tese, não incremental: quando entrar em produção, vai praticamente dobrar a produção total da empresa, representando uma inflexão radical no fluxo de caixa",
+      "aumento contínuo da produção do campo Frade com novas intervenções",
+      "alta no preço do Brent amplificando resultado em toda a produção",
+      "novas aquisições de campos maduros replicando o modelo comprovado",
+      "eficiência operacional reduzindo custo de lifting"
+    ],
+    "pontos_fracos": [
+      "Campos offshore com declínio natural de produção exigindo investimentos contínuos",
+      "risco de execução no campo Wahoo (atraso na entrada em produção)",
+      "exposição à volatilidade do Brent",
+      "dependência de poucos campos grandes para a maior parte da produção",
+      "custo de capital para novos campos pode ser elevado em ambiente de juros altos"
+    ]
+  },
+  "LEVE3": {
+    "ticker": "LEVE3",
+    "nome": "Metal Leve (Mahle-Metal Leve)",
+    "setor": "Autopeças",
+    "tese": "A Metal Leve é a maior fabricante brasileira de componentes para motores de combustão interna (pistões, anéis e bronzinas). A tese é defensiva com dividend yield elevado: a transição para veículos elétricos nos mercados desenvolvidos abre uma janela de oportunidade de longo prazo para os fabricantes de autopeças nos mercados emergentes, onde o motor de combustão seguirá dominante por décadas. Com baixo endividamento e alta geração de caixa, a empresa remunera bem o acionista.",
+    "atividade": "Produção de pistões, anéis e bronzinas para motores de combustão interna, atendendo montadoras e reposição no Brasil, Europa e EUA. Controlada pelo grupo alemão Mahle.",
+    "pontos_fortes": [
+      "Líder absoluto no mercado brasileiro com mais de 60% de participação",
+      "controlador alemão (Mahle) trazendo tecnologia de ponta",
+      "exposição à moeda forte via exportações",
+      "modelo de reposição (aftermarket) mais resiliente que montadoras",
+      "fluxo de caixa previsível e sólido",
+      "Crescimento das vendas de veículos no Brasil",
+      "aumento das exportações para Europa e EUA",
+      "consolidação da participação de mercado em reposição",
+      "crescimento do mercado de reposição com frota envelhecida",
+      "dividendos crescentes com geração de caixa estável"
+    ],
+    "pontos_fracos": [
+      "Transição de longo prazo para veículos elétricos pode reduzir a demanda por pistões e anéis",
+      "concentração em motores de combustão interna cria risco tecnológico estrutural",
+      "exposição à volatilidade da produção das montadoras",
+      "dependência do controlador alemão Mahle para tecnologia",
+      "mercado de autopeças competitivo com fornecedores asiáticos"
+    ]
+  },
+  "NVDA": {
+    "ticker": "NVDA",
+    "nome": "NVIDIA Corporation",
+    "setor": "Semicondutores / IA",
+    "tese": "A NVIDIA é a empresa mais importante da revolução da inteligência artificial, dominando o mercado de GPUs para treinamento de modelos de IA com mais de 80% de market share. A arquitetura CUDA criou um moat quase intransponível: todos os grandes modelos de IA (ChatGPT, Gemini, Claude) foram treinados em GPUs NVIDIA. A demanda por computação de IA é estrutural e crescente, com data centers investindo trilhões nos próximos anos.",
+    "atividade": "Design e licenciamento de GPUs para IA, data centers, jogos, visualização profissional e veículos autônomos. O segmento de Data Center é hoje mais de 80% da receita.",
+    "pontos_fortes": [
+      "CUDA como moat quase intransponível: pesquisadores de IA passaram 15+ anos aprendendo CUDA, escrevendo código em CUDA e publicando papers em CUDA — mudar para outra plataforma não é questão de custo, é questão de reaprender uma linguagem inteira",
+      "esse lock-in é um dos maiores fossos tecnológicos existentes em qualquer setor",
+      "80%+ de market share em GPUs para IA com todos os grandes hyperscalers como clientes cativos",
+      "margem bruta acima de 75% refletindo poder de precificação sem precedentes em hardware",
+      "velocidade de inovação com novos chips a cada 1-2 anos",
+      "Crescimento acelerado de data centers de IA",
+      "lançamento da arquitetura Blackwell Ultra",
+      "adoção crescente de IA em empresas (enterprise AI)",
+      "expansão para mercados de robótica e veículos autônomos",
+      "chips de IA para países emergentes"
+    ],
+    "pontos_fracos": [
+      "Valuation muito elevado, exigindo crescimento excepcional para justificar o preço",
+      "risco de desaceleração nos gastos com IA por parte dos hyperscalers",
+      "concorrência crescente de AMD, Intel e chips proprietários (Google TPU, Apple Silicon)",
+      "restrições de exportação para a China impactando receita relevante",
+      "concentração de receita em poucos grandes clientes de data center"
+    ]
+  },
+  "BALM4": {
+    "ticker": "BALM4",
+    "nome": "Balmoral Hotéis",
+    "setor": "Hotelaria",
+    "tese": "A Balmoral opera hotéis no Brasil com foco em hospedagem de negócios. A tese é de recuperação do setor pós-pandemia com demanda crescente por viagens corporativas e de lazer. O valuation deprimido oferece margem de segurança para o investidor paciente.",
+    "atividade": "Gestão e operação de hotéis no Brasil, com foco em hospedagem para viagens de negócios e lazer.",
+    "pontos_fortes": [
+      "Ativos físicos com custo de reposição elevado",
+      "marca estabelecida",
+      "localização estratégica dos imóveis",
+      "contratos de longo prazo com clientes corporativos",
+      "Retomada das viagens corporativas",
+      "crescimento do turismo doméstico",
+      "expansão da malha aérea",
+      "melhora nas taxas de ocupação",
+      "contratos com empresas para hospedagem corporativa"
+    ],
+    "pontos_fracos": [
+      "Empresa com baixa liquidez e cobertura analítica limitada",
+      "setor hoteleiro sensível a ciclos econômicos e eventos externos",
+      "concorrência de plataformas de aluguel por temporada (Airbnb)",
+      "exposição a viagens corporativas que podem ser substituídas por reuniões virtuais",
+      "custos fixos elevados em períodos de baixa ocupação"
+    ]
+  },
+  "RECV3": {
+    "ticker": "RECV3",
+    "nome": "PetroRecôncavo",
+    "setor": "Petróleo e Gás (E&P Onshore)",
+    "tese": "A PetroRecôncavo é especialista em petróleo onshore, com campos no Recôncavo Baiano — a primeira área produtora de petróleo do Brasil. A empresa é o maior produtor terrestre independente do país, comprando campos maduros da Petrobras e revertendo sua decadência com tecnologia e eficiência. O modelo é de altíssima geração de caixa com baixo risco exploratório.",
+    "atividade": "Exploração, desenvolvimento e produção de petróleo e gás em campos terrestres, principalmente no Recôncavo Baiano (Bahia) e Rio Grande do Norte.",
+    "pontos_fortes": [
+      "Custo de lifting onshore muito competitivo",
+      "expertise técnica incomparável em revitalização de campos terrestres maduros",
+      "geração de caixa livre elevada em relação ao investimento",
+      "ausência de risco exploratório (campos já descobertos)",
+      "Expansão da produção nos campos existentes",
+      "novas rodadas da ANP com licitação de campos maduros",
+      "alta do Brent",
+      "eficiência no custo de lifting",
+      "novas aquisições de campos terrestres"
+    ],
+    "pontos_fracos": [
+      "Campos terrestres têm declínio natural mais acelerado que offshore",
+      "limitação de crescimento por volume de campos disponíveis para aquisição",
+      "exposição à volatilidade do preço do petróleo",
+      "risco regulatório da ANP em concessões onshore",
+      "menor escala que PRIO limita acesso a capitais em condições mais favoráveis"
+    ]
+  },
+  "CMIN3": {
+    "ticker": "CMIN3",
+    "nome": "CSN Mineração",
+    "setor": "Mineração de Ferro",
+    "tese": "A CSN Mineração é uma das maiores produtoras de minério de ferro do Brasil, com minas em Casa de Pedra (MG) de altíssima qualidade. A tese é de exposição direta ao ciclo do ferro e ao dólar: com minério de ferro premium (alto teor de ferro), a empresa consegue preços acima dos benchmarks de mercado. O valuation descontado em relação à Vale reflete o menor porte, mas a geração de caixa é robusta.",
+    "atividade": "Mineração e beneficiamento de minério de ferro em Congonhas (MG), com exportação predominante para siderúrgicas na China, Europa e Ásia.",
+    "pontos_fortes": [
+      "Minério de altíssima qualidade com teor de ferro acima de 65%",
+      "infraestrutura logística integrada com o grupo CSN",
+      "localização estratégica no Quadrilátero Ferrífero (MG)",
+      "exposição ao dólar gerando hedge natural",
+      "Estímulos fiscais da China à construção e infraestrutura",
+      "alta nos preços de minério de ferro",
+      "expansão da capacidade produtiva",
+      "apreciação do dólar",
+      "novos contratos de fornecimento de longo prazo"
+    ],
+    "pontos_fracos": [
+      "Alta dependência dos preços do minério de ferro, que são cíclicos",
+      "concentração de receita em exportações para a China",
+      "passivo de licenças ambientais e questões com comunidades locais em Congonhas (MG)",
+      "menor diversificação de produtos que a Vale",
+      "grupo CSN com dívida elevada na holding pode pressionar a subsidiária"
+    ]
+  },
+  "SBSP3": {
+    "ticker": "SBSP3",
+    "nome": "Sabesp",
+    "setor": "Saneamento Básico",
+    "tese": "A Sabesp é a maior empresa de saneamento do mundo em número de clientes, privatizada em 2024 com a entrada do grupo Equatorial como parceiro estratégico. A tese é clássica de privatização: gestão privada traz eficiência, reduz custos e aumenta investimentos, expandindo a cobertura de água e esgoto no estado de São Paulo — ainda com déficits importantes especialmente em esgoto. O marco regulatório de 2020 garante previsibilidade de receitas por décadas.",
+    "atividade": "Abastecimento de água e coleta e tratamento de esgoto para 375 municípios no estado de São Paulo, servindo cerca de 29 milhões de pessoas.",
+    "pontos_fortes": [
+      "Monopólio natural regulado em São Paulo — o estado mais rico do Brasil",
+      "parceiro estratégico Equatorial com histórico extraordinário e comprovado: transformou distribuidoras completamente quebradas no Maranhão, Pará e Alagoas em operações rentáveis em poucos anos — o mesmo playbook aplicado à Sabesp tem alta probabilidade de funcionar",
+      "receita previsível e indexada à inflação com demanda inelástica",
+      "marco regulatório de 2020 garantindo retorno adequado por décadas",
+      "potencial de melhora de perdas de água ainda muito elevadas",
+      "Eficiência operacional com a nova gestão privada",
+      "universalização do esgoto conforme metas regulatórias",
+      "revisão tarifária favorável",
+      "redução de perdas de água (atualmente elevadas)",
+      "expansão da base de clientes com novos municípios"
+    ],
+    "pontos_fracos": [
+      "Risco regulatório com a revisão tarifária podendo não ser favorável",
+      "investimentos bilionários necessários para universalizar o esgoto com retorno de longo prazo",
+      "risco de conflito entre gestão privada (Equatorial) e o governo do estado de SP como controlador",
+      "exposição a secas que afetam a disponibilidade de água",
+      "passivos trabalhistas e judiciais históricos"
+    ]
+  },
+  "POMO4": {
+    "ticker": "POMO4",
+    "nome": "Marcopolo",
+    "setor": "Fabricação de Ônibus",
+    "tese": "A Marcopolo é a maior fabricante de carrocerias de ônibus do Brasil e uma das maiores do mundo, com operações em 9 países. A tese combina a eletrificação da frota urbana de ônibus — onde a empresa está bem posicionada — com a crescente demanda por mobilidade pública nos países emergentes. A Marcopolo também se beneficia de exportações para a América Latina, África e Ásia.",
+    "atividade": "Fabricação de carrocerias de ônibus urbanos, rodoviários e executivos, com presença em Brasil, Argentina, Colômbia, México, África do Sul e outros países. Início de linha de ônibus elétricos.",
+    "pontos_fortes": [
+      "Líder global em carrocerias de ônibus com 70+ anos de história",
+      "presença em 9 países com exportações diversificadas",
+      "marca reconhecida internacionalmente",
+      "primeiros movimentos em ônibus elétricos",
+      "rede de serviços pós-venda com receita recorrente",
+      "Renovação de frota nos principais municípios brasileiros",
+      "licitações públicas de transporte coletivo",
+      "crescimento das exportações para América Latina e África",
+      "expansão dos ônibus elétricos com incentivos governamentais",
+      "crescimento do turismo"
+    ],
+    "pontos_fracos": [
+      "Dependência das políticas de renovação de frota e licitações públicas",
+      "exposição ao ciclo de investimentos dos governos municipais e estaduais",
+      "transição para ônibus elétricos exige investimentos elevados e pode canibalizar modelo atual",
+      "concorrência de fabricantes chineses com ônibus elétricos",
+      "margens pressionadas pelos aumentos de custo de aço e componentes"
+    ]
+  },
+  "SHUL4": {
+    "ticker": "SHUL4",
+    "nome": "Schuler",
+    "setor": "Armazenagem e Logística Agrícola",
+    "tese": "A Schuler atua no segmento de armazenagem e logística de grãos no Brasil, um mercado com enorme déficit estrutural: o país produz grãos em quantidade superior à sua capacidade de armazenar, o que gera perdas e ineficiências. A tese é de demanda estrutural crescente para soluções de armazenagem à medida que o agronegócio brasileiro expande a produção.",
+    "atividade": "Fabricação de silos, secadores e equipamentos de armazenagem para o agronegócio, além de projetos completos de armazéns rurais e urbanos.",
+    "pontos_fortes": [
+      "Expertise técnica consolidada em armazenagem",
+      "mercado com demanda reprimida estrutural",
+      "parcerias com empresas de agronegócio de grande porte",
+      "custos de mudança elevados para clientes que já instalaram a solução",
+      "Crescimento da produção de grãos no Brasil",
+      "políticas de incentivo ao aumento da capacidade de armazenagem",
+      "expansão da fronteira agrícola no Cerrado",
+      "demanda por modernização de armazéns obsoletos",
+      "exportações de equipamentos"
+    ],
+    "pontos_fracos": [
+      "Empresa pequena com liquidez baixa",
+      "exposição ao ciclo de investimentos do agronegócio",
+      "concorrência de fabricantes de silos estrangeiros",
+      "dependência de crédito rural para que os clientes financiem as compras",
+      "risco de desaceleração do crescimento agrícola no Brasil"
+    ]
+  },
+  "ABCB4": {
+    "ticker": "ABCB4",
+    "nome": "Banco ABC Brasil",
+    "setor": "Banco Médio Porte / Corporate",
+    "tese": "O Banco ABC Brasil é um banco de médio porte especializado em crédito corporativo para médias e grandes empresas. A tese é de especialização em nicho: ao focar em empresas com faturamento acima de R$ 100 milhões, o banco tem inadimplência historicamente muito baixa e margens melhores que os grandes bancos. A controladora árabe (Arab Banking Corporation) traz acesso a negócios internacionais.",
+    "atividade": "Crédito corporativo, trade finance, câmbio, garantias e serviços financeiros para médias e grandes empresas brasileiras. Tem foco especial em operações de comércio exterior.",
+    "pontos_fortes": [
+      "Inadimplência historicamente baixa pelo foco em grandes corporações",
+      "acesso a clientes internacionais via controladora árabe",
+      "especialização em trade finance num mercado em crescimento",
+      "capital bem alocado com ROE acima dos pares de mesmo porte",
+      "Crescimento do crédito corporativo com a retomada econômica",
+      "aumento do comércio exterior brasileiro",
+      "expansão da carteira sem deterioração de qualidade",
+      "redução de custo de captação com queda da Selic",
+      "novos serviços de banco de investimento"
+    ],
+    "pontos_fracos": [
+      "Menor escala que os grandes bancos limita o poder de captação e diversificação",
+      "concentração em crédito corporativo aumenta exposição a defaults de grande impacto",
+      "risco de competição de bancos internacionais e fintechs em trade finance",
+      "sensibilidade ao ciclo econômico que afeta a demanda das empresas por crédito",
+      "dependência do controlador árabe pode limitar a flexibilidade estratégica"
+    ]
+  },
+  "MILLS3": {
+    "ticker": "MILLS3",
+    "nome": "Mills Estruturas e Serviços de Engenharia",
+    "setor": "Locação de Equipamentos de Construção",
+    "tese": "A Mills é a maior locadora de plataformas elevatórias e andaimes do Brasil, beneficiando-se do ciclo de investimentos em construção civil, infraestrutura e manutenção industrial. O modelo de locação tem vantagens sobre a compra própria: as construtoras evitam capital imobilizado e terceirizam a manutenção. Com o PLOA e programas do governo federal para infraestrutura, a demanda por equipamentos deve crescer.",
+    "atividade": "Locação de plataformas elevatórias, andaimes, escoramentos e soluções de acesso para construção civil, manutenção industrial e eventos. Atende todo o Brasil com frota própria.",
+    "pontos_fortes": [
+      "Líder em locação de equipamentos de acesso no Brasil com maior frota",
+      "modelo asset-heavy cria barreira de entrada por custo",
+      "contratos de longo prazo com grandes construtoras e indústrias",
+      "expertise técnica em segurança no trabalho em altura",
+      "Expansão de investimentos em infraestrutura (PAC)",
+      "crescimento da construção de data centers",
+      "manutenção de refinarias e plantas industriais",
+      "novos clientes em energia renovável",
+      "recuperação do ciclo de construção civil"
+    ],
+    "pontos_fracos": [
+      "Capital intensivo com necessidade de renovação constante da frota de equipamentos",
+      "exposição ao ciclo de construção civil e paradas industriais",
+      "competição crescente de outras locadoras",
+      "risco de inadimplência de clientes construtoras em períodos de crise",
+      "manutenção e depreciação dos ativos pesam no resultado financeiro"
+    ]
+  },
+  "EQTL3": {
+    "ticker": "EQTL3",
+    "nome": "Equatorial Energia",
+    "setor": "Distribuição de Energia Elétrica",
+    "tese": "A Equatorial é a maior distribuidora de energia elétrica do Brasil em número de estados, com foco em turnaround de distribuidoras problemáticas. A tese é de eficiência: a empresa compra concessões com problemas de inadimplência e perdas, aplica gestão rigorosa e transforma operações deficitárias em máquinas de geração de caixa. Também é a parceira estratégica da Sabesp (saneamento), replicando o mesmo modelo em novo setor.",
+    "atividade": "Distribuição de energia elétrica em Maranhão, Pará, Alagoas, Piauí, Rio Grande do Sul (CEEE-D), Goiás e São Paulo (Sabesp). Também opera em transmissão de energia e tem participação na Sabesp.",
+    "pontos_fortes": [
+      "Histórico comprovado de turnaround em distribuidoras problemáticas",
+      "gestão altamente eficiente reconhecida como referência no setor",
+      "portfólio geográfico diversificado em 7 estados",
+      "modelo replicável em saneamento via Sabesp",
+      "Melhora das perdas de energia nas concessões recentes (GO e RS)",
+      "eficiência operacional na Sabesp",
+      "novas aquisições de distribuidoras ou concessões de saneamento",
+      "queda da inadimplência com formalização da economia",
+      "crescimento da demanda de energia elétrica"
+    ],
+    "pontos_fracos": [
+      "Risco regulatório em distribuidoras — revisão tarifária pode ser desfavorável",
+      "perdas de energia ainda elevadas nas concessões recém-adquiridas (GO e RS)",
+      "execução complexa do turnaround na Sabesp",
+      "alavancagem cresce com cada nova aquisição",
+      "exposição a desastres climáticos como o ocorrido no Rio Grande do Sul"
+    ]
+  },
+  "SEER3": {
+    "ticker": "SEER3",
+    "nome": "Ser Educacional",
+    "setor": "Educação Superior",
+    "tese": "A Ser Educacional é um dos maiores grupos de educação superior do Brasil, com forte presença no Norte e Nordeste — regiões com maior potencial de crescimento e menor penetração de ensino superior. A tese é de crescimento em mercados sub-explorados: ao focar em regiões com menor concorrência e maior necessidade de qualificação, a Ser tem capacidade de crescer tanto orgânica quanto via aquisições.",
+    "atividade": "Educação superior presencial e EaD com marcas UNINASSAU, UNINORTE e outras, com mais de 250 mil alunos em todo o Brasil. Foco especial em Norte e Nordeste.",
+    "pontos_fortes": [
+      "Liderança no Norte e Nordeste com menor concorrência",
+      "portfólio de cursos alinhado às demandas regionais de mercado de trabalho",
+      "plataforma EaD escalável com custo marginal baixo",
+      "marca forte nas regiões onde atua",
+      "Expansão do EaD com margens superiores ao presencial",
+      "crescimento da base de alunos no Norte e Nordeste",
+      "retomada do Fies e ProUni",
+      "melhora na inadimplência",
+      "aquisições de instituições regionais com desconto"
+    ],
+    "pontos_fracos": [
+      "Inadimplência estudantil elevada no Norte e Nordeste",
+      "dependência de Fies e ProUni para crescer no presencial",
+      "competição crescente de grandes redes nacionais entrando nas regiões-alvo",
+      "qualidade percebida abaixo dos líderes nacionais pode limitar o pricing power",
+      "risco regulatório do MEC nas autorizações de novos cursos"
+    ]
+  },
+  "PLPL3": {
+    "ticker": "PLPL3",
+    "nome": "PetroPlace",
+    "setor": "Tecnologia para Petróleo e Gás",
+    "tese": "Empresa de tecnologia voltada para o setor de petróleo e gás, fornecendo soluções digitais para gestão e otimização de operações de E&P.",
+    "atividade": "Desenvolvimento e fornecimento de software e soluções tecnológicas para o setor de petróleo e gás.",
+    "pontos_fortes": [
+      "Nicho específico com poucos competidores",
+      "alta barreira de entrada técnica",
+      "contratos recorrentes com setor de petróleo",
+      "Digitalização das operações de E&P",
+      "expansão da base de clientes",
+      "novos produtos de software",
+      "crescimento do setor de petróleo no Brasil"
+    ],
+    "pontos_fracos": [
+      "Empresa de nicho com liquidez baixa e pouca cobertura analítica",
+      "mercado de tecnologia para petróleo e gás dependente dos investimentos das operadoras",
+      "risco de competição de grandes players de tecnologia internacionais",
+      "concentração de clientes no setor de E&P"
+    ]
+  },
+  "BBSE3": {
+    "ticker": "BBSE3",
+    "nome": "BB Seguridade",
+    "setor": "Seguros e Previdência",
+    "tese": "A BB Seguridade é a subsidiária de seguros, previdência e capitalização do Banco do Brasil, e um dos melhores negócios da bolsa brasileira: opera com capital mínimo, não tem risco de crédito relevante e distribui quase todo o lucro em dividendos. A tese é de dividend yield elevado e crescimento estrutural da penetração de seguros no Brasil — que ainda é muito baixa em comparação aos países desenvolvidos.",
+    "atividade": "Distribuição de seguros de vida, habitação, rural e automóvel; previdência complementar; capitalização; planos odontológicos; tudo via rede do Banco do Brasil.",
+    "pontos_fortes": [
+      "Modelo asset-light sem risco de crédito",
+      "distribuição via rede do Banco do Brasil (maior rede bancária do país)",
+      "payout de dividendos altíssimo",
+      "crescimento orgânico sem necessidade de capital",
+      "seguros rurais com monopólio funcional via rede do BB",
+      "Crescimento do agronegócio aumentando demanda por seguro rural",
+      "expansão de seguros de vida com conscientização crescente",
+      "aumento da base de clientes do BB",
+      "crescimento da previdência privada com reforma previdenciária",
+      "alta da Selic beneficiando resultado financeiro do float"
+    ],
+    "pontos_fracos": [
+      "Dependência total da rede e base de clientes do Banco do Brasil, criando risco de concentração",
+      "risco político de mudanças nas políticas de distribuição de seguros do BB",
+      "crescimento de seguros digitais pode reduzir a vantagem da rede física",
+      "exposição ao risco agrícola no seguro rural em anos de clima adverso",
+      "margens podem ser pressionadas por aumento de sinistros"
+    ]
+  },
+  "TGMA3": {
+    "ticker": "TGMA3",
+    "nome": "Tegma Gestão Logística",
+    "setor": "Logística Automotiva",
+    "tese": "A Tegma é a maior transportadora de veículos zero-quilômetro do Brasil, saindo das montadoras para as concessionárias. A tese é de crescimento estrutural com o mercado automotivo: quanto mais carros forem produzidos e vendidos no Brasil, mais a Tegma lucra. Com a retomada das vendas de veículos e novos modelos chegando ao mercado, a demanda pelos serviços da Tegma tende a crescer.",
+    "atividade": "Transporte de veículos zero-quilômetro (cegonheiros) entre fábricas e concessionárias, gestão de pátios e logística automotiva integrada.",
+    "pontos_fortes": [
+      "Líder absoluto em transporte de veículos com mais de 50% de market share",
+      "contratos de longo prazo com montadoras com receita previsível",
+      "frota própria de cegonheiros como barreira de entrada",
+      "expertise única em logística automotiva",
+      "Crescimento das vendas de veículos no Brasil",
+      "entrada de novas marcas chinesas demandando logística",
+      "expansão de serviços de valor agregado (preparação de veículos)",
+      "novos contratos com montadoras",
+      "crescimento do mercado de veículos elétricos"
+    ],
+    "pontos_fracos": [
+      "Concentração em um único segmento (transporte de veículos) torna a empresa vulnerável a quedas na produção automotiva",
+      "exposição ao custo de diesel e pedágios que pressionam margens",
+      "dependência de poucos grandes clientes (montadoras)",
+      "frota de cegonheiros exige renovação constante com custo elevado",
+      "risco de desaceleração nas vendas de veículos"
+    ]
+  },
+  "LAVV3": {
+    "ticker": "LAVV3",
+    "nome": "Lavvi Empreendimentos Imobiliários",
+    "setor": "Incorporação Imobiliária",
+    "tese": "A Lavvi é uma incorporadora de médio e alto padrão de São Paulo, com foco em empreendimentos nas melhores localizações da capital paulista. A tese é de demanda reprimida por imóveis de qualidade: São Paulo tem uma das menores taxas de imóveis por habitante entre as grandes metrópoles globais, e as famílias de alta renda demandam produtos de qualidade superior.",
+    "atividade": "Incorporação e venda de apartamentos e condomínios residenciais de médio e alto padrão em São Paulo. Portfólio com foco em bairros valorizados.",
+    "pontos_fortes": [
+      "Localização estratégica dos empreendimentos em São Paulo",
+      "marca associada à qualidade e inovação",
+      "gestão enxuta com foco em margens",
+      "portfólio de terrenos em localizações privilegiadas",
+      "Queda da Selic reduzindo o custo do financiamento imobiliário",
+      "valorização dos imóveis em São Paulo",
+      "lançamentos bem-recebidos em bairros premium",
+      "crescimento do crédito imobiliário",
+      "demanda por imóveis de investimento"
+    ],
+    "pontos_fracos": [
+      "Empresa pequena com portfólio concentrado em São Paulo, limitando a diversificação geográfica",
+      "exposição ao ciclo de crédito imobiliário e à Selic",
+      "concorrência intensa de outras incorporadoras premium em SP",
+      "risco de distratos em cenários de crise",
+      "custo de terrenos em São Paulo é muito elevado, comprimindo margens potenciais"
+    ]
+  },
+  "CSUD3": {
+    "ticker": "CSUD3",
+    "nome": "C&A Brasil (Grupo CSU Digital)",
+    "setor": "Tecnologia / Serviços de Dados",
+    "tese": "CSUD3 refere-se à CSU Digital, empresa de tecnologia especializada em serviços de processamento de cartões e gestão de programas de fidelidade. A tese é de recorrência: os contratos com grandes bancos e varejistas geram receita previsível e escalável, com baixo custo marginal de crescimento.",
+    "atividade": "Processamento de transações com cartão, gestão de programas de fidelidade, serviços de contact center e BPO financeiro.",
+    "pontos_fortes": [
+      "Contratos de longo prazo com receita recorrente",
+      "alta barreira técnica de mudança para clientes",
+      "escala de processamento gerando baixo custo marginal",
+      "Crescimento das transações digitais no Brasil",
+      "novos contratos com bancos e varejistas",
+      "expansão de programas de fidelidade",
+      "crescimento do crédito ao consumidor"
+    ],
+    "pontos_fracos": [
+      "Dependência de grandes clientes (bancos e varejistas) que têm poder de barganha para renegociar contratos",
+      "risco de migração tecnológica por parte dos clientes para soluções próprias",
+      "margem de serviços de contact center pressionada pela automação",
+      "menor crescimento em ambiente de juros altos reduzindo transações de cartão"
+    ]
+  },
+  "AXYA3": {
+    "ticker": "AXYA3",
+    "nome": "Axyma",
+    "setor": "Tecnologia / Defesa",
+    "tese": "A Axyma é uma empresa de tecnologia com foco em soluções para segurança, defesa e controle de fronteiras, atendendo principalmente órgãos governamentais. A tese é de crescimento com o aumento dos investimentos em segurança pública e defesa no Brasil, impulsionados por programas federais.",
+    "atividade": "Desenvolvimento e fornecimento de sistemas de monitoramento, controle e comunicação para segurança pública, defesa e fronteiras.",
+    "pontos_fortes": [
+      "Tecnologia proprietária com alto diferencial",
+      "contratos governamentais de longo prazo",
+      "barreira de entrada alta por certificações e requisitos de segurança",
+      "Crescimento do orçamento de defesa e segurança pública",
+      "novos contratos com órgãos federais",
+      "expansão de sistemas de monitoramento de fronteiras",
+      "projetos de cidades inteligentes"
+    ],
+    "pontos_fracos": [
+      "Alta dependência do orçamento público federal, sujeito a cortes e contingenciamentos",
+      "ciclo de licitações é lento e incerto",
+      "concorrência de grandes players de defesa e segurança internacionais",
+      "risco político de mudanças nas prioridades de segurança do governo",
+      "empresa ainda pequena com liquidez reduzida"
+    ]
+  },
+  "ROMI3": {
+    "ticker": "ROMI3",
+    "nome": "Indústrias Romi",
+    "setor": "Máquinas e Equipamentos Industriais",
+    "tese": "A Romi é a maior fabricante de máquinas-ferramenta do Brasil (tornos, centros de usinagem CNC) e também fabrica máquinas injetoras de plástico e fundidos de ferro. A tese é de exposição à reindustrialização: com o câmbio depreciado, a produção industrial doméstica se torna mais competitiva e a demanda por máquinas industriais cresce. A empresa também exporta para América Latina e EUA.",
+    "atividade": "Fabricação de tornos CNC, centros de usinagem, máquinas injetoras de plástico e fundições de ferro. Atende indústrias metal-mecânica, automotiva, de plásticos e de bens de capital.",
+    "pontos_fortes": [
+      "Única fabricante de máquinas-ferramenta de porte no Brasil",
+      "marca reconhecida em mais de 70 anos de história",
+      "parque fabril modernizado",
+      "exportações para mais de 40 países",
+      "Reindustrialização brasileira favorecida pelo câmbio",
+      "crescimento das exportações de bens industriais",
+      "demanda por modernização de parques industriais",
+      "crescimento da indústria automotiva",
+      "expansão para novos mercados na América Latina"
+    ],
+    "pontos_fracos": [
+      "Alta dependência do ciclo de investimentos industriais, que é sensível à Selic e ao crescimento do PIB",
+      "concorrência de máquinas-ferramenta importadas, especialmente chinesas",
+      "exportações limitadas comparadas ao potencial",
+      "tempo de ciclo longo entre pedido e entrega afeta a previsibilidade de receita",
+      "mercado de máquinas industriais exige relacionamento de longo prazo"
+    ]
+  },
+  "FIQE3": {
+    "ticker": "FIQE3",
+    "nome": "Fique Educação",
+    "setor": "Educação",
+    "tese": "Empresa de educação com foco em segmentos específicos do mercado educacional brasileiro, buscando crescimento em nichos subatendidos com retorno adequado sobre o capital investido.",
+    "atividade": "Educação e treinamento em segmentos específicos do mercado brasileiro.",
+    "pontos_fortes": [
+      "Nicho específico com menor concorrência",
+      "modelo escalável de ensino",
+      "Crescimento do mercado educacional",
+      "expansão de cursos técnicos e profissionalizantes",
+      "demanda por qualificação profissional"
+    ],
+    "pontos_fracos": [
+      "Empresa pequena com liquidez muito baixa",
+      "setor educacional competitivo com grandes players",
+      "exposição a mudanças regulatórias do MEC",
+      "dependência de políticas de financiamento estudantil",
+      "histórico de resultados ainda em consolidação"
+    ]
+  },
+  "B3SA3": {
+    "ticker": "B3SA3",
+    "nome": "B3 (Bolsa Brasileira)",
+    "setor": "Infraestrutura de Mercado de Capitais",
+    "tese": "A B3 é a única bolsa de valores do Brasil, operando um monopólio natural regulado que engloba negociação de ações, derivativos, renda fixa e custódia. A tese é de longo prazo: com a democratização dos investimentos no Brasil — que ainda tem uma das mais baixas taxas de penetração em renda variável do mundo — o volume negociado deve crescer estruturalmente. A empresa ganha em cada transação que acontece no mercado de capitais brasileiro.",
+    "atividade": "Operação de bolsa de valores, câmara de compensação (clearing), custódia de títulos, registro de derivativos e ativos e serviços de dados e tecnologia para o mercado financeiro.",
+    "pontos_fortes": [
+      "Monopólio natural com concessão regulada em todos os serviços de infraestrutura de mercado",
+      "negócio de dados e tecnologia crescendo dentro da B3 e praticamente ignorado pelo mercado: índices, dados de mercado, serviços de listagem e tecnologia para outras bolsas têm margens altíssimas e crescem independentemente do volume negociado",
+      "pricing power em todos os serviços sem alternativa competitiva",
+      "alavancagem operacional extraordinária — cada real adicional de volume negociado cai diretamente no resultado com custo marginal próximo a zero",
+      "Queda da Selic deslocando poupança para renda variável",
+      "crescimento do número de investidores na bolsa",
+      "maior volume diário negociado",
+      "aumento dos IPOs e follow-ons",
+      "novos produtos financeiros (ETFs, BDRs, Fundos de Infraestrutura)"
+    ],
+    "pontos_fracos": [
+      "Monopólio sujeito a crescente escrutínio regulatório",
+      "crescimento do volume negociado dependente de queda da Selic e maturação do investidor individual",
+      "concorrência latente de plataformas internacionais",
+      "risco de migração de liquidez para ADRs em períodos de estresse",
+      "tarifa por transação pode ser questionada regulatoriamente"
+    ]
+  },
+  "CSCO": {
+    "ticker": "CSCO",
+    "nome": "Cisco Systems",
+    "setor": "Infraestrutura de Rede / Tecnologia",
+    "tese": "A Cisco é a maior empresa de equipamentos de rede do mundo, com moat baseado em décadas de relacionamento com grandes corporações e governos. A tese é de transição para software e serviços recorrentes: enquanto o hardware de rede continua sendo vendido, a Cisco está migrando para assinaturas de software (Cisco ONE) e serviços de segurança cibernética, que têm margens muito superiores.",
+    "atividade": "Fabricação de roteadores, switches, equipamentos de segurança de rede, colaboração (Webex) e software de gestão de infraestrutura de TI.",
+    "pontos_fortes": [
+      "Mais de 80% de market share em switches e roteadores corporativos",
+      "base instalada de centenas de milhões de dispositivos",
+      "receitas recorrentes crescentes via software",
+      "marca reconhecida globalmente",
+      "balance sheet sólido com dividendo crescente",
+      "Crescimento de data centers exigindo mais infraestrutura de rede",
+      "demanda crescente por segurança cibernética",
+      "migração para assinaturas de software aumentando receita recorrente",
+      "expansão de Webex e colaboração",
+      "crescimento de IA demandando redes de ultra-baixa latência"
+    ],
+    "pontos_fracos": [
+      "Crescimento orgânico lento em hardware de rede, mercado maduro",
+      "transição para software mais lenta que o esperado",
+      "concorrência de AWS, Microsoft e Google em segurança e redes em nuvem",
+      "clientes migrando para arquiteturas de rede definida por software",
+      "valuation premium pode limitar o upside"
+    ]
+  },
+  "ROXO34": {
+    "ticker": "ROXO34",
+    "nome": "Nu Holdings (Nubank)",
+    "setor": "Fintech / Banco Digital",
+    "tese": "O Nubank é o maior banco digital do mundo fora da Ásia, com mais de 90 milhões de clientes no Brasil, México e Colômbia. A tese é de crescimento e penetração: tendo construído uma base de clientes massiva quase sem custo de aquisição via viral marketing, o Nu agora monetiza essa base com produtos de maior margem — investimentos, empréstimos, seguro e cartão de crédito premium.",
+    "atividade": "Banco digital com cartão de crédito, conta digital, empréstimos pessoais, investimentos, seguro e serviços financeiros. Principal mercado é Brasil, com expansão para México e Colômbia.",
+    "pontos_fortes": [
+      "Custo de aquisição de cliente próximo a zero via viralidade",
+      "base de 90 milhões de clientes com alta NPS e engajamento",
+      "modelo digital com custo operacional muito menor que bancos tradicionais",
+      "marca forte entre millennials e geração Z",
+      "capacidade de escalar sem custo proporcional",
+      "Aumento do ARPAC (receita média por cliente) com novos produtos",
+      "expansão no México e Colômbia",
+      "crescimento do NuInvest (plataforma de investimentos)",
+      "captura de clientes de alta renda com NuUltra",
+      "expansão de crédito pessoal e imobiliário"
+    ],
+    "pontos_fracos": [
+      "Inadimplência do cartão de crédito no Brasil ainda é um risco relevante",
+      "expansão no México e Colômbia requer capital e apresenta resultados ainda iniciais",
+      "regulação bancária crescente pode limitar produtos e margens",
+      "concorrência de bancos digitais em todos os mercados de atuação",
+      "valuation ainda alto exige crescimento acelerado de rentabilidade para se justificar"
+    ]
+  },
+  "VIVA3": {
+    "ticker": "VIVA3",
+    "nome": "Vivara",
+    "setor": "Varejo de Joias e Acessórios",
+    "tese": "A Vivara é a maior rede de joias e acessórios do Brasil, operando em um mercado com alto poder de fidelização e ticket médio crescente. A tese combina crescimento de longo prazo do consumo de joias no Brasil — ainda muito baixo em relação a outros mercados — com a capacidade da empresa de expandir sua rede, aumentar a participação da Life (marca de acessórios mais acessível) e crescer no e-commerce.",
+    "atividade": "Varejo de joias, relógios e acessórios com mais de 350 lojas no Brasil, operando as marcas Vivara e Life. Também tem operação própria de ourivesaria.",
+    "pontos_fortes": [
+      "Líder isolada no mercado de joias no Brasil com mais de 350 lojas",
+      "marca premium com alto reconhecimento",
+      "verticalização com ourivesaria própria garantindo margem",
+      "fidelização de clientes com alto LTV",
+      "moat de localização em shoppings premium",
+      "Expansão da rede de lojas (abertura de Life em novos shoppings)",
+      "crescimento do e-commerce de joias",
+      "aumento do ticket médio com joias de maior valor",
+      "expansão para América Latina",
+      "datas comemorativas como motor de vendas"
+    ],
+    "pontos_fracos": [
+      "Concentração em um único nicho (joias) torna a empresa vulnerável a crises de consumo",
+      "forte sazonalidade com dependência de datas comemorativas",
+      "concorrência de joalherias internacionais entrando no Brasil",
+      "custo de ouro e pedras preciosas como risco de insumos",
+      "expansão internacional ainda incipiente com resultado incerto"
+    ]
+  },
+  "EZTC3": {
+    "ticker": "EZTC3",
+    "nome": "EZTEC",
+    "setor": "Incorporação Imobiliária",
+    "tese": "A EZTEC é uma das melhores incorporadoras da B3 em termos de qualidade financeira: caixa líquido positivo, margens elevadas e gestão conservadora de terrenos e lançamentos. A tese é de qualidade com desconto: o mercado pune a ação em momentos de Selic alta, mas a empresa tem balanço para esperar e aproveitar a normalização do crédito imobiliário.",
+    "atividade": "Incorporação de imóveis residenciais de médio e alto padrão em São Paulo, com foco em regiões nobres e projetos de alto valor agregado.",
+    "pontos_fortes": [
+      "Uma das melhores gestões de capital do setor imobiliário",
+      "caixa líquido positivo como almofada de segurança",
+      "margens entre as maiores do setor",
+      "portfólio de terrenos bem-localizado em São Paulo",
+      "Queda da Selic reduzindo custo do crédito imobiliário e aumentando a demanda",
+      "lançamentos de novos empreendimentos",
+      "valorização de terrenos em carteira",
+      "crescimento da demanda por imóveis premium em São Paulo"
+    ],
+    "pontos_fracos": [
+      "Alta exposição à Selic — cada alta de juros reduz demanda por imóveis financiados",
+      "concentração geográfica exclusiva em São Paulo limita o crescimento",
+      "competição intensa de outras incorporadoras premium na capital",
+      "lançamentos concentrados em poucos projetos de alto valor criam volatilidade de resultado trimestral",
+      "velocidade de vendas (VSO) pode cair em ambientes de juros altos"
+    ]
+  },
+  "GRND3": {
+    "ticker": "GRND3",
+    "nome": "Grendene",
+    "setor": "Calçados",
+    "tese": "A Grendene é a maior fabricante de sandálias do Brasil, dona das marcas Melissa, Rider, Ipanema e Grendha. A tese é de empresa de qualidade com valuation razoável: caixa líquido positivo robusto, dividend yield elevado, marca Melissa globalmente reconhecida e modelo de negócio leve com fábrica eficiente no Ceará.",
+    "atividade": "Fabricação e comercialização de calçados plásticos e sandálias para todo o Brasil e exportação para mais de 90 países. Marcas principais: Melissa, Ipanema, Rider, Grendha.",
+    "pontos_fortes": [
+      "Marcas mundialmente reconhecidas (especialmente Melissa)",
+      "fábrica ultraeficiente no Ceará com custo competitivo",
+      "caixa líquido positivo como diferencial de qualidade",
+      "exportações para 90+ países diversificando receita",
+      "patentes de designs exclusivos",
+      "Crescimento das exportações da Melissa para mercados premium",
+      "expansão de lojas próprias Melissa no exterior",
+      "câmbio depreciado favorecendo exportações",
+      "volta do crescimento do varejo doméstico",
+      "novos produtos de alto valor agregado"
+    ],
+    "pontos_fracos": [
+      "Crescimento orgânico limitado pelo tamanho do mercado doméstico",
+      "concorrência de marcas internacionais de sandálias e calçados de menor custo",
+      "expansão internacional da Melissa depende de tendências de moda que são imprevisíveis",
+      "câmbio apreciado reduz a competitividade das exportações",
+      "poucas catalisadores de crescimento acelerado no curto prazo"
+    ]
+  },
+  "AURE3": {
+    "ticker": "AURE3",
+    "nome": "Auren Energia",
+    "setor": "Energia Elétrica (Geração)",
+    "tese": "A Auren Energia nasceu da Votorantim Energia e opera um portfólio diversificado de geração de energia limpa: hidrelétricas, eólicas e solares. A tese é de ativos de longa duração com receita contratada: as concessões hidrelétricas têm prazo de décadas e os contratos de comercialização garantem preço e volume. Com a demanda por energia crescendo e os ativos já prontos, a Auren é um negócio defensivo de alto fluxo de caixa.",
+    "atividade": "Geração de energia elétrica via hidrelétricas (50%), eólicas e solares, com comercialização no mercado livre e regulado. Portfólio de 3,5 GW de capacidade instalada.",
+    "pontos_fortes": [
+      "Portfólio de geração 100% renovável alinhado com ESG",
+      "receita contratada de longo prazo com previsibilidade de fluxo de caixa",
+      "concessões hidrelétricas com prazo de décadas",
+      "diversificação por fonte de geração reduzindo risco hidrológico",
+      "Reajuste tarifário das concessões existentes",
+      "expansão em energia eólica e solar",
+      "crescimento do mercado livre de energia",
+      "queda da Selic valorizando ativos de longa duração",
+      "novos projetos de expansão de capacidade"
+    ],
+    "pontos_fracos": [
+      "Risco hidrológico — secas prolongadas reduzem geração hidrelétrica afetando receita",
+      "concessões hidrelétricas têm prazo de renovação com risco regulatório",
+      "necessidade de investimentos em fontes complementares (eólica e solar) para compensar sazonalidade",
+      "exposição ao mercado livre de energia com volatilidade de preços",
+      "dívida de longo prazo associada aos ativos de geração"
+    ]
+  },
+  "ABEV3": {
+    "ticker": "ABEV3",
+    "nome": "Ambev",
+    "setor": "Bebidas",
+    "tese": "A Ambev é a maior empresa de bebidas da América Latina, dona das marcas Skol, Brahma, Antarctica, Guaraná Antarctica e Stella Artois no Brasil. A tese é de empresa de qualidade e defesa: marcas insubstituíveis, pricing power, geração de caixa estável e dividend yield recorrente. Com a expansão do portfólio para premium e não-alcoólicos, a Ambev tende a crescer mesmo em cenários adversos.",
+    "atividade": "Produção e comercialização de cervejas, chopes, refrigerantes e bebidas não-alcoólicas no Brasil, Argentina, Canadá e outros países da América Latina.",
+    "pontos_fortes": [
+      "Portfólio de marcas ícônicas com décadas de reconhecimento",
+      "distribuição capilar atingindo todo o Brasil",
+      "poder de barganha com fornecedores pela escala",
+      "marketing e patrocínios esportivos criando valor de marca",
+      "geração de caixa consistente em qualquer ciclo econômico",
+      "Premiumização da cerveja aumentando ticket médio",
+      "crescimento das bebidas não-alcoólicas (hidratantes, chás)",
+      "expansão do chope em novos bares e restaurantes",
+      "recuperação das vendas na Argentina",
+      "melhora de margens com redução de custos de insumos"
+    ],
+    "pontos_fracos": [
+      "Crescimento de receita lento em mercado maduro",
+      "concorrência crescente de cervejarias artesanais e importadas no segmento premium",
+      "exposição à Argentina, mercado com instabilidade econômica crônica",
+      "custo de insumos (cevada, alumínio, vidro) volátil",
+      "pressão regulatória sobre publicidade de bebidas alcoólicas"
+    ]
+  },
+  "FLRY3": {
+    "ticker": "FLRY3",
+    "nome": "Fleury",
+    "setor": "Medicina Diagnóstica",
+    "tese": "O Fleury é um dos mais respeitados grupos de medicina diagnóstica do Brasil, com marca premium e operações em todas as regiões. A tese combina crescimento estrutural de saúde — com envelhecimento da população e expansão da cobertura de planos de saúde — com a possibilidade de ser alvo de consolidação: o setor de diagnósticos no Brasil está se concentrando e o Fleury é um ativo de grande valor estratégico.",
+    "atividade": "Análises clínicas, diagnóstico por imagem, medicina genômica e testes especializados, operando laboratórios sob as marcas Fleury, a+ (Diagnósticos da América) e outras marcas regionais.",
+    "pontos_fortes": [
+      "Marca premium associada à qualidade e confiança",
+      "rede de laboratórios diversificada em todo o Brasil",
+      "expertise em exames especializados de alto valor agregado",
+      "posição de liderança após fusão com a+",
+      "tecnologia de ponta em diagnóstico genômico",
+      "Integração pós-fusão com a+ gerando sinergias",
+      "crescimento de exames de alto valor (genômica, oncologia)",
+      "expansão geográfica em regiões não cobertas",
+      "aumento da demanda por medicina preventiva",
+      "expansão do plano de saúde popular"
+    ],
+    "pontos_fracos": [
+      "Integração complexa com a+ Diagnósticos traz risco de execução e custos não previstos",
+      "pressão das operadoras de saúde para reduzir preços dos exames",
+      "competição crescente de laboratórios regionais e de redes de baixo custo",
+      "dependência de convênios de saúde que têm poder de barganha crescente",
+      "custos de tecnologia e equipamentos médicos continuamente crescentes"
+    ]
+  },
+  "ITUB4": {
+    "ticker": "ITUB4",
+    "nome": "Itaú Unibanco",
+    "setor": "Banco Privado",
+    "tese": "O Itaú Unibanco é o maior banco privado da América Latina e consistentemente um dos mais lucrativos do Brasil. A tese é de qualidade e consistência: ROE acima de 20% ano após ano, gestão de risco exemplar, expansão digital e presença crescente na América Latina. O banco combina a solidez de um grande conglomerado financeiro com a agilidade de um banco que vem investindo pesadamente em tecnologia.",
+    "atividade": "Banco universal com todas as linhas de produtos financeiros — crédito (pessoa física, PME, corporate), cartões, seguros, previdência, gestão de recursos, banco de investimento e corretagem.",
+    "pontos_fortes": [
+      "Maior banco privado da América Latina por ativos",
+      "gestão de risco exemplar com inadimplência controlada",
+      "investimento em tecnologia superior aos concorrentes",
+      "presença em 18 países da América Latina",
+      "marca de alta confiança com 100 anos de história",
+      "Crescimento do crédito com a recuperação econômica",
+      "expansão digital reduzindo custo operacional",
+      "crescimento da operação na América Latina",
+      "novos produtos de investimento captando a migração da poupança",
+      "aumento de dividendos com geração de caixa crescente"
+    ],
+    "pontos_fracos": [
+      "Menor upside comparado aos pares dado o valuation já mais justo",
+      "exposição a crises sistêmicas que afetam toda a carteira de crédito",
+      "risco de inadimplência em cenários de recessão",
+      "regulação bancária crescente pode limitar produtos e margens",
+      "concorrência de fintechs e bancos digitais em produtos de menor margem"
+    ]
+  },
+  "IGTA3": {
+    "ticker": "IGTA3",
+    "nome": "Iguatemi Empresa de Shopping Centers",
+    "setor": "Shoppings de Luxo",
+    "tese": "A Iguatemi opera os shoppings mais luxuosos do Brasil, incluindo Shopping Iguatemi São Paulo, JK Iguatemi e outros. A tese é de resiliência e crescimento no segmento premium: os shoppings de luxo se mostraram extremamente resilientes mesmo durante a pandemia, com aluguel por metro quadrado crescendo consistentemente. A expansão do segmento de ultra-luxo no Brasil favorece a Iguatemi.",
+    "atividade": "Desenvolvimento, operação e gestão de shoppings premium e de luxo no Brasil, com destaque para São Paulo, Campinas e Rio de Janeiro.",
+    "pontos_fortes": [
+      "Portfólio de shoppings no segmento premium com menor concorrência",
+      "localização irreplicável em bairros nobres de São Paulo",
+      "marca Iguatemi associada ao mais alto padrão",
+      "mix de lojistas com as maiores marcas internacionais de luxo",
+      "Expansão de marcas internacionais de luxo no Brasil",
+      "aumento do ABL (área bruta locável) com expansões",
+      "crescimento do e-commerce integrado com lojas físicas premium",
+      "novos empreendimentos mistos (residencial + commercial)",
+      "melhora das margens operacionais"
+    ],
+    "pontos_fracos": [
+      "Concentração em shoppings de São Paulo e Rio, mercados já bastante saturados de espaço de varejo premium",
+      "crescimento do e-commerce pode reduzir tráfego nas lojas físicas",
+      "custo de expansão muito elevado para novos empreendimentos de luxo",
+      "dependência de marcas internacionais que podem sair dos shoppings",
+      "risco de vacância em momentos de crise econômica"
+    ]
+  },
+  "GGPS3": {
+    "ticker": "GGPS3",
+    "nome": "GPS Participações e Empreendimentos",
+    "setor": "Serviços Terceirizados / Facilities",
+    "tese": "O GPS é o maior grupo de serviços terceirizados (facilities) do Brasil, oferecendo portaria, limpeza, conservação, segurança patrimonial e serviços de apoio para grandes empresas e condomínios. A tese é de crescimento via consolidação num mercado extremamente fragmentado: o GPS é dominante com menos de 2% de participação, e pode crescer rapidamente via M&A enquanto melhora eficiência nas empresas adquiridas.",
+    "atividade": "Prestação de serviços de portaria, limpeza, conservação, jardinagem, segurança patrimonial e gestão predial para empresas, condomínios, hospitais e infraestrutura.",
+    "pontos_fortes": [
+      "Maior grupo de facilities do Brasil com escala incomparável",
+      "modelo de contratos de longo prazo com receita recorrente",
+      "M&A como motor de crescimento comprovado",
+      "eficiência operacional superior aos concorrentes fragmentados",
+      "Novas aquisições de empresas regionais",
+      "expansão de serviços de maior valor (tecnologia em facilities)",
+      "renovação de contratos com margens melhores",
+      "crescimento do terceirização de serviços no setor público",
+      "expansão para América Latina"
+    ],
+    "pontos_fracos": [
+      "Margens apertadas no setor de facilities, sujeito a pressão por preço nas licitações",
+      "risco de inadimplência de clientes (especialmente setor público)",
+      "dependência de mão de obra intensiva — risco trabalhista e de custos com aumento de salário mínimo",
+      "rotatividade elevada de funcionários é custo operacional relevante",
+      "integração de múltiplas aquisições pode ser mais lenta que o esperado"
+    ]
+  },
+  "STLD": {
+    "ticker": "STLD",
+    "nome": "Steel Dynamics Inc.",
+    "setor": "Siderurgia (EUA)",
+    "tese": "A Steel Dynamics é uma das mini-mills de aço mais eficientes dos EUA, especializada em aço plano e longos. A tese é de ciclo de reindustrialização americano: com os investimentos bilionários em infraestrutura, semicondutores e energia verde aprovados pelo governo Biden e mantidos por Trump, a demanda por aço doméstico nos EUA deve crescer estruturalmente por anos.",
+    "atividade": "Produção de aço plano, aço longo e produtos de aço via mini-mills alimentadas por sucata metálica reciclada. Também opera uma unidade de fundição de alumínio.",
+    "pontos_fortes": [
+      "Modelo de mini-mill com custo de produção muito menor que altos-fornos tradicionais",
+      "uso de sucata reciclada como matéria-prima (ESG e custo)",
+      "localização nos EUA aproveitando tarifas protetivas",
+      "gestão exemplar com ROE consistentemente alto",
+      "Investimentos em infraestrutura nos EUA (portos, pontes, estradas)",
+      "reindustrialização americana com tarifas sobre importações",
+      "crescimento da construção civil",
+      "demanda por aço para energia renovável",
+      "valorização dos preços do aço"
+    ],
+    "pontos_fracos": [
+      "Exposição ao ciclo siderúrgico global — preços do aço são altamente voláteis",
+      "risco de desaceleração da construção civil nos EUA",
+      "custos de sucata metálica podem aumentar em períodos de alta demanda",
+      "exposição à política comercial dos EUA em relação a importações de aço",
+      "risco de overcapacity global pressionando preços"
+    ]
+  },
+  "BBDC4": {
+    "ticker": "BBDC4",
+    "nome": "Bradesco",
+    "setor": "Banco Privado",
+    "tese": "O Bradesco é o segundo maior banco privado do Brasil, passando por um processo de transformação digital profunda após um período de crescimento de inadimplência e compressão de margens. A tese é de recuperação: com a nova gestão focada em eficiência e digitalização, o banco deve recuperar seu ROE historicamente elevado. O dividend yield atual e o valuation descontado em relação ao Itaú oferecem margem de segurança.",
+    "atividade": "Banco universal com crédito para pessoa física, PME e corporate, seguros (Bradesco Seguros — a maior seguradora do Brasil), previdência, gestão de ativos e banco de investimento.",
+    "pontos_fortes": [
+      "Maior seguradora do Brasil (Bradesco Seguros) dentro do grupo",
+      "segunda maior rede de agências do Brasil",
+      "marca de altíssima confiança com 80 anos de história",
+      "portfólio diversificado reduzindo risco",
+      "gestão experiente com capacidade de turnaround comprovada",
+      "Recuperação do ROE acima de 15%",
+      "queda da inadimplência",
+      "expansão do seguro com a Bradesco Seguros",
+      "redução de custo operacional via digitalização",
+      "crescimento de produtos de investimento"
+    ],
+    "pontos_fracos": [
+      "ROE ainda abaixo do potencial histórico após período de alta inadimplência",
+      "o turnaround está demorando mais do que o mercado esperava há 2 anos — existe risco real de que o gap de ROE com o Itaú seja estrutural e não temporário, o que tornaria o desconto permanente e não uma oportunidade",
+      "execução da transformação digital mais lenta que o Itaú",
+      "pressão de custo operacional elevado com rede de agências extensa",
+      "exposição a crédito PME que tem inadimplência estruturalmente maior que corporate"
+    ]
+  },
+  "MOND": {
+    "ticker": "MOND",
+    "nome": "Mondrian Investment Partners",
+    "setor": "Gestão de Recursos",
+    "tese": "Empresa de gestão de recursos com foco em análise fundamentalista e estratégias de valor. A tese é de crescimento da indústria de gestão de ativos no Brasil com a educação financeira crescente.",
+    "atividade": "Gestão de fundos de investimento e carteiras para investidores institucionais e de alta renda.",
+    "pontos_fortes": [
+      "Expertise em análise fundamentalista",
+      "gestão independente alinhada com interesses dos cotistas",
+      "track record de longo prazo",
+      "Crescimento da indústria de fundos no Brasil",
+      "migração de poupança para renda variável com queda da Selic",
+      "novos produtos de investimento",
+      "captação de investidores institucionais"
+    ],
+    "pontos_fracos": [
+      "Liquidez muito baixa das ações",
+      "negócio pouco transparente para investidores externos",
+      "dependência da performance dos fundos para captação",
+      "concorrência de grandes gestoras com maior escala e distribuição"
+    ]
+  },
+  "ADBE": {
+    "ticker": "ADBE",
+    "nome": "Adobe Inc.",
+    "setor": "Software / Criatividade e Documentos",
+    "tese": "A Adobe é a empresa de software criativo mais importante do mundo, com as suítes Creative Cloud (Photoshop, Illustrator, Premiere) e Document Cloud (Acrobat, PDF). A tese é de integração de IA generativa: o Adobe Firefly (IA de geração de imagens) está sendo integrado em todos os produtos, aumentando o valor entregue aos clientes e justificando aumentos de preço. O modelo de assinatura garante receita altamente recorrente.",
+    "atividade": "Software de criatividade (Photoshop, Illustrator, Premiere Pro, After Effects), gestão de documentos (Acrobat, PDF) e marketing digital (Experience Cloud). Modelo de assinatura (SaaS).",
+    "pontos_fortes": [
+      "Monopólio funcional em software criativo — Photoshop, Illustrator e Premiere são padrão da indústria",
+      "modelo de assinatura com alta retenção (95%+)",
+      "integração de IA diferenciada com treinamento ético (sem uso indevido de direitos autorais)",
+      "ecosystem de plugins e integrações",
+      "Adoção crescente do Adobe Firefly (IA generativa) pelos clientes",
+      "aumento de preços das assinaturas Creative Cloud",
+      "expansão da Experience Cloud para empresas",
+      "crescimento do mercado de conteúdo digital",
+      "novos clientes atraídos pelas ferramentas de IA"
+    ],
+    "pontos_fracos": [
+      "Valuation alto exige crescimento consistente para se justificar",
+      "risco de disrupção por ferramentas de IA gratuitas ou mais baratas substituindo produtos Adobe no segmento de consumo",
+      "fracasso da tentativa de aquisição da Figma sinaliza limitações ao crescimento inorgânico",
+      "concorrência de Microsoft Copilot integrado ao Office",
+      "crescimento de receita desacelerando à medida que o mercado amadurece"
+    ]
+  },
+  "RADL3": {
+    "ticker": "RADL3",
+    "nome": "RaiaDrogasil",
+    "setor": "Farmácias",
+    "tese": "A RaiaDrogasil é a maior rede de farmácias da América Latina, com mais de 3.000 lojas no Brasil. A tese é de crescimento estrutural: o envelhecimento da população brasileira aumenta o consumo de medicamentos per capita, e a empresa tem capacidade de abrir 300+ lojas por ano com retorno sobre capital elevado. O modelo defensivo e o dividend yield crescente fazem da RADL um ativo de qualidade.",
+    "atividade": "Operação de redes de farmácias (Raia e Drogasil) com presença em todo o Brasil, vendendo medicamentos, produtos de higiene e beleza e serviços de saúde (testes, vacinas, pressão).",
+    "pontos_fortes": [
+      "Líder isolada em farmácias com escala superior a qualquer concorrente",
+      "poder de negociação com laboratórios farmacêuticos",
+      "marca dupla (Raia e Drogasil) com posicionamentos diferentes",
+      "programa de fidelidade com 40+ milhões de cadastros",
+      "modelo defensivo resistente a crises",
+      "Envelhecimento da população aumentando consumo de medicamentos",
+      "expansão da rede de lojas em novas praças",
+      "crescimento dos serviços de saúde nas farmácias",
+      "programa de fidelidade Identidade gerando dados e fidelização",
+      "expansão do e-commerce de farmácias"
+    ],
+    "pontos_fracos": [
+      "Concorrência crescente de farmácias de desconto e plataformas de e-commerce de medicamentos",
+      "pressão regulatória com discussões sobre preço de medicamentos",
+      "exposição ao custo de aluguel de lojas em shoppings e ruas de alto fluxo",
+      "margens pressionadas por mix mais voltado a genéricos e populares",
+      "crescimento de pontos desacelera à medida que o mercado fica mais saturado"
+    ]
+  },
+  "VIVT3": {
+    "ticker": "VIVT3",
+    "nome": "Vivo (Telefônica Brasil)",
+    "setor": "Telecomunicações",
+    "tese": "A Vivo é a maior operadora de telecomunicações do Brasil, com liderança em pós-pago, fibra (FTTH) e B2B. A tese é de gerador de caixa defensivo com crescimento moderado: o negócio de telecomunicações é estruturalmente sólido, com receitas recorrentes de assinaturas e alavancagem natural na fibra — onde cada cliente conectado aumenta a margem sem aumento proporcional de custo.",
+    "atividade": "Serviços de telecomunicações no Brasil: telefonia móvel pós-paga e pré-paga, banda larga via fibra óptica (FTTH), TV por assinatura e serviços B2B de conectividade e nuvem.",
+    "pontos_fortes": [
+      "Líder no mercado móvel brasileiro com 30%+ de participação",
+      "melhor rede de fibra do país em expansão",
+      "controladora espanhola Telefónica com expertise global",
+      "maior rede B2B do Brasil em conectividade",
+      "dividendos históricos generosos",
+      "Expansão da rede de fibra (FTTH) substituindo ADSL e TV a cabo",
+      "crescimento de B2B com serviços de nuvem e segurança",
+      "queda de churn no pós-pago premium",
+      "renovação do espectro de radiofrequências",
+      "dividendos crescentes com geração de caixa estável"
+    ],
+    "pontos_fracos": [
+      "Setor de telecomunicações é altamente competitivo com TIM e Claro",
+      "margens pressionadas por competição de preço no pré-pago",
+      "investimentos elevados e contínuos em rede (fibra e 5G) consomem caixa",
+      "crescimento de receita moderado em mercado maduro",
+      "risco regulatório da Anatel sobre tarifas e condições de cobertura"
+    ]
+  },
+  "BMOB3": {
+    "ticker": "BMOB3",
+    "nome": "Bemobi Mobile Tech",
+    "setor": "Tecnologia / Apps para Telecom",
+    "tese": "A Bemobi é uma empresa de tecnologia que fornece serviços de valor agregado e apps para operadoras de telecomunicações em mercados emergentes. A tese é de crescimento em mercados emergentes: à medida que a penetração de smartphones cresce em África e América Latina, a demanda pelos serviços de entretenimento e produtividade que a Bemobi distribui tende a crescer junto.",
+    "atividade": "Plataforma tecnológica de distribuição de apps, jogos e serviços digitais via operadoras de telecomunicações em mais de 45 países, principalmente em mercados emergentes.",
+    "pontos_fortes": [
+      "Presença em 45+ países com mercados emergentes em rápida digitalização",
+      "modelo B2B2C com distribuição via operadoras sem custo de aquisição direto",
+      "receita recorrente via assinaturas",
+      "tecnologia proprietária com barreira técnica",
+      "Crescimento de smartphones em mercados emergentes",
+      "novos contratos com operadoras",
+      "expansão de serviços de maior valor agregado",
+      "crescimento do mercado africano",
+      "consolidação no setor via aquisições"
+    ],
+    "pontos_fracos": [
+      "Concentração em mercados emergentes com risco político e cambial elevado",
+      "dependência de operadoras de telecom que têm poder de barganha",
+      "modelo de negócio menos conhecido pelos investidores brasileiros",
+      "crescimento em novos países requer tempo e capital",
+      "risco de obsolescência tecnológica dos serviços oferecidos"
+    ]
+  }
+}
