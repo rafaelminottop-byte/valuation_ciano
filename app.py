@@ -434,6 +434,68 @@ def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
     st.dataframe(exibir, use_container_width=True, height=560)
 
 
+def _aba_carteira(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) -> None:
+    import carteira as cart
+    from fundamentus_scraper import baixar_tabela_fundamentus, buscar_dados_ticker
+
+    st.caption("Salve empresas favoritas e avalie todas de uma vez. A carteira fica em data/carteira.json.")
+
+    col_a, col_b = st.columns([4, 1])
+    novo = col_a.text_input("Adicionar ticker", value="", key="cart_novo", placeholder="ex.: PRIO3").strip().upper()
+    if col_b.button("Adicionar", type="primary") and novo:
+        cart.adicionar(novo)
+
+    tickers = cart.carregar_carteira()
+    if not tickers:
+        st.info("Sua carteira está vazia. Adicione tickers acima.")
+        return
+
+    rem = st.multiselect("Remover da carteira", tickers)
+    if rem and st.button("Remover selecionados"):
+        for t in rem:
+            cart.remover(t)
+        tickers = cart.carregar_carteira()
+
+    if st.button("Avaliar carteira", type="primary"):
+        with st.spinner("Avaliando carteira..."):
+            df = baixar_tabela_fundamentus()
+            linhas = []
+            for t in tickers:
+                try:
+                    d = buscar_dados_ticker(t, df=df)
+                    res = calcular_valuation_completo(
+                        ticker=t,
+                        ebit_atual=d["ebit_atual"] / d["acoes_em_circulacao"],
+                        acoes_em_circulacao=1.0,
+                        preco_atual=d["preco_atual"],
+                        tma=tma,
+                        retorno_alvo=retorno_alvo,
+                        cenarios=montar_cenarios(valores_cenarios),
+                        anos_fase_1=anos_fase_1,
+                        anos_fase_2=anos_fase_2,
+                    )
+                    nomes = list(res["resultados"].keys())
+                    ref = "intermediario" if "intermediario" in res["resultados"] else nomes[len(nomes) // 2]
+                    r = res["resultados"][ref]
+                    linhas.append(
+                        {
+                            "Ticker": t,
+                            "Preço (R$)": round(d["preco_atual"], 2),
+                            "Veredito": res["veredito"],
+                            "Upside (%)": round(r.upside_percentual, 1),
+                            "Valuation (R$)": round(r.valuation_final_por_acao, 2),
+                        }
+                    )
+                except ValueError as e:
+                    linhas.append({"Ticker": t, "Preço (R$)": None, "Veredito": "n/d", "Upside (%)": None, "Valuation (R$)": None, "Obs": str(e)})
+            st.session_state.carteira_result = pd.DataFrame(linhas)
+
+    resultado = st.session_state.get("carteira_result")
+    if resultado is not None and not resultado.empty:
+        st.markdown('<div class="ciano-label">Carteira avaliada</div>', unsafe_allow_html=True)
+        st.dataframe(resultado.set_index("Ticker"), use_container_width=True)
+
+
 def main() -> None:
     st.set_page_config(page_title="Valuation Ciano", page_icon="📈", layout="wide")
     _injetar_css()
@@ -472,12 +534,16 @@ def main() -> None:
         )
         valores_cenarios[nome] = {"g1": g1, "g2": g2}
 
-    # --- Abas: análise de uma empresa e screener da B3 ---
-    aba_empresa, aba_screener = st.tabs(["🔎 Empresa", "📊 Screener B3"])
+    # --- Abas: empresa, screener e carteira ---
+    aba_empresa, aba_screener, aba_carteira = st.tabs(
+        ["🔎 Empresa", "📊 Screener B3", "⭐ Carteira"]
+    )
     with aba_empresa:
         _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
     with aba_screener:
         _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
+    with aba_carteira:
+        _aba_carteira(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
 
 
 if __name__ == "__main__":

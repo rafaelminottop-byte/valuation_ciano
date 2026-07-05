@@ -49,9 +49,12 @@ com o preço atual. O visual segue o design system da Ciano Investimentos
 - `fundamentus_scraper.py` — busca preço, EBIT e nº de ações no Fundamentus.
 - `main.py` — junta os dois e exporta Excel.
 - `app.py` — interface web local (Streamlit), com a identidade visual da Ciano.
-  Tem duas abas: **Empresa** (valuation de um ticker) e **Screener B3** (ranking).
+  Tem três abas: **Empresa** (valuation de um ticker), **Screener B3** (ranking)
+  e **Carteira** (empresas favoritas avaliadas juntas).
 - `screener.py` — roda o valuation em todas as ações e ranqueia por upside,
   com filtros de liquidez e de crescimento de receita 5a (proxy do EBIT crescente).
+- `carteira.py` + `data/carteira.json` — watchlist de tickers favoritos
+  (o JSON é local/pessoal, fora do versionamento).
 - `teses.py` + `data/teses.json` — teses de investimento por ticker (setor, tese,
   pontos fortes e fracos), extraídas do relatório da Ciano e exibidas no app.
 - `assets/` — logo da Ciano; `.streamlit/config.toml` — tema base.
