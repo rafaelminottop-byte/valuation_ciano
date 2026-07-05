@@ -387,7 +387,11 @@ def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
         "de receita em 5 anos (proxy) ficou abaixo disso. Empresas sem o dado saem.",
     )
     exigir_crescimento = c2.checkbox("Exigir crescimento", value=True)
-    c1.write("")
+    pebit_min = c1.number_input(
+        "P/EBIT mín.", value=3.0, step=0.5, min_value=0.0,
+        help="P/EBIT muito baixo (< ~1) costuma ser anomalia (EBIT não-recorrente "
+        "ou preço deprimido) e gera upsides irreais. Um piso limpa o topo do ranking.",
+    )
     so_desconto = c3.checkbox("Só em desconto", value=True)
     atualizar = c3.checkbox("Atualizar dados", value=False, key="scr_atualizar")
 
@@ -403,6 +407,7 @@ def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
                 anos_fase_2=anos_fase_2,
                 liquidez_minima=float(liq_min),
                 crescimento_minimo=(cresc_min / 100.0) if exigir_crescimento else None,
+                pebit_minimo=float(pebit_min),
             )
             st.session_state.screener = ranking
 
@@ -424,6 +429,7 @@ def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
         columns={
             "ticker": "Ticker",
             "preco_atual": "Preço (R$)",
+            "p_ebit": "P/EBIT",
             "veredito": "Veredito",
             "upside_pct": "Upside (%)",
             "valuation": "Valuation (R$)",
