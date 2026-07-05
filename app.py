@@ -374,7 +374,9 @@ def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
 
     st.caption(
         "Roda o valuation em todas as ações da B3 (com EBIT positivo) e ranqueia "
-        "por upside no cenário intermediário, usando as premissas da barra lateral."
+        "por upside no cenário intermediário. Como o upside é ~ (15 / P-EBIT − 1), "
+        "o topo tende a ser o menor P/EBIT — as de P/EBIT baixo (possível EBIT "
+        "distorcido) vêm marcadas com ⚠️ para você conferir a tese."
     )
     c1, c2, c3 = st.columns(3)
     liq_min = c1.number_input(
@@ -388,9 +390,9 @@ def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
     )
     exigir_crescimento = c2.checkbox("Exigir crescimento", value=True)
     pebit_min = c1.number_input(
-        "P/EBIT mín.", value=3.0, step=0.5, min_value=0.0,
-        help="P/EBIT muito baixo (< ~1) costuma ser anomalia (EBIT não-recorrente "
-        "ou preço deprimido) e gera upsides irreais. Um piso limpa o topo do ranking.",
+        "P/EBIT mín. (0 = mostrar tudo)", value=0.0, step=0.5, min_value=0.0,
+        help="Por padrão mostramos tudo e só sinalizamos com ⚠️ as de P/EBIT baixo "
+        "(possível EBIT distorcido). Suba o piso se quiser excluí-las do ranking.",
     )
     so_desconto = c3.checkbox("Só em desconto", value=True)
     atualizar = c3.checkbox("Atualizar dados", value=False, key="scr_atualizar")
@@ -428,6 +430,7 @@ def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
     exibir = tabela.rename(
         columns={
             "ticker": "Ticker",
+            "alerta": "Alerta",
             "preco_atual": "Preço (R$)",
             "p_ebit": "P/EBIT",
             "veredito": "Veredito",
