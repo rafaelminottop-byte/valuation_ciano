@@ -97,13 +97,20 @@ def rodar_screener(
             anos_fase_1=anos_fase_1,
             anos_fase_2=anos_fase_2,
         )
+        base = str(row.get("base_calculo", "EBIT")) or "EBIT"
         r = res["resultados"][ref]
+        # O alerta de P/EBIT baixo só vale para empresas na base EBIT (bancos,
+        # na base Lucro, têm P/EBIT = 0 e não devem ser sinalizados por isso).
+        alerta = (
+            "⚠️ P/EBIT baixo"
+            if base == "EBIT" and p_ebit is not None and math.isfinite(p_ebit) and p_ebit < alerta_pebit
+            else ""
+        )
         linhas.append(
             {
                 "ticker": res["ticker"],
-                "alerta": "⚠️ P/EBIT baixo"
-                if (p_ebit is not None and math.isfinite(p_ebit) and p_ebit < alerta_pebit)
-                else "",
+                "base": base,
+                "alerta": alerta,
                 "preco_atual": round(preco, 2),
                 "p_ebit": round(p_ebit, 2) if p_ebit is not None and math.isfinite(p_ebit) else None,
                 "veredito": res["veredito"],

@@ -335,6 +335,7 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
                         "ticker": ticker,
                         "preco_atual": dados["preco_atual"],
                         "ebit_por_acao": dados["ebit_atual"] / dados["acoes_em_circulacao"],
+                        "base": dados.get("base_calculo", "EBIT"),
                     }
                 except Exception as e:  # noqa: BLE001 - mostra o erro na UI
                     st.error(f"Não foi possível buscar {ticker}: {e}")
@@ -389,6 +390,11 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
             anos_fase_2=anos_fase_2,
         )
         _render_resultado(emp["ticker"], emp["preco_atual"], resultado)
+        if emp.get("base") == "Lucro":
+            st.caption(
+                "⚠️ Base: Lucro líquido (banco — o Fundamentus não expõe EBIT; "
+                "usamos o lucro como se fosse o EBIT). Interprete com cautela."
+            )
         _render_tese(emp["ticker"])
 
 
@@ -454,6 +460,7 @@ def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
     exibir = tabela.rename(
         columns={
             "ticker": "Ticker",
+            "base": "Base",
             "alerta": "Alerta",
             "preco_atual": "Preço (R$)",
             "p_ebit": "P/EBIT",
