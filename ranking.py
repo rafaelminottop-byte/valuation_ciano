@@ -17,6 +17,8 @@ import math
 
 import pandas as pd
 
+from valuation_engine import CENARIOS_PADRAO, calcular_valuation_completo
+
 
 def _num(v):
     """Converte para float finito ou devolve None."""
@@ -87,8 +89,16 @@ def score_qualidade(roic, roe, margem_ebit) -> float | None:
     return round(sum(notas) / len(notas), 2)
 
 
+def nota_upside(upside_pct: float) -> float:
+    """Nota para o upside do valuation (quanto maior o desconto, maior a nota)."""
+    for limite, nota in [(200, 10), (100, 8), (50, 6), (20, 4), (0, 2)]:
+        if upside_pct >= limite:
+            return float(nota)
+    return 0.0
+
+
 # Peso relativo de cada categoria no score final (ajustável pelo usuário).
-# Solidez = 3 primeiras; Qualidade = 3 últimas. Padrão dá 50/50 entre os grupos.
+# Grupos: Solidez, Qualidade e Upside (valuation). Padrão dá ~1/3 para cada.
 PESOS_PADRAO = {
     "div_liq_ebit": 30.0,
     "div_liq_patrim": 10.0,
@@ -96,6 +106,7 @@ PESOS_PADRAO = {
     "roic": 20.0,
     "roe": 15.0,
     "margem_ebit": 15.0,
+    "upside": 50.0,
 }
 GRUPO_SOLIDEZ = ("div_liq_ebit", "div_liq_patrim", "liquidez_corrente")
 GRUPO_QUALIDADE = ("roic", "roe", "margem_ebit")
@@ -112,15 +123,23 @@ def rankear_qualidade(
     df: pd.DataFrame,
     pesos: dict = None,
     liquidez_minima: float = 0.0,
+    tma: float = None,
+    retorno_alvo: float = None,
+    cenarios: dict = None,
+    anos_fase_1: int = None,
+    anos_fase_2: int = None,
 ) -> pd.DataFrame:
     """Calcula as notas de cada categoria e o score (média ponderada por ``pesos``).
 
     ``pesos`` mapeia cada categoria (div_liq_ebit, div_liq_patrim,
-    liquidez_corrente, roic, roe, margem_ebit) a um peso relativo; ausentes usam
-    PESOS_PADRAO. Exige as colunas do Fundamentus processadas. Empresas com EBIT
-    não positivo (bancos) ou dados faltando saem. Ordena por score.
+    liquidez_corrente, roic, roe, margem_ebit, upside) a um peso relativo;
+    ausentes usam PESOS_PADRAO. O ``upside`` vem do valuation (cenário
+    intermediário), calculado com as premissas passadas. Exige as colunas do
+    Fundamentus processadas. Empresas com EBIT não positivo (bancos) ou dados
+    faltando saem. Ordena por score.
     """
     pesos = {**PESOS_PADRAO, **(pesos or {})}
+    cenarios = cenarios if cenarios is not None else CENARIOS_PADRAO
 
     linhas = []
     for _, row in df.iterrows():
@@ -139,8 +158,27 @@ def rankear_qualidade(
         roic = _num(row.get("roic"))
         roe = _num(row.get("roe"))
         margem = _num(row.get("margem_ebit"))
+        preco = _num(row.get("preco_atual"))
+        ebit_por_acao = _num(row.get("ebit_por_acao"))
         if None in (div_liq_ebit, div_liq_patrim, liquidez_corrente, roic, roe, margem):
             continue
+        if preco is None or preco <= 0 or ebit_por_acao is None or ebit_por_acao <= 0:
+            continue
+
+        res = calcular_valuation_completo(
+            ticker=str(row["ticker"]),
+            ebit_atual=ebit_por_acao,
+            acoes_em_circulacao=1.0,
+            preco_atual=preco,
+            tma=tma,
+            retorno_alvo=retorno_alvo,
+            cenarios=cenarios,
+            anos_fase_1=anos_fase_1,
+            anos_fase_2=anos_fase_2,
+        )
+        nomes = list(res["resultados"].keys())
+        ref = "intermediario" if "intermediario" in res["resultados"] else nomes[len(nomes) // 2]
+        upside_pct = res["resultados"][ref].upside_percentual
 
         notas = {
             "div_liq_ebit": nota_div_liq_ebit(div_liq_ebit),
@@ -149,6 +187,7 @@ def rankear_qualidade(
             "roic": _nota_pct(roic),
             "roe": _nota_pct(roe),
             "margem_ebit": nota_margem_ebit(margem),
+            "upside": nota_upside(upside_pct),
         }
         score = _media_ponderada(notas, pesos, notas.keys())
         if score is None:  # todos os pesos zerados
@@ -160,6 +199,7 @@ def rankear_qualidade(
                 "score": score,
                 "solidez": _media_ponderada(notas, pesos, GRUPO_SOLIDEZ),
                 "qualidade": _media_ponderada(notas, pesos, GRUPO_QUALIDADE),
+                "upside_pct": round(upside_pct, 1),
                 "div_liq_ebit": round(div_liq_ebit, 2),
                 "roic_pct": round(roic * 100, 1),
                 "roe_pct": round(roe * 100, 1),

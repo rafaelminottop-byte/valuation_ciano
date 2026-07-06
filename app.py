@@ -557,22 +557,20 @@ def _aba_carteira(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
         st.dataframe(resultado.set_index("Ticker"), use_container_width=True)
 
 
-def _aba_ranking() -> None:
+def _aba_ranking(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) -> None:
     from fundamentus_scraper import baixar_tabela_fundamentus
-    from ranking import rankear_qualidade
+    from ranking import PESOS_PADRAO, rankear_qualidade
 
     st.caption(
-        "Ranking de qualidade/risco (independe do valuation): solidez financeira "
-        "(Dív.Líq/EBIT, Dív.Líq/Patrim., Liquidez Corrente) + qualidade do negócio "
-        "(ROIC, ROE, Margem EBIT). Bancos e empresas sem EBIT positivo ficam de fora."
+        "Ranking combinado: solidez financeira (Dív.Líq/EBIT, Dív.Líq/Patrim., "
+        "Liquidez Corr.) + qualidade (ROIC, ROE, Margem EBIT) + upside do valuation. "
+        "Bancos e empresas sem EBIT positivo ficam de fora."
     )
     c1, c2 = st.columns(2)
     liq_min = c1.number_input(
         "Liquidez mín. (R$/dia)", value=1_000_000, step=500_000, min_value=0, key="rk_liq"
     )
     atualizar = c2.checkbox("Atualizar dados", value=False, key="rk_atualizar")
-
-    from ranking import PESOS_PADRAO
 
     with st.expander("⚖️ Pesos das categorias (relativos)", expanded=True):
         st.caption("Solidez financeira")
@@ -585,9 +583,12 @@ def _aba_ranking() -> None:
         p_roic = b1.number_input("ROIC", value=PESOS_PADRAO["roic"], min_value=0.0, step=5.0, key="w_roic")
         p_roe = b2.number_input("ROE", value=PESOS_PADRAO["roe"], min_value=0.0, step=5.0, key="w_roe")
         p_mrg = b3.number_input("Margem EBIT", value=PESOS_PADRAO["margem_ebit"], min_value=0.0, step=5.0, key="w_mrg")
+        st.caption("Valuation")
+        d1, _d2, _d3 = st.columns(3)
+        p_up = d1.number_input("Upside", value=PESOS_PADRAO["upside"], min_value=0.0, step=5.0, key="w_up")
         pesos = {
             "div_liq_ebit": p_de, "div_liq_patrim": p_dp, "liquidez_corrente": p_lc,
-            "roic": p_roic, "roe": p_roe, "margem_ebit": p_mrg,
+            "roic": p_roic, "roe": p_roe, "margem_ebit": p_mrg, "upside": p_up,
         }
         soma = sum(pesos.values())
         if soma <= 0:
@@ -595,14 +596,18 @@ def _aba_ranking() -> None:
         else:
             st.caption(
                 f"Solidez ≈ {round(100 * (p_de + p_dp + p_lc) / soma)}% · "
-                f"Qualidade ≈ {round(100 * (p_roic + p_roe + p_mrg) / soma)}% do score"
+                f"Qualidade ≈ {round(100 * (p_roic + p_roe + p_mrg) / soma)}% · "
+                f"Upside ≈ {round(100 * p_up / soma)}% do score"
             )
 
     if st.button("Rodar ranking", type="primary") and sum(pesos.values()) > 0:
-        with st.spinner("Avaliando qualidade e solidez de todas as ações..."):
+        with st.spinner("Avaliando solidez, qualidade e upside de todas as ações..."):
             df = baixar_tabela_fundamentus(usar_cache=not atualizar)
             st.session_state.ranking = rankear_qualidade(
-                df, pesos=pesos, liquidez_minima=float(liq_min)
+                df, pesos=pesos, liquidez_minima=float(liq_min),
+                tma=tma, retorno_alvo=retorno_alvo,
+                cenarios=montar_cenarios(valores_cenarios),
+                anos_fase_1=anos_fase_1, anos_fase_2=anos_fase_2,
             )
 
     ranking = st.session_state.get("ranking")
@@ -622,6 +627,7 @@ def _aba_ranking() -> None:
             "score": "Score",
             "solidez": "Solidez",
             "qualidade": "Qualidade",
+            "upside_pct": "Upside (%)",
             "div_liq_ebit": "Dív.Líq/EBIT",
             "roic_pct": "ROIC (%)",
             "roe_pct": "ROE (%)",
@@ -740,7 +746,7 @@ def main() -> None:
     with aba_carteira:
         _aba_carteira(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
     with aba_ranking:
-        _aba_ranking()
+        _aba_ranking(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
     with aba_gatilhos:
         _aba_gatilhos()
 

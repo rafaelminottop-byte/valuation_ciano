@@ -59,9 +59,10 @@ com o preço atual. O visual segue o design system da Ciano Investimentos
 - `screener.py` — roda o valuation em todas as ações e ranqueia por upside,
   com filtros de liquidez, crescimento de receita 5a (proxy do EBIT crescente)
   e P/EBIT mínimo (exclui anomalias com P/EBIT < ~1 que geram upsides irreais).
-- `ranking.py` — score qualitativo objetivo: solidez financeira (Dív.Líq/EBIT,
-  Dív.Líq/Patrim., Liquidez Corrente) + qualidade (ROIC, ROE, Margem EBIT),
-  em notas 0–10 por faixas, com pesos ajustáveis. Bancos/EBIT<=0 ficam de fora.
+- `ranking.py` — score combinado: solidez financeira (Dív.Líq/EBIT, Dív.Líq/
+  Patrim., Liquidez Corrente) + qualidade (ROIC, ROE, Margem EBIT) + **upside**
+  do valuation, em notas 0–10 por faixas, com **peso ajustável por categoria**.
+  Bancos/EBIT<=0 ficam de fora.
 - `carteira.py` + `data/carteira.json` — watchlist de tickers favoritos
   (o JSON é local/pessoal, fora do versionamento).
 - `teses.py` + `data/teses.json` — teses de investimento por ticker (setor, tese,
