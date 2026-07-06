@@ -466,6 +466,20 @@ def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
     ).set_index("Ticker")
     st.dataframe(exibir, use_container_width=True, height=560)
 
+    # Salvar o resultado como lista nomeada (reusável na aba Gatilhos)
+    import listas as lst
+
+    st.markdown('<div class="ciano-label">Salvar como lista</div>', unsafe_allow_html=True)
+    cs1, cs2, cs3 = st.columns([3, 2, 2])
+    nome = cs1.text_input("Nome da lista", value="Screener", key="scr_nome").strip()
+    topn = int(cs2.number_input(
+        "Salvar top N", value=min(20, len(tabela)), min_value=1, max_value=len(tabela), step=5
+    ))
+    cs3.write("")
+    if cs3.button("💾 Salvar lista") and nome:
+        lst.salvar_lista(nome, list(tabela["ticker"].head(topn)))
+        st.success(f'Lista "{nome}" salva com {topn} tickers. Use na aba Gatilhos.')
+
 
 def _aba_carteira(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) -> None:
     import carteira as cart
@@ -592,6 +606,7 @@ def _aba_ranking() -> None:
 
 def _aba_gatilhos() -> None:
     import carteira as cart
+    import listas as lst
     from gatilhos import PERIODOS_PADRAO, TOLERANCIA_PADRAO, avaliar_gatilhos
 
     st.caption(
@@ -599,7 +614,7 @@ def _aba_gatilhos() -> None:
         "MM200 no gráfico semanal). Histórico de preços via Yahoo Finance."
     )
     fonte = st.radio(
-        "Empresas a monitorar", ["Minha carteira", "Digitar lista"],
+        "Empresas a monitorar", ["Minha carteira", "Lista salva", "Digitar lista"],
         horizontal=True, label_visibility="collapsed",
     )
     if fonte == "Minha carteira":
@@ -608,6 +623,14 @@ def _aba_gatilhos() -> None:
             st.info("Sua carteira está vazia — adicione tickers na aba Carteira, ou use 'Digitar lista'.")
             return
         st.caption("Monitorando: " + ", ".join(tickers))
+    elif fonte == "Lista salva":
+        nomes = lst.nomes_listas()
+        if not nomes:
+            st.info("Nenhuma lista salva ainda — rode o Screener e clique em 'Salvar lista'.")
+            return
+        nome = st.selectbox("Lista", nomes)
+        tickers = lst.carregar_listas().get(nome, [])
+        st.caption(f"Monitorando ({len(tickers)}): " + ", ".join(tickers))
     else:
         txt = st.text_input("Tickers separados por espaço ou vírgula", value="WEGE3 PRIO3 VALE3")
         tickers = [t for t in txt.replace(",", " ").split() if t]

@@ -54,6 +54,8 @@ com o preço atual. O visual segue o design system da Ciano Investimentos
   e **Gatilhos** (preço perto da média móvel).
 - `gatilhos.py` — avisa quando o preço chega perto de uma média móvel (padrão:
   200 semanas / MM200 semanal). Histórico de preços via Yahoo Finance (`yfinance`).
+- `listas.py` + `data/listas.json` (local) — listas nomeadas de tickers: salve
+  o resultado do Screener e monitore-o na aba Gatilhos.
 - `screener.py` — roda o valuation em todas as ações e ranqueia por upside,
   com filtros de liquidez, crescimento de receita 5a (proxy do EBIT crescente)
   e P/EBIT mínimo (exclui anomalias com P/EBIT < ~1 que geram upsides irreais).
