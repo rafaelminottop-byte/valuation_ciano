@@ -559,23 +559,43 @@ def _aba_ranking() -> None:
         "(Dív.Líq/EBIT, Dív.Líq/Patrim., Liquidez Corrente) + qualidade do negócio "
         "(ROIC, ROE, Margem EBIT). Bancos e empresas sem EBIT positivo ficam de fora."
     )
-    c1, c2, c3 = st.columns(3)
+    c1, c2 = st.columns(2)
     liq_min = c1.number_input(
         "Liquidez mín. (R$/dia)", value=1_000_000, step=500_000, min_value=0, key="rk_liq"
     )
-    peso_sol = c2.slider("Peso solidez (%)", 0, 100, 50, step=5)
-    c3.write("")
-    c3.caption(f"Qualidade: {100 - peso_sol}%")
-    atualizar = c1.checkbox("Atualizar dados", value=False, key="rk_atualizar")
+    atualizar = c2.checkbox("Atualizar dados", value=False, key="rk_atualizar")
 
-    if st.button("Rodar ranking", type="primary"):
+    from ranking import PESOS_PADRAO
+
+    with st.expander("⚖️ Pesos das categorias (relativos)", expanded=True):
+        st.caption("Solidez financeira")
+        a1, a2, a3 = st.columns(3)
+        p_de = a1.number_input("Dív.Líq/EBIT", value=PESOS_PADRAO["div_liq_ebit"], min_value=0.0, step=5.0, key="w_de")
+        p_dp = a2.number_input("Dív.Líq/Patrim.", value=PESOS_PADRAO["div_liq_patrim"], min_value=0.0, step=5.0, key="w_dp")
+        p_lc = a3.number_input("Liquidez Corr.", value=PESOS_PADRAO["liquidez_corrente"], min_value=0.0, step=5.0, key="w_lc")
+        st.caption("Qualidade do negócio")
+        b1, b2, b3 = st.columns(3)
+        p_roic = b1.number_input("ROIC", value=PESOS_PADRAO["roic"], min_value=0.0, step=5.0, key="w_roic")
+        p_roe = b2.number_input("ROE", value=PESOS_PADRAO["roe"], min_value=0.0, step=5.0, key="w_roe")
+        p_mrg = b3.number_input("Margem EBIT", value=PESOS_PADRAO["margem_ebit"], min_value=0.0, step=5.0, key="w_mrg")
+        pesos = {
+            "div_liq_ebit": p_de, "div_liq_patrim": p_dp, "liquidez_corrente": p_lc,
+            "roic": p_roic, "roe": p_roe, "margem_ebit": p_mrg,
+        }
+        soma = sum(pesos.values())
+        if soma <= 0:
+            st.warning("Ao menos um peso precisa ser maior que zero.")
+        else:
+            st.caption(
+                f"Solidez ≈ {round(100 * (p_de + p_dp + p_lc) / soma)}% · "
+                f"Qualidade ≈ {round(100 * (p_roic + p_roe + p_mrg) / soma)}% do score"
+            )
+
+    if st.button("Rodar ranking", type="primary") and sum(pesos.values()) > 0:
         with st.spinner("Avaliando qualidade e solidez de todas as ações..."):
             df = baixar_tabela_fundamentus(usar_cache=not atualizar)
             st.session_state.ranking = rankear_qualidade(
-                df,
-                peso_solidez=peso_sol / 100.0,
-                peso_qualidade=(100 - peso_sol) / 100.0,
-                liquidez_minima=float(liq_min),
+                df, pesos=pesos, liquidez_minima=float(liq_min)
             )
 
     ranking = st.session_state.get("ranking")

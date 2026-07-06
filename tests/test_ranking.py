@@ -73,9 +73,16 @@ class TestRankear(unittest.TestCase):
         self.assertAlmostEqual(prio["div_liq_ebit"], 6.40, places=1)
         self.assertLess(prio["solidez"], 4)  # muito alavancada -> solidez baixa
 
-    def test_pesos_afetam_score(self):
+    def test_pesos_individuais_afetam_score(self):
+        # Zera os pesos de solidez -> score = pilar de qualidade
         df = self._df()
-        so_qualidade = rankear_qualidade(df, peso_solidez=0, peso_qualidade=1)
+        so_qualidade = rankear_qualidade(
+            df,
+            pesos={
+                "div_liq_ebit": 0, "div_liq_patrim": 0, "liquidez_corrente": 0,
+                "roic": 1, "roe": 1, "margem_ebit": 1,
+            },
+        )
         prio = so_qualidade[so_qualidade["ticker"] == "PRIO3"].iloc[0]
         self.assertAlmostEqual(prio["score"], prio["qualidade"])
 
