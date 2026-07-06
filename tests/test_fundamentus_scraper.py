@@ -97,6 +97,24 @@ class TestBuscarDadosTicker(unittest.TestCase):
         with self.assertRaises(ValueError):
             buscar_dados_ticker("ZZZZ3", df=df)
 
+    def test_banco_usa_lucro_como_ebit(self):
+        # Banco: P/EBIT = 0 mas P/L > 0 -> usa o lucro por ação (Preço/P_L).
+        df = _processar_tabela(
+            pd.DataFrame({"Papel": ["BBAS3"], "Cotação": [20.0], "P/L": [8.0], "P/EBIT": [0.0]})
+        )
+        dados = buscar_dados_ticker("BBAS3", df=df)
+        self.assertEqual(dados["base_calculo"], "Lucro")
+        self.assertAlmostEqual(dados["ebit_atual"], 20.0 / 8.0)
+
+    def test_empresa_normal_usa_ebit_mesmo_com_pl(self):
+        # Com P/EBIT válido, usa EBIT (não o lucro), mesmo havendo P/L.
+        df = _processar_tabela(
+            pd.DataFrame({"Papel": ["WEGE3"], "Cotação": [46.0], "P/L": [30.0], "P/EBIT": [23.0]})
+        )
+        dados = buscar_dados_ticker("WEGE3", df=df)
+        self.assertEqual(dados["base_calculo"], "EBIT")
+        self.assertAlmostEqual(dados["ebit_atual"], 46.0 / 23.0)
+
 
 if __name__ == "__main__":
     unittest.main()

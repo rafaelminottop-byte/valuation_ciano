@@ -1,8 +1,9 @@
 """
 Scraper do Fundamentus (www.fundamentus.com.br)
-Puxa a tabela completa de ações da B3 (preço, P/EBIT etc.) e deriva o EBIT
-por ação usado no valuation. Guarda um cache local (.cache/fundamentus.pkl)
-para não rebaixar tudo a cada consulta.
+Puxa a tabela completa de ações da B3 (preço, P/EBIT, P/L etc.) e deriva o
+"fluxo por ação" usado no valuation: EBIT por ação (Preço/P_EBIT) para empresas
+normais; lucro líquido por ação (Preço/P_L) para bancos, que não têm EBIT.
+Guarda um cache local para não rebaixar tudo a cada consulta.
 
 IMPORTANTE: a primeira busca precisa de acesso à internet real.
 Rode-o no seu computador: python fundamentus_scraper.py
@@ -31,7 +32,7 @@ HEADERS = {
 # O nome do cache tem uma versão: ao mudar as colunas produzidas (ex.: incluir
 # liquidez/crescimento), incremente CACHE_VERSAO para invalidar caches antigos.
 CACHE_DIR = Path(__file__).resolve().parent / ".cache"
-CACHE_VERSAO = 3
+CACHE_VERSAO = 4
 CACHE_FILE = CACHE_DIR / f"fundamentus_v{CACHE_VERSAO}.pkl"
 CACHE_TTL_SEGUNDOS = 6 * 60 * 60  # 6 horas
 
@@ -61,6 +62,7 @@ def _para_numero(serie: pd.Series) -> pd.Series:
 COLUNAS_UTEIS = {
     "Papel": "ticker",
     "Cotação": "preco_atual",
+    "P/L": "p_l",            # lucro por ação (Preço/P_L) — fallback p/ bancos
     "P/EBIT": "p_ebit",
     "EV/EBIT": "ev_ebit",
     "Patrim. Líq": "patrimonio_liquido",
@@ -91,7 +93,7 @@ def _processar_tabela(df: pd.DataFrame) -> pd.DataFrame:
     # valores (ex.: 4,45 viraria 445). Checamos "não numérico" em vez de
     # "== object" para cobrir também o dtype de string do backend pyarrow.
     numericas = [
-        "preco_atual", "p_ebit", "ev_ebit", "patrimonio_liquido", "liquidez",
+        "preco_atual", "p_l", "p_ebit", "ev_ebit", "patrimonio_liquido", "liquidez",
         "cresc_receita_5a", "roic", "roe", "margem_ebit", "div_liq_patrim",
         "liquidez_corrente",
     ]
@@ -99,13 +101,28 @@ def _processar_tabela(df: pd.DataFrame) -> pd.DataFrame:
         if col in df.columns and not pd.api.types.is_numeric_dtype(df[col]):
             df[col] = _para_numero(df[col])
 
-    # EBIT por ação = Preço / P_EBIT.
-    # O nº de ações se cancela no cálculo final por ação (ver valuation_engine),
-    # então normalizamos para 1. A tabela resultado.php do Fundamentus não expõe
-    # mais "Valor de mercado" para derivar o total de ações.
-    df["ebit_por_acao"] = df["preco_atual"] / df["p_ebit"]
+    # "Fluxo por ação" que alimenta o valuation (nº de ações se cancela no
+    # cálculo por ação, então normalizamos para 1):
+    #  - Empresas normais: EBIT por ação = Preço / P_EBIT.
+    #  - Bancos (não têm EBIT, P/EBIT = 0): usam o LUCRO líquido por ação
+    #    (Preço / P_L) como se fosse o EBIT, rodando o mesmo passo a passo.
+    p_ebit = df["p_ebit"]
+    p_l = df["p_l"] if "p_l" in df.columns else pd.Series(float("nan"), index=df.index)
+    usa_ebit = p_ebit > 0
+    usa_lucro = (~usa_ebit) & (p_l > 0)
+
+    fluxo = pd.Series(float("nan"), index=df.index)
+    fluxo = fluxo.mask(usa_ebit, df["preco_atual"] / p_ebit)
+    fluxo = fluxo.mask(usa_lucro, df["preco_atual"] / p_l)
+
+    base = pd.Series("", index=df.index, dtype=object)
+    base = base.mask(usa_ebit, "EBIT")
+    base = base.mask(usa_lucro, "Lucro")
+
+    df["base_calculo"] = base
+    df["ebit_por_acao"] = fluxo
     df["acoes_em_circulacao"] = 1.0
-    df["ebit_atual"] = df["ebit_por_acao"]
+    df["ebit_atual"] = fluxo
 
     return df
 
@@ -149,22 +166,22 @@ def buscar_dados_ticker(ticker: str, df: pd.DataFrame = None) -> dict:
     linha = linha.iloc[0]
     preco_atual = float(linha["preco_atual"])
     ebit_atual = float(linha["ebit_atual"])
+    base = str(linha.get("base_calculo", "EBIT")) or "EBIT"
 
-    # A metodologia por EBIT só faz sentido com preço e EBIT positivos e
-    # finitos. Empresas com EBIT negativo (P/EBIT < 0) ou zerado (P/EBIT = 0,
-    # que gera divisão por zero -> infinito) produziriam valuation sem sentido.
+    # Precisa de preço válido e de um fluxo positivo (EBIT das empresas normais
+    # ou lucro líquido dos bancos). Só barra quando não há nem EBIT nem lucro.
     if not math.isfinite(preco_atual) or preco_atual <= 0:
         raise ValueError(f"Ticker {ticker.upper()} tem preço inválido no Fundamentus.")
     if not math.isfinite(ebit_atual) or ebit_atual <= 0:
         raise ValueError(
-            f"Ticker {ticker.upper()} tem EBIT não-positivo (P/EBIT <= 0); "
-            "o valuation por EBIT não se aplica a esta empresa."
+            f"Ticker {ticker.upper()} não tem EBIT nem lucro positivo no Fundamentus."
         )
 
     return {
         "ticker": ticker.upper(),
         "preco_atual": preco_atual,
         "ebit_atual": ebit_atual,
+        "base_calculo": base,
         "acoes_em_circulacao": float(linha["acoes_em_circulacao"]),
     }
 
