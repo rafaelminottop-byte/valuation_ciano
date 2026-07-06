@@ -87,22 +87,40 @@ def score_qualidade(roic, roe, margem_ebit) -> float | None:
     return round(sum(notas) / len(notas), 2)
 
 
+# Peso relativo de cada categoria no score final (ajustável pelo usuário).
+# Solidez = 3 primeiras; Qualidade = 3 últimas. Padrão dá 50/50 entre os grupos.
+PESOS_PADRAO = {
+    "div_liq_ebit": 30.0,
+    "div_liq_patrim": 10.0,
+    "liquidez_corrente": 10.0,
+    "roic": 20.0,
+    "roe": 15.0,
+    "margem_ebit": 15.0,
+}
+GRUPO_SOLIDEZ = ("div_liq_ebit", "div_liq_patrim", "liquidez_corrente")
+GRUPO_QUALIDADE = ("roic", "roe", "margem_ebit")
+
+
+def _media_ponderada(notas: dict, pesos: dict, chaves) -> float | None:
+    total = sum(pesos.get(k, 0.0) for k in chaves)
+    if total <= 0:
+        return None
+    return round(sum(pesos.get(k, 0.0) * notas[k] for k in chaves) / total, 2)
+
+
 def rankear_qualidade(
     df: pd.DataFrame,
-    peso_solidez: float = 0.5,
-    peso_qualidade: float = 0.5,
+    pesos: dict = None,
     liquidez_minima: float = 0.0,
 ) -> pd.DataFrame:
-    """Calcula os pilares e o score final para cada empresa e ordena por score.
+    """Calcula as notas de cada categoria e o score (média ponderada por ``pesos``).
 
-    Exige as colunas do Fundamentus processadas (roic, roe, margem_ebit,
-    div_liq_patrim, liquidez_corrente, p_ebit, ev_ebit). Empresas com EBIT não
-    positivo (P/EBIT <= 0, tipicamente bancos) ou com dados faltando saem.
+    ``pesos`` mapeia cada categoria (div_liq_ebit, div_liq_patrim,
+    liquidez_corrente, roic, roe, margem_ebit) a um peso relativo; ausentes usam
+    PESOS_PADRAO. Exige as colunas do Fundamentus processadas. Empresas com EBIT
+    não positivo (bancos) ou dados faltando saem. Ordena por score.
     """
-    total = peso_solidez + peso_qualidade
-    if total <= 0:
-        peso_solidez, peso_qualidade = 0.5, 0.5
-        total = 1.0
+    pesos = {**PESOS_PADRAO, **(pesos or {})}
 
     linhas = []
     for _, row in df.iterrows():
@@ -116,26 +134,36 @@ def rankear_qualidade(
             continue
 
         div_liq_ebit = (ev_ebit - p_ebit) if ev_ebit is not None else None
-        solidez = score_solidez(
-            div_liq_ebit, _num(row.get("div_liq_patrim")), _num(row.get("liquidez_corrente"))
-        )
-        qualidade = score_qualidade(
-            _num(row.get("roic")), _num(row.get("roe")), _num(row.get("margem_ebit"))
-        )
-        if solidez is None or qualidade is None:
+        div_liq_patrim = _num(row.get("div_liq_patrim"))
+        liquidez_corrente = _num(row.get("liquidez_corrente"))
+        roic = _num(row.get("roic"))
+        roe = _num(row.get("roe"))
+        margem = _num(row.get("margem_ebit"))
+        if None in (div_liq_ebit, div_liq_patrim, liquidez_corrente, roic, roe, margem):
             continue
 
-        score = round((peso_solidez * solidez + peso_qualidade * qualidade) / total, 2)
+        notas = {
+            "div_liq_ebit": nota_div_liq_ebit(div_liq_ebit),
+            "div_liq_patrim": nota_div_liq_patrim(div_liq_patrim),
+            "liquidez_corrente": nota_liquidez_corrente(liquidez_corrente),
+            "roic": _nota_pct(roic),
+            "roe": _nota_pct(roe),
+            "margem_ebit": nota_margem_ebit(margem),
+        }
+        score = _media_ponderada(notas, pesos, notas.keys())
+        if score is None:  # todos os pesos zerados
+            continue
+
         linhas.append(
             {
                 "ticker": str(row["ticker"]).upper(),
                 "score": score,
-                "solidez": solidez,
-                "qualidade": qualidade,
-                "div_liq_ebit": round(div_liq_ebit, 2) if div_liq_ebit is not None else None,
-                "roic_pct": round(_num(row.get("roic")) * 100, 1),
-                "roe_pct": round(_num(row.get("roe")) * 100, 1),
-                "margem_ebit_pct": round(_num(row.get("margem_ebit")) * 100, 1),
+                "solidez": _media_ponderada(notas, pesos, GRUPO_SOLIDEZ),
+                "qualidade": _media_ponderada(notas, pesos, GRUPO_QUALIDADE),
+                "div_liq_ebit": round(div_liq_ebit, 2),
+                "roic_pct": round(roic * 100, 1),
+                "roe_pct": round(roe * 100, 1),
+                "margem_ebit_pct": round(margem * 100, 1),
             }
         )
 
