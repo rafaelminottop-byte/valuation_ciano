@@ -44,6 +44,8 @@ class TestRankear(unittest.TestCase):
         return pd.DataFrame(
             {
                 "ticker": ["WEGE3", "PRIO3", "BANCO4"],
+                "preco_atual": [46.0, 52.96, 20.0],
+                "ebit_por_acao": [46.0 / 22.92, 52.96 / 12.28, 0.0],
                 "p_ebit": [22.92, 12.28, 0.0],
                 "ev_ebit": [22.53, 18.68, 0.0],
                 "div_liq_patrim": [-0.19, 0.91, 0.0],
@@ -74,17 +76,33 @@ class TestRankear(unittest.TestCase):
         self.assertLess(prio["solidez"], 4)  # muito alavancada -> solidez baixa
 
     def test_pesos_individuais_afetam_score(self):
-        # Zera os pesos de solidez -> score = pilar de qualidade
+        # Zera solidez e upside -> score = pilar de qualidade
         df = self._df()
         so_qualidade = rankear_qualidade(
             df,
             pesos={
                 "div_liq_ebit": 0, "div_liq_patrim": 0, "liquidez_corrente": 0,
-                "roic": 1, "roe": 1, "margem_ebit": 1,
+                "roic": 1, "roe": 1, "margem_ebit": 1, "upside": 0,
             },
         )
         prio = so_qualidade[so_qualidade["ticker"] == "PRIO3"].iloc[0]
         self.assertAlmostEqual(prio["score"], prio["qualidade"])
+
+    def test_upside_entra_no_score(self):
+        # Com peso só no upside, o score reflete o upside (PRIO barata pontua mais)
+        df = self._df()
+        rk = rankear_qualidade(
+            df,
+            pesos={
+                "div_liq_ebit": 0, "div_liq_patrim": 0, "liquidez_corrente": 0,
+                "roic": 0, "roe": 0, "margem_ebit": 0, "upside": 1,
+            },
+        )
+        self.assertIn("upside_pct", rk.columns)
+        prio = rk[rk["ticker"] == "PRIO3"].iloc[0]
+        wege = rk[rk["ticker"] == "WEGE3"].iloc[0]
+        # PRIO (barata, upside alto) pontua mais que WEG (cara) só por upside
+        self.assertGreaterEqual(prio["score"], wege["score"])
 
 
 if __name__ == "__main__":
