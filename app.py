@@ -590,6 +590,57 @@ def _aba_ranking() -> None:
     st.dataframe(exibir, use_container_width=True, height=560)
 
 
+def _aba_gatilhos() -> None:
+    import carteira as cart
+    from gatilhos import PERIODOS_PADRAO, TOLERANCIA_PADRAO, avaliar_gatilhos
+
+    st.caption(
+        "Avisa quando o preço chega perto da média móvel (padrão: 200 semanas — "
+        "MM200 no gráfico semanal). Histórico de preços via Yahoo Finance."
+    )
+    fonte = st.radio(
+        "Empresas a monitorar", ["Minha carteira", "Digitar lista"],
+        horizontal=True, label_visibility="collapsed",
+    )
+    if fonte == "Minha carteira":
+        tickers = cart.carregar_carteira()
+        if not tickers:
+            st.info("Sua carteira está vazia — adicione tickers na aba Carteira, ou use 'Digitar lista'.")
+            return
+        st.caption("Monitorando: " + ", ".join(tickers))
+    else:
+        txt = st.text_input("Tickers separados por espaço ou vírgula", value="WEGE3 PRIO3 VALE3")
+        tickers = [t for t in txt.replace(",", " ").split() if t]
+
+    c1, c2 = st.columns(2)
+    periodos = int(c1.number_input("Média (candles semanais)", value=PERIODOS_PADRAO, min_value=10, step=10))
+    tol = c2.number_input("Proximidade que dispara (±%)", value=TOLERANCIA_PADRAO, min_value=0.5, step=0.5)
+
+    if st.button("Verificar gatilhos", type="primary") and tickers:
+        with st.spinner("Baixando histórico e calculando as médias..."):
+            st.session_state.gatilhos = avaliar_gatilhos(tickers, periodos=periodos, tolerancia_pct=float(tol))
+
+    res = st.session_state.get("gatilhos")
+    if res is None or res.empty:
+        return
+
+    disparados = int((res["alerta"] == "🎯 na média").sum())
+    st.markdown(
+        f'<div class="ciano-label">Gatilhos — {disparados} na média (±{tol:.0f}%)</div>',
+        unsafe_allow_html=True,
+    )
+    exibir = res.rename(
+        columns={
+            "ticker": "Ticker",
+            "preco": "Preço (R$)",
+            "media": "Média (R$)",
+            "distancia_pct": "Distância (%)",
+            "alerta": "Gatilho",
+        }
+    ).set_index("Ticker")
+    st.dataframe(exibir, use_container_width=True)
+
+
 def main() -> None:
     st.set_page_config(page_title="Valuation Ciano", page_icon="📈", layout="wide")
     _injetar_css()
@@ -628,9 +679,9 @@ def main() -> None:
         )
         valores_cenarios[nome] = {"g1": g1, "g2": g2}
 
-    # --- Abas: empresa, screener, carteira e ranking ---
-    aba_empresa, aba_screener, aba_carteira, aba_ranking = st.tabs(
-        ["🔎 Empresa", "📊 Screener B3", "⭐ Carteira", "🏅 Ranking"]
+    # --- Abas: empresa, screener, carteira, ranking e gatilhos ---
+    aba_empresa, aba_screener, aba_carteira, aba_ranking, aba_gatilhos = st.tabs(
+        ["🔎 Empresa", "📊 Screener B3", "⭐ Carteira", "🏅 Ranking", "🔔 Gatilhos"]
     )
     with aba_empresa:
         _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
@@ -640,6 +691,8 @@ def main() -> None:
         _aba_carteira(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
     with aba_ranking:
         _aba_ranking()
+    with aba_gatilhos:
+        _aba_gatilhos()
 
 
 if __name__ == "__main__":
