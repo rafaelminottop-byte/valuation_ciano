@@ -32,7 +32,7 @@ HEADERS = {
 # O nome do cache tem uma versão: ao mudar as colunas produzidas (ex.: incluir
 # liquidez/crescimento), incremente CACHE_VERSAO para invalidar caches antigos.
 CACHE_DIR = Path(__file__).resolve().parent / ".cache"
-CACHE_VERSAO = 4
+CACHE_VERSAO = 5
 CACHE_FILE = CACHE_DIR / f"fundamentus_v{CACHE_VERSAO}.pkl"
 CACHE_TTL_SEGUNDOS = 6 * 60 * 60  # 6 horas
 
@@ -77,6 +77,23 @@ COLUNAS_UTEIS = {
     "Liq. Corr.": "liquidez_corrente",
 }
 
+# Seguradoras/resseguradoras: como os bancos, não têm um EBIT representativo (o
+# resultado é dominado por prêmios/sinistros e resultado financeiro). O P/EBIT
+# que o Fundamentus expõe é distorcido (ex.: PSSA3 aparece com P/EBIT = 1,0, o
+# que implicaria um EBIT/ação igual ao preço inteiro). Por isso forçamos o uso
+# do lucro líquido (Preço/P_L) como proxy do EBIT MESMO quando P/EBIT > 0 — o
+# que a regra dos bancos (P/EBIT = 0) não pegaria. Lista curada: todas as
+# seguradoras que EMITEM apólice na B3 (não inclui corretoras como WIZC3/APER3,
+# que têm EBIT operacional real). Se uma seguradora estiver em prejuízo (P/L < 0,
+# ex.: IRBR3), ela acaba barrada em buscar_dados_ticker — o que é o correto para
+# um modelo pensado para lucro positivo e crescente.
+TICKERS_FORCA_LUCRO = {
+    "PSSA3",  # Porto Seguro
+    "BBSE3",  # BB Seguridade
+    "CXSE3",  # Caixa Seguridade
+    "IRBR3",  # IRB Brasil RE (resseguradora)
+}
+
 
 def _processar_tabela(df: pd.DataFrame) -> pd.DataFrame:
     """Renomeia colunas, converte números e deriva as colunas do valuation.
@@ -106,9 +123,12 @@ def _processar_tabela(df: pd.DataFrame) -> pd.DataFrame:
     #  - Empresas normais: EBIT por ação = Preço / P_EBIT.
     #  - Bancos (não têm EBIT, P/EBIT = 0): usam o LUCRO líquido por ação
     #    (Preço / P_L) como se fosse o EBIT, rodando o mesmo passo a passo.
+    #  - Seguradoras (TICKERS_FORCA_LUCRO): usam o lucro MESMO com P/EBIT > 0,
+    #    porque o EBIT delas no Fundamentus é distorcido.
     p_ebit = df["p_ebit"]
     p_l = df["p_l"] if "p_l" in df.columns else pd.Series(float("nan"), index=df.index)
-    usa_ebit = p_ebit > 0
+    forca_lucro = df["ticker"].astype(str).str.upper().isin(TICKERS_FORCA_LUCRO)
+    usa_ebit = (p_ebit > 0) & ~forca_lucro
     usa_lucro = (~usa_ebit) & (p_l > 0)
 
     fluxo = pd.Series(float("nan"), index=df.index)

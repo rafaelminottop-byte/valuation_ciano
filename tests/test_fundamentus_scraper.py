@@ -115,6 +115,16 @@ class TestBuscarDadosTicker(unittest.TestCase):
         self.assertEqual(dados["base_calculo"], "EBIT")
         self.assertAlmostEqual(dados["ebit_atual"], 46.0 / 23.0)
 
+    def test_seguradora_forca_lucro_mesmo_com_ebit(self):
+        # Seguradora da lista curada: mesmo com P/EBIT > 0 (mas distorcido),
+        # usa o lucro líquido (Preço/P_L). Ex.: PSSA3 tem P/EBIT = 1,0 no site.
+        df = _processar_tabela(
+            pd.DataFrame({"Papel": ["PSSA3"], "Cotação": [53.4], "P/L": [9.38], "P/EBIT": [1.0]})
+        )
+        dados = buscar_dados_ticker("PSSA3", df=df)
+        self.assertEqual(dados["base_calculo"], "Lucro")
+        self.assertAlmostEqual(dados["ebit_atual"], 53.4 / 9.38)
+
 
 if __name__ == "__main__":
     unittest.main()
