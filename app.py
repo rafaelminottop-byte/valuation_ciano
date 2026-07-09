@@ -557,13 +557,30 @@ def _aba_carteira(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
         st.dataframe(resultado.set_index("Ticker"), use_container_width=True)
 
 
+def _precos_candidatos_ranking(df, liquidez_minima: float) -> dict:
+    """{ticker: preço} das empresas que entram no ranking (P/EBIT > 0 e líquidas).
+
+    Espelha os filtros de rankear_qualidade para só buscar dividendos de quem de
+    fato será ranqueado (evita bater no Yahoo Finance para o mercado inteiro).
+    """
+    p_ebit = pd.to_numeric(df.get("p_ebit"), errors="coerce")
+    preco = pd.to_numeric(df.get("preco_atual"), errors="coerce")
+    liquidez = pd.to_numeric(df.get("liquidez"), errors="coerce")
+    ok = (p_ebit > 0) & (preco > 0)
+    if liquidez_minima > 0:
+        ok &= liquidez >= liquidez_minima
+    cand = df[ok]
+    return dict(zip(cand["ticker"].astype(str).str.upper(), preco[ok]))
+
+
 def _aba_ranking(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) -> None:
     from fundamentus_scraper import baixar_tabela_fundamentus
     from ranking import PESOS_PADRAO, rankear_qualidade
 
     st.caption(
         "Ranking combinado: solidez financeira (Dív.Líq/EBIT, Dív.Líq/Patrim., "
-        "Liquidez Corr.) + qualidade (ROIC, ROE, Margem EBIT) + upside do valuation. "
+        "Liquidez Corr.) + qualidade (ROIC, ROE, Margem EBIT) + upside do valuation "
+        "+ dividendos (DY médio dos últimos 3 anos). "
         "Bancos e empresas sem EBIT positivo ficam de fora."
     )
     c1, c2 = st.columns(2)
@@ -583,12 +600,16 @@ def _aba_ranking(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
         p_roic = b1.number_input("ROIC", value=PESOS_PADRAO["roic"], min_value=0.0, step=5.0, key="w_roic")
         p_roe = b2.number_input("ROE", value=PESOS_PADRAO["roe"], min_value=0.0, step=5.0, key="w_roe")
         p_mrg = b3.number_input("Margem EBIT", value=PESOS_PADRAO["margem_ebit"], min_value=0.0, step=5.0, key="w_mrg")
-        st.caption("Valuation")
-        d1, _d2, _d3 = st.columns(3)
+        st.caption("Valuation e proventos")
+        d1, d2, _d3 = st.columns(3)
         p_up = d1.number_input("Upside", value=PESOS_PADRAO["upside"], min_value=0.0, step=5.0, key="w_up")
+        p_div = d2.number_input(
+            "Dividendos (DY 3a)", value=PESOS_PADRAO["dividendos"], min_value=0.0, step=5.0, key="w_div"
+        )
         pesos = {
             "div_liq_ebit": p_de, "div_liq_patrim": p_dp, "liquidez_corrente": p_lc,
             "roic": p_roic, "roe": p_roe, "margem_ebit": p_mrg, "upside": p_up,
+            "dividendos": p_div,
         }
         soma = sum(pesos.values())
         if soma <= 0:
@@ -597,17 +618,36 @@ def _aba_ranking(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
             st.caption(
                 f"Solidez ≈ {round(100 * (p_de + p_dp + p_lc) / soma)}% · "
                 f"Qualidade ≈ {round(100 * (p_roic + p_roe + p_mrg) / soma)}% · "
-                f"Upside ≈ {round(100 * p_up / soma)}% do score"
+                f"Upside ≈ {round(100 * p_up / soma)}% · "
+                f"Dividendos ≈ {round(100 * p_div / soma)}% do score"
+            )
+        if p_div > 0:
+            st.caption(
+                "ℹ️ Com peso em Dividendos, a 1ª execução busca o histórico de "
+                "proventos no Yahoo Finance (pode demorar); depois fica em cache (24h)."
             )
 
     if st.button("Rodar ranking", type="primary") and sum(pesos.values()) > 0:
         with st.spinner("Avaliando solidez, qualidade e upside de todas as ações..."):
             df = baixar_tabela_fundamentus(usar_cache=not atualizar)
+
+        dividendos = None
+        if pesos.get("dividendos", 0) > 0:
+            precos = _precos_candidatos_ranking(df, float(liq_min))
+            with st.spinner(
+                f"Buscando dividendos (3 anos) de {len(precos)} empresas no Yahoo Finance..."
+            ):
+                from dividendos import buscar_dy_medio_3anos
+
+                dividendos = buscar_dy_medio_3anos(precos, usar_cache=not atualizar)
+
+        with st.spinner("Montando o ranking..."):
             st.session_state.ranking = rankear_qualidade(
                 df, pesos=pesos, liquidez_minima=float(liq_min),
                 tma=tma, retorno_alvo=retorno_alvo,
                 cenarios=montar_cenarios(valores_cenarios),
                 anos_fase_1=anos_fase_1, anos_fase_2=anos_fase_2,
+                dividendos=dividendos,
             )
 
     ranking = st.session_state.get("ranking")
@@ -628,6 +668,7 @@ def _aba_ranking(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
             "solidez": "Solidez",
             "qualidade": "Qualidade",
             "upside_pct": "Upside (%)",
+            "dy_medio_3a_pct": "Div. 3a (%)",
             "div_liq_ebit": "Dív.Líq/EBIT",
             "roic_pct": "ROIC (%)",
             "roe_pct": "ROE (%)",

@@ -97,8 +97,19 @@ def nota_upside(upside_pct: float) -> float:
     return 0.0
 
 
+def nota_dividendos(dy_frac) -> float:
+    """Nota para o DY médio de 3 anos (recebe fração; None ou <=0 -> nota 0)."""
+    if dy_frac is None or dy_frac <= 0:
+        return 0.0
+    p = dy_frac * 100
+    for limite, nota in [(8, 10), (6, 8), (4, 6), (2, 4)]:
+        if p >= limite:
+            return float(nota)
+    return 2.0  # paga algo, mas < 2%
+
+
 # Peso relativo de cada categoria no score final (ajustável pelo usuário).
-# Grupos: Solidez, Qualidade e Upside (valuation). Padrão dá ~1/3 para cada.
+# Grupos: Solidez, Qualidade, Upside (valuation) e Dividendos (DY médio 3 anos).
 PESOS_PADRAO = {
     "div_liq_ebit": 30.0,
     "div_liq_patrim": 10.0,
@@ -107,6 +118,7 @@ PESOS_PADRAO = {
     "roe": 15.0,
     "margem_ebit": 15.0,
     "upside": 50.0,
+    "dividendos": 20.0,
 }
 GRUPO_SOLIDEZ = ("div_liq_ebit", "div_liq_patrim", "liquidez_corrente")
 GRUPO_QUALIDADE = ("roic", "roe", "margem_ebit")
@@ -128,18 +140,22 @@ def rankear_qualidade(
     cenarios: dict = None,
     anos_fase_1: int = None,
     anos_fase_2: int = None,
+    dividendos: dict = None,
 ) -> pd.DataFrame:
     """Calcula as notas de cada categoria e o score (média ponderada por ``pesos``).
 
     ``pesos`` mapeia cada categoria (div_liq_ebit, div_liq_patrim,
-    liquidez_corrente, roic, roe, margem_ebit, upside) a um peso relativo;
-    ausentes usam PESOS_PADRAO. O ``upside`` vem do valuation (cenário
-    intermediário), calculado com as premissas passadas. Exige as colunas do
-    Fundamentus processadas. Empresas com EBIT não positivo (bancos) ou dados
-    faltando saem. Ordena por score.
+    liquidez_corrente, roic, roe, margem_ebit, upside, dividendos) a um peso
+    relativo; ausentes usam PESOS_PADRAO. O ``upside`` vem do valuation (cenário
+    intermediário), calculado com as premissas passadas. ``dividendos`` é um
+    dict {ticker: DY médio 3a em fração} (ex.: de dividendos.buscar_dy_medio_3anos);
+    tickers sem histórico/ausentes recebem nota 0 nessa categoria. Exige as
+    colunas do Fundamentus processadas. Empresas com EBIT não positivo (bancos)
+    ou dados faltando saem. Ordena por score.
     """
     pesos = {**PESOS_PADRAO, **(pesos or {})}
     cenarios = cenarios if cenarios is not None else CENARIOS_PADRAO
+    divs = {str(k).upper(): v for k, v in (dividendos or {}).items()}
 
     linhas = []
     for _, row in df.iterrows():
@@ -180,6 +196,7 @@ def rankear_qualidade(
         ref = "intermediario" if "intermediario" in res["resultados"] else nomes[len(nomes) // 2]
         upside_pct = res["resultados"][ref].upside_percentual
 
+        dy_3a = divs.get(str(row["ticker"]).upper())
         notas = {
             "div_liq_ebit": nota_div_liq_ebit(div_liq_ebit),
             "div_liq_patrim": nota_div_liq_patrim(div_liq_patrim),
@@ -188,6 +205,7 @@ def rankear_qualidade(
             "roe": _nota_pct(roe),
             "margem_ebit": nota_margem_ebit(margem),
             "upside": nota_upside(upside_pct),
+            "dividendos": nota_dividendos(dy_3a),
         }
         score = _media_ponderada(notas, pesos, notas.keys())
         if score is None:  # todos os pesos zerados
@@ -200,6 +218,7 @@ def rankear_qualidade(
                 "solidez": _media_ponderada(notas, pesos, GRUPO_SOLIDEZ),
                 "qualidade": _media_ponderada(notas, pesos, GRUPO_QUALIDADE),
                 "upside_pct": round(upside_pct, 1),
+                "dy_medio_3a_pct": round(dy_3a * 100, 2) if dy_3a is not None else None,
                 "div_liq_ebit": round(div_liq_ebit, 2),
                 "roic_pct": round(roic * 100, 1),
                 "roe_pct": round(roe * 100, 1),
