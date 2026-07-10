@@ -8,6 +8,8 @@ Replica exatamente as fórmulas de valuation_ciano_config_1.json:
 from dataclasses import dataclass
 
 
+# Mercado brasileiro (B3): a TMA é o retorno anual exigido em REAIS, ancorado no
+# custo de oportunidade local. ("ipca" é informativo — não entra em nenhuma fórmula.)
 PREMISSAS_PADRAO = {
     "tma": 0.14,
     "ipca": 0.06,
@@ -15,6 +17,12 @@ PREMISSAS_PADRAO = {
     "anos_fase_2": 10,
     "retorno_alvo_pl": 0.06,
 }
+
+# Mercado americano: o fluxo da empresa é em DÓLAR. Descontá-lo à TMA brasileira
+# (14%) exigiria um retorno que quase nenhuma companhia dos EUA entrega — o veredito
+# falaria mais sobre a Selic do que sobre a empresa. A TMA em dólar é 10% a.a.
+# Os demais parâmetros seguem o modelo brasileiro.
+PREMISSAS_EUA = {**PREMISSAS_PADRAO, "tma": 0.10}
 
 CENARIOS_PADRAO = {
     "pessimista": {"crescimento_fase_1": 0.05, "crescimento_fase_2": 0.00},

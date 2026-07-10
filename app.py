@@ -678,6 +678,76 @@ def _aba_ranking(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
     st.dataframe(exibir, use_container_width=True, height=560)
 
 
+def _aba_eua() -> None:
+    import mercado_eua as meua
+    from valuation_engine import PREMISSAS_EUA
+
+    universo = meua.carregar_universo()
+    st.caption(
+        f"Valuation de {len(universo)} empresas americanas (metodologia Ciano), com a "
+        f"**TMA em dólar** ({PREMISSAS_EUA['tma']*100:.0f}% a.a. — o fluxo é em USD). "
+        "Bancos usam o lucro líquido no lugar do EBIT. Os filtros abaixo removem os "
+        "*upsides-fantasma*: empresas muito alavancadas (o EBIT vai pagar juros, não o "
+        "acionista) e múltiplos anômalos (P/EBIT < 3)."
+    )
+
+    c1, c2, c3 = st.columns(3)
+    dl_max = c1.number_input(
+        "Dív.Líq/EBIT máx.", value=meua.DIV_LIQ_EBIT_MAX_PADRAO, min_value=0.0, step=0.5, key="eua_dl",
+        help="0 = sem filtro de alavancagem. Bancos passam sempre.",
+    )
+    pebit_min = c2.number_input(
+        "P/EBIT mín.", value=meua.P_EBIT_MINIMO_PADRAO, min_value=0.0, step=0.5, key="eua_pe",
+        help="Exclui múltiplos anômalos que geram upside irreal.",
+    )
+    tma_eua = _pct_para_fracao(
+        c3.number_input("TMA em dólar (%)", value=PREMISSAS_EUA["tma"] * 100, min_value=0.0, step=0.5, key="eua_tma")
+    )
+    c4, c5 = st.columns(2)
+    so_crescente = c4.checkbox("Só EBIT crescente", value=False, key="eua_cresc")
+    atualizar = c5.checkbox("Atualizar dados (ignora cache)", value=False, key="eua_upd")
+
+    if st.button("Rodar valuation EUA", type="primary", key="eua_run"):
+        barra = st.progress(0.0, text="Buscando dados no Yahoo Finance...")
+
+        def _prog(feitos, total):
+            barra.progress(feitos / total, text=f"Buscando dados... {feitos}/{total}")
+
+        df = meua.buscar_dados_eua(usar_cache=not atualizar, progresso=_prog)
+        barra.empty()
+        if df.empty:
+            st.error("Não foi possível obter dados. Tente novamente (limite do Yahoo).")
+            return
+        st.session_state.eua = meua.rankear_eua(
+            df, div_liq_ebit_max=dl_max, p_ebit_minimo=pebit_min,
+            apenas_crescente=so_crescente, tma=tma_eua,
+        )
+
+    ranking = st.session_state.get("eua")
+    if ranking is None:
+        st.info("Clique em **Rodar valuation EUA**. A 1ª vez baixa os demonstrativos (alguns minutos); depois fica em cache (12h).")
+        return
+    if ranking.empty:
+        st.info("Nenhuma empresa passou nos filtros.")
+        return
+
+    n_desc = int((ranking["veredito"] == "desconto").sum())
+    st.markdown(
+        f'<div class="ciano-label">EUA — {len(ranking)} empresas · {n_desc} com desconto</div>',
+        unsafe_allow_html=True,
+    )
+    exibir = ranking.rename(
+        columns={
+            "ticker": "Ticker", "nome": "Empresa", "setor": "Setor",
+            "upside_pct": "Upside (%)", "veredito": "Veredito", "preco": "Preço US$",
+            "justo": "Justo US$", "div_liq_ebit": "Dív.Líq/EBIT", "p_ebit": "P/EBIT",
+            "dy_medio_3a_pct": "Div. 3a (%)", "base": "Base", "citacoes": "Convicção",
+        }
+    ).drop(columns=["crescente"]).set_index("Ticker")
+    st.dataframe(exibir, use_container_width=True, height=560)
+    st.caption("Convicção = nº de posts que citaram a empresa (proxy de consenso de mercado, do screening de origem).")
+
+
 def _aba_gatilhos() -> None:
     import carteira as cart
     import listas as lst
@@ -776,9 +846,9 @@ def main() -> None:
         )
         valores_cenarios[nome] = {"g1": g1, "g2": g2}
 
-    # --- Abas: empresa, screener, carteira, ranking e gatilhos ---
-    aba_empresa, aba_screener, aba_carteira, aba_ranking, aba_gatilhos = st.tabs(
-        ["🔎 Empresa", "📊 Screener B3", "⭐ Carteira", "🏅 Ranking", "🔔 Gatilhos"]
+    # --- Abas: empresa, screener, carteira, ranking, EUA e gatilhos ---
+    aba_empresa, aba_screener, aba_carteira, aba_ranking, aba_eua, aba_gatilhos = st.tabs(
+        ["🔎 Empresa", "📊 Screener B3", "⭐ Carteira", "🏅 Ranking", "🇺🇸 EUA", "🔔 Gatilhos"]
     )
     with aba_empresa:
         _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
@@ -788,6 +858,8 @@ def main() -> None:
         _aba_carteira(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
     with aba_ranking:
         _aba_ranking(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
+    with aba_eua:
+        _aba_eua()
     with aba_gatilhos:
         _aba_gatilhos()
 
