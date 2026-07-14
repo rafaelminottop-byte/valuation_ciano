@@ -11,7 +11,28 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from valuation_engine import calcular_valuation_completo
+from valuation_engine import PREMISSAS_EUA, PREMISSAS_PADRAO, calcular_valuation_completo
+
+
+class TestPremissasPorMercado(unittest.TestCase):
+    def test_tma_brasileira_e_americana(self):
+        # B3: TMA em reais. EUA: TMA em dólar (10% a.a.).
+        self.assertAlmostEqual(PREMISSAS_PADRAO["tma"], 0.14)
+        self.assertAlmostEqual(PREMISSAS_EUA["tma"], 0.10)
+
+    def test_eua_herda_o_resto_das_premissas(self):
+        for chave in ("anos_fase_1", "anos_fase_2", "retorno_alvo_pl"):
+            self.assertEqual(PREMISSAS_EUA[chave], PREMISSAS_PADRAO[chave])
+
+    def test_tma_menor_gera_valuation_maior(self):
+        # Descontar a uma taxa menor -> valor presente maior (mesma empresa).
+        args = dict(ticker="X", ebit_atual=10.0, acoes_em_circulacao=1.0, preco_atual=100.0)
+        br = calcular_valuation_completo(**args, tma=PREMISSAS_PADRAO["tma"])
+        eua = calcular_valuation_completo(**args, tma=PREMISSAS_EUA["tma"])
+        self.assertGreater(
+            eua["resultados"]["intermediario"].valuation_final_por_acao,
+            br["resultados"]["intermediario"].valuation_final_por_acao,
+        )
 
 
 class TestValuationEngine(unittest.TestCase):

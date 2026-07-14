@@ -1229,27 +1229,23 @@
   "VIVA3": {
     "ticker": "VIVA3",
     "nome": "Vivara",
-    "setor": "Varejo de Joias e Acessórios",
-    "tese": "A Vivara é a maior rede de joias e acessórios do Brasil, operando em um mercado com alto poder de fidelização e ticket médio crescente. A tese combina crescimento de longo prazo do consumo de joias no Brasil — ainda muito baixo em relação a outros mercados — com a capacidade da empresa de expandir sua rede, aumentar a participação da Life (marca de acessórios mais acessível) e crescer no e-commerce.",
-    "atividade": "Varejo de joias, relógios e acessórios com mais de 350 lojas no Brasil, operando as marcas Vivara e Life. Também tem operação própria de ourivesaria.",
+    "setor": "Joalheria Premium",
+    "tese": "Vivara é a líder consolidada de joalheria premium no Brasil, com marca forte, ROIC de 23% e baixíssima alavancagem. O trimestre fraco foi majoritariamente contábil/não-recorrente (subvenção fiscal, redução intencional de produção), não uma deterioração da demanda — que segue resiliente. A queda de ~40% da ação em 2026 pode representar desconto excessivo para um problema temporário.",
+    "atividade": "Varejo de joalheria premium (marcas Vivara e Life).",
     "pontos_fortes": [
-      "Líder isolada no mercado de joias no Brasil com mais de 350 lojas",
-      "marca premium com alto reconhecimento",
-      "verticalização com ourivesaria própria garantindo margem",
-      "fidelização de clientes com alto LTV",
-      "moat de localização em shoppings premium",
-      "Expansão da rede de lojas (abertura de Life em novos shoppings)",
-      "crescimento do e-commerce de joias",
-      "aumento do ticket médio com joias de maior valor",
-      "expansão para América Latina",
-      "datas comemorativas como motor de vendas"
+      "Guidance de expansão acelerada para 2026 (55-65 novas lojas), com foco na marca Life.",
+      "Consenso de mercado projeta crescimento robusto de receita, Ebitda e lucro para 2026.",
+      "Normalização do efeito de subvenção/produção do 1T26 deve desaparecer nos próximos trimestres.",
+      "Fluxo de caixa operacional revertendo para positivo via otimização de estoque.",
+      "Valuation comprimido após queda de 40%, já embutindo margem de segurança."
     ],
     "pontos_fracos": [
-      "Concentração em um único nicho (joias) torna a empresa vulnerável a crises de consumo",
-      "forte sazonalidade com dependência de datas comemorativas",
-      "concorrência de joalherias internacionais entrando no Brasil",
-      "custo de ouro e pedras preciosas como risco de insumos",
-      "expansão internacional ainda incipiente com resultado incerto"
+      "Histórico de governança turbulento com alterações recorrentes de comando.",
+      "Dúvida central do mercado é sobre sustentabilidade da rentabilidade histórica excepcional.",
+      "Exposição a preço de ouro e prata, fora do controle da gestão.",
+      "Resultado financeiro em deterioração relevante no trimestre.",
+      "Margem Ebitda reportada em queda, gerando reação de -10% no pregão.",
+      "Dividend yield historicamente baixo para o setor — tese depende de valorização de capital."
     ]
   },
   "EZTC3": {
@@ -1628,6 +1624,533 @@
       "modelo de negócio menos conhecido pelos investidores brasileiros",
       "crescimento em novos países requer tempo e capital",
       "risco de obsolescência tecnológica dos serviços oferecidos"
+    ]
+  },
+  "WIZC3": {
+    "ticker": "WIZC3",
+    "nome": "Wiz Soluções e Corretagem de Seguros",
+    "setor": "Corretora de Seguros / Bancasseguro",
+    "tese": "Wiz é uma máquina de geração de caixa asset-light: opera como distribuidora de seguros e produtos financeiros via parcerias bancárias e correspondentes, sem necessidade de capital intensivo, com ROIC muito acima do custo de capital e caixa líquido positivo. O modelo de negócio (comissões recorrentes sobre apólices + participações societárias em coligadas de crédito/consórcio) gera margem EBIT de 50%, rara no universo doméstico. O dividend yield de 7,6% ao ano com histórico consistente de distribuição reforça o caráter de compounder de nicho, mais do que empresa de crescimento.",
+    "atividade": "Distribuição de seguros e produtos financeiros via bancasseguro e correspondentes, com participações societárias em coligadas de crédito e consórcio (Omni Corretora, Promotiva).",
+    "pontos_fortes": [
+      "Redução estrutural de despesas financeiras: queda nas despesas de AVP e efeito cambial positivo em derivativos apontam para resultado financeiro menos deficitário à frente.",
+      "Novos ciclos de comissionamento via coligadas (Omni, Promotiva) contribuindo por equivalência patrimonial, sem consumir capital da controladora.",
+      "Redução de dívida líquida (-32,5% no 3T25) aumenta espaço para dividendos ou M&A oportunista.",
+      "ROIC de 35% negociando a múltiplo historicamente deprimido — potencial de rerating.",
+      "Redução de 20% no turnover de colaboradores sinaliza ganho de eficiência em SG&A."
+    ],
+    "pontos_fracos": [
+      "Upside indicado pelo screening (P/EBIT) é artefato de múltiplo em negócio asset-light com margem de 50% — precisa validar via FCF/dividend yield, não via EBIT puro.",
+      "Dependência de parcerias bancárias para distribuição — histórico de perda de contratos relevantes (ex-Caixa/CEF) já derrubou o papel no passado.",
+      "Ação em tendência de queda de longo prazo (-40,81% em 5 anos) — risco real de value trap.",
+      "Mudanças recentes no conselho (ex-executivos ligados a fundos de pensão) merecem acompanhamento quanto a estratégia e alocação de capital.",
+      "Resultado financeiro ainda negativo, mesmo com melhora.",
+      "Baixa liquidez relativa (market cap ~R$ 1,3-1,4 bi) limita entrada/saída de posições maiores."
+    ]
+  },
+  "CURY3": {
+    "ticker": "CURY3",
+    "nome": "Construtora Cury",
+    "setor": "Incorporação Imobiliária (MCMV e Renda Média)",
+    "tese": "Cury é uma das incorporadoras mais eficientes do país no segmento de baixa/média renda, combinando ROE de ~70-80%, geração de caixa recorrente (28 trimestres seguidos) e ciclo de vendas muito rápido, o que permite reciclar capital com velocidade incomum no setor. O tailwind estrutural do MCMV, somado à disciplina operacional, sustenta a tese de compounder dentro de um setor historicamente destruidor de capital.",
+    "atividade": "Incorporação e construção residencial, com foco em Minha Casa Minha Vida e renda média, concentrada em São Paulo e Rio de Janeiro.",
+    "pontos_fortes": [
+      "Ajustes recentes no MCMV (aumento de teto de renda e financiamento) ampliam público endereçável.",
+      "Velocidade de vendas em alta e estoque jovem (72% lançado há menos de 1 ano) reduz risco de distratos.",
+      "Ticket médio subindo sem perda de margem bruta (39%), mostrando poder de repasse.",
+      "Geração de caixa consistente permitindo distribuição elevada mesmo após dividendos recentes.",
+      "Expansão de lançamentos e histórico de ganho de market share."
+    ],
+    "pontos_fracos": [
+      "Dividend yield elevado (15,9% UDM) é não recorrente — inflado por antecipação de proventos e não deve se repetir em 2026.",
+      "Ação já performou muito e ficou abaixo do Ibovespa em 12 meses após forte valorização anterior.",
+      "Concentração geográfica em São Paulo e Rio expõe a choques regionais de demanda ou regulatórios.",
+      "Sensibilidade estrutural do setor a juros via custo de financiamento do comprador final.",
+      "Despesas administrativas cresceram 28,8% no trimestre, acima do histórico — vale monitorar recorrência.",
+      "Sucessão na diretoria (Fábio Cury para presidência do Conselho) carrega risco de execução na transição."
+    ]
+  },
+  "LREN3": {
+    "ticker": "LREN3",
+    "nome": "Lojas Renner",
+    "setor": "Varejo de Moda",
+    "tese": "Renner é a varejista de moda mais eficiente do Brasil, com margem bruta recorde, disciplina de estoque, avanço digital e a Realize contribuindo cada vez mais para o resultado. A tese não é de crescimento acelerado de vendas (SSS abaixo dos pares), e sim de expansão de rentabilidade e geração de caixa — a companhia oferece o maior FCF yield entre as varejistas de vestuário, com plano de distribuir até 80% do lucro dos próximos 5 anos.",
+    "atividade": "Varejo de moda (vestuário, calçados, acessórios) com operação digital e financeira (Realize) integrada.",
+    "pontos_fortes": [
+      "Comparação mais fácil no 2S26 favorece o crescimento de SSS reportado.",
+      "Normalização pós-transição do centro de distribuição do Rio, efeito não recorrente já encerrado.",
+      "Iniciativas de IA no omnichannel (provador virtual, maior visibilidade de estoque) podem sustentar tráfego e conversão.",
+      "Múltiplo relativo mais atrativo após queda de 21% em 12 meses mesmo com lucro recorde.",
+      "Realize como motor de resultado adicional sobre o capital."
+    ],
+    "pontos_fracos": [
+      "Crescimento de vendas mesmas lojas estruturalmente abaixo dos pares (C&A, Riachuelo).",
+      "Reação negativa do mercado ao resultado, mesmo com lucro recorde, sugerindo que o mercado já precifica boa parte da eficiência operacional.",
+      "Resultado financeiro piorando, com caixa líquida encolhendo no trimestre.",
+      "SG&A mais elevado à frente por ajustes ligados a nova legislação trabalhista.",
+      "Múltiplo mais caro que os pares — tese depende de execução consistente sem margem de erro.",
+      "Sensibilidade a clima/sazonalidade, fator fora do controle da gestão."
+    ]
+  },
+  "PSSA3": {
+    "ticker": "PSSA3",
+    "nome": "Porto (ex-Porto Seguro)",
+    "setor": "Seguros / Conglomerado Financeiro",
+    "tese": "Porto deixou de ser apenas uma seguradora de auto para se tornar um conglomerado diversificado com ROE estrutural acima de 20-25%, menos dependente do ciclo de sinistralidade de Auto e cada vez mais puxado por Saúde, Bank e Vida. A resiliência do resultado em cinco trimestres consecutivos de crescimento de dois dígitos, mesmo com Auto crescendo pouco, reforça a tese de diversificação bem-sucedida.",
+    "atividade": "Seguros (Auto, Vida, Residencial), Saúde, Bank (crédito, consórcio) e Serviços, com distribuição via parceria exclusiva com o Itaú.",
+    "pontos_fortes": [
+      "Guidance reiterado com espaço de upside, incluindo queda de alíquota efetiva de tributos.",
+      "Consórcio e Bank em forte expansão, segmentos de menor intensidade de capital e alto crescimento.",
+      "Sinistralidade em melhora estrutural, sugerindo disciplina de subscrição sustentável.",
+      "Diversificação de vidas em Saúde amplia base recorrente de receita.",
+      "Distribuição consistente de proventos (JCP)."
+    ],
+    "pontos_fracos": [
+      "Resultado financeiro em queda, pressionado pela rolagem de títulos a taxas mais atrativas.",
+      "Perdas de crédito subindo 44,3% a/a, sinal de atenção na expansão do Porto Bank.",
+      "Crescimento fraco no núcleo histórico (Auto), tese cada vez mais dependente de verticais novas e menos testadas.",
+      "Parte do salto no lucro contábil veio de efeito tributário não recorrente (incorporação da ISAR).",
+      "ROE estrutural elevado já reconhecido pelo mercado — parte do upside já capturada.",
+      "Dependência de parceria exclusiva de distribuição com o Itaú."
+    ]
+  },
+  "VTRU3": {
+    "ticker": "VTRU3",
+    "nome": "Vitru Educação",
+    "setor": "Educação Superior (EAD)",
+    "tese": "Vitru é uma das poucas do setor educacional entregando crescimento sólido e consistente em ambiente de dificuldade para vários pares, com expansão de ticket médio, disciplina em provisão para devedores duvidosos e ganhos fiscais estruturais da incorporação da UniCesumar. O follow-on recente aumenta liquidez do papel e reforça o balanço para investir e pré-pagar dívida mais cara.",
+    "atividade": "Educação superior a distância e semipresencial (marcas UniCesumar e Vitru).",
+    "pontos_fortes": [
+      "Amortização fiscal da mais-valia da UniCesumar (~R$ 1,9 bi) gera benefício tributário estrutural nos próximos anos.",
+      "Aumento de liquidez pós-follow-on deve permitir melhor precificação do papel.",
+      "Alavancagem em queda após captação permite pré-pagar dívidas mais caras.",
+      "Possível início de política regular de dividendos.",
+      "Ticket médio em alta mesmo com concorrência pressionada."
+    ],
+    "pontos_fracos": [
+      "Risco regulatório para 2027: nova regulamentação do ensino superior pode exigir mudanças curriculares que pressionem matrículas semipresenciais (44% da receita).",
+      "Provisão para devedores em nível artificialmente baixo, com normalização esperada nos próximos trimestres.",
+      "Despesas financeiras crescendo mais que receitas financeiras, piorando o resultado financeiro líquido.",
+      "Redução da capilaridade física (queda de 7% no número de polos).",
+      "Histórico de baixa liquidez e complexidade societária (ex-Nasdaq) mesmo pós-follow-on."
+    ]
+  },
+  "MDNE3": {
+    "ticker": "MDNE3",
+    "nome": "Moura Dubeux Engenharia",
+    "setor": "Incorporação Imobiliária (Nordeste)",
+    "tese": "Moura Dubeux é a líder consolidada de incorporação no Nordeste, com modelo de condomínio entregando ROE de ~27%, balanço extremamente desalavancado pós-follow-on, e agora expandindo para o segmento econômico via parceria com a Direcional — tudo isso negociando a um dos múltiplos mais baratos do setor imobiliário.",
+    "atividade": "Incorporação imobiliária de médio/alto padrão no Nordeste, com nova frente no MCMV via joint venture (marca Ún1ca) com a Direcional.",
+    "pontos_fortes": [
+      "Expansão para o MCMV via Ún1ca/Direcional diversifica exposição para além de média/alta renda.",
+      "Follow-on reforçou o balanço, deixando dívida líquida em apenas 4% do PL.",
+      "Reversão de geração de caixa na prévia do 2T26.",
+      "Valuation muito descontado frente a pares (Cury, EZTEC, Direcional).",
+      "VSO resiliente mesmo com desaceleração natural de lançamentos."
+    ],
+    "pontos_fracos": [
+      "Reação do mercado ao resultado foi negativa (ação caiu forte no dia), sinal de desconfiança sobre recorrência do lucro.",
+      "Parte relevante do salto de margem veio de reconhecimento de receita de urbanização/comercialização de terrenos, não operação pura.",
+      "Consumo de caixa elevado nos últimos 12 meses, excluindo dividendos e follow-on.",
+      "Participação de apenas 35% nos projetos da JV com Direcional, diluindo captura de resultado.",
+      "Desaceleração de lançamentos já visível no 2T26 (-45,7% a/a).",
+      "Concentração geográfica no Nordeste."
+    ]
+  },
+  "VLID3": {
+    "ticker": "VLID3",
+    "nome": "Valid Soluções",
+    "setor": "Identificação Segura / Meios de Pagamento",
+    "tese": "Valid é uma transformação digital ainda no meio do caminho: negócio legado de identificação física em declínio estrutural, parcialmente compensado por novos negócios digitais que ainda não têm escala suficiente para virar motor de crescimento. Balanço extremamente sólido (caixa líquido positivo) e ação negociando com desconto após queda de ~25% em 12 meses.",
+    "atividade": "Identificação segura (CNH, documentos), meios de pagamento, certificação digital e soluções para Governo Digital.",
+    "pontos_fortes": [
+      "MP 1.327 (CNH exclusivamente digital) pode abrir novas avenidas de monetização digital.",
+      "Expansão do Governo Digital, já operando em cinco estados.",
+      "Balanço com caixa líquido positivo dá flexibilidade para M&A ou recompra.",
+      "Pré-pagamento de dívida cara já em curso.",
+      "Posição relevante da Alaska Investimentos (45,13%) pode ser catalisador de mudanças estratégicas."
+    ],
+    "pontos_fracos": [
+      "Administração classificou o 1T26 como o trimestre mais pressionado desde a pandemia — não é leitura pessimista de analista, é reconhecimento da própria empresa.",
+      "Qualidade do lucro comprometida por créditos tributários não recorrentes (~R$ 29 milhões).",
+      "Compressão relevante de margem bruta, com reação de queda de mais de 10% da ação no pregão.",
+      "Pressão competitiva em Pay e Mobile, além de câmbio desfavorável.",
+      "Novos Negócios (Governo Digital, Segurança, Mobile) ainda sem escala para compensar declínio do legado.",
+      "Mudança recente na diretoria financeira em momento operacional desafiador."
+    ]
+  },
+  "AURA33": {
+    "ticker": "AURA33",
+    "nome": "Aura Minerals",
+    "setor": "Mineração (Ouro e Cobre)",
+    "tese": "Aura é uma história de crescimento de produção (ramp-up de Almas, adição de Borborema e MSG) coincidindo com um superciclo de preço do ouro. A combinação gerou sete trimestres consecutivos de recorde de Ebitda, com alavancagem baixíssima e forte geração de caixa, permitindo dividendos recordes mesmo com plano agressivo de expansão.",
+    "atividade": "Mineração de ouro e cobre com operações no Brasil, México e Honduras, e projetos em desenvolvimento na Guatemala e Colômbia.",
+    "pontos_fortes": [
+      "Ramp-up contínuo de Borborema e MSG, ainda sem capacidade plena.",
+      "Aprovação da construção de Era Dorada (Guatemala), sustentando plano de dobrar produção.",
+      "Expansão de reservas em Borborema após aprovação para relocação de rodovia.",
+      "Política de dividendos vinculada a EBITDA tende a acompanhar alta de preço de commodities.",
+      "Preço do ouro em patamar historicamente elevado."
+    ],
+    "pontos_fracos": [
+      "Tese fortemente dependente do preço das commodities — reversão do ciclo de ouro reduziria margens de forma relevante.",
+      "AISC (custo total) subindo 20-25%, pressão de custo real mesmo com preços elevados.",
+      "Resultado financeiro fortemente negativo por perdas com hedge de ouro.",
+      "Valuation já em múltiplo elevado (~24x lucros), com research doméstico vendo assimetria pouco favorável.",
+      "Ação já dobrou de valor desde 2024 — risco de correção se o ciclo geopolítico/commodity reverter.",
+      "Complexidade societária e tributária (BDR, múltiplas jurisdições)."
+    ]
+  },
+  "RDOR3": {
+    "ticker": "RDOR3",
+    "nome": "Rede D'Or São Luiz",
+    "setor": "Saúde / Hospitais",
+    "tese": "Rede D'Or é o modelo verticalizado (hospital + seguro via SulAmérica) mais consolidado do Brasil, capturando ganhos de escala, diluição de custos fixos e mix de maior complexidade. A tese central é de eficiência operacional composta ao longo do tempo, mas o mercado está cada vez mais atento à linha abaixo do Ebitda, que tem corroído a conversão para lucro líquido.",
+    "atividade": "Maior rede hospitalar privada do Brasil, verticalizada com a operadora de saúde SulAmérica.",
+    "pontos_fortes": [
+      "Guidance de retomada do ritmo de abertura de leitos pode reverter leitura negativa do mercado.",
+      "Continuidade da expansão em oncologia, vertical de maior complexidade e margem.",
+      "Melhora estrutural de sinistralidade na SulAmérica.",
+      "Possíveis movimentos de consolidação setorial via M&A.",
+      "Ciclo de corte de Selic favorece setor intensivo em capital."
+    ],
+    "pontos_fracos": [
+      "Receita consistentemente abaixo do consenso em trimestres recentes.",
+      "Despesas financeiras crescendo 42% a/a, consumindo parte relevante do ganho operacional.",
+      "Alíquota efetiva de imposto surpreendeu para pior no trimestre.",
+      "Reação do mercado consistentemente negativa aos resultados recentes.",
+      "Pressão técnica de venda por fundo acionista relevante (GIC).",
+      "Performance abaixo do Ibovespa mesmo com fundamentos operacionais sólidos."
+    ]
+  },
+  "INTB3": {
+    "ticker": "INTB3",
+    "nome": "Intelbras",
+    "setor": "Segurança Eletrônica / TIC / Energia",
+    "tese": "Intelbras é uma tese de recuperação de margem pós-turbulência operacional (migração de ERP e ajustes de portfólio em 2025), com o segmento de Segurança (líder de mercado) puxando rentabilidade mesmo com receita total mais fraca. Negociando a múltiplo baixo, a companhia tem espaço para rerating se sustentar a expansão de margem além do efeito de base fácil.",
+    "atividade": "Segurança eletrônica (líder nacional, 43% de market share), redes/TIC e energia solar, distribuídos via 80 mil revendedores.",
+    "pontos_fortes": [
+      "Nova estrutura comercial com potencial de ganho de eficiência junto às revendas.",
+      "Redução de estoques e melhora de capital de giro sustentam geração de caixa.",
+      "Expansão em Manaus com potencial ganho de capacidade e eficiência fiscal.",
+      "Valuation descontado frente à média da bolsa, com projeção de forte geração de caixa em 2026.",
+      "Financiamentos BNDES/FINEP reforçam caixa a custo mais baixo."
+    ],
+    "pontos_fracos": [
+      "Crescimento a/a fortemente distorcido pela base fraca do 1T25 (migração de ERP) — o próprio research reconhece que a leitura anual não é informativa.",
+      "Rentabilidade beneficiada por despesas atipicamente baixas, com possível normalização à frente.",
+      "Pressão de custos de matéria-prima (chips de memória e insumos).",
+      "Segmentos TIC e Energia em contração estrutural, apenas Segurança sustenta o crescimento consolidado.",
+      "Crescimento de topo de linha projetado modesto para 2026 — tese é de margem, não de receita.",
+      "Dependência de execução de reestruturação comercial ainda recente."
+    ]
+  },
+  "CSED3": {
+    "ticker": "CSED3",
+    "nome": "Cruzeiro do Sul Educacional",
+    "setor": "Educação Superior",
+    "tese": "Cruzeiro do Sul opera com o modelo mais eficiente do setor educacional em termos de densidade de ocupação de campus, historicamente crescendo via M&A disciplinado. A tese atual é de travessia: a companhia prioriza reajuste de mensalidade e rentabilidade em vez de volume, num momento de transição regulatória do setor.",
+    "atividade": "Ensino superior privado (marcas Unicid, UDF, Módulo, Universidade Positivo, Braz Cubas).",
+    "pontos_fortes": [
+      "Yield de geração de caixa projetado em ~25% para 2026 segundo BTG.",
+      "Ticket médio digital em expansão, segmento menos sensível a ciclos de captação.",
+      "Novo marco regulatório já em vigor — base de comparação pode ficar mais fácil à frente.",
+      "Alavancagem sob controle mantém flexibilidade para M&A oportunista.",
+      "Dividend yield elevado (13,27%) sustenta retorno total mesmo em ano fraco."
+    ],
+    "pontos_fracos": [
+      "Base de alunos em queda real (-4,5% a/a) — receita cresce só por reajuste de mensalidade, não por volume.",
+      "Métricas ajustadas divergem de forma relevante das métricas comparáveis próprias da empresa.",
+      "Despesas com pessoal, tecnologia e provisões pressionando margem sem sinalização clara de reversão.",
+      "Geração de caixa ao acionista em forte queda no trimestre (-37% a/a).",
+      "Ação em tendência de queda estrutural (-23% em 12 meses, -68% em 5 anos) — risco real de value trap.",
+      "Setor inteiro em transição regulatória incerta (ENAMED, novo marco de captação)."
+    ]
+  },
+  "CPFE3": {
+    "ticker": "CPFE3",
+    "nome": "CPFL Energia",
+    "setor": "Distribuição, Geração e Transmissão de Energia",
+    "tese": "CPFL é a distribuidora modelo de fluxo de caixa previsível transformado em dividendo alto — negócio regulado, diversificado, com renovação recente de concessões por 30 anos que reduz risco de descontinuidade operacional de longuíssimo prazo. Negociando a múltiplo baixo, a tese é essencialmente de renda.",
+    "atividade": "Distribuição de energia elétrica (maior privada do Brasil), geração e transmissão, controlada pela State Grid.",
+    "pontos_fortes": [
+      "Novo plano de investimentos 2026-2030 (R$ 31 bilhões) sustenta crescimento de receita regulada.",
+      "Crescimento de demanda de data centers, vetor menos sensível ao ciclo econômico tradicional.",
+      "Renovação de concessões por 30 anos elimina incerteza de descontinuidade.",
+      "Correção da ação após queda de 21% da máxima pode representar ponto de entrada.",
+      "Melhora do resultado financeiro líquido com queda de despesa financeira a/a."
+    ],
+    "pontos_fracos": [
+      "Qualidade do lucro comprometida: crescimento veio majoritariamente de efeitos financeiros e tributários, com Ebitda praticamente estável.",
+      "Consumo de energia em queda no trimestre, sinal de fraqueza de demanda de base.",
+      "Alavancagem subindo (+15,4% a/a), ponto de atenção combinado ao plano de capex elevado.",
+      "Controlador estatal estrangeiro (State Grid/China) sujeito a ruído geopolítico e regulatório.",
+      "Dependência do próximo ciclo de revisão tarifária, fora do controle da empresa.",
+      "Concentração acionária elevada reduz free float disponível no mercado."
+    ]
+  },
+  "VULC3": {
+    "ticker": "VULC3",
+    "nome": "Vulcabras",
+    "setor": "Calçados Esportivos",
+    "tese": "Vulcabras é uma máquina de crescimento consistente de receita (23 trimestres seguidos) com operação verticalizada e portfólio de marcas fortes. A queda de lucro do 1T26 é majoritariamente financeira, não operacional — a tese é que a empresa está em fase de digestão de alavancagem antes de voltar a converter crescimento em lucro líquido crescente.",
+    "atividade": "Fabricação e distribuição de calçados esportivos sob as marcas Olympikus, Mizuno e Under Armour (licença Brasil/América Latina).",
+    "pontos_fortes": [
+      "Desalavancagem em curso, com dívida líquida/Ebitda caindo de 0,9x para 0,7x.",
+      "Aumento de preços a partir do 2S26 para compensar custos mais altos de matéria-prima.",
+      "Ciclo de queda de Selic tende a aliviar despesa financeira à frente.",
+      "Portfólio de marcas em expansão, com Under Armour crescendo mais rápido.",
+      "Disciplina de capex libera caixa para desalavancagem mais rápida."
+    ],
+    "pontos_fracos": [
+      "Lucro ficou abaixo do consenso, não apenas em queda a/a.",
+      "Risco de matéria-prima ligado à geopolítica (Estreito de Ormuz), comparado pelo CEO ao risco visto na pandemia.",
+      "Alavancagem elevada no fim de 2025 veio de decisão própria da administração (dividendos agressivos + investimento).",
+      "Ausência de novos dividendos no trimestre reduz atrativo de curto prazo até normalizar alavancagem.",
+      "Debate trabalhista sobre jornada 6x1/40h pode pressionar custo de mão de obra.",
+      "Desaceleração sequencial de volume trimestre a trimestre."
+    ]
+  },
+  "TEND3": {
+    "ticker": "TEND3",
+    "nome": "Construtora Tenda",
+    "setor": "Incorporação Imobiliária (MCMV)",
+    "tese": "Tenda é a história de virada operacional mais consistente do setor de baixa renda: após anos de reestruturação pós-pandemia, entrega agora recordes simultâneos de receita, margem e lucro, com estrutura de capital extremamente robusta e ROE de quase 50%.",
+    "atividade": "Incorporação habitacional de baixa renda (MCMV), com marca Tenda e nova operação Alea (estruturas pré-moldadas de madeira).",
+    "pontos_fortes": [
+      "Ajustes recentes no MCMV (teto de preços e elegibilidade) sustentam lançamentos e vendas acima do esperado.",
+      "Ebitda anualizado já acima do teto do próprio guidance, indicando possível revisão para cima.",
+      "Estratégia de blindagem inflacionária reduz risco de compressão de margem.",
+      "Banco de terrenos em expansão com baixo consumo de caixa via permuta.",
+      "Geração de caixa mesmo após dividendos e recompra."
+    ],
+    "pontos_fracos": [
+      "Alea ainda opera no vermelho, sem clareza de quando atinge breakeven.",
+      "G&A acima do esperado por planos de remuneração recém-implementados.",
+      "Receita ficou abaixo da estimativa de pelo menos uma casa de research relevante.",
+      "Dependência estrutural do MCMV — qualquer mudança de política é risco concentrado.",
+      "Rali recente já expressivo, parte do upside de curto prazo pode já estar capturada.",
+      "Sensibilidade residual a custos de construção (INCC) mesmo com estratégia de proteção."
+    ]
+  },
+  "DIRR3": {
+    "ticker": "DIRR3",
+    "nome": "Direcional Engenharia",
+    "setor": "Incorporação Imobiliária (MCMV)",
+    "tese": "Direcional é a operadora mais consistente e disciplinada do segmento MCMV, com margem bruta em recorde histórico, ROE de 38% e VSO no maior patamar já registrado para um primeiro trimestre. A combinação de crescimento, margem e múltiplo baixo sustenta a tese como principal escolha do setor entre casas de research.",
+    "atividade": "Incorporação imobiliária com marcas Direcional (baixa renda/MCMV) e Riva (médio/alto padrão).",
+    "pontos_fortes": [
+      "Geração de caixa via vendas de SPEs surpreendeu positivamente.",
+      "VSO no maior patamar histórico para um 1T, sinal de demanda muito forte.",
+      "Múltiplo muito descontado frente ao setor.",
+      "Banco de terrenos robusto suficiente para sustentar lançamentos por muitos anos.",
+      "Disciplina de custos, crescendo abaixo do crescimento de receita."
+    ],
+    "pontos_fracos": [
+      "Distratos mais que dobrando (+104-115% a/a) por fim de programas habitacionais regionais.",
+      "Alavancagem em trajetória de alta, mudando a direção de trimestres anteriores.",
+      "Consumo de caixa contábil no trimestre mesmo com geração operacional positiva.",
+      "Reação do mercado foi de realização de lucros no pregão seguinte à divulgação.",
+      "Despesas administrativas e comerciais crescendo mais que proporcionalmente à receita.",
+      "Concentração regulatória no MCMV, risco setorial compartilhado com pares."
+    ]
+  },
+  "KEPL3": {
+    "ticker": "KEPL3",
+    "nome": "Kepler Weber",
+    "setor": "Armazenagem de Grãos (Silos)",
+    "tese": "Kepler Weber é a líder consolidada em infraestrutura de pós-colheita no Brasil, com posição de caixa líquido sólida e disciplina de custos mesmo em ambiente cíclico adverso. A tese atual é de travessia de ciclo agrícola desfavorável, sem perda de posição competitiva.",
+    "atividade": "Fabricação e instalação de silos e equipamentos de armazenagem de grãos, com atuação doméstica e internacional.",
+    "pontos_fortes": [
+      "Melhora nas operações internacionais (+47,1% a/a) diversifica receita fora do ciclo doméstico.",
+      "Carteira de pedidos em avanço mesmo em condições de mercado restritivas.",
+      "Caixa líquido positivo reforçado dá musculatura para atravessar o ciclo fraco.",
+      "Natureza de negócio com ciclos de venda longos torna trimestres fracos isolados menos indicativos.",
+      "Eventual melhora do crédito rural com o ciclo de corte de Selic em curso."
+    ],
+    "pontos_fracos": [
+      "Múltiplas casas de research classificam o trimestre como fraco, independente da recomendação.",
+      "Sem expectativa de recuperação de curto prazo enquanto crédito rural seguir restrito.",
+      "Exposição a pequenas e médias empresas agrícolas, público mais sensível a crédito.",
+      "Ambiente geopolítico pressiona custos de insumos agrícolas, reforçando cautela dos produtores.",
+      "Ação com desempenho relativo bem abaixo do Ibovespa em 12 meses.",
+      "Margem Ebitda em compressão estrutural no trimestre."
+    ]
+  },
+  "CEAB3": {
+    "ticker": "CEAB3",
+    "nome": "C&A Modas",
+    "setor": "Varejo de Vestuário",
+    "tese": "C&A está em processo de enxugamento estratégico: saiu de eletrônicos e telefonia para focar 100% em vestuário, seu negócio central historicamente mais rentável. A desalavancagem agressiva deixou a empresa financeiramente muito mais resiliente, com múltiplas casas vendo oportunidade de entrada.",
+    "atividade": "Varejo de vestuário (marca C&A), após encerramento de operações de eletrônicos, telefonia e parceria C&A Pay.",
+    "pontos_fortes": [
+      "Recuperação do SSS de vestuário confirma que a fraqueza recente não era estrutural.",
+      "Novo programa de recompra de ações sinaliza confiança da administração.",
+      "Desalavancagem quase completa libera capacidade para dividendos ou crescimento.",
+      "Foco total em vestuário simplifica modelo de negócio e alocação de capital.",
+      "Ebitda batendo consenso de forma consistente."
+    ],
+    "pontos_fracos": [
+      "Divergência gritante entre lucro ajustado e lucro reportado pós-IFRS 16.",
+      "Perda de receita em linhas que ajudavam a diluir despesas fixas (Bradescard, telefonia).",
+      "Desaceleração relevante do SSS frente à base fácil do ano anterior.",
+      "Fluxo de caixa livre negativo no trimestre.",
+      "Aumento de 26,5% nas provisões levanta dúvida sobre qualidade de crédito.",
+      "Histórico de retorno ruim ao acionista em 5 anos, bem abaixo do Ibovespa."
+    ]
+  },
+  "BLAU3": {
+    "ticker": "BLAU3",
+    "nome": "Blau Farmacêutica",
+    "setor": "Farmacêutica Hospitalar / Biológicos",
+    "tese": "Blau é uma tese de reversão estrutural do canal público (em queda desde a pandemia por disputa regulatória, agora resolvida via STF) combinada com pipeline de novos produtos de alta complexidade ainda em fase de certificação regulatória. Opera com alavancagem zero e política consistente de proventos.",
+    "atividade": "Fabricação de medicamentos biológicos e biotecnológicos injetáveis de alta complexidade, com presença em 12 países da América Latina.",
+    "pontos_fortes": [
+      "Retomada do canal público (licitações federais) após anos de ambiente regulatório desfavorável.",
+      "Pipeline de novas linhas de produção aguardando certificação da Anvisa, com contribuição esperada em 2026-2027.",
+      "Crescimento de 33% em lançamentos mostra tração em produtos novos.",
+      "Alavancagem zero dá flexibilidade para investir ou fazer M&A.",
+      "Política de proventos consistente mesmo em cenário mais fraco."
+    ],
+    "pontos_fracos": [
+      "Certificações regulatórias atrasando mais que o esperado, segundo a própria administração.",
+      "Ebitda em queda de 17% a/a, mesmo com receita e margem bruta em expansão.",
+      "Resultado abaixo do consenso em receita e lucro por ação.",
+      "Concentração da tese de crescimento futuro em poucas linhas de novos produtos ainda não certificadas.",
+      "Histórico recente de volatilidade de lucro trimestral.",
+      "Baixo free float reduz liquidez e pode ampliar volatilidade de preço."
+    ]
+  },
+  "SAPR11": {
+    "ticker": "SAPR11",
+    "nome": "Sanepar",
+    "setor": "Saneamento Básico",
+    "tese": "Sanepar é a distribuidora de saneamento regulada mais consistente do Sul do Brasil, com receita previsível ancorada em reajustes tarifários já homologados. O resultado fraco do 1T26 é essencialmente um artefato contábil de comparação com uma base extraordinariamente inflada por precatórios em 2025 — a operação recorrente segue saudável.",
+    "atividade": "Saneamento básico (água e esgoto) no estado do Paraná, com mais de 350 concessões municipais.",
+    "pontos_fortes": [
+      "Reajuste tarifário já homologado pela Agepar para 2026, sem incerteza regulatória residual.",
+      "Desalavancagem expressiva (dívida líquida caiu de R$ 4,76 bi para R$ 1,92 bi).",
+      "Redução de custos operacionais recorrentes via plano de demissão voluntária.",
+      "Crescimento orgânico estável de base de clientes (água e esgoto).",
+      "Alta conversão de Ebitda em caixa (~77-78%)."
+    ],
+    "pontos_fracos": [
+      "Research relevante (BB-BI) vê o patamar de preço atual como excessivo e espera correção até clareza regulatória.",
+      "Incerteza sobre destino dos precatórios recebidos — possível repasse tarifário maior que o esperado.",
+      "ROE normalizado bem mais baixo que o pico atípico de 2025.",
+      "Complexidade contábil entre números recorrentes e reportados pode induzir reação exagerada do mercado.",
+      "Aumento de gastos com provisões e contingências judiciais.",
+      "Governança de controle estatal (Governo do Paraná) carrega risco político-regulatório inerente."
+    ]
+  },
+  "SAPR4": {
+    "ticker": "SAPR4",
+    "nome": "Sanepar",
+    "setor": "Saneamento Básico",
+    "tese": "Sanepar é a distribuidora de saneamento regulada mais consistente do Sul do Brasil, com receita previsível ancorada em reajustes tarifários já homologados. O resultado fraco do 1T26 é essencialmente um artefato contábil de comparação com uma base extraordinariamente inflada por precatórios em 2025 — a operação recorrente segue saudável.",
+    "atividade": "Saneamento básico (água e esgoto) no estado do Paraná, com mais de 350 concessões municipais.",
+    "pontos_fortes": [
+      "Reajuste tarifário já homologado pela Agepar para 2026, sem incerteza regulatória residual.",
+      "Desalavancagem expressiva (dívida líquida caiu de R$ 4,76 bi para R$ 1,92 bi).",
+      "Redução de custos operacionais recorrentes via plano de demissão voluntária.",
+      "Crescimento orgânico estável de base de clientes (água e esgoto).",
+      "Alta conversão de Ebitda em caixa (~77-78%)."
+    ],
+    "pontos_fracos": [
+      "Research relevante (BB-BI) vê o patamar de preço atual como excessivo e espera correção até clareza regulatória.",
+      "Incerteza sobre destino dos precatórios recebidos — possível repasse tarifário maior que o esperado.",
+      "ROE normalizado bem mais baixo que o pico atípico de 2025.",
+      "Complexidade contábil entre números recorrentes e reportados pode induzir reação exagerada do mercado.",
+      "Aumento de gastos com provisões e contingências judiciais.",
+      "Governança de controle estatal (Governo do Paraná) carrega risco político-regulatório inerente."
+    ]
+  },
+  "MDIA3": {
+    "ticker": "MDIA3",
+    "nome": "M. Dias Branco",
+    "setor": "Alimentos (Massas e Biscoitos)",
+    "tese": "M. Dias é a consolidadora dominante do setor de massas/biscoitos no Brasil, com integração vertical elevada que protege margem em cenário de custo de commodities favorável. O resultado bom na manchete (lucro +53%) esconde um trimestre de execução comercial mais cara que o previsto, com queda de preço médio corroendo margem bruta mais do que o mercado esperava.",
+    "atividade": "Fabricação de massas, biscoitos, margarinas e produtos de panificação, com marcas em expansão nas adjacências (Jasmine, Frontera).",
+    "pontos_fortes": [
+      "Quinto trimestre consecutivo de crescimento de receita.",
+      "Adjacências (Jasmine, Frontera, saudáveis) crescendo dois dígitos pelo sétimo trimestre seguido.",
+      "Custo de matéria-prima em queda, favorecendo margem no curto prazo.",
+      "Capex acelerado em automação pode consolidar vantagem de custo estrutural.",
+      "Balanço extremamente sólido (caixa líquido, rating AAA)."
+    ],
+    "pontos_fracos": [
+      "Miss generalizado entre as principais casas de research (BTG, Safra, XP) no Ebitda do trimestre.",
+      "Estratégia de ganho de volume via preço está custando mais caro a cada trimestre, segundo o próprio BTG.",
+      "Mix de receita pior que o esperado, com produtos core perdendo participação.",
+      "Margem Ebitda voltando a um dígito, reforçando dúvidas sobre recuperação estrutural de rentabilidade.",
+      "Contração real do mercado consumidor (Nielsen), não apenas efeito de preço.",
+      "Geração de caixa operacional em queda de 31% a/a apesar do lucro maior."
+    ]
+  },
+  "QUAL3": {
+    "ticker": "QUAL3",
+    "nome": "Qualicorp",
+    "setor": "Administração de Planos de Saúde",
+    "tese": "Qualicorp está em processo de virada de jogo pós-reestruturação: descontinuou operações menos rentáveis, cortou custos fixos agressivamente e mostra que consegue expandir margem mesmo com receita em queda. A grande questão em aberto é se a companhia consegue estabilizar a perda de beneficiários na carteira de afinidade.",
+    "atividade": "Maior administradora independente de planos de saúde coletivos por adesão do Brasil.",
+    "pontos_fortes": [
+      "Churn menor e custos disciplinados, com evidências adicionais de melhora operacional.",
+      "Comparações mais limpas pós-ajuste, excluindo operações descontinuadas.",
+      "Redução de inadimplência, melhora de qualidade de crédito da base remanescente.",
+      "Geração de caixa livre robusta com capex modesto.",
+      "Recompra de ações aprovada sinaliza confiança da administração."
+    ],
+    "pontos_fracos": [
+      "Melhora do lucro veio principalmente de corte de custos, não de crescimento comprovadamente sustentável.",
+      "Receita em queda trimestre após trimestre, refletindo perda estrutural de vidas administradas.",
+      "Histórico recente de choques negativos abruptos no preço da ação.",
+      "Mudança de comando recente adiciona incerteza de execução em momento crítico.",
+      "Elevado estoque de processos judiciais ainda pressiona resultado.",
+      "Dividend yield praticamente irrelevante — tese é de recuperação especulativa, não de renda."
+    ]
+  },
+  "GMAT3": {
+    "ticker": "GMAT3",
+    "nome": "Grupo Mateus",
+    "setor": "Varejo e Atacado Alimentar",
+    "tese": "Grupo Mateus é a história de expansão regional mais relevante do varejo alimentar brasileiro, com presença dominante em regiões menos saturadas por concorrentes nacionais, ampliada pela consolidação do Novo Atacarejo. A tese hoje depende menos de abrir lojas e mais de provar que consegue converter escala em rentabilidade sustentável.",
+    "atividade": "Varejo e atacado alimentar (atacarejo Mix Mateus, supermercados), eletro e atacado B2B, com forte presença no Norte/Nordeste.",
+    "pontos_fortes": [
+      "Maturação das novas lojas e integração do Novo Atacarejo deve melhorar lucratividade gradualmente.",
+      "Forte geração de caixa mesmo com lucro em queda no trimestre.",
+      "Alavancagem baixíssima (0,33x Ebitda) dá espaço para continuar investindo.",
+      "Postura mais conservadora de capex sinaliza disciplina de alocação de capital.",
+      "Presença estrutural em mercados menos competitivos do interior do país."
+    ],
+    "pontos_fracos": [
+      "SSS negativo (-7,3%) é o dado mais preocupante — crescimento depende cada vez mais de M&A, não de crescimento orgânico.",
+      "BTG classifica como mais um trimestre difícil, com tendências abaixo das expectativas do banco.",
+      "Nova autuação fiscal da Receita Federal contra subsidiária, parte de fiscalização ampla no varejo.",
+      "Despesas operacionais crescendo muito mais rápido que a receita — alavancagem operacional negativa.",
+      "Resultado financeiro em deterioração, com despesa líquida subindo 22,6% a/a.",
+      "Deflação de commodities alimentares é fator exógeno que pressiona receita e SSS."
+    ]
+  },
+  "ALOS3": {
+    "ticker": "ALOS3",
+    "nome": "Allos",
+    "setor": "Shopping Centers",
+    "tese": "Allos é a consolidadora dominante do setor de shoppings brasileiro, com escala que permite eficiência de custos e diversificação de receita. A tese é essencialmente de geração de caixa e dividendos elevados mais do que crescimento acelerado — o próprio research reconhece que não espera grande expansão de resultados à frente, com valuation já acima da média histórica da bolsa.",
+    "atividade": "Maior proprietária e administradora de shopping centers do Brasil (fusão Aliansce Sonae + brMalls), com atuação em locação, estacionamento, serviços e desenvolvimento imobiliário.",
+    "pontos_fortes": [
+      "Parceria com Kinea para novo FII cria vertical de receita recorrente e recicla capital.",
+      "Reciclagem ativa de portfólio concentra capital em ativos premium de maior rentabilidade.",
+      "Normalização pós-incêndio no Shopping Tijuca deve elevar indicadores nos próximos trimestres.",
+      "Possível correção de aluguéis via IGP-DI, que voltou ao patamar positivo.",
+      "Ciclo de corte de Selic beneficia setor imobiliário/shoppings."
+    ],
+    "pontos_fracos": [
+      "Valuation já esticado segundo research independente (Nord), acima das médias históricas da bolsa.",
+      "Resultado financeiro em deterioração, com despesa financeira líquida subindo 52% a/a.",
+      "Taxa de ocupação em leve queda, ponto a monitorar se a tendência persistir.",
+      "Inadimplência líquida em nível de atenção, ainda que parcialmente explicada por evento pontual.",
+      "Receita core de aluguel abaixo do esperado em contexto de inflação negativa.",
+      "Parte relevante do valor a ser destravado depende de execução de transações societárias complexas."
     ]
   }
 }

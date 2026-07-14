@@ -1,0 +1,1787 @@
+[
+ {
+  "ticker": "NVDA",
+  "nome": "NVIDIA Corporation",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 28
+ },
+ {
+  "ticker": "AVGO",
+  "nome": "Broadcom Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 25
+ },
+ {
+  "ticker": "AMZN",
+  "nome": "Amazon.com, Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 23
+ },
+ {
+  "ticker": "GOOG",
+  "nome": "Alphabet Inc.",
+  "setor": "Communication Services",
+  "base_calculo": "EBIT",
+  "citacoes": 23
+ },
+ {
+  "ticker": "AAPL",
+  "nome": "Apple Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 16
+ },
+ {
+  "ticker": "META",
+  "nome": "Meta Platforms, Inc.",
+  "setor": "Communication Services",
+  "base_calculo": "EBIT",
+  "citacoes": 15
+ },
+ {
+  "ticker": "V",
+  "nome": "Visa Inc.",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 12
+ },
+ {
+  "ticker": "AMD",
+  "nome": "Advanced Micro Devices, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 9
+ },
+ {
+  "ticker": "LLY",
+  "nome": "Eli Lilly and Company",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 9
+ },
+ {
+  "ticker": "MU",
+  "nome": "Micron Technology, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 8
+ },
+ {
+  "ticker": "PEP",
+  "nome": "PepsiCo, Inc.",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 8
+ },
+ {
+  "ticker": "PG",
+  "nome": "The Procter & Gamble Company",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 8
+ },
+ {
+  "ticker": "TSLA",
+  "nome": "Tesla, Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 8
+ },
+ {
+  "ticker": "CRM",
+  "nome": "Salesforce, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 7
+ },
+ {
+  "ticker": "JNJ",
+  "nome": "Johnson & Johnson",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 7
+ },
+ {
+  "ticker": "KO",
+  "nome": "The Coca-Cola Company",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 7
+ },
+ {
+  "ticker": "MA",
+  "nome": "Mastercard Incorporated",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 7
+ },
+ {
+  "ticker": "PANW",
+  "nome": "Palo Alto Networks, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 7
+ },
+ {
+  "ticker": "SBUX",
+  "nome": "Starbucks Corporation",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 7
+ },
+ {
+  "ticker": "UNH",
+  "nome": "UnitedHealth Group Incorporated",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 7
+ },
+ {
+  "ticker": "VST",
+  "nome": "Vistra Corp.",
+  "setor": "Utilities",
+  "base_calculo": "EBIT",
+  "citacoes": 7
+ },
+ {
+  "ticker": "ABBV",
+  "nome": "AbbVie Inc.",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 6
+ },
+ {
+  "ticker": "ANET",
+  "nome": "Arista Networks, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 6
+ },
+ {
+  "ticker": "CEG",
+  "nome": "Constellation Energy Corporation",
+  "setor": "Utilities",
+  "base_calculo": "EBIT",
+  "citacoes": 6
+ },
+ {
+  "ticker": "COST",
+  "nome": "Costco Wholesale Corporation",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 6
+ },
+ {
+  "ticker": "CVX",
+  "nome": "Chevron Corporation",
+  "setor": "Energy",
+  "base_calculo": "EBIT",
+  "citacoes": 6
+ },
+ {
+  "ticker": "HD",
+  "nome": "The Home Depot, Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 6
+ },
+ {
+  "ticker": "IBM",
+  "nome": "International Business Machines Corporation",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 6
+ },
+ {
+  "ticker": "ORCL",
+  "nome": "Oracle Corporation",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 6
+ },
+ {
+  "ticker": "PLTR",
+  "nome": "Palantir Technologies Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 6
+ },
+ {
+  "ticker": "UPS",
+  "nome": "United Parcel Service, Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 6
+ },
+ {
+  "ticker": "AXP",
+  "nome": "American Express Company",
+  "setor": "Financial Services",
+  "base_calculo": "Lucro",
+  "citacoes": 5
+ },
+ {
+  "ticker": "CRWV",
+  "nome": "CoreWeave, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 5
+ },
+ {
+  "ticker": "KLAC",
+  "nome": "KLA Corporation",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 5
+ },
+ {
+  "ticker": "MCD",
+  "nome": "McDonald's Corporation",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 5
+ },
+ {
+  "ticker": "PFE",
+  "nome": "Pfizer Inc.",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 5
+ },
+ {
+  "ticker": "QCOM",
+  "nome": "QUALCOMM Incorporated",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 5
+ },
+ {
+  "ticker": "WM",
+  "nome": "Waste Management, Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 5
+ },
+ {
+  "ticker": "ALAB",
+  "nome": "Astera Labs, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 4
+ },
+ {
+  "ticker": "CMCSA",
+  "nome": "Comcast Corporation",
+  "setor": "Communication Services",
+  "base_calculo": "EBIT",
+  "citacoes": 4
+ },
+ {
+  "ticker": "CMG",
+  "nome": "Chipotle Mexican Grill, Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 4
+ },
+ {
+  "ticker": "CSCO",
+  "nome": "Cisco Systems, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 4
+ },
+ {
+  "ticker": "CVS",
+  "nome": "CVS Health Corporation",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 4
+ },
+ {
+  "ticker": "DPZ",
+  "nome": "Domino's Pizza, Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 4
+ },
+ {
+  "ticker": "JPM",
+  "nome": "JPMorgan Chase & Co.",
+  "setor": "Financial Services",
+  "base_calculo": "Lucro",
+  "citacoes": 4
+ },
+ {
+  "ticker": "LC",
+  "nome": "LendingClub Corporation",
+  "setor": "Financial Services",
+  "base_calculo": "Lucro",
+  "citacoes": 4
+ },
+ {
+  "ticker": "LMT",
+  "nome": "Lockheed Martin Corporation",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 4
+ },
+ {
+  "ticker": "LRCX",
+  "nome": "Lam Research Corporation",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 4
+ },
+ {
+  "ticker": "MRK",
+  "nome": "Merck & Co., Inc.",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 4
+ },
+ {
+  "ticker": "NEE",
+  "nome": "NextEra Energy, Inc.",
+  "setor": "Utilities",
+  "base_calculo": "EBIT",
+  "citacoes": 4
+ },
+ {
+  "ticker": "NKE",
+  "nome": "NIKE, Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 4
+ },
+ {
+  "ticker": "NOC",
+  "nome": "Northrop Grumman Corporation",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 4
+ },
+ {
+  "ticker": "QSR",
+  "nome": "Restaurant Brands International Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 4
+ },
+ {
+  "ticker": "SNPS",
+  "nome": "Synopsys, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 4
+ },
+ {
+  "ticker": "WMT",
+  "nome": "Walmart Inc.",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 4
+ },
+ {
+  "ticker": "AMAT",
+  "nome": "Applied Materials, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "APH",
+  "nome": "Amphenol Corporation",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "BMY",
+  "nome": "Bristol-Myers Squibb Company",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "C",
+  "nome": "Citigroup Inc.",
+  "setor": "Financial Services",
+  "base_calculo": "Lucro",
+  "citacoes": 3
+ },
+ {
+  "ticker": "CAT",
+  "nome": "Caterpillar Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "CI",
+  "nome": "The Cigna Group",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "CIEN",
+  "nome": "Ciena Corporation",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "DIS",
+  "nome": "The Walt Disney Company",
+  "setor": "Communication Services",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "FLUT",
+  "nome": "Flutter Entertainment plc",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "GWRE",
+  "nome": "Guidewire Software, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "HHH",
+  "nome": "Howard Hughes Holdings Inc.",
+  "setor": "Real Estate",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "HLT",
+  "nome": "Hilton Worldwide Holdings Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "HON",
+  "nome": "Honeywell International Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "HTZ",
+  "nome": "Hertz Global Holdings, Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "INTC",
+  "nome": "Intel Corporation",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "INTU",
+  "nome": "Intuit Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "LHX",
+  "nome": "L3Harris Technologies, Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "MMM",
+  "nome": "3M Company",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "NFLX",
+  "nome": "Netflix, Inc.",
+  "setor": "Communication Services",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "PM",
+  "nome": "Philip Morris International Inc.",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "PYPL",
+  "nome": "PayPal Holdings, Inc.",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "ROKU",
+  "nome": "Roku, Inc.",
+  "setor": "Communication Services",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "TGT",
+  "nome": "Target Corporation",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "TLN",
+  "nome": "Talen Energy Corporation",
+  "setor": "Utilities",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "TMO",
+  "nome": "Thermo Fisher Scientific Inc.",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "UBER",
+  "nome": "Uber Technologies, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "VRT",
+  "nome": "Vertiv Holdings Co",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "VZ",
+  "nome": "Verizon Communications Inc.",
+  "setor": "Communication Services",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "WDC",
+  "nome": "Western Digital Corporation",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 3
+ },
+ {
+  "ticker": "ABT",
+  "nome": "Abbott Laboratories",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "AMTM",
+  "nome": "Amentum Holdings, Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "APP",
+  "nome": "AppLovin Corporation",
+  "setor": "Communication Services",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "BA",
+  "nome": "The Boeing Company",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "BAC",
+  "nome": "Bank of America Corporation",
+  "setor": "Financial Services",
+  "base_calculo": "Lucro",
+  "citacoes": 2
+ },
+ {
+  "ticker": "BFAM",
+  "nome": "Bright Horizons Family Solutions Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "BSX",
+  "nome": "Boston Scientific Corporation",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "CACI",
+  "nome": "CACI International Inc",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "CELH",
+  "nome": "Celsius Holdings, Inc.",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "CL",
+  "nome": "Colgate-Palmolive Company",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "CLX",
+  "nome": "The Clorox Company",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "COHR",
+  "nome": "Coherent Corp.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "COIN",
+  "nome": "Coinbase Global, Inc.",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "COP",
+  "nome": "ConocoPhillips",
+  "setor": "Energy",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "CPNG",
+  "nome": "Coupang, Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "DAL",
+  "nome": "Delta Air Lines, Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "ELV",
+  "nome": "Elevance Health, Inc.",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "EOG",
+  "nome": "EOG Resources, Inc.",
+  "setor": "Energy",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "EQIX",
+  "nome": "Equinix, Inc.",
+  "setor": "Real Estate",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "EQT",
+  "nome": "EQT Corporation",
+  "setor": "Energy",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "FDX",
+  "nome": "FedEx Corporation",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "FSLR",
+  "nome": "First Solar, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "FTNT",
+  "nome": "Fortinet, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "GD",
+  "nome": "General Dynamics Corporation",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "GEV",
+  "nome": "GE Vernova Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "GILD",
+  "nome": "Gilead Sciences, Inc.",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "GPC",
+  "nome": "Genuine Parts Company",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "GS",
+  "nome": "The Goldman Sachs Group, Inc.",
+  "setor": "Financial Services",
+  "base_calculo": "Lucro",
+  "citacoes": 2
+ },
+ {
+  "ticker": "HRL",
+  "nome": "Hormel Foods Corporation",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "ISRG",
+  "nome": "Intuitive Surgical, Inc.",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "KKR",
+  "nome": "KKR & Co. Inc.",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "KR",
+  "nome": "The Kroger Co.",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "KTOS",
+  "nome": "Kratos Defense & Security Solutions, Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "LEN",
+  "nome": "Lennar Corporation",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "LEU",
+  "nome": "Centrus Energy Corp.",
+  "setor": "Energy",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "LOW",
+  "nome": "Lowe's Companies, Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "MCO",
+  "nome": "Moody's Corporation",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "MDLZ",
+  "nome": "Mondelez International, Inc.",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "MRVL",
+  "nome": "Marvell Technology, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "MTZ",
+  "nome": "MasTec, Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "NOW",
+  "nome": "ServiceNow, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "RLI",
+  "nome": "RLI Corp.",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "SLB",
+  "nome": "SLB N.V.",
+  "setor": "Energy",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "SPGI",
+  "nome": "S&P Global Inc.",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "SYK",
+  "nome": "Stryker Corporation",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "TJX",
+  "nome": "The TJX Companies, Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "TRU",
+  "nome": "TransUnion",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "TXN",
+  "nome": "Texas Instruments Incorporated",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "VMC",
+  "nome": "Vulcan Materials Company",
+  "setor": "Basic Materials",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "XOM",
+  "nome": "ExxonMobil Holdings Corporation",
+  "setor": "Energy",
+  "base_calculo": "EBIT",
+  "citacoes": 2
+ },
+ {
+  "ticker": "AAL",
+  "nome": "American Airlines Group Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ABM",
+  "nome": "ABM Industries Incorporated",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ADBE",
+  "nome": "Adobe Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ADI",
+  "nome": "Analog Devices, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ADM",
+  "nome": "Archer-Daniels-Midland Company",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ADP",
+  "nome": "Automatic Data Processing, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "AFRM",
+  "nome": "Affirm Holdings, Inc.",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ALHC",
+  "nome": "Alignment Healthcare, Inc.",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "AMGN",
+  "nome": "Amgen Inc.",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "BBY",
+  "nome": "Best Buy Co., Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "BCO",
+  "nome": "The Brink's Company",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "BDX",
+  "nome": "Becton, Dickinson and Company",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "BEN",
+  "nome": "Franklin Resources, Inc.",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "BJ",
+  "nome": "BJ's Wholesale Club Holdings, Inc.",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "BKNG",
+  "nome": "Booking Holdings Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "BPOP",
+  "nome": "Popular, Inc.",
+  "setor": "Financial Services",
+  "base_calculo": "Lucro",
+  "citacoes": 1
+ },
+ {
+  "ticker": "BWXT",
+  "nome": "BWX Technologies, Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "CATY",
+  "nome": "Cathay General Bancorp",
+  "setor": "Financial Services",
+  "base_calculo": "Lucro",
+  "citacoes": 1
+ },
+ {
+  "ticker": "CDNS",
+  "nome": "Cadence Design Systems, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "CGNX",
+  "nome": "Cognex Corporation",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "CHTR",
+  "nome": "Charter Communications, Inc.",
+  "setor": "Communication Services",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "CINF",
+  "nome": "Cincinnati Financial Corporation",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "COF",
+  "nome": "Capital One Financial Corporation",
+  "setor": "Financial Services",
+  "base_calculo": "Lucro",
+  "citacoes": 1
+ },
+ {
+  "ticker": "CPRT",
+  "nome": "Copart, Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "CTAS",
+  "nome": "Cintas Corporation",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "DDOG",
+  "nome": "Datadog, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "DELL",
+  "nome": "Dell Technologies Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "DG",
+  "nome": "Dollar General Corporation",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "DJCO",
+  "nome": "Daily Journal Corporation",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "DLR",
+  "nome": "Digital Realty Trust, Inc.",
+  "setor": "Real Estate",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "DOCU",
+  "nome": "DocuSign, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ECL",
+  "nome": "Ecolab Inc.",
+  "setor": "Basic Materials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ED",
+  "nome": "Consolidated Edison, Inc.",
+  "setor": "Utilities",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "EMR",
+  "nome": "Emerson Electric Co.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ENPH",
+  "nome": "Enphase Energy, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ENS",
+  "nome": "EnerSys",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ENTG",
+  "nome": "Entegris, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ETSY",
+  "nome": "Etsy, Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "EXEL",
+  "nome": "Exelixis, Inc.",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "FCX",
+  "nome": "Freeport-McMoRan Inc.",
+  "setor": "Basic Materials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "FIS",
+  "nome": "Fidelity National Information Services, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "FND",
+  "nome": "Floor & Decor Holdings, Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "FRSH",
+  "nome": "Freshworks Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "FRT",
+  "nome": "Federal Realty Investment Trust",
+  "setor": "Real Estate",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "FTAI",
+  "nome": "FTAI Aviation Ltd.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "GIS",
+  "nome": "General Mills, Inc.",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "GWW",
+  "nome": "W.W. Grainger, Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "HEI",
+  "nome": "HEICO Corporation",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "HIMS",
+  "nome": "Hims & Hers Health, Inc.",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "HOOD",
+  "nome": "Robinhood Markets, Inc.",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "HSY",
+  "nome": "The Hershey Company",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "HUM",
+  "nome": "Humana Inc.",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ICE",
+  "nome": "Intercontinental Exchange, Inc.",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ITW",
+  "nome": "Illinois Tool Works Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "KBR",
+  "nome": "KBR, Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "KMB",
+  "nome": "Kimberly-Clark Corporation",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "KRMN",
+  "nome": "Karman Holdings Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "LDOS",
+  "nome": "Leidos Holdings, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "LECO",
+  "nome": "Lincoln Electric Holdings, Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "LPLA",
+  "nome": "LPL Financial Holdings Inc.",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "LSTR",
+  "nome": "Landstar System, Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "MCHP",
+  "nome": "Microchip Technology Incorporated",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "MKSI",
+  "nome": "MKS Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "MO",
+  "nome": "Altria Group, Inc.",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "MOH",
+  "nome": "Molina Healthcare, Inc.",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "MSCI",
+  "nome": "MSCI Inc.",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "NDSN",
+  "nome": "Nordson Corporation",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "NRG",
+  "nome": "NRG Energy, Inc.",
+  "setor": "Utilities",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "NUE",
+  "nome": "Nucor Corporation",
+  "setor": "Basic Materials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "NVR",
+  "nome": "NVR, Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "NXST",
+  "nome": "Nexstar Media Group, Inc.",
+  "setor": "Communication Services",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "OKTA",
+  "nome": "Okta, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "OXY",
+  "nome": "Occidental Petroleum Corporation",
+  "setor": "Energy",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "PATH",
+  "nome": "UiPath, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "PDFS",
+  "nome": "PDF Solutions, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "PEGA",
+  "nome": "Pegasystems Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "PGNY",
+  "nome": "Progyny, Inc.",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "PH",
+  "nome": "Parker-Hannifin Corporation",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "PLD",
+  "nome": "Prologis, Inc.",
+  "setor": "Real Estate",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "POOL",
+  "nome": "Pool Corporation",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "PPG",
+  "nome": "PPG Industries, Inc.",
+  "setor": "Basic Materials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "PRI",
+  "nome": "Primerica, Inc.",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "PTC",
+  "nome": "PTC Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "QLYS",
+  "nome": "Qualys, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "RDDT",
+  "nome": "Reddit, Inc.",
+  "setor": "Communication Services",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "RDN",
+  "nome": "Radian Group Inc.",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "RL",
+  "nome": "Ralph Lauren Corporation",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ROST",
+  "nome": "Ross Stores, Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "RPM",
+  "nome": "RPM International Inc.",
+  "setor": "Basic Materials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "SAH",
+  "nome": "Sonic Automotive, Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "SAIC",
+  "nome": "Science Applications International Corporation",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "SBAC",
+  "nome": "SBA Communications Corporation",
+  "setor": "Real Estate",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "SCCO",
+  "nome": "Southern Copper Corporation",
+  "setor": "Basic Materials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "SCI",
+  "nome": "Service Corporation International",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "SHAK",
+  "nome": "Shake Shack Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "STZ",
+  "nome": "Constellation Brands, Inc.",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "SWK",
+  "nome": "Stanley Black & Decker, Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "SYY",
+  "nome": "Sysco Corporation",
+  "setor": "Consumer Defensive",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "TDG",
+  "nome": "TransDigm Group Incorporated",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "TDS",
+  "nome": "Telephone and Data Systems, Inc.",
+  "setor": "Communication Services",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "TENB",
+  "nome": "Tenable Holdings, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "TER",
+  "nome": "Teradyne, Inc.",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "TFC",
+  "nome": "Truist Financial Corporation",
+  "setor": "Financial Services",
+  "base_calculo": "Lucro",
+  "citacoes": 1
+ },
+ {
+  "ticker": "THC",
+  "nome": "Tenet Healthcare Corporation",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "TMUS",
+  "nome": "T-Mobile US, Inc.",
+  "setor": "Communication Services",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "TPL",
+  "nome": "Texas Pacific Land Corporation",
+  "setor": "Energy",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "TXT",
+  "nome": "Textron Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ULTA",
+  "nome": "Ulta Beauty, Inc.",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "USB",
+  "nome": "U.S. Bancorp",
+  "setor": "Financial Services",
+  "base_calculo": "Lucro",
+  "citacoes": 1
+ },
+ {
+  "ticker": "VG",
+  "nome": "Venture Global, Inc.",
+  "setor": "Energy",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "VICI",
+  "nome": "VICI Properties Inc.",
+  "setor": "Real Estate",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "VOYA",
+  "nome": "Voya Financial, Inc.",
+  "setor": "Financial Services",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "VRSK",
+  "nome": "Verisk Analytics, Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "VRTX",
+  "nome": "Vertex Pharmaceuticals Incorporated",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "VSEC",
+  "nome": "VSE Corporation",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "WBD",
+  "nome": "Warner Bros. Discovery, Inc.",
+  "setor": "Communication Services",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "WELL",
+  "nome": "Welltower Inc.",
+  "setor": "Real Estate",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "WHR",
+  "nome": "Whirlpool Corporation",
+  "setor": "Consumer Cyclical",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "XPO",
+  "nome": "XPO, Inc.",
+  "setor": "Industrials",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ZBRA",
+  "nome": "Zebra Technologies Corporation",
+  "setor": "Technology",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ },
+ {
+  "ticker": "ZTS",
+  "nome": "Zoetis Inc.",
+  "setor": "Healthcare",
+  "base_calculo": "EBIT",
+  "citacoes": 1
+ }
+]
