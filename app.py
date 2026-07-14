@@ -229,25 +229,39 @@ def _celula(r, preco_atual: float, moeda: str) -> str:
     )
 
 
+def _celula_tma(tma) -> str:
+    """Célula da TMA implícita — o retorno que o mercado exige para pagar o preço de hoje."""
+    if tma is None:
+        return '<td><span class="na">&gt;600%</span></td>'
+    # Uma TMA implícita muito alta não é o mercado sendo irracional: é sinal de que
+    # o fluxo usado não pertence ao acionista (dívida). Destacamos em vermelho.
+    cor = "#EF4444" if tma > 0.40 else "#FFFFFF"
+    return f'<td><div class="v" style="color:{cor};">{tma*100:.1f}%</div></td>'
+
+
 def _render_resultado(ticker: str, preco_atual: float, resultado_ebit: dict,
-                      resultado_lpa: dict = None, moeda: str = "R$") -> None:
-    """Caixa única do resultado: cenários (colunas) × métodos LPA e EBIT (linhas)."""
+                      resultado_lpa: dict = None, moeda: str = "R$",
+                      tma_lucro: float = None, tma_ebit: float = None,
+                      tem_lpa: bool = True) -> None:
+    """Caixa única: cenários (colunas) × métodos LPA/EBIT (linhas) + TMA implícita."""
     cenarios = list(resultado_ebit["resultados"].keys())
 
-    def linha(rotulo: str, sub: str, resultado: dict) -> str:
+    def linha(rotulo: str, sub: str, resultado: dict, tma_impl, mostrar_tma: bool) -> str:
         celulas = "".join(
             _celula((resultado or {}).get("resultados", {}).get(c), preco_atual, moeda)
             for c in cenarios
         )
-        return f"<tr><th>{rotulo}<small>{sub}</small></th>{celulas}</tr>"
+        tma_td = _celula_tma(tma_impl) if mostrar_tma else '<td><span class="na">—</span></td>'
+        return f"<tr><th>{rotulo}<small>{sub}</small></th>{celulas}{tma_td}</tr>"
 
     cabecalho = "".join(f"<th>{c.capitalize()}</th>" for c in cenarios)
     tabela = (
         '<table class="ciano-matriz">'
-        f'<thead><tr><th style="text-align:left;">Preço justo por ação</th>{cabecalho}</tr></thead>'
+        '<thead><tr><th style="text-align:left;">Preço justo por ação</th>'
+        f'{cabecalho}<th>TMA implícita</th></tr></thead>'
         "<tbody>"
-        + linha("Método LPA", "sobre o lucro líquido", resultado_lpa)
-        + linha("Método EBIT", "sobre o EBIT", resultado_ebit)
+        + linha("Método LPA", "sobre o lucro líquido", resultado_lpa, tma_lucro, tem_lpa)
+        + linha("Método EBIT", "sobre o EBIT", resultado_ebit, tma_ebit, True)
         + "</tbody></table>"
     )
 
@@ -257,7 +271,12 @@ def _render_resultado(ticker: str, preco_atual: float, resultado_ebit: dict,
         unsafe_allow_html=True,
     )
     st.markdown(tabela, unsafe_allow_html=True)
-    st.caption("Cada célula: preço justo por ação e o upside sobre o preço atual.")
+    st.caption(
+        "Cada célula: preço justo por ação e o upside sobre o preço atual. "
+        "**TMA implícita** = o retorno anual que o mercado precisa estar exigindo para a ação "
+        "valer o preço de hoje (cenário intermediário) — é o desconto que ele impõe. "
+        "Quando a do EBIT dispara, é sinal de que o EBIT não é do acionista."
+    )
 
 
 def _render_corpo_tese(tese: dict, titulo: str, fonte: str) -> None:
@@ -393,7 +412,9 @@ def _busca_em_lote(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2
         exibir = df.rename(columns={
             "ticker": "Ticker", "nome": "Empresa", "preco": f"Preço {moeda}",
             "justo_lpa": f"Justo LPA {moeda}", "upside_lpa": "Upside LPA (%)",
+            "tma_lpa_pct": "TMA impl. LPA (%)",
             "justo_ebit": f"Justo EBIT {moeda}", "upside_ebit": "Upside EBIT (%)",
+            "tma_ebit_pct": "TMA impl. EBIT (%)",
             "alavancada": "Alav.", "base": "Base", "veredito": "Veredito",
         }).set_index("Ticker")
         if exibir["Empresa"].isna().all():
@@ -401,8 +422,10 @@ def _busca_em_lote(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2
         st.dataframe(exibir, use_container_width=True)
         st.caption(
             "Cenário intermediário. Ordenado pelo upside do **LPA** (a leitura confiável). "
-            "**⚠️ Alav.** = as óticas divergem: o EBIT vai para credores, então o *Justo EBIT* "
-            "está superestimado — use o *Justo LPA*."
+            "**TMA impl.** = o retorno anual que o mercado exige para a ação valer o preço de hoje "
+            "(o desconto que ele impõe). **⚠️ Alav.** = as óticas divergem: o EBIT vai para "
+            "credores, então o *Justo EBIT* está superestimado e a *TMA impl. EBIT* fica irreal — "
+            "use as colunas do LPA."
         )
     if lote["falhas"]:
         with st.expander(f"⚠️ {len(lote['falhas'])} não avaliada(s)"):
@@ -535,21 +558,24 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
                 ticker=emp["ticker"], ebit_atual=lpa, **comuns
             )
 
+        # TMA implícita: o retorno que o mercado exige para a ação valer o preço de hoje.
+        from lentes import leitura_reversa
+
+        lr = leitura_reversa(emp["preco_atual"], emp["ebit_por_acao"], lpa,
+                             cenarios_uso["intermediario"], tma_uso, retorno_alvo)
         _render_resultado(emp["ticker"], emp["preco_atual"], resultado_ebit,
-                          resultado_lpa, moeda=moeda)
+                          resultado_lpa, moeda=moeda,
+                          tma_lucro=lr["tma_lucro"], tma_ebit=lr["tma_ebit"],
+                          tem_lpa=resultado_lpa is not None)
 
         # Guarda-corpo: quando as duas óticas divergem muito, o EBIT está distorcido
         # por dívida (vai para credores, não para o acionista) — vale um aviso curto.
         if resultado_lpa is not None:
-            from lentes import leitura_reversa
-
-            lr = leitura_reversa(emp["preco_atual"], emp["ebit_por_acao"], lpa,
-                                 cenarios_uso["intermediario"], tma_uso, retorno_alvo)
             if lr["alavancada"]:
                 st.warning(
                     "⚠️ **Empresa alavancada** — boa parte do EBIT vai para credores, "
                     "não para o acionista. Confie na linha do **Método LPA**; a do EBIT "
-                    "superestima o preço justo."
+                    "superestima o preço justo (e a TMA implícita dele fica irreal)."
                 )
         elif emp.get("base") != "Lucro":
             st.caption("Sem lucro por ação disponível — só a linha do EBIT se aplica.")
