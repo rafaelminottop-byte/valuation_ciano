@@ -48,6 +48,56 @@ def carregar_universo() -> list[dict]:
     return json.loads(UNIVERSO_PATH.read_text(encoding="utf-8"))
 
 
+def buscar_ticker_eua(ticker: str) -> dict:
+    """Busca um ticker americano avulso no Yahoo Finance, pronto para o valuation.
+
+    Deriva o fluxo por ação: EBIT/ação para empresas normais; se a linha de EBIT
+    não existir no demonstrativo (típico de bancos), usa o lucro líquido, como os
+    bancos da B3. Levanta ValueError se faltar preço/ações ou não houver fluxo
+    positivo (o modelo Ciano pressupõe EBIT/lucro positivo e crescente).
+    """
+    ticker = ticker.strip().upper()
+    if not ticker:
+        raise ValueError("Informe um ticker (ex.: AAPL, MSFT, JPM).")
+    tk = yf.Ticker(ticker)
+    fin = tk.financials
+    fluxo, serie = _linha_demonstrativo(fin, ["EBIT", "Operating Income"])
+    base = "EBIT"
+    if fluxo is None:  # sem linha de EBIT -> provável banco: usa o lucro líquido
+        fluxo, serie = _linha_demonstrativo(fin, ["Net Income"])
+        base = "Lucro"
+    if fluxo is None or fluxo <= 0:
+        raise ValueError(
+            f"{ticker}: sem EBIT nem lucro positivo no Yahoo Finance "
+            "(o modelo só se aplica a EBIT positivo)."
+        )
+    fi = tk.fast_info
+    preco = float(fi.last_price) if getattr(fi, "last_price", None) else None
+    acoes = getattr(fi, "shares", None)
+    info = tk.info or {}
+    if not acoes:
+        acoes = info.get("sharesOutstanding")
+    if not preco or preco <= 0 or not acoes:
+        raise ValueError(f"{ticker}: preço ou nº de ações indisponível no Yahoo Finance.")
+    anos = sorted(serie)
+    # LPA (lucro líquido por ação) para as lentes reversas. Para banco o próprio
+    # fluxo já é o lucro; senão, lê a linha de Net Income.
+    if base == "Lucro":
+        lucro = fluxo
+    else:
+        lucro, _ = _linha_demonstrativo(fin, ["Net Income"])
+    lpa = (lucro / float(acoes)) if lucro is not None else None
+    return {
+        "ticker": ticker,
+        "nome": info.get("longName") or info.get("shortName") or ticker,
+        "preco_atual": preco,
+        "ebit_por_acao": fluxo / float(acoes),
+        "lpa": lpa,
+        "base_calculo": base,
+        "fluxo_crescente": len(anos) >= 2 and serie[anos[-1]] > serie[anos[0]],
+    }
+
+
 def _linha_demonstrativo(fin, nomes):
     """(valor mais recente, série {ano: valor}) da 1a linha encontrada, ou (None, {})."""
     if fin is None or getattr(fin, "empty", True):

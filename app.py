@@ -21,6 +21,7 @@ import streamlit as st
 from teses import buscar_tese
 from valuation_engine import (
     CENARIOS_PADRAO,
+    PREMISSAS_EUA,
     PREMISSAS_PADRAO,
     calcular_valuation_completo,
 )
@@ -175,7 +176,7 @@ def _cabecalho() -> None:
     )
 
 
-def _render_resultado(ticker: str, preco_atual: float, resultado: dict) -> None:
+def _render_resultado(ticker: str, preco_atual: float, resultado: dict, moeda: str = "R$") -> None:
     cfg = VEREDITO_CONFIG.get(
         resultado["veredito"], {"rotulo": resultado["veredito"], "cor": COR_ACCENT, "emoji": "•", "texto": ""}
     )
@@ -185,7 +186,7 @@ def _render_resultado(ticker: str, preco_atual: float, resultado: dict) -> None:
         <div class="ciano-verdict" style="background:{cfg['cor']}22; border:1.5px solid {cfg['cor']};">
             <span style="color:{cfg['cor']}; font-size:1.5rem;">{cfg['emoji']}</span>
             <span>{ticker} · {cfg['rotulo']}</span>
-            <small>R$ {_fmt_brl(preco_atual)} — {cfg['texto']}</small>
+            <small>{moeda} {_fmt_brl(preco_atual)} — {cfg['texto']}</small>
         </div>
         """,
         unsafe_allow_html=True,
@@ -199,7 +200,7 @@ def _render_resultado(ticker: str, preco_atual: float, resultado: dict) -> None:
         cartoes += (
             f'<div class="ciano-card">'
             f'<div class="lbl">{nome}</div>'
-            f'<div class="val">R$ {_fmt_brl(r.valuation_final_por_acao)}</div>'
+            f'<div class="val">{moeda} {_fmt_brl(r.valuation_final_por_acao)}</div>'
             f'<div class="sub" style="color:{cor_up};">{sinal}{r.upside_percentual:.1f}% vs preço</div>'
             f"</div>"
         )
@@ -235,7 +236,7 @@ def _render_resultado(ticker: str, preco_atual: float, resultado: dict) -> None:
         st.altair_chart(chart, use_container_width=True)
 
     with col_t:
-        st.markdown('<div class="ciano-label">Detalhamento (R$/ação)</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="ciano-label">Detalhamento ({moeda}/ação)</div>', unsafe_allow_html=True)
         linhas = [
             {
                 "Cenário": nome.capitalize(),
@@ -246,6 +247,50 @@ def _render_resultado(ticker: str, preco_atual: float, resultado: dict) -> None:
             for nome, r in resultado["resultados"].items()
         ]
         st.dataframe(pd.DataFrame(linhas).set_index("Cenário"), use_container_width=True)
+
+
+def _render_leitura_reversa(emp: dict, cenario: dict, tma: float, retorno_alvo: float, moeda: str) -> None:
+    """Painel 'o que o preço já embute': crescimento e TMA implícitos + alerta de alavancagem."""
+    from lentes import leitura_reversa
+
+    lpa = emp.get("lpa")
+    preco = emp["preco_atual"]
+    lr = leitura_reversa(preco, emp["ebit_por_acao"], lpa, cenario, tma, retorno_alvo)
+
+    st.markdown('<div class="ciano-label">Leitura reversa — o que o preço já embute</div>', unsafe_allow_html=True)
+    if lpa is None or lpa <= 0:
+        st.caption(
+            "Sem lucro por ação disponível (empresa em prejuízo ou dado ausente), "
+            "só a ótica por EBIT se aplica — e ela sozinha não separa dívida de acionista."
+        )
+        return
+
+    c1, c2, c3 = st.columns(3)
+    g = lr["crescimento_implicito"]
+    c1.metric("Cresc. implícito no preço", f"{g*100:.1f}%/ano" if g is not None else "—",
+              help="Crescimento perpétuo do lucro que o preço de hoje já embute (Gordon, com a TMA em uso).")
+    c2.metric("TMA implícita (lucro)", f"{lr['tma_lucro']*100:.1f}%" if lr["tma_lucro"] else "—",
+              help="Retorno anual que o mercado exige, pela ótica do lucro líquido.")
+    c3.metric("TMA implícita (EBIT)",
+              (f"{lr['tma_ebit']*100:.0f}%" if lr["tma_ebit"] else ">600%"),
+              help="Retorno exigido pela ótica do EBIT. Se dispara, o EBIT está distorcido por dívida.")
+
+    justo_lpa = lpa / retorno_alvo if retorno_alvo else None
+    if justo_lpa:
+        up = 100 * (justo_lpa / preco - 1)
+        st.caption(
+            f"Preço justo só pelo LPA (P/L de saída {1/retorno_alvo:.1f}×, sem crescimento): "
+            f"**{moeda} {_fmt_brl(justo_lpa)}** ({'+' if up>=0 else ''}{up:.0f}%)."
+        )
+    if lr["alavancada"]:
+        razao = f"{lr['razao']:.0f}×" if lr.get("razao") else "não converge"
+        st.warning(
+            f"⚠️ **As duas óticas divergem ({razao}).** A empresa é alavancada: boa parte do EBIT "
+            "vai para credores, não para o acionista. O upside pelo EBIT é ilusório — "
+            "confie na leitura pelo **lucro**."
+        )
+    else:
+        st.caption("✅ As óticas por EBIT e por lucro convergem — empresa pouco alavancada, o EBIT pertence ao acionista.")
 
 
 def _render_corpo_tese(tese: dict, titulo: str, fonte: str) -> None:
@@ -310,11 +355,36 @@ def _render_tese(ticker: str) -> None:
 
 def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) -> None:
     modo = st.radio(
-        "Origem dos dados", ["Buscar no Fundamentus", "Digitar manualmente"],
+        "Origem dos dados",
+        ["Buscar no Fundamentus", "Buscar no Yahoo (EUA)", "Digitar manualmente"],
         horizontal=True, label_visibility="collapsed",
     )
 
-    if modo == "Buscar no Fundamentus":
+    if modo == "Buscar no Yahoo (EUA)":
+        ticker = st.text_input("Ticker (EUA)", value="AAPL").strip().upper()
+        st.caption(
+            "Ação americana via Yahoo Finance. Usa a **TMA em dólar (10% a.a.)** — o fluxo "
+            "é em USD. Bancos usam o lucro líquido no lugar do EBIT."
+        )
+        if st.button("Buscar e calcular", type="primary", key="btn_eua_emp"):
+            with st.spinner(f"Buscando {ticker} no Yahoo Finance..."):
+                try:
+                    from mercado_eua import buscar_ticker_eua
+
+                    d = buscar_ticker_eua(ticker)
+                    st.session_state.empresa = {
+                        "ticker": d["ticker"],
+                        "preco_atual": d["preco_atual"],
+                        "ebit_por_acao": d["ebit_por_acao"],
+                        "lpa": d.get("lpa"),
+                        "base": d["base_calculo"],
+                        "mercado": "EUA",
+                        "nome": d.get("nome"),
+                    }
+                except Exception as e:  # noqa: BLE001 - mostra o erro na UI
+                    st.error(f"Não foi possível buscar {ticker}: {e}")
+
+    elif modo == "Buscar no Fundamentus":
         col_t, col_c = st.columns([2, 3])
         ticker = col_t.text_input("Ticker (B3)", value="PETR4").strip().upper()
         atualizar = col_c.checkbox(
@@ -331,10 +401,14 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
 
                     df_fonte = baixar_tabela_fundamentus(usar_cache=not atualizar)
                     dados = buscar_dados_ticker(ticker, df=df_fonte)
+                    linha = df_fonte[df_fonte["ticker"].str.upper() == ticker]
+                    p_l = pd.to_numeric(linha["p_l"], errors="coerce").iloc[0] if not linha.empty else None
+                    lpa = (dados["preco_atual"] / p_l) if (p_l and p_l > 0) else None
                     st.session_state.empresa = {
                         "ticker": ticker,
                         "preco_atual": dados["preco_atual"],
                         "ebit_por_acao": dados["ebit_atual"] / dados["acoes_em_circulacao"],
+                        "lpa": lpa,
                         "base": dados.get("base_calculo", "EBIT"),
                     }
                 except Exception as e:  # noqa: BLE001 - mostra o erro na UI
@@ -378,24 +452,41 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
     # Resultado persistido em session_state; recalcula ao vivo com as premissas.
     emp = st.session_state.get("empresa")
     if emp:
+        eua = emp.get("mercado") == "EUA"
+        # Empresa americana: fluxo em dólar -> TMA em dólar (10%), não a do Brasil.
+        tma_uso = PREMISSAS_EUA["tma"] if eua else tma
+        moeda = "US$" if eua else "R$"
         resultado = calcular_valuation_completo(
             ticker=emp["ticker"],
             ebit_atual=emp["ebit_por_acao"],
             acoes_em_circulacao=1.0,
             preco_atual=emp["preco_atual"],
-            tma=tma,
+            tma=tma_uso,
             retorno_alvo=retorno_alvo,
             cenarios=montar_cenarios(valores_cenarios),
             anos_fase_1=anos_fase_1,
             anos_fase_2=anos_fase_2,
         )
-        _render_resultado(emp["ticker"], emp["preco_atual"], resultado)
-        if emp.get("base") == "Lucro":
+        _render_resultado(emp["ticker"], emp["preco_atual"], resultado, moeda=moeda)
+        cenarios_uso = montar_cenarios(valores_cenarios)
+        _render_leitura_reversa(
+            emp, cenarios_uso["intermediario"], tma_uso, retorno_alvo, moeda
+        )
+        if eua:
+            nome = emp.get("nome") or emp["ticker"]
             st.caption(
-                "⚠️ Base: Lucro líquido (banco — o Fundamentus não expõe EBIT; "
-                "usamos o lucro como se fosse o EBIT). Interprete com cautela."
+                f"🇺🇸 {nome} — mercado americano (Yahoo Finance). "
+                f"TMA em dólar de {PREMISSAS_EUA['tma']*100:.0f}% a.a. "
+                "(a TMA da barra lateral é usada só para empresas da B3)."
             )
-        _render_tese(emp["ticker"])
+        if emp.get("base") == "Lucro":
+            fonte = "banco — não expõe EBIT" if not eua else "banco/sem EBIT no Yahoo"
+            st.caption(
+                f"⚠️ Base: Lucro líquido ({fonte}; usamos o lucro como se fosse o "
+                "EBIT). Interprete com cautela."
+            )
+        if not eua:
+            _render_tese(emp["ticker"])
 
 
 def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) -> None:
@@ -748,6 +839,107 @@ def _aba_eua() -> None:
     st.caption("Convicção = nº de posts que citaram a empresa (proxy de consenso de mercado, do screening de origem).")
 
 
+def _grafico_trajetoria(serie: list, rotulo: str, sufixo: str = "") -> None:
+    """Linha da trajetória histórica de um indicador macro."""
+    if not serie:
+        st.caption("Sem histórico disponível para este indicador.")
+        return
+    dfg = pd.DataFrame(serie)
+    dfg["ordem"] = range(len(dfg))
+    linha = (
+        alt.Chart(dfg)
+        .mark_line(color=COR_ACCENT, strokeWidth=2)
+        .encode(
+            x=alt.X("ordem:Q", title=None, axis=alt.Axis(labels=False, grid=False, ticks=False)),
+            y=alt.Y("valor:Q", title=None, scale=alt.Scale(zero=False),
+                    axis=alt.Axis(grid=True, gridOpacity=0.15, labelColor=COR_LIGHT)),
+            tooltip=[alt.Tooltip("data:N", title="Data"),
+                     alt.Tooltip("valor:Q", title=rotulo, format=".2f")],
+        )
+        .properties(height=180)
+        .configure_view(strokeWidth=0)
+        .configure(background="rgba(0,0,0,0)")
+    )
+    st.altair_chart(linha, use_container_width=True)
+    ini, fim = dfg.iloc[0], dfg.iloc[-1]
+    st.caption(
+        f"{ini['data']}: {ini['valor']:.2f}{sufixo}  →  {fim['data']}: {fim['valor']:.2f}{sufixo}"
+        f"  ({len(dfg)} pontos)"
+    )
+
+
+def _indicador_macro(col, rotulo: str, no: dict, fmt, sufixo: str = "",
+                     delta_key: str = None, ajuda: str = None) -> None:
+    """Métrica + expander com a trajetória histórica."""
+    d = no or {}
+    val = d.get("valor")
+    with col:
+        delta = None
+        if delta_key and d.get(delta_key) is not None:
+            delta = f"{d[delta_key]:+.1f}% no ano"
+        st.metric(rotulo, fmt(val) if val is not None else "—", delta=delta,
+                  help=ajuda or d.get("erro"))
+        with st.expander("📈 trajetória"):
+            _grafico_trajetoria(d.get("serie") or [], rotulo, sufixo)
+
+
+def _aba_macro() -> None:
+    import macro as mac
+
+    st.caption(
+        "Indicadores macro de fontes públicas gratuitas — **Global** via Yahoo Finance, "
+        "**EUA (inflação)** via BLS, **Brasil** via API do Banco Central (SGS e Focus). "
+        "Clique em **📈 trajetória** sob cada indicador para ver a série histórica. "
+        "Cache de 3h (as séries mudam devagar)."
+    )
+    if st.button("Atualizar dados macro", type="primary", key="macro_upd"):
+        with st.spinner("Buscando indicadores (Yahoo + BLS + Banco Central)..."):
+            st.session_state.macro = mac.buscar_macro(usar_cache=False)
+
+    dados = st.session_state.get("macro")
+    if dados is None:
+        with st.spinner("Carregando indicadores..."):
+            dados = mac.buscar_macro()
+            st.session_state.macro = dados
+
+    st.markdown('<div class="ciano-label">🌎 Global / Fluxo</div>', unsafe_allow_html=True)
+    g = dados.get("global", {})
+    c1, c2, c3, c4 = st.columns(4)
+    _indicador_macro(c1, "DXY (índice dólar)", g.get("dxy"), lambda v: f"{v:.2f}",
+                     delta_key="var_ano", ajuda="Dólar contra uma cesta de moedas.")
+    _indicador_macro(c2, "Ouro (US$/oz)", g.get("ouro"),
+                     lambda v: f"US$ {v:,.0f}".replace(",", "."), delta_key="var_ano")
+    _indicador_macro(c3, "Treasury 10 anos", g.get("treasury10a"), lambda v: f"{v:.2f}%",
+                     sufixo="%", delta_key="var_ano", ajuda="Juro longo dos EUA — o 'sem risco' em dólar.")
+    _indicador_macro(c4, "Inflação EUA (CPI 12m)", g.get("cpi_eua"), lambda v: f"{v:.2f}%",
+                     sufixo="%", ajuda="CPI cheio em 12 meses (fonte: BLS).")
+
+    st.markdown('<div class="ciano-label">🇧🇷 Brasil — Macro</div>', unsafe_allow_html=True)
+    b = dados.get("brasil", {})
+    d1, d2, d3 = st.columns(3)
+    _indicador_macro(d1, "Selic meta", b.get("selic"), lambda v: f"{v:.2f}%", sufixo="%",
+                     ajuda="Taxa básica de juros (meta, a.a.).")
+    _indicador_macro(d2, "IPCA (12 meses)", b.get("ipca12m"), lambda v: f"{v:.2f}%", sufixo="%",
+                     ajuda="Inflação acumulada em 12 meses.")
+    _indicador_macro(d3, "Dívida Bruta / PIB", b.get("divida_pib"), lambda v: f"{v:.1f}%", sufixo="%",
+                     ajuda="Dívida bruta do governo geral sobre o PIB.")
+    e1, e2, e3 = st.columns(3)
+    _indicador_macro(e1, "Juro real ex-ante", b.get("juro_real_ex_ante"), lambda v: f"{v:.1f}%",
+                     sufixo="%",
+                     ajuda="((1+Selic Focus)/(1+IPCA Focus) − 1). Juro real alto pressiona a economia e o valuation.")
+    _indicador_macro(e2, "Focus — IPCA", b.get("focus_ipca"), lambda v: f"{v:.2f}%", sufixo="%",
+                     ajuda="Mediana das expectativas de inflação (Focus/BC). A trajetória mostra se estão ancorando.")
+    _indicador_macro(e3, "Focus — Selic", b.get("focus_selic"), lambda v: f"{v:.2f}%", sufixo="%",
+                     ajuda="Mediana das expectativas para a Selic (Focus/BC).")
+
+    ref = (b.get("focus_ipca") or {}).get("ref")
+    if ref:
+        st.caption(
+            f"Focus com ano de referência {ref}. Fontes: Yahoo Finance, "
+            "BLS (EUA) e Banco Central do Brasil (SGS/Olinda)."
+        )
+
+
 def _aba_gatilhos() -> None:
     import carteira as cart
     import listas as lst
@@ -846,9 +1038,11 @@ def main() -> None:
         )
         valores_cenarios[nome] = {"g1": g1, "g2": g2}
 
-    # --- Abas: empresa, screener, carteira, ranking, EUA e gatilhos ---
-    aba_empresa, aba_screener, aba_carteira, aba_ranking, aba_eua, aba_gatilhos = st.tabs(
-        ["🔎 Empresa", "📊 Screener B3", "⭐ Carteira", "🏅 Ranking", "🇺🇸 EUA", "🔔 Gatilhos"]
+    # --- Abas: empresa, screener, carteira, ranking, EUA, macro e gatilhos ---
+    (aba_empresa, aba_screener, aba_carteira, aba_ranking, aba_eua,
+     aba_macro, aba_gatilhos) = st.tabs(
+        ["🔎 Empresa", "📊 Screener B3", "⭐ Carteira", "🏅 Ranking", "🇺🇸 EUA",
+         "📉 Macro", "🔔 Gatilhos"]
     )
     with aba_empresa:
         _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
@@ -860,6 +1054,8 @@ def main() -> None:
         _aba_ranking(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
     with aba_eua:
         _aba_eua()
+    with aba_macro:
+        _aba_macro()
     with aba_gatilhos:
         _aba_gatilhos()
 
