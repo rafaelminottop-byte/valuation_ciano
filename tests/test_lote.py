@@ -70,6 +70,22 @@ class TestAvaliarLote(unittest.TestCase):
         ordem = [x for x in self._df()["upside_lpa"] if x is not None]
         self.assertEqual(ordem, sorted(ordem, reverse=True))
 
+    def test_tma_implicita_nas_colunas(self):
+        df = self._df().set_index("ticker")
+        # Empresa limpa: a TMA exigida pelo lucro e pelo EBIT ficam na mesma ordem
+        limpa = df.loc["LIMPA"]
+        self.assertGreater(limpa["tma_lpa_pct"], 0)
+        self.assertLess(limpa["tma_ebit_pct"], 40)   # plausível
+
+        # Alavancada: a TMA pelo EBIT dispara (ou nem converge) — é o sinal de alerta
+        alav = df.loc["ALAV"]
+        self.assertGreater(alav["tma_lpa_pct"], 0)
+        self.assertTrue(pd.isna(alav["tma_ebit_pct"]) or alav["tma_ebit_pct"] > 100)
+
+    def test_sem_lpa_nao_tem_tma(self):
+        linha = self._df().set_index("ticker").loc["SEMLPA"]
+        self.assertTrue(pd.isna(linha["tma_lpa_pct"]))
+
     def test_lote_vazio(self):
         self.assertTrue(avaliar_lote([], cenarios=CENARIOS_PADRAO, tma=0.14).empty)
 
