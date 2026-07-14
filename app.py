@@ -939,6 +939,67 @@ def _aba_macro() -> None:
             "BLS (EUA) e Banco Central do Brasil (SGS/Olinda)."
         )
 
+    _bloco_expectativa_lucro()
+
+
+def _bloco_expectativa_lucro() -> None:
+    """Índice de revisão do lucro esperado das maiores empresas da B3."""
+    import lucro_esperado as le
+    from fundamentus_scraper import baixar_tabela_fundamentus
+
+    st.markdown('<div class="ciano-label">📈 Expectativa de lucro (B3)</div>', unsafe_allow_html=True)
+    st.caption(
+        "Consenso de analistas para o lucro do próximo ano nas ações mais líquidas da B3 "
+        "(Yahoo Finance). O **nível** importa pouco — o que informa é a **direção da revisão**: "
+        "índice acima de 100 = expectativas elevadas nos últimos 90 dias; abaixo = cortes."
+    )
+    c1, c2 = st.columns([1, 2])
+    n_cesta = c1.number_input("Tamanho da cesta", value=30, min_value=10, max_value=60, step=5,
+                              key="lucro_n", help="As N ações mais líquidas da B3 (proxy do Ibovespa).")
+    recarregar = c2.button("Calcular / atualizar expectativa de lucro", key="lucro_run")
+
+    indice = st.session_state.get("indice_lucro")
+    if recarregar or indice is None:
+        df = baixar_tabela_fundamentus()
+        liq = pd.to_numeric(df["liquidez"], errors="coerce")
+        cesta = df.assign(_l=liq).nlargest(int(n_cesta), "_l")["ticker"].str.upper().tolist()
+        barra = st.progress(0.0, text="Buscando consenso de lucro no Yahoo Finance...")
+        indice = le.buscar_indice_revisao(
+            [f"{t}.SA" for t in cesta],
+            usar_cache=not recarregar,
+            progresso=lambda i, n: barra.progress(i / n, text=f"Consenso de lucro... {i}/{n}"),
+        )
+        barra.empty()
+        st.session_state.indice_lucro = indice
+
+    if not indice or indice.get("valor") is None:
+        st.info("Não foi possível montar o índice (sem consenso disponível).")
+        return
+
+    valor = indice["valor"]
+    variacao = valor - 100
+    breadth = indice.get("pct_revisao_positiva")
+    m1, m2 = st.columns(2)
+    m1.metric("Índice de revisão (90d)", f"{valor:.1f}", delta=f"{variacao:+.1f}% em 90 dias",
+              help="Mediana da estimativa de lucro da cesta, base 100 = 90 dias atrás.")
+    m2.metric("Revisões positivas", f"{breadth:.0f}% da cesta" if breadth is not None else "—",
+              help="Amplitude: quantas empresas tiveram o lucro esperado elevado. "
+                   "Acima de 50% = revisões predominantemente positivas.")
+
+    if variacao > 0.5:
+        st.success(f"✅ **Expectativas subindo** — analistas elevaram o lucro esperado da B3 em "
+                   f"{variacao:.1f}% nos últimos 90 dias ({indice['n_empresas']} empresas).")
+    elif variacao < -0.5:
+        st.warning(f"⚠️ **Expectativas caindo** — analistas cortaram o lucro esperado da B3 em "
+                   f"{abs(variacao):.1f}% nos últimos 90 dias ({indice['n_empresas']} empresas).")
+    else:
+        st.info(f"➖ **Expectativas em platô** — sem revisão relevante em 90 dias "
+                f"({indice['n_empresas']} empresas). O autor do relatório chama a atenção para "
+                "platôs: costumam preceder viradas.")
+
+    with st.expander("📈 trajetória das revisões"):
+        _grafico_trajetoria(indice.get("serie") or [], "Índice (base 100)")
+
 
 def _aba_gatilhos() -> None:
     import carteira as cart
