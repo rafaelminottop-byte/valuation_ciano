@@ -61,12 +61,13 @@ def avaliar_lote(
         lpa = e.get("lpa")
         r_lpa = None
         alavancada = False
+        tma_lucro = tma_ebit = None
         if lpa and lpa > 0:
             res_lpa = calcular_valuation_completo(ticker=e["ticker"], ebit_atual=lpa, **comuns)
             r_lpa = res_lpa["resultados"][ref]
-            alavancada = leitura_reversa(
-                preco, fluxo, lpa, cenarios[ref], tma, retorno_alvo
-            )["alavancada"]
+            lr = leitura_reversa(preco, fluxo, lpa, cenarios[ref], tma, retorno_alvo)
+            alavancada = lr["alavancada"]
+            tma_lucro, tma_ebit = lr["tma_lucro"], lr["tma_ebit"]
 
         linhas.append({
             "ticker": e["ticker"],
@@ -74,8 +75,13 @@ def avaliar_lote(
             "preco": round(preco, 2),
             "justo_lpa": round(r_lpa.valuation_final_por_acao, 2) if r_lpa else None,
             "upside_lpa": round(r_lpa.upside_percentual, 1) if r_lpa else None,
+            # TMA implícita: o retorno anual que o mercado exige para pagar o preço de
+            # hoje. Pelo lucro costuma ser sensata; pelo EBIT, quando dispara, denuncia
+            # que o EBIT não é do acionista (dívida).
+            "tma_lpa_pct": round(tma_lucro * 100, 1) if tma_lucro is not None else None,
             "justo_ebit": round(r_ebit.valuation_final_por_acao, 2),
             "upside_ebit": round(r_ebit.upside_percentual, 1),
+            "tma_ebit_pct": round(tma_ebit * 100, 1) if tma_ebit is not None else None,
             "alavancada": "⚠️" if alavancada else "",
             "base": e.get("base_calculo", "EBIT"),
             "veredito": res_ebit["veredito"],
