@@ -85,9 +85,49 @@ def _injetar_css() -> None:
                 #0E2266;
         }
         #MainMenu, footer, header {visibility: hidden;}
-        .block-container {padding-top: 2.2rem; max-width: 1080px;}
+        .block-container {padding-top: 2.2rem; max-width: 1120px;}
+
+        /* Base tipográfica: quase tudo abaixo está em rem, então subir a raiz
+           aumenta o app inteiro de forma proporcional (leitura mais confortável). */
+        html {font-size: 18px;}
+        .stMarkdown p, .stMarkdown li, label, .stRadio label, .stCheckbox label {font-size: 1.02rem;}
+        [data-testid="stCaptionContainer"] p {font-size: 0.94rem; line-height: 1.5;}
+        [data-testid="stMetricValue"] {font-size: 1.9rem;}
+        [data-testid="stMetricLabel"] p {font-size: 0.92rem;}
+        div[data-testid="stDataFrame"] {font-size: 1rem;}
 
         h1, h2, h3, h4 {color: #FFFFFF; font-weight: 800; letter-spacing: -0.01em;}
+
+        /* Caixa única do resultado: cenários (colunas) x métodos (linhas) */
+        .ciano-matriz {
+            width: 100%; border-collapse: separate; border-spacing: 0;
+            background: #1A2F72; border: 1.5px solid #2A3F8A;
+            border-radius: 18px; overflow: hidden; margin: 8px 0 6px 0;
+        }
+        .ciano-matriz th, .ciano-matriz td {padding: 16px 18px; text-align: center;}
+        .ciano-matriz thead th {
+            background: #132876; color: #CBD5E1; font-size: 0.86rem; font-weight: 800;
+            letter-spacing: 0.10em; text-transform: uppercase;
+            border-bottom: 1.5px solid #2A3F8A;
+        }
+        .ciano-matriz tbody th {
+            background: #132876; color: #FFFFFF; text-align: left;
+            font-weight: 800; font-size: 1.02rem; border-right: 1.5px solid #2A3F8A;
+        }
+        .ciano-matriz tbody th small {
+            display: block; color: #9DB2E8; font-weight: 600;
+            font-size: 0.80rem; margin-top: 3px; text-transform: none; letter-spacing: 0;
+        }
+        .ciano-matriz tbody tr + tr th, .ciano-matriz tbody tr + tr td {
+            border-top: 1.5px solid #2A3F8A;
+        }
+        .ciano-matriz td .v {color: #FFFFFF; font-size: 1.75rem; font-weight: 800; line-height: 1.15;}
+        .ciano-matriz td .u {font-size: 0.98rem; font-weight: 700; margin-top: 4px;}
+        .ciano-matriz td .na {color: #7C8DB5; font-size: 1.2rem; font-weight: 700;}
+        .ciano-preco {
+            color: #CBD5E1; font-size: 1.05rem; font-weight: 600; margin: 2px 0 2px 0;
+        }
+        .ciano-preco b {color: #FFFFFF; font-size: 1.25rem;}
 
         .ciano-brand {display: inline-block; margin-bottom: 10px;}
         .ciano-brand img {height: 56px; width: auto; display: block;}
@@ -176,121 +216,48 @@ def _cabecalho() -> None:
     )
 
 
-def _render_resultado(ticker: str, preco_atual: float, resultado: dict, moeda: str = "R$") -> None:
-    cfg = VEREDITO_CONFIG.get(
-        resultado["veredito"], {"rotulo": resultado["veredito"], "cor": COR_ACCENT, "emoji": "•", "texto": ""}
+def _celula(r, preco_atual: float, moeda: str) -> str:
+    """Uma célula da matriz: preço justo + upside colorido (ou '—' se não se aplica)."""
+    if r is None:
+        return '<td><span class="na">—</span></td>'
+    up = r.upside_percentual
+    cor = "#22C55E" if up >= 0 else "#EF4444"
+    sinal = "+" if up >= 0 else ""
+    return (
+        f'<td><div class="v">{moeda} {_fmt_brl(r.valuation_final_por_acao)}</div>'
+        f'<div class="u" style="color:{cor};">{sinal}{up:.0f}%</div></td>'
     )
+
+
+def _render_resultado(ticker: str, preco_atual: float, resultado_ebit: dict,
+                      resultado_lpa: dict = None, moeda: str = "R$") -> None:
+    """Caixa única do resultado: cenários (colunas) × métodos LPA e EBIT (linhas)."""
+    cenarios = list(resultado_ebit["resultados"].keys())
+
+    def linha(rotulo: str, sub: str, resultado: dict) -> str:
+        celulas = "".join(
+            _celula((resultado or {}).get("resultados", {}).get(c), preco_atual, moeda)
+            for c in cenarios
+        )
+        return f"<tr><th>{rotulo}<small>{sub}</small></th>{celulas}</tr>"
+
+    cabecalho = "".join(f"<th>{c.capitalize()}</th>" for c in cenarios)
+    tabela = (
+        '<table class="ciano-matriz">'
+        f'<thead><tr><th style="text-align:left;">Preço justo por ação</th>{cabecalho}</tr></thead>'
+        "<tbody>"
+        + linha("Método LPA", "sobre o lucro líquido", resultado_lpa)
+        + linha("Método EBIT", "sobre o EBIT", resultado_ebit)
+        + "</tbody></table>"
+    )
+
     st.markdown('<div class="ciano-label">Resultado</div>', unsafe_allow_html=True)
     st.markdown(
-        f"""
-        <div class="ciano-verdict" style="background:{cfg['cor']}22; border:1.5px solid {cfg['cor']};">
-            <span style="color:{cfg['cor']}; font-size:1.5rem;">{cfg['emoji']}</span>
-            <span>{ticker} · {cfg['rotulo']}</span>
-            <small>{moeda} {_fmt_brl(preco_atual)} — {cfg['texto']}</small>
-        </div>
-        """,
+        f'<div class="ciano-preco">{ticker} — preço atual <b>{moeda} {_fmt_brl(preco_atual)}</b></div>',
         unsafe_allow_html=True,
     )
-
-    # Cards por cenário
-    cartoes = ""
-    for nome, r in resultado["resultados"].items():
-        cor_up = "#22C55E" if r.upside_percentual >= 0 else "#EF4444"
-        sinal = "+" if r.upside_percentual >= 0 else ""
-        cartoes += (
-            f'<div class="ciano-card">'
-            f'<div class="lbl">{nome}</div>'
-            f'<div class="val">{moeda} {_fmt_brl(r.valuation_final_por_acao)}</div>'
-            f'<div class="sub" style="color:{cor_up};">{sinal}{r.upside_percentual:.1f}% vs preço</div>'
-            f"</div>"
-        )
-    st.markdown(f'<div class="ciano-cards">{cartoes}</div>', unsafe_allow_html=True)
-
-    # Gráfico + detalhamento
-    col_g, col_t = st.columns([3, 2])
-
-    with col_g:
-        st.markdown('<div class="ciano-label">Valuation × preço</div>', unsafe_allow_html=True)
-        dados_g = [
-            {"item": nome.capitalize(), "valor": r.valuation_final_por_acao, "tipo": "Cenário"}
-            for nome, r in resultado["resultados"].items()
-        ]
-        dados_g.append({"item": "Preço atual", "valor": preco_atual, "tipo": "Preço"})
-        dfg = pd.DataFrame(dados_g)
-        chart = (
-            alt.Chart(dfg)
-            .mark_bar(cornerRadiusEnd=6, size=34)
-            .encode(
-                x=alt.X("valor:Q", title=None, axis=alt.Axis(grid=False, labelColor=COR_LIGHT)),
-                y=alt.Y("item:N", sort=None, title=None, axis=alt.Axis(labelColor="#FFFFFF", labelFontSize=13)),
-                color=alt.Color(
-                    "tipo:N",
-                    scale=alt.Scale(domain=["Cenário", "Preço"], range=[COR_ACCENT, "#F59E0B"]),
-                    legend=None,
-                ),
-            )
-            .properties(height=200)
-            .configure_view(strokeWidth=0)
-            .configure(background="rgba(0,0,0,0)")
-        )
-        st.altair_chart(chart, use_container_width=True)
-
-    with col_t:
-        st.markdown(f'<div class="ciano-label">Detalhamento ({moeda}/ação)</div>', unsafe_allow_html=True)
-        linhas = [
-            {
-                "Cenário": nome.capitalize(),
-                "Método P/L": round(r.valor_metodo_pl, 2),
-                "FCD EBIT": round(r.valor_fcd_ebit, 2),
-                "Total": round(r.valuation_final_por_acao, 2),
-            }
-            for nome, r in resultado["resultados"].items()
-        ]
-        st.dataframe(pd.DataFrame(linhas).set_index("Cenário"), use_container_width=True)
-
-
-def _render_leitura_reversa(emp: dict, cenario: dict, tma: float, retorno_alvo: float, moeda: str) -> None:
-    """Painel 'o que o preço já embute': crescimento e TMA implícitos + alerta de alavancagem."""
-    from lentes import leitura_reversa
-
-    lpa = emp.get("lpa")
-    preco = emp["preco_atual"]
-    lr = leitura_reversa(preco, emp["ebit_por_acao"], lpa, cenario, tma, retorno_alvo)
-
-    st.markdown('<div class="ciano-label">Leitura reversa — o que o preço já embute</div>', unsafe_allow_html=True)
-    if lpa is None or lpa <= 0:
-        st.caption(
-            "Sem lucro por ação disponível (empresa em prejuízo ou dado ausente), "
-            "só a ótica por EBIT se aplica — e ela sozinha não separa dívida de acionista."
-        )
-        return
-
-    c1, c2, c3 = st.columns(3)
-    g = lr["crescimento_implicito"]
-    c1.metric("Cresc. implícito no preço", f"{g*100:.1f}%/ano" if g is not None else "—",
-              help="Crescimento perpétuo do lucro que o preço de hoje já embute (Gordon, com a TMA em uso).")
-    c2.metric("TMA implícita (lucro)", f"{lr['tma_lucro']*100:.1f}%" if lr["tma_lucro"] else "—",
-              help="Retorno anual que o mercado exige, pela ótica do lucro líquido.")
-    c3.metric("TMA implícita (EBIT)",
-              (f"{lr['tma_ebit']*100:.0f}%" if lr["tma_ebit"] else ">600%"),
-              help="Retorno exigido pela ótica do EBIT. Se dispara, o EBIT está distorcido por dívida.")
-
-    justo_lpa = lpa / retorno_alvo if retorno_alvo else None
-    if justo_lpa:
-        up = 100 * (justo_lpa / preco - 1)
-        st.caption(
-            f"Preço justo só pelo LPA (P/L de saída {1/retorno_alvo:.1f}×, sem crescimento): "
-            f"**{moeda} {_fmt_brl(justo_lpa)}** ({'+' if up>=0 else ''}{up:.0f}%)."
-        )
-    if lr["alavancada"]:
-        razao = f"{lr['razao']:.0f}×" if lr.get("razao") else "não converge"
-        st.warning(
-            f"⚠️ **As duas óticas divergem ({razao}).** A empresa é alavancada: boa parte do EBIT "
-            "vai para credores, não para o acionista. O upside pelo EBIT é ilusório — "
-            "confie na leitura pelo **lucro**."
-        )
-    else:
-        st.caption("✅ As óticas por EBIT e por lucro convergem — empresa pouco alavancada, o EBIT pertence ao acionista.")
+    st.markdown(tabela, unsafe_allow_html=True)
+    st.caption("Cada célula: preço justo por ação e o upside sobre o preço atual.")
 
 
 def _render_corpo_tese(tese: dict, titulo: str, fonte: str) -> None:
@@ -353,12 +320,107 @@ def _render_tese(ticker: str) -> None:
                 )
 
 
+def _busca_em_lote(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) -> None:
+    """Avalia várias empresas de uma vez, pelos dois métodos (LPA e EBIT)."""
+    from lote import avaliar_lote, separar_tickers
+
+    mercado = st.radio("Mercado", ["B3 (Fundamentus)", "EUA (Yahoo)"], horizontal=True, key="lote_mkt")
+    eua = mercado.startswith("EUA")
+    exemplo = "AAPL MSFT JPM KO" if eua else "PETR4 VALE3 WEGE3 ECOR3 ITSA4"
+    texto = st.text_area(
+        "Tickers (separe por espaço, vírgula ou linha)", value=exemplo, height=90, key="lote_txt"
+    )
+    tickers = separar_tickers(texto)
+    st.caption(f"{len(tickers)} ticker(s) reconhecido(s).")
+
+    if st.button("Avaliar lote", type="primary", key="lote_run") and tickers:
+        empresas, falhas = [], []
+        barra = st.progress(0.0, text="Buscando dados...")
+        if eua:
+            from mercado_eua import buscar_ticker_eua
+
+            for i, t in enumerate(tickers, 1):
+                try:
+                    empresas.append(buscar_ticker_eua(t))
+                except Exception as erro:  # noqa: BLE001
+                    falhas.append((t, str(erro)[:70]))
+                barra.progress(i / len(tickers), text=f"Buscando... {i}/{len(tickers)}")
+        else:
+            from fundamentus_scraper import baixar_tabela_fundamentus, buscar_dados_ticker
+
+            df_fonte = baixar_tabela_fundamentus()
+            for i, t in enumerate(tickers, 1):
+                try:
+                    d = buscar_dados_ticker(t, df=df_fonte)
+                    linha = df_fonte[df_fonte["ticker"].str.upper() == t]
+                    p_l = pd.to_numeric(linha["p_l"], errors="coerce").iloc[0] if not linha.empty else None
+                    empresas.append({
+                        "ticker": t,
+                        "preco_atual": d["preco_atual"],
+                        "ebit_por_acao": d["ebit_atual"] / d["acoes_em_circulacao"],
+                        "lpa": (d["preco_atual"] / p_l) if (p_l and p_l > 0) else None,
+                        "base_calculo": d.get("base_calculo", "EBIT"),
+                    })
+                except Exception as erro:  # noqa: BLE001
+                    falhas.append((t, str(erro)[:70]))
+                barra.progress(i / len(tickers), text=f"Buscando... {i}/{len(tickers)}")
+        barra.empty()
+
+        st.session_state.lote = {
+            "df": avaliar_lote(
+                empresas, cenarios=montar_cenarios(valores_cenarios),
+                tma=PREMISSAS_EUA["tma"] if eua else tma, retorno_alvo=retorno_alvo,
+                anos_fase_1=anos_fase_1, anos_fase_2=anos_fase_2,
+            ),
+            "falhas": falhas,
+            "moeda": "US$" if eua else "R$",
+        }
+
+    lote = st.session_state.get("lote")
+    if not lote:
+        return
+    df, moeda = lote["df"], lote["moeda"]
+    if df.empty:
+        st.info("Nenhuma empresa avaliável no lote.")
+    else:
+        n_alav = int((df["alavancada"] == "⚠️").sum())
+        st.markdown(
+            f'<div class="ciano-label">Lote — {len(df)} empresas'
+            + (f" · {n_alav} alavancada(s)" if n_alav else "")
+            + "</div>",
+            unsafe_allow_html=True,
+        )
+        exibir = df.rename(columns={
+            "ticker": "Ticker", "nome": "Empresa", "preco": f"Preço {moeda}",
+            "justo_lpa": f"Justo LPA {moeda}", "upside_lpa": "Upside LPA (%)",
+            "justo_ebit": f"Justo EBIT {moeda}", "upside_ebit": "Upside EBIT (%)",
+            "alavancada": "Alav.", "base": "Base", "veredito": "Veredito",
+        }).set_index("Ticker")
+        if exibir["Empresa"].isna().all():
+            exibir = exibir.drop(columns=["Empresa"])
+        st.dataframe(exibir, use_container_width=True)
+        st.caption(
+            "Cenário intermediário. Ordenado pelo upside do **LPA** (a leitura confiável). "
+            "**⚠️ Alav.** = as óticas divergem: o EBIT vai para credores, então o *Justo EBIT* "
+            "está superestimado — use o *Justo LPA*."
+        )
+    if lote["falhas"]:
+        with st.expander(f"⚠️ {len(lote['falhas'])} não avaliada(s)"):
+            for t, erro in lote["falhas"]:
+                st.caption(f"**{t}** — {erro}")
+
+
 def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) -> None:
     modo = st.radio(
         "Origem dos dados",
-        ["Buscar no Fundamentus", "Buscar no Yahoo (EUA)", "Digitar manualmente"],
+        ["Buscar no Fundamentus", "Buscar no Yahoo (EUA)", "Lote (várias empresas)",
+         "Digitar manualmente"],
         horizontal=True, label_visibility="collapsed",
     )
+
+    if modo == "Lote (várias empresas)":
+        _busca_em_lote(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
+        return
 
     if modo == "Buscar no Yahoo (EUA)":
         ticker = st.text_input("Ticker (EUA)", value="AAPL").strip().upper()
@@ -456,35 +518,51 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
         # Empresa americana: fluxo em dólar -> TMA em dólar (10%), não a do Brasil.
         tma_uso = PREMISSAS_EUA["tma"] if eua else tma
         moeda = "US$" if eua else "R$"
-        resultado = calcular_valuation_completo(
-            ticker=emp["ticker"],
-            ebit_atual=emp["ebit_por_acao"],
-            acoes_em_circulacao=1.0,
-            preco_atual=emp["preco_atual"],
-            tma=tma_uso,
-            retorno_alvo=retorno_alvo,
-            cenarios=montar_cenarios(valores_cenarios),
-            anos_fase_1=anos_fase_1,
-            anos_fase_2=anos_fase_2,
-        )
-        _render_resultado(emp["ticker"], emp["preco_atual"], resultado, moeda=moeda)
         cenarios_uso = montar_cenarios(valores_cenarios)
-        _render_leitura_reversa(
-            emp, cenarios_uso["intermediario"], tma_uso, retorno_alvo, moeda
+        comuns = dict(
+            acoes_em_circulacao=1.0, preco_atual=emp["preco_atual"], tma=tma_uso,
+            retorno_alvo=retorno_alvo, cenarios=cenarios_uso,
+            anos_fase_1=anos_fase_1, anos_fase_2=anos_fase_2,
         )
+        # O mesmo motor, rodado sobre os dois fluxos: o EBIT e o lucro líquido (LPA).
+        resultado_ebit = calcular_valuation_completo(
+            ticker=emp["ticker"], ebit_atual=emp["ebit_por_acao"], **comuns
+        )
+        lpa = emp.get("lpa")
+        resultado_lpa = None
+        if lpa and lpa > 0:
+            resultado_lpa = calcular_valuation_completo(
+                ticker=emp["ticker"], ebit_atual=lpa, **comuns
+            )
+
+        _render_resultado(emp["ticker"], emp["preco_atual"], resultado_ebit,
+                          resultado_lpa, moeda=moeda)
+
+        # Guarda-corpo: quando as duas óticas divergem muito, o EBIT está distorcido
+        # por dívida (vai para credores, não para o acionista) — vale um aviso curto.
+        if resultado_lpa is not None:
+            from lentes import leitura_reversa
+
+            lr = leitura_reversa(emp["preco_atual"], emp["ebit_por_acao"], lpa,
+                                 cenarios_uso["intermediario"], tma_uso, retorno_alvo)
+            if lr["alavancada"]:
+                st.warning(
+                    "⚠️ **Empresa alavancada** — boa parte do EBIT vai para credores, "
+                    "não para o acionista. Confie na linha do **Método LPA**; a do EBIT "
+                    "superestima o preço justo."
+                )
+        elif emp.get("base") != "Lucro":
+            st.caption("Sem lucro por ação disponível — só a linha do EBIT se aplica.")
+
+        if emp.get("base") == "Lucro":
+            st.caption(
+                "Base: lucro líquido (banco — não reporta EBIT). As duas linhas usam o "
+                "lucro, então coincidem."
+            )
         if eua:
             nome = emp.get("nome") or emp["ticker"]
-            st.caption(
-                f"🇺🇸 {nome} — mercado americano (Yahoo Finance). "
-                f"TMA em dólar de {PREMISSAS_EUA['tma']*100:.0f}% a.a. "
-                "(a TMA da barra lateral é usada só para empresas da B3)."
-            )
-        if emp.get("base") == "Lucro":
-            fonte = "banco — não expõe EBIT" if not eua else "banco/sem EBIT no Yahoo"
-            st.caption(
-                f"⚠️ Base: Lucro líquido ({fonte}; usamos o lucro como se fosse o "
-                "EBIT). Interprete com cautela."
-            )
+            st.caption(f"🇺🇸 {nome} — Yahoo Finance · TMA em dólar de "
+                       f"{PREMISSAS_EUA['tma']*100:.0f}% a.a. (a TMA da barra lateral vale só para a B3).")
         if not eua:
             _render_tese(emp["ticker"])
 
