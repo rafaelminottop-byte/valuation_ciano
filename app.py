@@ -683,73 +683,141 @@ def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
         st.success(f'Lista "{nome}" salva com {topn} tickers. Use na aba Gatilhos.')
 
 
-def _aba_carteira(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) -> None:
+CARTEIRA_PADRAO = "Minha carteira"
+
+
+def _salvar_carteira(nome: str, tickers: list) -> None:
+    """Grava a carteira nomeada. A padrão também espelha em carteira.json, para a
+    opção 'Minha carteira' da aba Gatilhos continuar enxergando a mesma coisa."""
     import carteira as cart
+    import listas as lst
+
+    lst.salvar_lista(nome, tickers)
+    if nome == CARTEIRA_PADRAO:
+        cart.salvar_carteira(tickers)
+
+
+def _migrar_carteira_antiga() -> None:
+    """Move a carteira única legada (carteira.json) para uma carteira nomeada."""
+    import carteira as cart
+    import listas as lst
+
+    antigos = cart.carregar_carteira()
+    if antigos and CARTEIRA_PADRAO not in lst.carregar_listas():
+        lst.salvar_lista(CARTEIRA_PADRAO, antigos)
+
+
+def _aba_carteira(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) -> None:
+    import listas as lst
     from fundamentus_scraper import baixar_tabela_fundamentus, buscar_dados_ticker
+    from lote import avaliar_lote
 
-    st.caption("Salve empresas favoritas e avalie todas de uma vez. A carteira fica em data/carteira.json.")
+    _migrar_carteira_antiga()
 
-    col_a, col_b = st.columns([4, 1])
-    novo = col_a.text_input("Adicionar ticker", value="", key="cart_novo", placeholder="ex.: PRIO3").strip().upper()
-    if col_b.button("Adicionar", type="primary") and novo:
-        # Valida que o ticker existe no Fundamentus antes de salvar (evita typos
-        # como "WEOE3" — a Weg é WEGE3 — entrarem na carteira).
-        df_val = baixar_tabela_fundamentus()
-        if (df_val["ticker"].str.upper() == novo).any():
-            cart.adicionar(novo)
-            st.success(f"{novo} adicionado à carteira.")
-        else:
-            st.warning(f"{novo} não foi encontrado no Fundamentus — verifique o ticker (não adicionado).")
+    st.caption(
+        "Monte **várias carteiras** e avalie cada uma de uma vez. Elas ficam salvas em "
+        "`data/listas.json` e também aparecem na aba **Gatilhos** (em 'Lista salva')."
+    )
 
-    tickers = cart.carregar_carteira()
-    if not tickers:
-        st.info("Sua carteira está vazia. Adicione tickers acima.")
+    carteiras = lst.carregar_listas()
+    nomes = sorted(carteiras)
+    NOVA = "➕ Nova carteira..."
+
+    escolha = st.selectbox("Carteira", nomes + [NOVA], key="cart_sel")
+    if escolha == NOVA:
+        c1, c2 = st.columns([4, 1])
+        nome_novo = c1.text_input("Nome da nova carteira", key="cart_nome",
+                                  placeholder="ex.: Dividendos, Small caps, Long prazo").strip()
+        if c2.button("Criar", type="primary") and nome_novo:
+            if nome_novo in carteiras:
+                st.warning(f"Já existe uma carteira chamada '{nome_novo}'.")
+            else:
+                _salvar_carteira(nome_novo, [])
+                st.success(f"Carteira '{nome_novo}' criada.")
+                st.rerun()
         return
 
-    rem = st.multiselect("Remover da carteira", tickers)
-    if rem and st.button("Remover selecionados"):
-        for t in rem:
-            cart.remover(t)
-        tickers = cart.carregar_carteira()
+    tickers = carteiras.get(escolha, [])
 
-    if st.button("Avaliar carteira", type="primary"):
-        with st.spinner("Avaliando carteira..."):
-            df = baixar_tabela_fundamentus()
-            linhas = []
-            for t in tickers:
-                try:
-                    d = buscar_dados_ticker(t, df=df)
-                    res = calcular_valuation_completo(
-                        ticker=t,
-                        ebit_atual=d["ebit_atual"] / d["acoes_em_circulacao"],
-                        acoes_em_circulacao=1.0,
-                        preco_atual=d["preco_atual"],
-                        tma=tma,
-                        retorno_alvo=retorno_alvo,
-                        cenarios=montar_cenarios(valores_cenarios),
-                        anos_fase_1=anos_fase_1,
-                        anos_fase_2=anos_fase_2,
-                    )
-                    nomes = list(res["resultados"].keys())
-                    ref = "intermediario" if "intermediario" in res["resultados"] else nomes[len(nomes) // 2]
-                    r = res["resultados"][ref]
-                    linhas.append(
-                        {
-                            "Ticker": t,
-                            "Preço (R$)": round(d["preco_atual"], 2),
-                            "Veredito": res["veredito"],
-                            "Upside (%)": round(r.upside_percentual, 1),
-                            "Valuation (R$)": round(r.valuation_final_por_acao, 2),
-                        }
-                    )
-                except ValueError as e:
-                    linhas.append({"Ticker": t, "Preço (R$)": None, "Veredito": "n/d", "Upside (%)": None, "Valuation (R$)": None, "Obs": str(e)})
-            st.session_state.carteira_result = pd.DataFrame(linhas)
+    col_a, col_b = st.columns([4, 1])
+    novo = col_a.text_input("Adicionar ticker", value="", key="cart_novo",
+                            placeholder="ex.: PRIO3").strip().upper()
+    if col_b.button("Adicionar", type="primary") and novo:
+        # Valida no Fundamentus antes de salvar (evita typos — "WEOE3" em vez de WEGE3).
+        df_val = baixar_tabela_fundamentus()
+        if (df_val["ticker"].str.upper() == novo).any():
+            _salvar_carteira(escolha, tickers + [novo])
+            st.success(f"{novo} adicionado a '{escolha}'.")
+            st.rerun()
+        else:
+            st.warning(f"{novo} não foi encontrado no Fundamentus — verifique o ticker.")
 
-    resultado = st.session_state.get("carteira_result")
-    if resultado is not None and not resultado.empty:
-        st.markdown('<div class="ciano-label">Carteira avaliada</div>', unsafe_allow_html=True)
-        st.dataframe(resultado.set_index("Ticker"), use_container_width=True)
+    if not tickers:
+        st.info(f"A carteira '{escolha}' está vazia. Adicione tickers acima.")
+    else:
+        st.caption(f"**{escolha}** — {len(tickers)} empresa(s): " + ", ".join(tickers))
+        rem = st.multiselect("Remover da carteira", tickers, key="cart_rem")
+        if rem and st.button("Remover selecionados"):
+            _salvar_carteira(escolha, [t for t in tickers if t not in rem])
+            st.rerun()
+
+        if st.button("Avaliar carteira", type="primary"):
+            with st.spinner(f"Avaliando '{escolha}'..."):
+                df = baixar_tabela_fundamentus()
+                empresas, falhas = [], []
+                for t in tickers:
+                    try:
+                        d = buscar_dados_ticker(t, df=df)
+                        linha = df[df["ticker"].str.upper() == t]
+                        p_l = pd.to_numeric(linha["p_l"], errors="coerce").iloc[0] if not linha.empty else None
+                        empresas.append({
+                            "ticker": t,
+                            "preco_atual": d["preco_atual"],
+                            "ebit_por_acao": d["ebit_atual"] / d["acoes_em_circulacao"],
+                            "lpa": (d["preco_atual"] / p_l) if (p_l and p_l > 0) else None,
+                            "base_calculo": d.get("base_calculo", "EBIT"),
+                        })
+                    except ValueError as e:
+                        falhas.append((t, str(e)[:70]))
+                st.session_state.carteira_result = {
+                    "nome": escolha,
+                    "df": avaliar_lote(
+                        empresas, cenarios=montar_cenarios(valores_cenarios), tma=tma,
+                        retorno_alvo=retorno_alvo, anos_fase_1=anos_fase_1, anos_fase_2=anos_fase_2,
+                    ),
+                    "falhas": falhas,
+                }
+
+    with st.expander("🗑️ Excluir esta carteira"):
+        st.caption(f"Remove '{escolha}' e seus tickers. Não afeta as outras carteiras.")
+        if st.button(f"Excluir '{escolha}'"):
+            lst.remover_lista(escolha)
+            st.session_state.pop("carteira_result", None)
+            st.success(f"Carteira '{escolha}' excluída.")
+            st.rerun()
+
+    res = st.session_state.get("carteira_result")
+    if res and not res["df"].empty:
+        st.markdown(
+            f'<div class="ciano-label">{res["nome"]} — avaliada</div>', unsafe_allow_html=True
+        )
+        exibir = res["df"].rename(columns={
+            "ticker": "Ticker", "preco": "Preço R$",
+            "justo_lpa": "Justo LPA R$", "upside_lpa": "Upside LPA (%)",
+            "tma_lpa_pct": "TMA impl. LPA (%)",
+            "justo_ebit": "Justo EBIT R$", "upside_ebit": "Upside EBIT (%)",
+            "tma_ebit_pct": "TMA impl. EBIT (%)",
+            "alavancada": "Alav.", "base": "Base", "veredito": "Veredito",
+        }).drop(columns=["nome"], errors="ignore").set_index("Ticker")
+        st.dataframe(exibir, use_container_width=True)
+        st.caption(
+            "Cenário intermediário, ordenado pelo upside do **LPA**. **⚠️ Alav.** = o EBIT vai "
+            "para credores; use as colunas do LPA."
+        )
+        if res["falhas"]:
+            with st.expander(f"⚠️ {len(res['falhas'])} não avaliada(s)"):
+                for t, erro in res["falhas"]:
+                    st.caption(f"**{t}** — {erro}")
 
 
 def _precos_candidatos_ranking(df, liquidez_minima: float) -> dict:
