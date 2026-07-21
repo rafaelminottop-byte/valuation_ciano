@@ -129,6 +129,17 @@ def _injetar_css() -> None:
         }
         .ciano-preco b {color: #FFFFFF; font-size: 1.25rem;}
 
+        /* Tese no formato "card" (análise própria) */
+        .tese-cab {display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px;}
+        .tese-tag {
+            background: #1E3A8A; color: #93C5FD; border: 1px solid #3B82F6;
+            font-size: 0.86rem; font-weight: 700; padding: 3px 12px; border-radius: 8px;
+        }
+        .tese-sub {
+            color: #93C5FD; font-size: 0.86rem; font-weight: 800; letter-spacing: 0.10em;
+            text-transform: uppercase; margin: 18px 0 6px 0;
+        }
+
         .ciano-brand {display: inline-block; margin-bottom: 10px;}
         .ciano-brand img {height: 56px; width: auto; display: block;}
         .ciano-invest {
@@ -279,8 +290,80 @@ def _render_resultado(ticker: str, preco_atual: float, resultado_ebit: dict,
     )
 
 
+def _caixa_lista(titulo: str, itens: list, classe: str) -> str:
+    """Caixa com lista (gatilhos / detratores)."""
+    if not itens:
+        return ""
+    li = "".join(f"<li>{html.escape(p)}</li>" for p in itens)
+    return (f'<div class="tese-box {classe}"><div class="tese-h">{titulo}</div>'
+            f"<ul>{li}</ul></div>")
+
+
+def _render_tese_card(tese: dict, titulo: str, fonte: str) -> None:
+    """Renderiza a tese no formato 'card' (análise própria, com cenários de 10 anos)."""
+    st.markdown(f'<div class="ciano-label">{titulo}</div>', unsafe_allow_html=True)
+
+    cabecalho = []
+    if tese.get("classificacao"):
+        cabecalho.append(f'<span class="tese-tag">{html.escape(tese["classificacao"])}</span>')
+    if tese.get("setor"):
+        cabecalho.append(f'<span class="tese-setor">{html.escape(tese["setor"])}</span>')
+    if cabecalho:
+        st.markdown(f'<div class="tese-cab">{" ".join(cabecalho)}</div>', unsafe_allow_html=True)
+    if tese.get("resumo_numeros"):
+        st.caption(tese["resumo_numeros"])
+
+    for campo, rotulo in (("o_que_faz", "O que a empresa faz"), ("onde_atua", "Onde atua")):
+        if tese.get(campo):
+            st.markdown(
+                f'<div class="tese-sub">{rotulo}</div>'
+                f'<div class="tese-texto">{html.escape(tese[campo])}</div>',
+                unsafe_allow_html=True,
+            )
+
+    # Gatilhos x detratores lado a lado (substituem pontos fortes/fracos)
+    col_g, col_d = st.columns(2)
+    with col_g:
+        st.markdown(_caixa_lista("Gatilhos", tese.get("gatilhos", []), "tese-fortes"),
+                    unsafe_allow_html=True)
+    with col_d:
+        st.markdown(_caixa_lista("Contra a tese", tese.get("nao_gatilhos", []), "tese-fracos"),
+                    unsafe_allow_html=True)
+
+    if tese.get("numeros"):
+        with st.expander("📊 Números recentes"):
+            for n in tese["numeros"]:
+                st.markdown(f"- {n}")
+    for campo, rotulo in (("endividamento", "💰 Endividamento"), ("dividendos", "💵 Dividendos")):
+        if tese.get(campo):
+            with st.expander(rotulo):
+                st.write(tese[campo])
+    for extra in tese.get("extras", []):
+        if extra.get("texto"):
+            with st.expander(f"📌 {extra['titulo'].title()}"):
+                st.write(extra["texto"])
+
+    if tese.get("projecoes"):
+        st.markdown('<div class="tese-sub">Projeções — cenários de 10 anos</div>',
+                    unsafe_allow_html=True)
+        proj = pd.DataFrame(tese["projecoes"]).rename(columns={
+            "indicador": "Indicador", "pessimista": "Pessimista",
+            "intermediario": "Intermediário", "otimista": "Otimista",
+        })
+        st.dataframe(proj.set_index("Indicador"), use_container_width=True)
+        st.caption(
+            "Premissas próprias de cenário (análise da Ciano), não projeções oficiais — "
+            "e independentes do valuation calculado acima."
+        )
+    st.caption(fonte)
+
+
 def _render_corpo_tese(tese: dict, titulo: str, fonte: str) -> None:
-    """Renderiza setor, tese e as caixas de pontos fortes/fracos."""
+    """Renderiza a tese. Usa o formato 'card' quando a empresa tem análise própria."""
+    if tese.get("fonte") == "card":
+        _render_tese_card(tese, titulo, fonte)
+        return
+
     st.markdown(f'<div class="ciano-label">{titulo}</div>', unsafe_allow_html=True)
     if tese.get("setor"):
         st.markdown(
@@ -294,19 +377,11 @@ def _render_corpo_tese(tese: dict, titulo: str, fonte: str) -> None:
         )
     col_f, col_r = st.columns(2)
     with col_f:
-        itens = "".join(f"<li>{html.escape(p)}</li>" for p in tese.get("pontos_fortes", []))
-        st.markdown(
-            f'<div class="tese-box tese-fortes"><div class="tese-h">Pontos fortes</div>'
-            f"<ul>{itens}</ul></div>",
-            unsafe_allow_html=True,
-        )
+        st.markdown(_caixa_lista("Pontos fortes", tese.get("pontos_fortes", []), "tese-fortes"),
+                    unsafe_allow_html=True)
     with col_r:
-        itens = "".join(f"<li>{html.escape(p)}</li>" for p in tese.get("pontos_fracos", []))
-        st.markdown(
-            f'<div class="tese-box tese-fracos"><div class="tese-h">Pontos fracos</div>'
-            f"<ul>{itens}</ul></div>",
-            unsafe_allow_html=True,
-        )
+        st.markdown(_caixa_lista("Pontos fracos", tese.get("pontos_fracos", []), "tese-fracos"),
+                    unsafe_allow_html=True)
     st.caption(fonte)
 
 
