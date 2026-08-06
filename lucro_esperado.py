@@ -18,6 +18,7 @@ de lucro da cesta subiu 3% em 90 dias.
 
 import json
 import time
+from datetime import date
 from pathlib import Path
 from statistics import median
 
@@ -27,6 +28,10 @@ CACHE_DIR = Path(__file__).resolve().parent / ".cache"
 CACHE_VERSAO = 1
 CACHE_FILE = CACHE_DIR / f"lucro_esperado_v{CACHE_VERSAO}.json"
 CACHE_TTL_SEGUNDOS = 24 * 60 * 60  # 24h (consenso muda devagar)
+
+# Histórico acumulado: o eps_trend só dá 90 dias; guardamos um ponto por dia para
+# a série crescer ao vivo e virar uma trajetória longa com o passar do tempo.
+HISTORICO_FILE = Path(__file__).resolve().parent / "data" / "lucro_esperado_hist.json"
 
 # Instantes do eps_trend, do mais antigo para o mais recente.
 JANELAS = [("90daysAgo", "90d atrás"), ("60daysAgo", "60d"), ("30daysAgo", "30d"),
@@ -114,6 +119,36 @@ def _carregar_cache() -> dict:
         return json.loads(CACHE_FILE.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, OSError):
         return {}
+
+
+def carregar_historico(caminho: Path = None) -> list[dict]:
+    """Série acumulada do índice (um ponto por dia), cronológica."""
+    caminho = caminho or HISTORICO_FILE
+    if not caminho.exists():
+        return []
+    try:
+        h = json.loads(caminho.read_text(encoding="utf-8"))
+        return sorted(h, key=lambda x: x["data"])
+    except (json.JSONDecodeError, OSError):
+        return []
+
+
+def registrar_historico(valor: float, hoje: str = None, caminho: Path = None) -> list[dict]:
+    """Anexa (ou atualiza) o ponto de hoje no histórico e devolve a série.
+
+    Um ponto por dia: se já houver registro de hoje, sobrescreve com o mais
+    recente. Pura o suficiente para testar (aceita ``hoje`` e ``caminho``).
+    """
+    caminho = caminho or HISTORICO_FILE
+    hoje = hoje or date.today().isoformat()
+    if valor is None:
+        return carregar_historico(caminho)
+    hist = [p for p in carregar_historico(caminho) if p["data"] != hoje]
+    hist.append({"data": hoje, "valor": round(float(valor), 2)})
+    hist.sort(key=lambda x: x["data"])
+    caminho.parent.mkdir(parents=True, exist_ok=True)
+    caminho.write_text(json.dumps(hist, ensure_ascii=False, indent=1), encoding="utf-8")
+    return hist
 
 
 def buscar_indice_revisao(
