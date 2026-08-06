@@ -107,34 +107,34 @@
     "setor": "Varejo",
     "classificacao": "Compra",
     "resumo_numeros": "Preço atual ~R$ 8,50-8,80 · Market cap ~R$ 9,49 bi · Dívida líquida R$ 747 mi · Alavancagem 0,4x-0,6x",
-    "o_que_faz": "Rede de varejo de moda (marca Riachuelo) com modelo verticalizado, integrando producao, distribuição e comercializacao de roupas e acessorios. Possui também uma operacao financeira relevante, a Midway, que opera o cartao private label e oferece credito aos clientes da rede. Varejo de moda Producao verticalizada Midway — cartao e credito",
-    "onde_atua": "Rede nacional de lojas físicas no Brasil, com presenca ampla em shoppings e ruas de comercio, complementada por operacao digital (e-commerce e aplicativo) em expansão desde o investimento em transformacao digital entre 2020 e 2024. O ticker mudou de GUAR3 para RIAA3 em 2025, alinhando a ação a marca Riachuelo.",
+    "o_que_faz": "Rede de varejo de moda (marca Riachuelo) com modelo verticalizado, integrando produção, distribuição e comercialização de roupas e acessórios. Possui também uma operação financeira relevante, a Midway, que opera o cartão private label e oferece crédito aos clientes da rede. Varejo de moda Produção verticalizada Midway — cartão e crédito",
+    "onde_atua": "Rede nacional de lojas físicas no Brasil, com presenca ampla em shoppings e ruas de comercio, complementada por operação digital (e-commerce e aplicativo) em expansão desde o investimento em transformação digital entre 2020 e 2024. O ticker mudou de GUAR3 para RIAA3 em 2025, alinhando a ação a marca Riachuelo.",
     "numeros": [
-      "1T26: receita líquida consolidada de R$ 2,3 bilhões (+6,7% a.a.), com SSS de vestuario de +10,1%.",
-      "Lucro líquido de R$ 5 milhões no 1T26, revertendo prejuizo de R$ 45,9 milhões no 1T25 (trimestre sazonalmente mais fraco do varejo de moda). 4T25 (trimestre forte, Black Friday/Natal): lucro líquido ajustado de R$ 322 milhões (+29% a.a.), margem",
+      "1T26: receita líquida consolidada de R$ 2,3 bilhões (+6,7% a.a.), com SSS de vestuário de +10,1%.",
+      "Lucro líquido de R$ 5 milhões no 1T26, revertendo prejuízo de R$ 45,9 milhões no 1T25 (trimestre sazonalmente mais fraco do varejo de moda). 4T25 (trimestre forte, Black Friday/Natal): lucro líquido ajustado de R$ 322 milhões (+29% a.a.), margem",
       "EBITDA de 20,6%.",
-      "Margem bruta consolidada de 61,2% no 1T26, patamar saudavel para o setor.",
-      "CAPEX de R$ 146 milhões no trimestre (6,3% da receita), com foco em automacao do centro de distribuição."
+      "Margem bruta consolidada de 61,2% no 1T26, patamar saudável para o setor.",
+      "CAPEX de R$ 146 milhões no trimestre (6,3% da receita), com foco em automação do centro de distribuição."
     ],
-    "endividamento": "Dívida líquida de R$ 747,3 milhões, com alavancagem (dívida líquida/EBITDA) de 0,4x a 0,6x, dependendo da metodologia (pre ou pos-IFRS16) — um dos níveis mais confortaveis entre as empresas da carteira. Isso ocorre mesmo após a distribuição dos recursos obtidos com a venda do Midway Mall (shopping fisico da controlada).",
-    "dividendos": "O dividend yield reportado nos últimos 12 meses aparece entre 37% e 41%, um número extremamente chamativo, mas não recorrente. Foi inflado por um evento pontual: a distribuição aos acionistas dos recursos da venda do Midway Mall, somada aos pagamentos regulares de Juros sobre Capital Próprio (JCP). Um payout normalizado, sem esse efeito extraordinario, tende a resultar em um dividend yield recorrente muito mais proximo de 5% a 6% ao ano.",
+    "endividamento": "Dívida líquida de R$ 747,3 milhões, com alavancagem (dívida líquida/EBITDA) de 0,4x a 0,6x, dependendo da metodologia (pre ou pos-IFRS16) — um dos níveis mais confortáveis entre as empresas da carteira. Isso ocorre mesmo após a distribuição dos recursos obtidos com a venda do Midway Mall (shopping físico da controlada).",
+    "dividendos": "O dividend yield reportado nos últimos 12 meses aparece entre 37% e 41%, um número extremamente chamativo, mas não recorrente. Foi inflado por um evento pontual: a distribuição aos acionistas dos recursos da venda do Midway Mall, somada aos pagamentos regulares de Juros sobre Capital Próprio (JCP). Um payout normalizado, sem esse efeito extraordinário, tende a resultar em um dividend yield recorrente muito mais próximo de 5% a 6% ao ano.",
     "gatilhos": [
-      "Tese de self-help — melhora consistente de margem bruta e produtividade de lojas, com framework estrategico claro reconhecido pela XP.",
-      "Ganho de participacao frente a concorrentes — XP destaca potencial de ganho de share sobre a C&A, entre outros.",
-      "Expansão da Midway — carteira de credito crescendo 13% a.a., com potencial de gerar receita financeira adicional caso a inadimplencia seja bem administrada.",
+      "Tese de self-help — melhora consistente de margem bruta e produtividade de lojas, com framework estratégico claro reconhecido pela XP.",
+      "Ganho de participação frente a concorrentes — XP destaca potencial de ganho de share sobre a C&A, entre outros.",
+      "Expansão da Midway — carteira de crédito crescendo 13% a.a., com potencial de gerar receita financeira adicional caso a inadimplência seja bem administrada.",
       "Queda da Selic — melhora o poder de compra do consumidor e reduz custo de financiamento da própria",
       "Midway.",
-      "Transformacao digital e automacao — investimento contínuo em e-commerce, aplicativo e automacao logistica, com potencial de ganho de eficiencia de custos.",
-      "Balanco muito solido — alavancagem baixa (0,4x-0,6x) da flexibilidade para investir e resistir a ciclos fracos de consumo."
+      "Transformação digital e automação — investimento continuo em e-commerce, aplicativo e automação logística, com potencial de ganho de eficiência de custos.",
+      "Balanco muito sólido — alavancagem baixa (0,4x-0,6x) da flexibilidade para investir e resistir a ciclos fracos de consumo."
     ],
     "nao_gatilhos": [
-      "Inadimplencia elevada na Midway — 18,3% acima de 90 dias é um risco de deterioracao adicional caso o consumo enfraqueca.",
-      "Concorrencia de compras internacionais — pressao de plataformas como Shein e AliExpress sobre o varejo de moda domestico, tema que já derrubou ações do setor (Renner, C&A, Riachuelo) em maio de 2026.",
-      "Juros altos prolongados — pressionam tanto o consumo discricionario (vestuario) quanto o custo de financiamento da carteira de credito.",
+      "Inadimplência elevada na Midway — 18,3% acima de 90 dias é um risco de deterioração adicional caso o consumo enfraqueca.",
+      "Concorrência de compras internacionais — pressão de plataformas como Shein e AliExpress sobre o varejo de moda domestico, tema que já derrubou ações do setor (Renner, C&A, Riachuelo) em maio de 2026.",
+      "Juros altos prolongados — pressionam tanto o consumo discricionário (vestuário) quanto o custo de financiamento da carteira de crédito.",
       "Dividend yield enganoso — o número de 37-41% reportado não é recorrente; expectativas de renda baseadas nesse patamar seriam equivocadas.",
       "Volatilidade trimestre a trimestre — forte sazonalidade entre trimestres fracos (1T) e fortes (4T, Black",
       "Friday/Natal) exige leitura cuidadosa dos resultados isolados.",
-      "Nenhuma exposição a energia, data center ou inteligência artificial — tese ligada a varejo de moda e credito ao consumidor."
+      "Nenhuma exposição a energia, data center ou inteligência artificial — tese ligada a varejo de moda e crédito ao consumidor."
     ],
     "projecoes": [
       {
@@ -145,12 +145,12 @@
       },
       {
         "indicador": "Alavancagem 2036",
-        "pessimista": "~1,0x (estresse de credito)",
+        "pessimista": "~1,0x (estresse de crédito)",
         "intermediario": "~0,5x (estável)",
         "otimista": "<0,3x"
       },
       {
-        "indicador": "Lucro medio (10a)",
+        "indicador": "Lucro médio (10a)",
         "pessimista": "R$ 1,75 bi",
         "intermediario": "R$ 2,3 bi",
         "otimista": "R$ 3,1 bi"
@@ -162,7 +162,7 @@
         "otimista": "R$ 5,13 bi"
       },
       {
-        "indicador": "P/L de saída",
+        "indicador": "P/L de saida",
         "pessimista": "6x",
         "intermediario": "9x",
         "otimista": "12x"
@@ -180,7 +180,7 @@
         "otimista": "R$ 57,00"
       },
       {
-        "indicador": "DY medio anual assumido (recorrente)",
+        "indicador": "DY médio anual assumido (recorrente)",
         "pessimista": "~4%",
         "intermediario": "~6%",
         "otimista": "~8%"
@@ -218,11 +218,13 @@
     ],
     "extras": [
       {
-        "titulo": "MIDWAY — A OPERACAO FINANCEIRA E SEU RISCO",
-        "texto": "Carteira de credito de aproximadamente R$ 6 bilhões (+13% a.a.), com EBITDA da divisao financeira de R$ 133,1 milhões (+5,8%). Ponto de atencao: a inadimplencia acima de 90 dias na carteira de credito da Midway esta em 18,3%, patamar bem superior ao observado em bancos tradicionais (embora seja tipico de operacoes de cartao private label de varejo). É um risco relevante a monitorar, pois uma deterioracao adicional pressionaria diretamente o resultado consolidado da companhia."
+        "titulo": "MIDWAY — A OPERAÇÃO FINANCEIRA E SEU RISCO",
+        "texto": "Carteira de crédito de aproximadamente R$ 6 bilhões (+13% a.a.), com EBITDA da divisão financeira de R$ 133,1 milhões (+5,8%). Ponto de atenção: a inadimplência acima de 90 dias na carteira de crédito da Midway está em 18,3%, patamar bem superior ao observado em bancos tradicionais (embora seja tipico de operações de cartão private label de varejo). É um risco relevante a monitorar, pois uma deterioração adicional pressionária diretamente o resultado consolidado da companhia."
       }
     ],
-    "fonte": "card"
+    "fonte": "card",
+    "data_tese": "maio/2026",
+    "arquivo_origem": "RIAA3_tese_cenarios_10anos.pdf"
   },
   "CSAN3": {
     "ticker": "CSAN3",
@@ -455,27 +457,27 @@
     "nome": "Banco do Brasil",
     "setor": "Banco Público / Agronegócio",
     "classificacao": "Turnaround",
-    "resumo_numeros": "Preço atual R$ 20,15 · Market cap R$ 116 bi · Patrimonio líquido R$ 193 bi · ROE 1T26: 7,3%",
-    "o_que_faz": "Banco de varejo e atacado completo — capta depositos, concede credito a pessoas físicas, empresas e ao agronegocio, e distribui seguros, previdencia, cartoes e investimentos. A principal diferenca frente aos bancos privados (Itau, Bradesco) e que o governo federal e o controlador, o que garante distribuição nacional e acesso a linhas de credito rural subsidiado, mas também expoe a instituicao a influencia política em decisoes de credito. Varejo bancario Credito rural / agronegocio Cartoes e consignado Seguros e previdencia",
-    "onde_atua": "Operacao nacional em todo o territorio brasileiro, com a maior capilaridade de agencias do país, inclusive em regioes de menor interesse comercial para bancos privados. E historicamente o maior financiador do agronegocio brasileiro, via Plano Safra e linhas de custeio rural. AS GARANTIAS DO CREDITO RURAL — E POR QUE NÃO RESOLVEM O PROBLEMA RAPIDAMENTE O credito rural concedido pelo banco e, em grande parte, garantido por instrumentos formais previstos no Manual de Credito Rural do Banco Central. Isso e frequentemente mal compreendido: a existencia de garantia não significa recuperação rapida ou integral do valor emprestado.",
+    "resumo_numeros": "Preço atual R$ 20,15 · Market cap R$ 116 bi · Patrimônio líquido R$ 193 bi · ROE 1T26: 7,3%",
+    "o_que_faz": "Banco de varejo e atacado completo — recebe depósitos, empresta dinheiro para pessoas e empresas, vende seguros, previdência, cartões e investimentos. A diferença pros bancos privados (Itaú, Bradesco): o governo federal é o controlador , o que traz distribuição em todo o país e acesso a crédito rural subsidiado, mas também interferência política. (Varejo bancário, Crédito rural / agronegócio, Cartões e consignado, Seguros e previdência)",
+    "onde_atua": "Operação nacional em todo o Brasil , com maior capilaridade de agências do país, inclusive regiões onde bancos privados têm pouca presença. É historicamente o maior financiador do agronegócio brasileiro , via Plano Safra e crédito de custeio rural.",
     "numeros": [],
     "endividamento": "",
-    "dividendos": "O Banco do Brasil distribui parte do lucro via dividendos e Juros sobre Capital Próprio (JCP), este último um mecanismo de eficiencia tributaria. Historicamente o payout rodou entre 40% e 50% do lucro líquido, mas foi reduzido para 30% em 2026 como medida de preservacao de capital diante da deterioracao da inadimplencia. O dividend yield atual (últimos 12 meses) esta em torno de 2,7% a 2,8%, bem abaixo da média histórica do papel (que já chegou a superar 8-9% em ciclos anteriores de maior distribuição). Nas projeções abaixo, o payout evolui gradualmente conforme o cenário (30% no pessimista, até 40% no otimista), refletindo a normalizacao esperada da política de distribuição a medida que a rentabilidade se recupera.",
+    "dividendos": "O Banco do Brasil distribui parte do lucro via dividendos e Juros sobre Capital Próprio (JCP), este último um mecanismo de eficiência tributária. Historicamente o payout rodou entre 40% e 50% do lucro líquido, mas foi reduzido para 30% em 2026 como medida de preservação de capital diante da deterioração da inadimplência. O dividend yield atual (últimos 12 meses) está em torno de 2,7% a 2,8%, bem abaixo da média histórica do papel (que já chegou a superar 8-9% em ciclos anteriores de maior distribuição). Nas projeções abaixo, o payout evolui gradualmente conforme o cenário (30% no pessimista, até 40% no otimista), refletindo a normalização esperada da politica de distribuição a medida que a rentabilidade se recupera.",
     "gatilhos": [
-      "Queda da Selic — melhora margem financeira e reduz custo de captacao e inadimplencia.",
-      "Ciclo do agronegocio — preço de commodities e resultado de safra impactam diretamente a maior carteira de credito do banco.",
-      "Reprecificacao de risco — ação negociada hoje a 0,6x o valor patrimonial; sinais de estabilizacao da inadimplencia tendem a ser gatilho de recuperação de multiplo.",
-      "Crescimento de consignado e digitalizacao — linhas de menor risco ganhando peso relativo na carteira."
+      "Queda da Selic — melhora margem financeira e reduz custo de captação e de inadimplência.",
+      "Ciclo do agronegócio — preço de commodities e safra impactam diretamente a maior carteira de crédito do banco.",
+      "Reprecificação de risco — ação hoje punida (P/VP 0,6x); qualquer sinal de estabilização da inadimplência é gatilho de recuperação.",
+      "Crescimento de consignado e digitalização — linhas de menor risco ganhando peso no mix."
     ],
     "nao_gatilhos": [
-      "Nenhuma exposição a energia, data center, inteligência artificial ou commodities físicas — negocio inteiramente financeiro.",
-      "Payout reduzido a 30% diminuiu o principal atrativo histórico do papel (dividendo elevado); a tese atual e de recuperação de lucro, não de renda.",
-      "Risco de interferencia política do controlador (Uniao) em decisoes de credito e de preço, ausente nos bancos privados.",
-      "Ausência de crescimento estrutural de mercado — trata-se de reprecificacao e recuperação ciclica, não de expansão de mercado enderecavel."
+      "Zero exposição a energia, data center, IA ou commodities físicas — negócio 100% financeiro.",
+      "Payout cortado a 30% reduziu o principal atrativo histórico (dividendo alto) — hoje é aposta em recuperação, não em renda.",
+      "Risco de interferência política do controlador (União) em decisões de crédito e preço — não existe nos bancos privados.",
+      "Sem crescimento estrutural de mercado — é reprecificação/recuperação de ciclo, não expansão de TAM."
     ],
     "projecoes": [
       {
-        "indicador": "ROE medio sustentado",
+        "indicador": "ROE médio sustentado",
         "pessimista": "10%",
         "intermediario": "14%",
         "otimista": "18%"
@@ -487,13 +489,13 @@
         "otimista": "40%"
       },
       {
-        "indicador": "Crescimento do patrimonio (g)",
+        "indicador": "Crescimento do patrimônio (g)",
         "pessimista": "~7% a.a.",
         "intermediario": "~9,1% a.a.",
         "otimista": "~10,8% a.a."
       },
       {
-        "indicador": "Patrimonio líquido 2036",
+        "indicador": "Patrimônio líquido 2036",
         "pessimista": "R$ 379 bi",
         "intermediario": "R$ 458 bi",
         "otimista": "R$ 538 bi"
@@ -529,24 +531,6 @@
         "otimista": "~13,5%"
       },
       {
-        "indicador": "DY medio anual assumido",
-        "pessimista": "~3,9%",
-        "intermediario": "~5,5%",
-        "otimista": "~7,4%"
-      },
-      {
-        "indicador": "Dividendo acumulado por ação (10a)",
-        "pessimista": "~R$ 7,86",
-        "intermediario": "~R$ 11,10",
-        "otimista": "~R$ 14,90"
-      },
-      {
-        "indicador": "Retorno só de dividendos (10a, sem reinvestir)",
-        "pessimista": "~39%",
-        "intermediario": "~55%",
-        "otimista": "~74%"
-      },
-      {
         "indicador": "Retorno total (ação + dividendo)",
         "pessimista": "~135%",
         "intermediario": "~310%",
@@ -574,10 +558,12 @@
     "extras": [
       {
         "titulo": "PRINCIPAIS INSTRUMENTOS DE GARANTIA",
-        "texto": "1. Penhor de safra — a producao futura do produtor fica vinculada como garantia; e o instrumento mais utilizado. 2. Hipoteca de imovel rural — a terra, ou parte dela, e oferecida como garantia real. 3. Alienacao fiduciaria — maquinas, equipamentos ou o próprio imovel permanecem formalmente em nome do credor até a quitacao. 4. Cedula de Produto Rural (CPR) — titulo que representa a promessa de entrega da producao ou pagamento equivalente, também utilizado como instrumento de credito e garantia. Limitacoes praticas da garantia neste ciclo: A execução judicial de garantias reais (hipoteca, alienacao) é um processo lento e oneroso, que pode se estender por anos, enquanto a perda já e reconhecida contabilmente via provisao no período corrente. Em ciclos de inadimplencia generalizada (quebra de safra, queda de preço de commodities), o valor de mercado da terra na regiao tende a cair simultaneamente, reduzindo o valor efetivo da garantia justamente quando sua execução seria mais necessaria. O governo federal publicou em 18 de julho de 2026 a Medida Provisoria 1.376/2026, criando um programa de renegociacao de dividas rurais com prazos de até 10 anos, 2 anos de carencia, juros reduzidos (5% a 12% ao ano) é um fundo garantidor de até R$ 2 bilhões. O acordo determina explicitamente o reaproveitamento das garantias já constituidas, em vez da execução ou exigencia de novos bens. Segundo analistas do Bank of America, o programa deve beneficiar cerca de 10% da carteira de credito do banco — equivalente a aproximadamente 60% dos emprestimos inadimplentes ou renegociados, assumindo concentracao relevante de operacoes no BB. Leitura pratica: a garantia existe formalmente, mas a intervencao do governo substitui a execução rapida por um alongamento de prazo (até 10 anos) com redução de juros. Isso e favoravel ao produtor e reduz o risco de uma crise de credito mais aguda no curto prazo, porém significa que o banco recuperara o capital de forma gradual ao longo da proxima decada, com rentabilidade menor sobre essas operacoes especificas — não uma recuperação imediata via execução de colateral."
+        "texto": "1. Penhor de safra — a produção futura do produtor fica vinculada como garantia; e o instrumento mais utilizado. 2. Hipoteca de imóvel rural — a terra, ou parte dela, e oferecida como garantia real. 3. Alienação fiduciária — maquinas, equipamentos ou o próprio imóvel permanecem formalmente em nome do credor até a quitação. 4. Cedula de Produto Rural (CPR) — titulo que representa a promessa de entrega da produção ou pagamento equivalente, também utilizado como instrumento de crédito e garantia. Limitações práticas da garantia neste ciclo: A execução judicial de garantias reais (hipoteca, alienação) é um processo lento e oneroso, que pode se estender por anos, enquanto a perda já e reconhecida contabilmente via provisão no período corrente. Em ciclos de inadimplência generalizada (quebra de safra, queda de preço de commodities), o valor de mercado da terra na regiao tende a cair simultaneamente, reduzindo o valor efetivo da garantia justamente quando sua execução seria mais necessária. O governo federal publicou em 18 de julho de 2026 a Medida Provisoria 1.376/2026, criando um programa de renegociação de dívidas rurais com prazos de até 10 anos, 2 anos de carência, juros reduzidos (5% a 12% ao ano) é um fundo garantidor de até R$ 2 bilhões. O acordo determina explicitamente o reaproveitamento das garantias já constituidas, em vez da execução ou exigência de novos bens. Segundo analistas do Bank of America, o programa deve beneficiar cerca de 10% da carteira de crédito do banco — equivalente a aproximadamente 60% dos emprestimos inadimplentes ou renegociados, assumindo concentração relevante de operações no BB. Leitura prática: a garantia existe formalmente, mas a intervenção do governo substitui a execução rápida por um alongamento de prazo (até 10 anos) com redução de juros. Isso e favorável ao produtor e reduz o risco de uma crise de crédito mais aguda no curto prazo, porém significa que o banco recuperara o capital de forma gradual ao longo da próxima decada, com rentabilidade menor sobre essas operações especificas — não uma recuperação imediata via execução de colateral."
       }
     ],
-    "fonte": "card"
+    "fonte": "card",
+    "data_tese": "julho/2026",
+    "arquivo_origem": "card_bbas3_cenarios.html"
   },
   "COGN3": {
     "ticker": "COGN3",
@@ -683,11 +669,16 @@
   },
   "VALE3": {
     "ticker": "VALE3",
-    "nome": "Vale",
+    "nome": "Vale S.A.",
     "setor": "Mineração (Ferro e Metais de Base)",
-    "tese": "A Vale é uma das maiores mineradoras do mundo e a maior produtora de minério de ferro do planeta. A tese envolve a demanda estrutural da China por aço, mas tem uma segunda camada muito relevante que o mercado subestima: o portfólio de níquel e cobre. Com a eletrificação de veículos acelerando globalmente, esses metais — hoje tratados como secundários — podem se tornar tão relevantes para o resultado da Vale quanto o ferro nos próximos 10 anos. O investidor que compra Vale hoje leva o maior produtor de minério de ferro do mundo e, embutido no mesmo preço, uma posição estratégica nos metais da transição energética.",
-    "atividade": "Mineração e processamento de minério de ferro, pelotas, níquel, cobre, manganês e carvão. Opera em 9 países com foco no Brasil (Pará e Minas Gerais), Canadá (níquel) e outros.",
-    "pontos_fortes": [
+    "classificacao": "Análise completa",
+    "resumo_numeros": "R$ 72,85 · Selic: 14,75% · DY 12m: 7,5% · Market cap: ~R$ 320 bi · VBM embutida de graça no preço atual · EBITDA 2025 · US$ 15,9 bi · +3% a/a",
+    "o_que_faz": "Mineração e processamento de minério de ferro, pelotas, níquel, cobre, manganês e carvão. Opera em 9 países com foco no Brasil (Pará e Minas Gerais), Canadá (níquel) e outros.",
+    "onde_atua": "",
+    "numeros": [],
+    "endividamento": "",
+    "dividendos": "",
+    "gatilhos": [
       "Maior produtor mundial de minério de ferro com minério de altíssima qualidade (67% Fe)",
       "posição estratégica em níquel e cobre — metais críticos para a transição energética que podem valorizar substancialmente na próxima década",
       "infraestrutura logística própria e irreplicável (Estrada de Ferro Carajás, terminais portuários em São Luís e Tubarão)",
@@ -698,13 +689,71 @@
       "valorização do dólar",
       "programas de buyback e dividendos extraordinários"
     ],
-    "pontos_fracos": [
+    "nao_gatilhos": [
       "Exposição direta ao ciclo econômico da China, que representa mais de 60% da demanda por minério",
       "passivos do desastre de Brumadinho ainda em negociação",
       "risco político com a possibilidade de royalties e impostos maiores",
       "dependência de uma única commodity (ferro) para a maior parte do resultado",
       "risco ambiental e reputacional elevado"
-    ]
+    ],
+    "projecoes": [],
+    "extras": [
+      {
+        "titulo": "VALE3 · B3 NOVO MERCADO · JULHO 2026",
+        "texto": "Vale S.A. Mineração — Minério de Ferro · Cobre · Níquel (VBM) R$ 72,85 Selic: 14,75% · DY 12m: 7,5% · Market cap: ~R$ 320 bi VBM embutida de graça no preço atual EBITDA 2025 US$ 15,9 bi +3% a/a FCL 2025 US$ 4,8 bi +26% vs. 2024 Dívida líquida US$ 17 bi Custo: 5,4% a.a. VBM / EBITDA 28% Era 10% em 2024 EV/EBITDA atual 4,6x vs. 8–9x pares cobre"
+      },
+      {
+        "titulo": "NEGÓCIO DE FERRO",
+        "texto": "R$ 74 EBITDA US$ 12,4 bi × 4,5x – dívida proporcional Múltiplo conservador de ferro +"
+      },
+      {
+        "titulo": "VBM — COBRE + NÍQUEL",
+        "texto": "R$ 65 EBITDA US$ 3,3 bi × 8x Múltiplo de pares de cobre Projetos Bacaba + Salobo CPF ="
+      },
+      {
+        "titulo": "VALOR JUSTO TOTAL",
+        "texto": "R$ 139 +91% vs. R$ 72,85 Cenário: Selic 10% + VBM re-rating pleno (2028–30) O mercado compra hoje a R$ 72,85 — que é exatamente o valor do negócio de ferro sozinho. A VBM está sendo entregue de graça. R$ 65 de valor oculto por ação 📊 Os dois negócios — o que cada um gera Negócio Produção Preço/t Custo/t EBITDA % total Margem Múltiplo justo Múltiplo atual Minério de ferro 336 Mt/ano US$ 95/t US$ 21/t ~US$ 12,4 bi 72% 55% 4–5x 4,6x VBM — Cobre 382 kt/ano US$ 11.000/t ~US$ 0 * ~US$ 2,2 bi 13% 52% 8–9x ≈ 0x ⚠️ VBM — Níquel 177 kt/ano US$ 15.000/t US$ 12.200/t ~US$ 1,1 bi 7% 18% 8–9x ≈ 0x ⚠️ Total — — — US$ 15,9 bi 100% 42% 8x (justo) 4,6x (atual) * Ouro extraído como subproduto em Salobo e Sossego cobre todo o custo operacional — o cobre sai com custo efetivo próximo de zero. ⚡ As 4 variáveis que movem o valor da ação"
+      },
+      {
+        "titulo": "1. PREÇO DO MINÉRIO — VARIÁVEL",
+        "texto": "DOMINANTE US$ 95/t atual Controla 72% da receita. A China responde por 60%+ da demanda global de aço — qualquer decisão de política econômica chinesa (estímulo, infraestrutura, juros) move o preço do minério e, com ele, o resultado da Vale. Cada US$ 10/t = ± US$ 3,3 bi no EBITDA = ± R$ 8– 10 no preço justo da ação Minério EBITDA ferro Impacto US$ 75/t ~US$ 10,5 bi –US$ 1,9 bi US$ 95/t ← ~US$ 12,4 bi base US$ 110/t ~US$ 15,0 bi +US$ 2,6 bi"
+      },
+      {
+        "titulo": "2. SELIC — IMPACTO NO VALUATION, NÃO",
+        "texto": "NOS JUROS 14,75% atual → 10% esperado A dívida da Vale é em dólar a 5,4% a.a. — a Selic não afeta os juros pagos. O impacto é no valuation: a Selic define a taxa de desconto que o mercado usa para precificar ativos de longa duração. Com Selic menor, o múltiplo sobe — e a Vale tem fluxos por 30+ anos. Selic 14,75% → 10%: múltiplo sobe de 4,6x → 5,5– 6x = + R$ 15–20/ação sem mudar 1 real na operação Efeitos adicionais: ① Capital migra da renda fixa para bolsa — Vale é das primeiras ações a receber esse fluxo. ② Real tende a depreciar, ampliando resultado em reais."
+      },
+      {
+        "titulo": "3. DÓLAR — ALAVANCAGEM DA RECEITA EM",
+        "texto": "REAIS R$ 5,70 atual 100% da receita em dólar, custos majoritariamente em reais. Quando o dólar sobe, a receita em reais cresce proporcionalmente enquanto os custos ficam estáveis — expandindo a margem automaticamente. Atenção: dólar alto geralmente coincide com China fraca, então os efeitos se compensam parcialmente. Dólar R$ 5,70 → R$ 7,00: receita em reais sobe ~R$ 55 bi = + R$ 17–20/ação Câmbio Receita em R$ EBITDA em R$ R$ 5,00 ~R$ 105 bi ~R$ 44 bi R$ 5,70 ← ~R$ 119 bi ~R$ 50 bi R$ 7,00 ~R$ 147 bi ~R$ 62 bi"
+      },
+      {
+        "titulo": "4. RE-RATING DA VBM — MAIOR UPSIDE DE",
+        "texto": "LONGO PRAZO R$ 65/ação de valor oculto O mercado precifica a VBM com múltiplo zero — como se cobre e níquel não existissem. Quando reconhecer esses ativos com o múltiplo de pares (8x), o valor sobe R$ 65/ação sem nenhuma mudança no minério, câmbio ou Selic. É o maior upside potencial e o mais ignorado. VBM (US$ 3,3 bi) × 8x − dívida proporcional × R$ 5,70 ÷ 4,4 bi ações = + R$ 65/ação Ouro como subproduto: em Salobo e Sossego, o ouro cobre todo o custo operacional — o cobre sai com custo efetivo próximo de zero. Margem real muito maior do que os números mostram. 🚀 VBM — R$ 65/ação sendo construídos agora HOJE — 2026 Ramp-up acelerado EBITDA VBM: US$ 3,3 bi % do EBITDA total: 28% Cobre 1T26: +57% a/a Níquel 1T26: +551% a/a Valor implícito: ≈ R$ 0 2027 — 2030 Projetos de alto retorno Bacaba (2028): TIR > 50% Salobo CPF (2029): TIR > 50%"
+      },
+      {
+        "titulo": "EBITDA VBM: ~US$ 5,0",
+        "texto": "bi Cobre: ~500 kt/ano Valor implícito: ~R$ 35– 45 2031 — 2035 Maturidade plena"
+      },
+      {
+        "titulo": "EBITDA VBM: ~US$ 7,0",
+        "texto": "bi % do EBITDA: 30–35% Cobre: 700 kt/ano (+83%) Múltiplo: 7–8x justificado Valor implícito: R$ 55– 65/ação"
+      },
+      {
+        "titulo": "SE RE-RATING HOJE",
+        "texto": "O que o mercado ignora EBITDA VBM atual: US$ 3,3 bi Múltiplo pares (8x): US$ 26,4 bi Em reais (R$ 5,70): R$ 150 bi Por ação: + R$ 34 Só com EBITDA atual — sem crescimento 🧮 Soma das partes — cálculo completo Cenário base — minério US$ 95/t · Selic 10% · VBM re- rating parcial Ferro: US$ 12,4 bi × 4,5x US$ 55,8 bi Cobre: US$ 2,2 bi × 6x US$ 13,2 bi Níquel: US$ 1,1 bi × 6x US$ 6,6 bi (–) Dívida líquida US$ 17,0 bi Preço justo R$ 77 Cenário pleno — minério US$ 95/t · Selic 10% · VBM re- rating pleno Ferro: US$ 12,4 bi × 5,5x* US$ 68,2 bi Cobre: US$ 2,2 bi × 8x US$ 17,6 bi Níquel: US$ 1,1 bi × 8x US$ 8,8 bi (–) Dívida líquida US$ 17,0 bi Preço justo R$ 139 * Selic 10% eleva múltiplo de 4,5x → 5,5x Minério × VBM VBM 4,5x — sem re-rating VBM 6x — re-rating parcial VBM 8x — re-rating pleno US$ 75/t — fraco R$ 58 R$ 71 R$ 95 US$ 95/t — estável ← R$ 72 ≈ hoje R$ 77 R$ 107 US$ 110/t — forte R$ 91 R$ 130 R$ 165"
+      },
+      {
+        "titulo": "A CONTA QUE O MERCADO NÃO ESTÁ FAZENDO",
+        "texto": "R$ 72,85 = valor do ferro sozinho. A VBM (US$ 3,3 bi de EBITDA, crescendo para US$ 7 bi até 2035) está sendo entregue de graça. Com re-rating pleno hoje: Ferro R$ 74 + VBM R$ 65 = R$ 139. Com VBM madura em 2035: Ferro R$ 74 + VBM R$ 90+ = R$ 165+ 📉 Desalavancagem — cada dólar de dívida quitado vira valor para o acionista Re-rating é quando o mercado muda o múltiplo que aplica ao EBITDA — não tem relação com dívida. Desalavancagem é quitar dívida com o caixa gerado. Os dois são independentes e se somam. A fórmula é simples: Valor do equity = EV − Dívida. Se o EV fica igual e a dívida cai, o preço da ação sobe automaticamente. Como o FCL de US$ 4,8 bi/ano é distribuído Destinação US$ bi/ano % Dividendo mínimo ~US$ 2,4 bi 50% Capex crescimento (Bacaba + Salobo CPF) ~US$ 1,5 bi 31% Amortização de dívida ~US$ 0,9 bi 19% FCL total US$ 4,8 bi 100% Por que não quita mais rápido? Bacaba e Salobo CPF têm TIR acima de 50%. Investir neles a 50% de retorno é melhor do que quitar dívida que custa 5,4% ao ano. O valor é criado pelos projetos, não pela amortização acelerada. Evolução da dívida e efeito no preço da ação Ano Dívida líquida Queda vs. hoje +Preço/ação 2026 (hoje) US$ 17,0 bi — base R$ 82 2027 ~US$ 15,2 bi –US$ 1,8 bi +R$ 2 2028 ~US$ 13,4 bi –US$ 3,6 bi +R$ 4 2029 ~US$ 11,6 bi –US$ 5,4 bi +R$ 6 2030 ~US$ 9,8 bi –US$ 7,2 bi +R$ 8 2031 ~US$ 8,0 bi –US$ 9,0 bi +R$ 10 acumulado O efeito combinado — desalavancagem + re-rating VBM + Selic caindo Efeito O que muda Prazo Contribuição Preço acumulado Preço justo base Ferro US$ 95/t + dívida US$ 17 bi + Selic 10% Agora R$ 82 R$ 82 Desalavancagem 5 anos Dívida cai US$ 17 bi → US$ 8 bi com FCL orgânico 2026– 31 + R$ 10 R$ 92 VBM re-rating parcial Mercado separa ferro (4,5x) de cobre/níquel (6x) 2027– 29 + R$ 20 R$ 112 VBM maturidade plena Bacaba + Salobo CPF em produção. Cobre 382 → 700 kt/ano 2029– 31 + R$ 45 R$ 157 Selic 10% — múltiplo sobe Taxa de desconto cai → múltiplo ferro 4,5x → 5,5x 2026– 28 + R$ 15 R$ 172 TOTAL — cenário pleno 2031 Todos os efeitos se materializando simultaneamente 2031 + R$ 90 R$ 172 CONSERVADOR Só desalavancagem. Sem re-rating VBM, sem Selic caindo. R$ 92 (+12% vs. hoje) BASE Desalavancagem + re-rating parcial VBM + Selic 10%. R$ 112 (+37% vs. hoje) PLENO 2031 Todos os efeitos + VBM matura + projetos entram em produção. R$ 172 (+110% vs. hoje) 💰 Dividendos — quando a Vale compete com a Selic Cenário EBITDA FCL Dividendo/ação DY s/ R$ 72,85 vs. Selic 14,75% vs. Selic 10% Minério US$ 75/t ~US$ 13,8 bi ~US$ 3,5 bi ~R$ 3,50 4,8% –9,95 p.p. –5,20 p.p. Minério US$ 95/t ← ~US$ 15,9 bi ~US$ 4,8 bi ~R$ 5,50 7,5% –7,25 p.p. +2,5 p.p. ✓ Minério US$ 110/t + Selic 10% ~US$ 19,5 bi ~US$ 7,0 bi ~R$ 8,00 11,0% +1,0 p.p. +6,0 p.p. ✓✓ Com Selic a 14,75%, todos os cenários pagam menos que a renda fixa. A Vale só supera o Tesouro Direto com Selic ≤ 10% + minério ≥ US$ 90/t. Ponto de entrada ideal para renda: R$ 55–60, onde o DY chegaria a 9–10% com minério a US$ 95/t. ⚠️ Risco principal Minério abaixo de US$ 75/t por 3+ anos. Exige recessão severa na China sem estímulo fiscal. É o único risco que destrói a tese — todos os outros (Brumadinho, câmbio, níquel) são secundários e gerenciáveis. Mitigante: custo C1 de US$ 21/t — a Vale é lucrativa mesmo com minério a US$ 50/t. A empresa sobrevive ao ciclo ruim; a questão é o valuation durante ele. 🎯 Conclusão"
+      },
+      {
+        "titulo": "BARATA PARA VALORIZAÇÃO",
+        "texto": "A R$ 72,85, o mercado paga apenas pelo ferro e entrega a VBM de graça. Para quem tem horizonte de 5+ anos e convicção na queda da Selic e no re-rating da VBM, é um dos maiores descontos do mercado. O QUE MONITORAR · Preço do minério semanal (IODEX 62% Fe) · Participação VBM no EBITDA trimestral (meta 28%) · Dividendo extraordinário (ago/set 2026) · IPO ou novo sócio na VBM — catalisador definitivo Ciano Investimentos · Análise fundamentalista para fins informativos · Não constitui recomendação de investimento · Julho 2026"
+      }
+    ],
+    "fonte": "card",
+    "data_tese": "julho/2026",
+    "arquivo_origem": "VALE3_Analise_Completa.pdf"
   },
   "ELET3": {
     "ticker": "ELET3",
@@ -1013,27 +1062,109 @@
     "ticker": "POMO4",
     "nome": "Marcopolo",
     "setor": "Fabricação de Ônibus",
-    "tese": "A Marcopolo é a maior fabricante de carrocerias de ônibus do Brasil e uma das maiores do mundo, com operações em 9 países. A tese combina a eletrificação da frota urbana de ônibus — onde a empresa está bem posicionada — com a crescente demanda por mobilidade pública nos países emergentes. A Marcopolo também se beneficia de exportações para a América Latina, África e Ásia.",
-    "atividade": "Fabricação de carrocerias de ônibus urbanos, rodoviários e executivos, com presença em Brasil, Argentina, Colômbia, México, África do Sul e outros países. Início de linha de ônibus elétricos.",
-    "pontos_fortes": [
-      "Líder global em carrocerias de ônibus com 70+ anos de história",
-      "presença em 9 países com exportações diversificadas",
-      "marca reconhecida internacionalmente",
-      "primeiros movimentos em ônibus elétricos",
-      "rede de serviços pós-venda com receita recorrente",
-      "Renovação de frota nos principais municípios brasileiros",
-      "licitações públicas de transporte coletivo",
-      "crescimento das exportações para América Latina e África",
-      "expansão dos ônibus elétricos com incentivos governamentais",
-      "crescimento do turismo"
+    "classificacao": "",
+    "resumo_numeros": "Preço atual R$ 5,24 · Market cap R$ 6,37 bi · Receita 2025 R$ 9,06 bi · Lucro 2025 R$ 1,22 bi",
+    "o_que_faz": "A Marcopolo fabrica a carroceria de ônibus — a carcaça, o interior e o acabamento do veículo. Ela não fabrica motor nem chassi (isso vem de Mercedes-Benz, Volvo, Scania etc.); a empresa monta e integra o veículo por cima disso. É a maior fabricante de carrocerias de ônibus do Brasil e uma das maiores do mundo. (Rodoviário (viagem/turismo), Urbano (transporte público), Micro-ônibus / Volare (escolar, saúde))",
+    "onde_atua": "Operações próprias no Brasil , México (Polomex), Austrália (Volgren), África do Sul e Argentina , além de exportações para América Latina, África e Ásia. Tem ainda participação relevante na canadense NFI , fabricante de ônibus urbanos e elétricos na América do Norte — hoje ainda marginal no resultado consolidado.",
+    "numeros": [],
+    "endividamento": "",
+    "dividendos": "",
+    "gatilhos": [
+      "Queda da Selic — frota é majoritariamente financiada (BNDES/FINAME/leasing); juro menor barateia a troca. É o gatilho mais direto hoje.",
+      "Reposição de frota — frota rodoviária brasileira envelhecida, renovação atrasada desde a pandemia.",
+      "Programas de governo — Caminho da Escola, compras do Ministério da Saúde (recorrentes, mas irregulares).",
+      "Câmbio depreciado — ajuda margem/receita convertida das operações externas, não é crescimento real."
     ],
-    "pontos_fracos": [
-      "Dependência das políticas de renovação de frota e licitações públicas",
-      "exposição ao ciclo de investimentos dos governos municipais e estaduais",
-      "transição para ônibus elétricos exige investimentos elevados e pode canibalizar modelo atual",
-      "concorrência de fabricantes chineses com ônibus elétricos",
-      "margens pressionadas pelos aumentos de custo de aço e componentes"
-    ]
+    "nao_gatilhos": [
+      "Nenhuma exposição a energia, data center ou IA — tese 100% ligada a mobilidade/transporte.",
+      "Eletrificação ainda é marginal — só via participação na NFI, não move o resultado hoje.",
+      "Sem crescimento estrutural de mercado — frota não \"dobra de tamanho\", ela só é reposta.",
+      "Baixo reinvestimento — payout alto (40-56%) prioriza dividendo, não expansão agressiva de ativos."
+    ],
+    "projecoes": [
+      {
+        "indicador": "CAGR receita",
+        "pessimista": "4% a.a.",
+        "intermediario": "7% a.a.",
+        "otimista": "9% a.a."
+      },
+      {
+        "indicador": "Receita média (10a)",
+        "pessimista": "R$ 11,3 bi",
+        "intermediario": "R$ 13,4 bi",
+        "otimista": "R$ 15,0 bi"
+      },
+      {
+        "indicador": "Receita 2036",
+        "pessimista": "R$ 13,4 bi",
+        "intermediario": "R$ 17,8 bi",
+        "otimista": "R$ 21,4 bi"
+      },
+      {
+        "indicador": "Margem líquida 2036",
+        "pessimista": "~13%",
+        "intermediario": "~14,5%",
+        "otimista": "~16%"
+      },
+      {
+        "indicador": "Lucro médio (10a)",
+        "pessimista": "R$ 1,49 bi",
+        "intermediario": "R$ 1,87 bi",
+        "otimista": "R$ 2,22 bi"
+      },
+      {
+        "indicador": "Lucro 2036",
+        "pessimista": "R$ 1,74 bi",
+        "intermediario": "R$ 2,58 bi",
+        "otimista": "R$ 3,43 bi"
+      },
+      {
+        "indicador": "P/L de saída",
+        "pessimista": "5x",
+        "intermediario": "7x",
+        "otimista": "8x"
+      },
+      {
+        "indicador": "Valor de mercado 2036",
+        "pessimista": "R$ 9,3 bi",
+        "intermediario": "R$ 20 bi",
+        "otimista": "R$ 31 bi"
+      },
+      {
+        "indicador": "Preço estimado 2036",
+        "pessimista": "R$ 7,65",
+        "intermediario": "R$ 16,45",
+        "otimista": "R$ 25,50"
+      },
+      {
+        "indicador": "Retorno total (ação + dividendo)",
+        "pessimista": "~145%",
+        "intermediario": "~310%",
+        "otimista": "~505%"
+      },
+      {
+        "indicador": "Selic média assumida (10a)",
+        "pessimista": "12% a.a.",
+        "intermediario": "9% a.a.",
+        "otimista": "7% a.a."
+      },
+      {
+        "indicador": "Retorno acumulado Selic (10a)",
+        "pessimista": "~211%",
+        "intermediario": "~137%",
+        "otimista": "~97%"
+      },
+      {
+        "indicador": "POMO4 bate a Selic?",
+        "pessimista": "Não",
+        "intermediario": "Sim (2,3x)",
+        "otimista": "Sim (5,2x)"
+      }
+    ],
+    "extras": [],
+    "fonte": "card",
+    "data_tese": "julho/2026",
+    "arquivo_origem": "card_pomo4_cenarios_v2.html"
   },
   "SHUL4": {
     "ticker": "SHUL4",
@@ -1876,33 +2007,33 @@
     "setor": "Varejo de Moda",
     "classificacao": "Compra",
     "resumo_numeros": "Preço atual ~R$ 13,40-14,90 · Market cap ~R$ 13,5-15,1 bi · Caixa líquido positivo R$ 1,5 bi · Dívida líquida/EBITDA",
-    "o_que_faz": "Maior varejista de moda do Brasil, com atuacao em vestuario, calcados, beleza, casa e decoracao, complementada por operacoes de marketplace (Ashua e Repassa) e servicos financeiros através da Realize (financeira própria, similar em conceito a Midway da Riachuelo). Varejo de moda Ashua / Repassa (marketplace) Realize — servicos financeiros Omnicanal / IA",
-    "onde_atua": "Operacao em lojas físicas e canais digitais no Brasil, com presenca também na Argentina e no Uruguai. GMV digital de R$ 627,1 milhões no 1T26, representando 16,6% das vendas totais.",
+    "o_que_faz": "Maior varejista de moda do Brasil, com atuação em vestuário, calçados, beleza, casa e decoração, complementada por operações de marketplace (Ashua e Repassa) e serviços financeiros através da Realize (financeira própria, similar em conceito a Midway da Riachuelo). Varejo de moda Ashua / Repassa (marketplace) Realize — serviços financeiros Omnicanal / IA",
+    "onde_atua": "Operação em lojas físicas e canais digitais no Brasil, com presenca também na Argentina e no Uruguai. GMV digital de R$ 627,1 milhões no 1T26, representando 16,6% das vendas totais.",
     "numeros": [
       "Lucro líquido: R$ 257,3 milhões (+16,4% a.a.), recorde para um primeiro trimestre.",
-      "Receita líquida de varejo: R$ 2,876 bilhões (+4,3% a.a.), com SSS de +3,2% (vestuario +3,7%).",
-      "Margem bruta de varejo: 56,7% (recorde histórico para um 1T); margem bruta de vestuario de 58%.",
+      "Receita líquida de varejo: R$ 2,876 bilhões (+4,3% a.a.), com SSS de +3,2% (vestuário +3,7%).",
+      "Margem bruta de varejo: 56,7% (recorde histórico para um 1T); margem bruta de vestuário de 58%.",
       "EBITDA de varejo: R$ 487,5 milhões (+23,5% a.a.), margem de 17%.",
       "ROIC de 15,2% (+1,9 p.p. a.a.); ROE entre 14,1% e 14,4%.",
       "Fluxo de caixa livre: R$ 258 milhões, ante R$ 70,9 milhões no 1T25."
     ],
-    "endividamento": "A companhia possui caixa líquido positivo de R$ 1,5 bilhão — mais dinheiro em caixa do que dívida — com relacao dívida líquida/EBITDA de -0,33x. E o balanco mais solido entre as empresas analisadas na carteira até o momento, com risco financeiro praticamente inexistente. No trimestre, a empresa usou parte do caixa para recomprar ações (R$ 100 milhões) e pagar JCP (R$ 217,4 milhões), mantendo ainda assim posicao de caixa líquido positivo.",
-    "dividendos": "Dividend yield recorrente nos últimos 12 meses entre 6,1% e 7,4%, sem distorcao por eventos pontuais (diferente do que vimos em RIAA3 e MBRF3). Com o compromisso de payout de até 80% anunciado para o ciclo 2026-2030 e caixa líquido positivo, essa e a tese com maior previsibilidade de distribuição entre as analisadas.",
+    "endividamento": "A companhia possui caixa líquido positivo de R$ 1,5 bilhão — mais dinheiro em caixa do que dívida — com relação dívida líquida/EBITDA de -0,33x. E o balanco mais sólido entre as empresas analisadas na carteira até o momento, com risco financeiro praticamente inexistente. No trimestre, a empresa usou parte do caixa para recomprar ações (R$ 100 milhões) e pagar JCP (R$ 217,4 milhões), mantendo ainda assim posição de caixa líquido positivo.",
+    "dividendos": "Dividend yield recorrente nos últimos 12 meses entre 6,1% e 7,4%, sem distorção por eventos pontuais (diferente do que vimos em RIAA3 e MBRF3). Com o compromisso de payout de até 80% anunciado para o ciclo 2026-2030 e caixa líquido positivo, essa e a tese com maior previsibilidade de distribuição entre as analisadas.",
     "gatilhos": [
-      "Execução operacional consistente — coleceos mais assertivas, estoques mais novos e menor necessidade de remarcacoes, gerando expansão de margem sem repasse agressivo de preço.",
-      "Investimento em inteligência artificial e omnicanalidade — videos para e-commerce, provador virtual de beleza e maior visibilidade de estoque via aplicativo, fortalecendo trafego e integracao entre canais.",
+      "Execução operacional consistente — coleceos mais assertivas, estoques mais novos e menor necessidade de remarcações, gerando expansão de margem sem repasse agressivo de preço.",
+      "Investimento em inteligência artificial e omnicanalidade — vídeos para e-commerce, provador virtual de beleza e maior visibilidade de estoque via aplicativo, fortalecendo trafego e integração entre canais.",
       "Guidance próprio de crescimento — meta explicita de 9-13% a.a. de receita e expansão de margem EBITDA até 2030 da visibilidade rara no varejo brasileiro.",
       "Balanco com caixa líquido positivo — permite manter capex, recompra de ações e dividendo generoso simultaneamente, sem necessidade de financiamento externo.",
-      "Queda da Selic — beneficia tanto o consumo discricionario quanto a operacao de credito da Realize.",
-      "Marketplace (Ashua, Repassa) — diversificacao de receita além do varejo tradicional, capturando nichos de moda plus size e segunda mao."
+      "Queda da Selic — beneficia tanto o consumo discricionário quanto a operação de crédito da Realize.",
+      "Marketplace (Ashua, Repassa) — diversificação de receita além do varejo tradicional, capturando nichos de moda plus size e segunda mao."
     ],
     "nao_gatilhos": [
-      "Concorrencia de compras internacionais — Shein e AliExpress já pressionaram ações do setor (Renner, C&A,",
+      "Concorrência de compras internacionais — Shein e AliExpress já pressionaram ações do setor (Renner, C&A,",
       "Riachuelo) em maio de 2026; risco estrutural de perda de margem e volume.",
-      "Consumo discricionario sensivel a juros — vestuario é um dos primeiros itens de corte em cenários de aperto de renda do consumidor.",
-      "Valuation já reflete parte da qualidade — P/L de 9-10x não é tao descontado quanto outras teses da carteira, o que reduz a margem de seguranca em caso de decepcao operacional.",
-      "Guidance de crescimento cobre apenas até 2030 — a extrapolacao para o restante da decada de projecao",
-      "(2031-2036) e hipótese própria, sem visibilidade oficial da administracao.",
+      "Consumo discricionário sensível a juros — vestuário é um dos primeiros itens de corte em cenários de aperto de renda do consumidor.",
+      "Valuation já reflete parte da qualidade — P/L de 9-10x não é tao descontado quanto outras teses da carteira, o que reduz a margem de segurança em caso de decepção operacional.",
+      "Guidance de crescimento cobre apenas até 2030 — a extrapolação para o restante da decada de projeção",
+      "(2031-2036) e hipótese própria, sem visibilidade oficial da administração.",
       "Nenhuma exposição a energia, data center ou inteligência artificial como negocio principal — a IA e usada como ferramenta operacional, não como fonte de receita."
     ],
     "projecoes": [
@@ -1916,7 +2047,7 @@
         "indicador": "guidance)",
         "pessimista": "15% a.a. (teto + expansão de",
         "intermediario": "margem)",
-        "otimista": "Posicao de caixa líquido 2036"
+        "otimista": "Posição de caixa líquido 2036"
       },
       {
         "indicador": "Neutra/levemente",
@@ -1925,7 +2056,7 @@
         "otimista": "Fortemente positiva"
       },
       {
-        "indicador": "Lucro medio (10a)",
+        "indicador": "Lucro médio (10a)",
         "pessimista": "R$ 1,95 bi",
         "intermediario": "R$ 2,55 bi",
         "otimista": "R$ 3,3 bi"
@@ -1937,7 +2068,7 @@
         "otimista": "R$ 6,03 bi"
       },
       {
-        "indicador": "P/L de saída",
+        "indicador": "P/L de saida",
         "pessimista": "8x",
         "intermediario": "12x",
         "otimista": "16x"
@@ -1955,7 +2086,7 @@
         "otimista": "R$ 95,83"
       },
       {
-        "indicador": "DY medio anual assumido",
+        "indicador": "DY médio anual assumido",
         "pessimista": "~5%",
         "intermediario": "~7%",
         "otimista": "~9%"
@@ -1994,10 +2125,12 @@
     "extras": [
       {
         "titulo": "GUIDANCE DA PRÓPRIA EMPRESA (2026-2030)",
-        "texto": "Crescimento de receita líquida entre 9% e 13% ao ano. Margem EBITDA de varejo (ex-IFRS16) entre 18% e 20% até 2030. Payout de até 80% do lucro dos proximos 5 anos — política de distribuição explicita e generosa."
+        "texto": "Crescimento de receita líquida entre 9% e 13% ao ano. Margem EBITDA de varejo (ex-IFRS16) entre 18% e 20% até 2030. Payout de até 80% do lucro dos próximos 5 anos — politica de distribuição explicita e generosa."
       }
     ],
-    "fonte": "card"
+    "fonte": "card",
+    "data_tese": "maio/2026",
+    "arquivo_origem": "LREN3_tese_cenarios_10anos.pdf"
   },
   "PSSA3": {
     "ticker": "PSSA3",
@@ -2466,33 +2599,33 @@
     "setor": "",
     "classificacao": "Virada operacional",
     "resumo_numeros": "Preço atual R$ 8,44 (pos-grupamento 10:1) · Market cap R$ 305 mi · Patrimonio líquido R$ 869 mi · P/VP 0,35x",
-    "o_que_faz": "Rede de estudios de depilacao a laser e servicos esteticos, operando por meio de lojas próprias e franquias, com modelo de pacotes e assinaturas recorrentes junto aos clientes. Depilacao a laser Tratamentos esteticos Franquias",
-    "onde_atua": "810 unidades ao final de 2025, sendo 252 franquias e 558 lojas próprias, distribuidas pelo Brasil e Argentina. Estrategia em curso de transferir mais operacoes para franqueados, especialmente fora dos grandes centros. Nota sobre o preço: a ação passou por um grupamento de 10 para 1 em junho de 2026, para evitar a classificacao de \"penny stock\". O preço saltou de aproximadamente R$ 1,00 para a faixa de R$ 8-9 apenas por reorganizacao de lote, sem relacao com valorizacao real do negocio.",
+    "o_que_faz": "Rede de estudios de depilação a laser e serviços esteticos, operando por meio de lojas próprias e franquias, com modelo de pacotes e assinaturas recorrentes junto aos clientes. Depilação a laser Tratamentos esteticos Franquias",
+    "onde_atua": "810 unidades ao final de 2025, sendo 252 franquias e 558 lojas próprias, distribuidas pelo Brasil e Argentina. Estratégia em curso de transferir mais operações para franqueados, especialmente fora dos grandes centros. Nota sobre o preço: a ação passou por um grupamento de 10 para 1 em junho de 2026, para evitar a classificação de \"penny stock\". O preço saltou de aproximadamente R$ 1,00 para a faixa de R$ 8-9 apenas por reorganização de lote, sem relação com valorização real do negocio.",
     "numeros": [
-      "1T26: lucro líquido ajustado de R$ 19 milhões (queda de 17% a.a.), pressionado pelo resultado financeiro negativo (R$ 33,5 milhões), não pela operacao.",
+      "1T26: lucro líquido ajustado de R$ 19 milhões (queda de 17% a.a.), pressionado pelo resultado financeiro negativo (R$ 33,5 milhões), não pela operação.",
       "Receita líquida ajustada estável em R$ 290,2 milhões; EBITDA ajustado de R$ 76,1 milhões.",
       "Ano de 2025: receita líquida R$ 1,11 bilhão, EBITDA ajustado R$ 256,8 milhões, lucro líquido ajustado R$ 34,9 milhões (+49,6% a.a.).",
-      "Rating de credito elevado pela Fitch de A-(bra) para A(bra) em abril de 2026, com perspectiva estável."
+      "Rating de crédito elevado pela Fitch de A-(bra) para A(bra) em abril de 2026, com perspectiva estável."
     ],
     "endividamento": "Dívida líquida de aproximadamente R$ 525-529 milhões. A alavancagem (dívida líquida/EBITDA) caiu de 2,2x para a faixa de 1,78x a 1,97x ao longo de 2025-2026, o menor nível em 16-17 trimestres. A companhia realizou reperfilamento de dívida, alongando prazos e reduzindo custos, e captou R$ 20 milhões junto ao BNDES a Selic + 1,37% ao ano, com prazo de 16 anos.",
-    "dividendos": "Dividend yield reportado nos últimos 12 meses de aproximadamente 4,5%, ainda modesto em termos absolutos dado o tamanho pequeno da empresa (valor de mercado ~R$ 305 milhões). O CFO da companhia declarou que 2026 e visto como ano de calibragem de expectativas, priorizando geracao de valor ao acionista por vias distintas de crescimento acelerado no curto prazo.",
+    "dividendos": "Dividend yield reportado nos últimos 12 meses de aproximadamente 4,5%, ainda modesto em termos absolutos dado o tamanho pequeno da empresa (valor de mercado ~R$ 305 milhões). O CFO da companhia declarou que 2026 e visto como ano de calibragem de expectativas, priorizando geração de valor ao acionista por vias distintas de crescimento acelerado no curto prazo.",
     "gatilhos": [
-      "Ganho de participacao por consolidacao — concorrentes estao fechando lojas e encolhendo; a própria empresa afirma que seria preciso somar 4 a 5 concorrentes para igualar seu tamanho. Crescimento vem mais de absorver espaco cedido do que de criar mercado novo.",
-      "Conversao de metodo — migracao estrutural ainda em curso de depilacao convencional (cera, lamina) para laser, ampliando o mercado enderecavel por substituicao de habito.",
+      "Ganho de participação por consolidação — concorrentes estão fechando lojas e encolhendo; a própria empresa afirma que seria preciso somar 4 a 5 concorrentes para igualar seu tamanho. Crescimento vem mais de absorver espaco cedido do que de criar mercado novo.",
+      "Conversão de metodo — migração estrutural ainda em curso de depilação convencional (cera, lamina) para laser, ampliando o mercado enderecável por substituição de habito.",
       "Expansão via franquias — modelo de menor capital investido pela própria empresa, permitindo crescer sem financiar integralmente o capex de cada loja.",
-      "Investimento em tecnologia e experiencia do cliente — capex em sistemas, aplicativo e jornada de autoatendimento, tentando ampliar a distancia frente a concorrentes que replicam o modelo.",
-      "Conclusão da reestruturacao de dívida e queda da Selic — reduzem o resultado financeiro negativo, hoje o principal fator de pressao sobre o lucro, apesar da operacao saudavel.",
-      "Melhora de rating de credito — Fitch elevou o rating em 2026, sinalizando redução de risco percebido e potencial de custo de dívida ainda menor a frente."
+      "Investimento em tecnologia e experiência do cliente — capex em sistemas, aplicativo e jornada de autoatendimento, tentando ampliar a distância frente a concorrentes que replicam o modelo.",
+      "Conclusão da reestruturação de dívida e queda da Selic — reduzem o resultado financeiro negativo, hoje o principal fator de pressão sobre o lucro, apesar da operação saudável.",
+      "Melhora de rating de crédito — Fitch elevou o rating em 2026, sinalizando redução de risco percebido e potencial de custo de dívida ainda menor a frente."
     ],
     "nao_gatilhos": [
-      "Baixa barreira de entrada — a própria administracao reconhece publicamente que concorrentes podem replicar o modelo com relativa facilidade (maquina de laser é um estudio bastam); não ha protecao estrutural forte como patente ou exclusividade.",
-      "Histórico de guerra de preços — competicao via promocao e desconto já corroeu bilhões de valor de mercado da empresa entre 2021 e 2023; pode se repetir caso concorrentes de capital fechado voltem a competir agressivamente por volume.",
-      "Patrimonio de baixa liquidez de revenda — concentrado em direito de uso de aluguel (IFRS 16), agio de franquias e equipamentos especificos, o que reduz a protecao patrimonial em um cenário adverso, mesmo com",
+      "Baixa barreira de entrada — a própria administração reconhece publicamente que concorrentes podem replicar o modelo com relativa facilidade (maquina de laser é um estudio bastam); não ha proteção estrutural forte como patente ou exclusividade.",
+      "Histórico de guerra de preços — competição via promoção e desconto já corroeu bilhões de valor de mercado da empresa entre 2021 e 2023; pode se repetir caso concorrentes de capital fechado voltem a competir agressivamente por volume.",
+      "Patrimonio de baixa liquidez de revenda — concentrado em direito de uso de aluguel (IFRS 16), agio de franquias e equipamentos especificos, o que reduz a proteção patrimonial em um cenário adverso, mesmo com",
       "P/VP aparentemente baixo.",
-      "Baixa liquidez de negociacao — small cap pouco líquida, o que pode ampliar volatilidade e dificultar entradas e saidas relevantes.",
-      "Crescimento deliberadamente moderado no curto prazo — a própria administracao sinaliza que 2026 não sera ano de aceleracao agressiva, priorizando disciplina financeira.",
-      "Histórico recente de prejuizo (até 3T25) — a tese de virada ainda depende de confirmacao consistente nos proximos trimestres, não é fato consolidado.",
-      "Nenhuma exposição a energia, data center ou inteligência artificial — tese ligada exclusivamente a servicos de estetica e beleza."
+      "Baixa liquidez de negociação — small cap pouco líquida, o que pode ampliar volatilidade e dificultar entradas e saidas relevantes.",
+      "Crescimento deliberadamente moderado no curto prazo — a própria administração sinaliza que 2026 não será ano de aceleração agressiva, priorizando disciplina financeira.",
+      "Histórico recente de prejuízo (até 3T25) — a tese de virada ainda depende de confirmação consistente nos próximos trimestres, não é fato consolidado.",
+      "Nenhuma exposição a energia, data center ou inteligência artificial — tese ligada exclusivamente a serviços de estetica e beleza."
     ],
     "projecoes": [
       {
@@ -2508,7 +2641,7 @@
         "otimista": "<0,5x (caixa líquido)"
       },
       {
-        "indicador": "Lucro medio (10a)",
+        "indicador": "Lucro médio (10a)",
         "pessimista": "R$ 44 mi",
         "intermediario": "R$ 66 mi",
         "otimista": "R$ 96 mi"
@@ -2520,7 +2653,7 @@
         "otimista": "R$ 188 mi"
       },
       {
-        "indicador": "P/L de saída",
+        "indicador": "P/L de saida",
         "pessimista": "10x",
         "intermediario": "15x",
         "otimista": "20x"
@@ -2538,7 +2671,7 @@
         "otimista": "R$ 104,00"
       },
       {
-        "indicador": "DY medio anual assumido",
+        "indicador": "DY médio anual assumido",
         "pessimista": "~3%",
         "intermediario": "~5%",
         "otimista": "~7%"
@@ -2576,11 +2709,13 @@
     ],
     "extras": [
       {
-        "titulo": "COMPOSICAO DO PATRIMONIO — POR QUE O P/VP E TAO BAIXO",
-        "texto": "Com a maior parte das lojas operando sob contrato de aluguel (não imoveis próprios), o patrimonio líquido de R$ 869 milhões não é composto por bens imobiliarios. A composicao provavel concentra-se em quatro blocos, todos de liquidez de revenda limitada: Ativo de direito de uso (IFRS 16) — contratos de aluguel de longo prazo são registrados como ativo (o direito de uso do imovel pelo prazo contratado), com uma dívida equivalente no passivo. Infla o ativo total, mas não é um bem alienavel. Agio / intangivel (goodwill) — originado principalmente da recompra de franquias (parte delas de familiares e terceiros) realizada com recursos do IPO. E a diferenca contabil entre o valor pago e o valor patrimonial das lojas adquiridas. Equipamentos de laser e mobiliario das lojas próprias — ativos especificos de uso medico-estetico, com baixo valor de revenda e depreciacao rapida. Contas a receber de clientes — parcela relevante do ativo circulante, uma vez que os pacotes de servico são majoritariamente vendidos de forma parcelada. Essa composicao explica o P/VP de 0,35x: o mercado precifica a ação assumindo que, em um cenário de liquidacao, boa parte desse patrimonio contabil (direito de uso, agio de franquias, equipamentos usados) dificilmente seria convertida em caixa pelo valor registrado no balanco."
+        "titulo": "COMPOSIÇÃO DO PATRIMONIO — POR QUE O P/VP E TAO BAIXO",
+        "texto": "Com a maior parte das lojas operando sob contrato de aluguel (não imóveis próprios), o patrimonio líquido de R$ 869 milhões não é composto por bens imobiliários. A composição provável concentra-se em quatro blocos, todos de liquidez de revenda limitada: Ativo de direito de uso (IFRS 16) — contratos de aluguel de longo prazo são registrados como ativo (o direito de uso do imóvel pelo prazo contratado), com uma dívida equivalente no passivo. Infla o ativo total, mas não é um bem alienável. Agio / intangível (goodwill) — originado principalmente da recompra de franquias (parte delas de familiares e terceiros) realizada com recursos do IPO. E a diferenca contabil entre o valor pago e o valor patrimonial das lojas adquiridas. Equipamentos de laser e mobiliário das lojas próprias — ativos especificos de uso medico-estetico, com baixo valor de revenda e depreciação rápida. Contas a receber de clientes — parcela relevante do ativo circulante, uma vez que os pacotes de serviço são majoritariamente vendidos de forma parcelada. Essa composição explica o P/VP de 0,35x: o mercado precifica a ação assumindo que, em um cenário de liquidação, boa parte desse patrimonio contabil (direito de uso, agio de franquias, equipamentos usados) dificilmente seria convertida em caixa pelo valor registrado no balanco."
       }
     ],
-    "fonte": "card"
+    "fonte": "card",
+    "data_tese": "junho/2026",
+    "arquivo_origem": "ESPA3_tese_cenarios_10anos.pdf"
   },
   "MBRF3": {
     "ticker": "MBRF3",
@@ -2588,29 +2723,29 @@
     "setor": "",
     "classificacao": "Neutro / Alto Risco",
     "resumo_numeros": "Preço atual ~R$ 14,90-16,90 · Market cap ~R$ 20,9 bi · Dívida líquida R$ 44,0 bi · Alavancagem 3,37x",
-    "o_que_faz": "Uma das maiores empresas de alimentos do mundo, resultante da fusao entre a Marfrig (lider global em hamburgueres e proteina bovina, com destaque para a operacao americana National Beef) e a BRF (lider brasileira em carne de frango e suina, dona de marcas como Sadia e Perdigao). Capacidade produtiva combinada estimada em 8 milhões de toneladas de produtos. Proteina bovina (Marfrig / National Beef) Frango e suino (BRF / Sadia / Perdigao) Exportacao global",
-    "onde_atua": "Operacoes no Brasil e America do Norte (via National Beef), com exportacoes relevantes para China, Oriente Medio e outros mercados. A recem-criada Sadia Halal (constituida em maio de 2026) mira especificamente o mercado de proteina halal para o Oriente Medio, com IPO em preparacao.",
+    "o_que_faz": "Uma das maiores empresas de alimentos do mundo, resultante da fusão entre a Marfrig (lider global em hamburgueres e proteina bovina, com destaque para a operação americana National Beef) e a BRF (lider brasileira em carne de frango e suina, dona de marcas como Sadia e Perdigão). Capacidade produtiva combinada estimada em 8 milhões de toneladas de produtos. Proteina bovina (Marfrig / National Beef) Frango e suino (BRF / Sadia / Perdigão) Exportação global",
+    "onde_atua": "Operações no Brasil e America do Norte (via National Beef), com exportações relevantes para China, Oriente Médio e outros mercados. A recem-criada Sadia Halal (constituida em maio de 2026) mira especificamente o mercado de proteina halal para o Oriente Médio, com IPO em preparação.",
     "numeros": [
       "Lucro líquido: R$ 111 milhões (+26,8% a.a.), ainda modesto para o tamanho da companhia.",
       "Receita líquida consolidada: R$ 39,45 bilhões (estável, -0,1% a.a.).",
       "EBITDA ajustado: R$ 3,1 bilhões (-3,2% a.a.), margem de apenas 7,8%.",
-      "Volume vendido: 1,95 milhao de toneladas (-2% a.a.), puxado pela queda de 4,6% no mercado interno.",
+      "Volume vendido: 1,95 milhão de toneladas (-2% a.a.), puxado pela queda de 4,6% no mercado interno.",
       "BRF responde por 79% do EBITDA consolidado — o motor real da empresa combinada hoje e a ex-BRF, não a",
       "Marfrig.",
-      "Sinergias capturadas: R$ 126 milhões no trimestre (~20% da meta anual de 2026), mais R$ 296 milhões via programa de eficiencia MBRF+."
+      "Sinergias capturadas: R$ 126 milhões no trimestre (~20% da meta anual de 2026), mais R$ 296 milhões via programa de eficiência MBRF+."
     ],
-    "endividamento": "Dívida líquida de R$ 43,97 bilhões (+1,2% no trimestre), com dívida financeira bruta consolidada de R$ 72,7 bilhões. Alavancagem (dívida líquida/EBITDA) de 3,37x, subindo de 2,69x um ano antes — trajetória de piora, não de melhora. Aproximadamente 51,7% da dívida esta atrelada a moeda estrangeira, adicionando risco cambial relevante. Fluxo de caixa livre foi negativo em R$ 1,26 bilhão no trimestre, refletindo consumo sazonal de capital de giro (alta de estoques e ativos biologicos).",
-    "dividendos": "Fontes reportam dividend yield entre 17% e 32% nos últimos 12 meses, mas o payout real recente e de apenas ~11%, com ROE negativo (-2,89%). O yield elevado provavelmente reflete uma distribuição pontual associada a reestruturacao societaria da fusao, e não uma política de distribuição recorrente. Não deve ser tratado como renda passiva estável.",
+    "endividamento": "Dívida líquida de R$ 43,97 bilhões (+1,2% no trimestre), com dívida financeira bruta consolidada de R$ 72,7 bilhões. Alavancagem (dívida líquida/EBITDA) de 3,37x, subindo de 2,69x um ano antes — trajetoria de piora, não de melhora. Aproximadamente 51,7% da dívida esta atrelada a moeda estrangeira, adicionando risco cambial relevante. Fluxo de caixa livre foi negativo em R$ 1,26 bilhão no trimestre, refletindo consumo sazonal de capital de giro (alta de estoques e ativos biologicos).",
+    "dividendos": "Fontes reportam dividend yield entre 17% e 32% nos últimos 12 meses, mas o payout real recente e de apenas ~11%, com ROE negativo (-2,89%). O yield elevado provavelmente reflete uma distribuição pontual associada a reestruturação societária da fusão, e não uma politica de distribuição recorrente. Não deve ser tratado como renda passiva estável.",
     "gatilhos": [
-      "Captura de sinergias da fusao — apenas 20% da meta de 2026 realizada até o momento; espaco relevante de eficiencia ainda a capturar.",
-      "IPO da Sadia Halal — ativo recem-constituido mirando o mercado de proteina halal no Oriente Medio, com potencial de destravar valor se a oferta se concretizar.",
-      "Demanda global por proteina — investimentos direcionados a unidades no Brasil, China e Oriente Medio buscam capturar crescimento estrutural de consumo.",
-      "Diversificacao geografica e de proteinas — XP destaca continuidade construtiva com a estrategia de diversificacao como potencial gerador de valor de longo prazo."
+      "Captura de sinergias da fusão — apenas 20% da meta de 2026 realizada até o momento; espaco relevante de eficiência ainda a capturar.",
+      "IPO da Sadia Halal — ativo recem-constituido mirando o mercado de proteina halal no Oriente Médio, com potencial de destravar valor se a oferta se concretizar.",
+      "Demanda global por proteina — investimentos direcionados a unidades no Brasil, China e Oriente Médio buscam capturar crescimento estrutural de consumo.",
+      "Diversificação geografica e de proteinas — XP destaca continuidade construtiva com a estratégia de diversificação como potencial gerador de valor de longo prazo."
     ],
     "nao_gatilhos": [
       "Alavancagem elevada e em piora — 3,37x e subindo, com fluxo de caixa livre negativo no trimestre; risco financeiro e o principal fator da tese hoje.",
-      "Tarifa de 55% da China sobre carne bovina brasileira — projecao de queda de até 10% nas exportacoes de carne bovina do Brasil em 2026, impactando diretamente o lado Marfrig do grupo.",
-      "Disputa tarifaria nos EUA — ruido regulatorio envolvendo frigorificos americanos, incluindo tensoes entre o governo Trump e o setor.",
+      "Tarifa de 55% da China sobre carne bovina brasileira — projeção de queda de até 10% nas exportações de carne bovina do Brasil em 2026, impactando diretamente o lado Marfrig do grupo.",
+      "Disputa tarifária nos EUA — ruido regulatório envolvendo frigorificos americanos, incluindo tensões entre o governo Trump e o setor.",
       "Margem EBITDA baixa (7,8%) — negocio de proteina opera estruturalmente com margens apertadas e alta sensibilidade a custo de materia-prima (graos, gado).",
       "Baixa visibilidade de ciclos de custo — a própria XP cita isso como fator que mantem o desconto da ação frente ao preço-alvo até que a desalavancagem seja comprovada.",
       "Dividend yield reportado enganoso — números de 17-32% não são recorrentes; payout real e de apenas",
@@ -2643,7 +2778,7 @@
         "otimista": "R$ 37,3 bi"
       },
       {
-        "indicador": "EV/EBITDA de saída",
+        "indicador": "EV/EBITDA de saida",
         "pessimista": "4,5x",
         "intermediario": "6x",
         "otimista": "8x"
@@ -2667,7 +2802,7 @@
         "otimista": "R$ 150,80"
       },
       {
-        "indicador": "DY medio anual assumido (recorrente)",
+        "indicador": "DY médio anual assumido (recorrente)",
         "pessimista": "~1%",
         "intermediario": "~3%",
         "otimista": "~5%"
@@ -2703,27 +2838,29 @@
         "otimista": "Sim (9,9x)"
       },
       {
-        "indicador": "Leitura do cenário pessimista: com alavancagem subindo a 4,0x e multiplo de saída comprimido (reflexo de estresse",
+        "indicador": "Leitura do cenário pessimista: com alavancagem subindo a 4,0x e multiplo de saida comprimido (reflexo de estresse",
         "pessimista": "financeiro), o valor de equity projetado (R$ 7,3 bi) fica bem abaixo do valor de mercado atual (~R$ 20,9 bi) — ou seja, o",
-        "intermediario": "cenário pessimista aqui não é apenas \"cresce pouco\", e sim um risco real de destruicao de capital, dado o tamanho da",
-        "otimista": "dívida absoluta em relacao ao patrimonio da empresa. Essa e a tese de maior risco financeiro entre as analisadas até"
+        "intermediario": "cenário pessimista aqui não é apenas \"cresce pouco\", e sim um risco real de destruição de capital, dado o tamanho da",
+        "otimista": "dívida absoluta em relação ao patrimonio da empresa. Essa e a tese de maior risco financeiro entre as analisadas até"
       }
     ],
     "extras": [
       {
-        "titulo": "TRAJETÓRIA DE DÍVIDA, DESPESA FINANCEIRA E VALIDACAO CRUZADA",
-        "texto": "Para além da metrica isolada de alavancagem, estimou-se a despesa financeira ano a ano (dívida líquida média x custo medio da dívida, com spread de 2,0-2,5 pontos percentuais sobre a Selic média do cenário, refletindo a maior complexidade cross-border e a parcela de 51,7% da dívida atrelada a moeda estrangeira) e o lucro líquido resultante \"de baixo para cima\", para validar cruzado com a projecao via EV/EBITDA. Indicador Pessimista Intermediário Otimista Dívida líquida média (10a) R$ 51,2 bi R$ 43,5 bi R$ 40,6 bi Custo medio da dívida (Selic + spread) 14,5% 11% 9% Despesa financeira média/ano R$ 7,42 bi R$ 4,78 bi R$ 3,66 bi % do EBITDA consumido por juros ~56% ~28,5% ~17% Despesa financeira 2036 R$ 8,47 bi R$ 4,73 bi R$ 3,36 bi D&A estimada (~22% EBITDA) R$ 3,21 bi R$ 4,73 bi R$ 6,84 bi"
+        "titulo": "TRAJETORIA DE DÍVIDA, DESPESA FINANCEIRA E VALIDAÇÃO CRUZADA",
+        "texto": "Para além da metrica isolada de alavancagem, estimou-se a despesa financeira ano a ano (dívida líquida média x custo médio da dívida, com spread de 2,0-2,5 pontos percentuais sobre a Selic média do cenário, refletindo a maior complexidade cross-border e a parcela de 51,7% da dívida atrelada a moeda estrangeira) e o lucro líquido resultante \"de baixo para cima\", para validar cruzado com a projeção via EV/EBITDA. Indicador Pessimista Intermediário Otimista Dívida líquida média (10a) R$ 51,2 bi R$ 43,5 bi R$ 40,6 bi Custo médio da dívida (Selic + spread) 14,5% 11% 9% Despesa financeira média/ano R$ 7,42 bi R$ 4,78 bi R$ 3,66 bi % do EBITDA consumido por juros ~56% ~28,5% ~17% Despesa financeira 2036 R$ 8,47 bi R$ 4,73 bi R$ 3,36 bi D&A estimada (~22% EBITDA) R$ 3,21 bi R$ 4,73 bi R$ 6,84 bi"
       },
       {
         "titulo": "EBIT 2036",
-        "texto": "R$ 11,39 bi R$ 16,77 bi R$ 24,26 bi Lucro antes de impostos 2036 R$ 2,92 bi R$ 12,04 bi R$ 20,90 bi Lucro líquido 2036 (IR 30%) R$ 2,04 bi R$ 8,43 bi R$ 14,63 bi P/L implicito aplicado 4,5x 10x 14x Valor de mercado via lucro líquido R$ 9,2 bi R$ 84,3 bi R$ 204,8 bi Valor de mercado via EV/EBITDA R$ 7,3 bi R$ 86 bi R$ 211,5 bi Valor de mercado medio (2 metodos) R$ 8,3 bi R$ 85,2 bi R$ 208,2 bi Preço estimado da ação 2036 (média dos 2 metodos, ~1,31 bi ações): Pessimista: R$ 7,00 (queda de ~56% frente ao preço atual de ~R$ 15,90) Intermediário: R$ 64,80 (alta de ~308%) Otimista: R$ 158,35 (alta de ~896%) No cenário pessimista, a empresa comprometeria mais da metade do EBITDA apenas com juros, deixando pouco fluxo de caixa livre para capex de manutencao, dividendo ou amortizacao de principal em condicoes normais — e o valor de equity projetado (~R$ 8,3 bi) fica bem abaixo do valor de mercado atual, configurando risco real de destruicao de capital, e não apenas baixo crescimento. O intervalo entre os cenários pessimista e otimista (~25x de diferenca) e o mais amplo de toda a carteira analisada, reflexo direto do nível de alavancagem da companhia."
+        "texto": "R$ 11,39 bi R$ 16,77 bi R$ 24,26 bi Lucro antes de impostos 2036 R$ 2,92 bi R$ 12,04 bi R$ 20,90 bi Lucro líquido 2036 (IR 30%) R$ 2,04 bi R$ 8,43 bi R$ 14,63 bi P/L implicito aplicado 4,5x 10x 14x Valor de mercado via lucro líquido R$ 9,2 bi R$ 84,3 bi R$ 204,8 bi Valor de mercado via EV/EBITDA R$ 7,3 bi R$ 86 bi R$ 211,5 bi Valor de mercado médio (2 metodos) R$ 8,3 bi R$ 85,2 bi R$ 208,2 bi Preço estimado da ação 2036 (média dos 2 metodos, ~1,31 bi ações): Pessimista: R$ 7,00 (queda de ~56% frente ao preço atual de ~R$ 15,90) Intermediário: R$ 64,80 (alta de ~308%) Otimista: R$ 158,35 (alta de ~896%) No cenário pessimista, a empresa comprometeria mais da metade do EBITDA apenas com juros, deixando pouco fluxo de caixa livre para capex de manutenção, dividendo ou amortização de principal em condições normais — e o valor de equity projetado (~R$ 8,3 bi) fica bem abaixo do valor de mercado atual, configurando risco real de destruição de capital, e não apenas baixo crescimento. O intervalo entre os cenários pessimista e otimista (~25x de diferenca) e o mais amplo de toda a carteira analisada, reflexo direto do nível de alavancagem da companhia."
       },
       {
         "titulo": "METODOLOGIA DOS CENÁRIOS",
-        "texto": "Dado o P/L atualmente distorcido (54x-89x, reflexo de lucro ainda muito comprimido pela fusao recente), os cenários foram construidos via EV/EBITDA (metrica que o próprio mercado usa para precificar a empresa hoje, em 5,41x), em vez de P/L tradicional. EBITDA atual (TTM implicito) estimado em ~R$ 12 bilhões."
+        "texto": "Dado o P/L atualmente distorcido (54x-89x, reflexo de lucro ainda muito comprimido pela fusão recente), os cenários foram construidos via EV/EBITDA (metrica que o próprio mercado usa para precificar a empresa hoje, em 5,41x), em vez de P/L tradicional. EBITDA atual (TTM implicito) estimado em ~R$ 12 bilhões."
       }
     ],
-    "fonte": "card"
+    "fonte": "card",
+    "data_tese": "setembro/2025",
+    "arquivo_origem": "MBRF3_tese_cenarios_10anos.pdf"
   },
   "MOVI3": {
     "ticker": "MOVI3",
@@ -2731,8 +2868,8 @@
     "setor": "",
     "classificacao": "Compra",
     "resumo_numeros": "Preço atual R$ 8,66 · Market cap R$ 3,47 bi · Dívida líquida R$ 16,3 bi · Alavancagem 2,6x (2,5x pro forma)",
-    "o_que_faz": "Locadora de veículos que compra carros, aluga para pessoas físicas (RAC — Rent a Car) e para empresas que terceirizam frota (GTF — Gestão e Terceirização de Frotas), e depois vende os veículos usados (seminovos) para repor a frota. É um ciclo contínuo de compra, locação, venda e reposição de ativos. RAC — aluguel de veículos GTF — gestão de frotas corporativas Seminovos — venda de veículos usados",
-    "onde_atua": "Operacao nacional no Brasil, com rede de lojas de locação RAC e postos de venda de seminovos distribuídos pelo país, além de contratos corporativos de gestão de frota (GTF) para empresas de diversos setores.",
+    "o_que_faz": "Locadora de veículos que compra carros, aluga para pessoas físicas (RAC — Rent a Car) e para empresas que terceirizam frota (GTF — Gestão e Terceirização de Frotas), e depois vende os veículos usados (seminovos) para repor a frota. É um ciclo continuo de compra, locação, venda e reposição de ativos. RAC — aluguel de veículos GTF — gestão de frotas corporativas Seminovos — venda de veículos usados",
+    "onde_atua": "Operação nacional no Brasil, com rede de lojas de locação RAC e postos de venda de seminovos distribuidos pelo país, além de contratos corporativos de gestão de frota (GTF) para empresas de diversos setores.",
     "numeros": [
       "Receita líquida recorde: R$ 3,8 bilhões.",
       "Lucro líquido: R$ 125 milhões (+59% a.a.), acima do consenso de mercado (R$ 68 milhões esperados).",
@@ -2741,12 +2878,12 @@
       "ROIC de 16,4%, com spread de 5,3 p.p. sobre o custo da dívida, mesmo com Selic elevada.",
       "Guidance para o 2T26: lucro líquido entre R$ 110 e R$ 130 milhões."
     ],
-    "endividamento": "A dívida líquida encerrou o trimestre em R$ 16,3 bilhões, com alavancagem (dívida líquida/EBITDA) de 2,6x, reduzida frente a 3,1x um ano antes — o menor patamar dos últimos cinco anos. Considerando a conclusão do aumento de capital de R$ 750 milhões no período, a alavancagem pro forma cai para 2,5x. Para uma locadora, endividamento elevado é estrutural — a frota é financiada por natureza. O que importa não é a ausência de dívida, mas a trajetória consistente de desalavancagem, que vem se confirmando nos últimos trimestres. Nota de divergência entre fontes: uma base de dados (HG Brasil, 17/07/2026) reporta dívida líquida/EBITDA de 6,04x, valor bastante distinto dos 2,6x divulgados pela própria companhia e confirmados pela XP Investimentos. A divergência provavelmente decorre de metodologias diferentes de cálculo do EBITDA (base anualizada trimestral versus acumulado de doze meses). Utiliza-se aqui o número oficial da companhia por ser considerado mais confiável.",
-    "dividendos": "O dividend yield reportado nos últimos doze meses varia entre 6,6% e 8,7% dependendo da fonte, mas o payout histórico é baixo (aproximadamente 15% a 20% do lucro líquido), uma vez que a empresa prioriza reinvestimento contínuo na renovação e expansão da frota. O yield elevado observado recentemente reflete, em grande parte, a recuperação do lucro após um período de resultados mais fracos, e não uma política de distribuição estável e generosa.",
+    "endividamento": "A dívida líquida encerrou o trimestre em R$ 16,3 bilhões, com alavancagem (dívida líquida/EBITDA) de 2,6x, reduzida frente a 3,1x um ano antes — o menor patamar dos últimos cinco anos. Considerando a conclusão do aumento de capital de R$ 750 milhões no período, a alavancagem pro forma cai para 2,5x. Para uma locadora, endividamento elevado é estrutural — a frota é financiada por natureza. O que importa não é a ausência de dívida, mas a trajetoria consistente de desalavancagem, que vem se confirmando nos últimos trimestres. Nota de divergência entre fontes: uma base de dados (HG Brasil, 17/07/2026) reporta dívida líquida/EBITDA de 6,04x, valor bastante distinto dos 2,6x divulgados pela própria companhia e confirmados pela XP Investimentos. A divergência provavelmente decorre de metodologias diferentes de cálculo do EBITDA (base anualizada trimestral versus acumulado de doze meses). Utiliza-se aqui o número oficial da companhia por ser considerado mais confiável.",
+    "dividendos": "O dividend yield reportado nos últimos doze meses vária entre 6,6% e 8,7% dependendo da fonte, mas o payout histórico é baixo (aproximadamente 15% a 20% do lucro líquido), uma vez que a empresa prioriza reinvestimento continuo na renovação e expansão da frota. O yield elevado observado recentemente reflete, em grande parte, a recuperação do lucro após um período de resultados mais fracos, e não uma politica de distribuição estável e generosa.",
     "gatilhos": [
       "Queda da Selic — reduz custo da dívida (alta alavancagem estrutural do setor) e melhora o spread já observado de 5,3 p.p.",
-      "Desalavancagem contínua — redução de 3,1x para 2,6x (2,5x pro forma) em um ano libera capital e reduz risco financeiro.",
-      "Reajuste de tarifas e maior ocupação — diária média do RAC subiu 7% e ocupação avançou de 72% para 77%, mostrando poder de precificação.",
+      "Desalavancagem continua — redução de 3,1x para 2,6x (2,5x pro forma) em um ano libera capital e reduz risco financeiro.",
+      "Reajuste de tarifas e maior ocupação — diária média do RAC subiu 7% e ocupação avancou de 72% para 77%, mostrando poder de precificação.",
       "Execução operacional consistente — três trimestres consecutivos de lucro acima do consenso de mercado."
     ],
     "nao_gatilhos": [
@@ -2769,7 +2906,7 @@
         "otimista": "~1,0-1,2x"
       },
       {
-        "indicador": "Lucro medio (10a)",
+        "indicador": "Lucro médio (10a)",
         "pessimista": "R$ 600 mi",
         "intermediario": "R$ 780 mi",
         "otimista": "R$ 1,05 bi"
@@ -2781,7 +2918,7 @@
         "otimista": "R$ 1,70 bi"
       },
       {
-        "indicador": "P/L de saída",
+        "indicador": "P/L de saida",
         "pessimista": "8x",
         "intermediario": "10x",
         "otimista": "12x"
@@ -2805,7 +2942,7 @@
         "otimista": "35%"
       },
       {
-        "indicador": "DY medio anual assumido",
+        "indicador": "DY médio anual assumido",
         "pessimista": "~2%",
         "intermediario": "~4%",
         "otimista": "~6%"
@@ -2842,7 +2979,9 @@
       }
     ],
     "extras": [],
-    "fonte": "card"
+    "fonte": "card",
+    "data_tese": "julho/2026",
+    "arquivo_origem": "MOVI3_tese_cenarios_10anos.pdf"
   },
   "SMTO3": {
     "ticker": "SMTO3",
@@ -2850,30 +2989,30 @@
     "setor": "",
     "classificacao": "Neutro / Cautela",
     "resumo_numeros": "Preço atual ~R$ 15,50-17,20 · Market cap ~R$ 5,1-5,7 bi · Dívida líquida R$ 4,9 bi · Alavancagem 1,41x",
-    "o_que_faz": "Uma das maiores produtoras de acucar, etanol e bioenergia do Brasil. Planta e processa cana-de-acucar (e também milho), extraindo acucar e etanol para venda no mercado domestico e de exportacao. Diferente das demais empresas da carteira, o preço do produto não é definido pela companhia — é ditado pelo mercado global de commodities agricolas. Acucar Etanol (cana e milho) Bioenergia Cogeracao",
-    "onde_atua": "Operacao concentrada no interior de São Paulo e Goias, com usinas próprias de processamento de cana-de-acucar e, mais recentemente, plantas de etanol de milho, diversificando a base de materia-prima.",
+    "o_que_faz": "Uma das maiores produtoras de açúcar, etanol e bioenergia do Brasil. Planta e processa cana-de-açúcar (e também milho), extraindo açúcar e etanol para venda no mercado domestico e de exportação. Diferente das demais empresas da carteira, o preço do produto não é definido pela companhia — é ditado pelo mercado global de commodities agricolas. Açúcar Etanol (cana e milho) Bioenergia Cogeração",
+    "onde_atua": "Operação concentrada no interior de São Paulo e Goias, com usinas próprias de processamento de cana-de-açúcar e, mais recentemente, plantas de etanol de milho, diversificando a base de materia-prima.",
     "numeros": [
       "Receita líquida: R$ 7,4 bilhões (+3,3%).",
       "EBITDA ajustado: R$ 3,5 bilhões, margem de 47,1%.",
       "Lucro líquido: R$ 836,2 milhões (+50,2% a.a.).",
       "Fluxo de caixa livre de R$ 700 milhões no 4T26 isolado.",
       "ROIC de 11,7% (considerando terras próprias).",
-      "Guidance da própria administracao para a safra 2026/27: recuo esperado de -3% na receita, -7% no EBITDA e -50% no lucro líquido. O resultado forte reportado na safra 2025/26 foi impulsionado por uma estrategia pontual de estocar etanol para vender em um trimestre de preços mais favoraveis, e não reflete necessariamente um novo patamar estrutural de rentabilidade.",
-      "Contexto do ciclo global de acucar: as projeções de mercado para a safra 2026/27 são mistas. Consultorias apontavam inicialmente superavit persistente (Brasil com safra recorde de 41-44 milhões de toneladas, recuperação de",
-      "India e Tailandia), gerando visao \"baixista por padrao\" na Dubai Sugar Conference. Revisoes mais recentes (StoneX, maio-junho de 2026) passaram a projetar deficit tecnico global entre 550 mil e 2,68 milhões de toneladas, por quedas de producao na Tailandia, Uniao Europeia e India (afetadas por El Nino e menor competitividade frente a culturas concorrentes). Mesmo assim, os preços internacionais seguem pressionados, refletindo mercado fisico fraco e posicoes vendidas recordes de fundos especulativos. O Brasil, onde a São Martinho opera, esta no lado da oferta que mais contribui para a pressao baixista global, o que ajuda a explicar o guidance conservador da própria companhia."
+      "Guidance da própria administração para a safra 2026/27: recuo esperado de -3% na receita, -7% no EBITDA e -50% no lucro líquido. O resultado forte reportado na safra 2025/26 foi impulsionado por uma estratégia pontual de estocar etanol para vender em um trimestre de preços mais favoráveis, e não reflete necessariamente um novo patamar estrutural de rentabilidade.",
+      "Contexto do ciclo global de açúcar: as projeções de mercado para a safra 2026/27 são mistas. Consultorias apontavam inicialmente superávit persistente (Brasil com safra recorde de 41-44 milhões de toneladas, recuperação de",
+      "India e Tailandia), gerando visão \"baixista por padrão\" na Dubai Sugar Conference. Revisões mais recentes (StoneX, maio-junho de 2026) passaram a projetar déficit técnico global entre 550 mil e 2,68 milhões de toneladas, por quedas de produção na Tailandia, Uniao Europeia e India (afetadas por El Nino e menor competitividade frente a culturas concorrentes). Mesmo assim, os preços internacionais seguem pressionados, refletindo mercado físico fraco e posições vendidas recordes de fundos especulativos. O Brasil, onde a São Martinho opera, está no lado da oferta que mais contribui para a pressão baixista global, o que ajuda a explicar o guidance conservador da própria companhia."
     ],
-    "endividamento": "Dívida líquida de R$ 4,9 bilhões, estável na comparacao anual. Alavancagem (dívida líquida/EBITDA ajustado) de 1,41x, considerado nível confortavel, com prazo medio de 5,4 anos e 91% classificado como longo prazo. A companhia diversifica captacao via debentures e Certificados de Recebiveis do Agronegocio (CRA). Comparativamente a outras empresas do setor sucroenergetico em dificuldade financeira mais severa, a São Martinho mantem posicao solida de balanco — o principal risco da tese não esta no endividamento, e sim no preço da commodity.",
-    "dividendos": "Dividend yield reportado nos últimos 12 meses entre 4,3% e 4,4%. E historicamente volatil, acompanhando o ciclo de lucro da commodity: em anos de preço fraco de acucar e etanol, a distribuição tende a cair proporcionalmente.",
+    "endividamento": "Dívida líquida de R$ 4,9 bilhões, estável na comparação anual. Alavancagem (dívida líquida/EBITDA ajustado) de 1,41x, considerado nível confortável, com prazo médio de 5,4 anos e 91% classificado como longo prazo. A companhia diversifica captação via debentures e Certificados de Recebíveis do Agronegocio (CRA). Comparativamente a outras empresas do setor sucroenergetico em dificuldade financeira mais severa, a São Martinho mantem posição sólida de balanco — o principal risco da tese não está no endividamento, e sim no preço da commodity.",
+    "dividendos": "Dividend yield reportado nos últimos 12 meses entre 4,3% e 4,4%. E historicamente volatil, acompanhando o ciclo de lucro da commodity: em anos de preço fraco de açúcar e etanol, a distribuição tende a cair proporcionalmente.",
     "gatilhos": [
-      "Recuperação do ciclo de preços de acucar e etanol — o principal gatilho, e o que menos esta sob controle da empresa.",
-      "Diversificacao para etanol de milho — reduz dependencia exclusiva da cana e abre nova fonte de receita e eficiencia de capital.",
-      "Disciplina de custo — a companhia historicamente opera com custo de producao baixo, permitindo navegar ciclos de baixa melhor que concorrentes menos eficientes.",
-      "Expansão para biometano e cogeracao de energia — fontes adicionais de receita fora do ciclo tradicional de acucar/etanol.",
-      "Balanco solido — alavancagem baixa (1,41x) da flexibilidade para atravessar ciclos ruins sem pressao financeira aguda, diferente de concorrentes mais endividados."
+      "Recuperação do ciclo de preços de açúcar e etanol — o principal gatilho, e o que menos está sob controle da empresa.",
+      "Diversificação para etanol de milho — reduz dependência exclusiva da cana e abre nova fonte de receita e eficiência de capital.",
+      "Disciplina de custo — a companhia historicamente opera com custo de produção baixo, permitindo navegar ciclos de baixa melhor que concorrentes menos eficientes.",
+      "Expansão para biometano e cogeração de energia — fontes adicionais de receita fora do ciclo tradicional de açúcar/etanol.",
+      "Balanco sólido — alavancagem baixa (1,41x) da flexibilidade para atravessar ciclos ruins sem pressão financeira aguda, diferente de concorrentes mais endividados."
     ],
     "nao_gatilhos": [
-      "Sobreoferta global de acucar — ciclo de baixa do preço internacional, com mais oferta do que demanda no mercado global.",
-      "Guidance próprio de queda de -50% no lucro para a safra 2026/27, já sinalizado pela administracao.",
+      "Sobreoferta global de açúcar — ciclo de baixa do preço internacional, com mais oferta do que demanda no mercado global.",
+      "Guidance próprio de queda de -50% no lucro para a safra 2026/27, já sinalizado pela administração.",
       "Ausência de controle sobre o preço do produto — diferente das demais empresas da carteira, a São",
       "Martinho não tem poder de precificação; e tomadora de preço de commodity.",
       "Analistas já cortaram preço-alvo — mesmo após resultado forte, casas de análise mantem cautela e valuation já e visto como exigente frente ao ciclo esperado.",
@@ -2888,7 +3027,7 @@
         "otimista": "Recuperação forte +"
       },
       {
-        "indicador": "diversificacao",
+        "indicador": "diversificação",
         "pessimista": "CAGR lucro líquido",
         "intermediario": "~-1% a.a.",
         "otimista": "3% a.a."
@@ -2902,7 +3041,7 @@
       {
         "indicador": "~1,5x",
         "pessimista": "~1,0x",
-        "intermediario": "Lucro medio (10a)",
+        "intermediario": "Lucro médio (10a)",
         "otimista": "R$ 500 mi"
       },
       {
@@ -2914,7 +3053,7 @@
       {
         "indicador": "R$ 1,12 bi",
         "pessimista": "R$ 1,50 bi",
-        "intermediario": "P/L de saída",
+        "intermediario": "P/L de saida",
         "otimista": "6x (multiplo deprimido)"
       },
       {
@@ -2932,7 +3071,7 @@
       {
         "indicador": "R$ 27,00",
         "pessimista": "R$ 45,00",
-        "intermediario": "DY medio anual assumido",
+        "intermediario": "DY médio anual assumido",
         "otimista": "~3%"
       },
       {
@@ -2974,10 +3113,73 @@
     ],
     "extras": [
       {
-        "titulo": "TRAJETÓRIA DE DÍVIDA E DESPESA FINANCEIRA (2026-2036)",
-        "texto": "Para além da metrica isolada de alavancagem (dívida líquida/EBITDA), estimou-se a trajetória da dívida em valores absolutos e o peso da despesa financeira sobre o EBITDA em cada cenário. Metodologia: a dívida líquida evolui conforme a alavancagem-alvo aplicada sobre o EBITDA projetado (não permanece estatica, cresce em termos absolutos mesmo quando a alavancagem relativa cai, pois o EBITDA também se expande). O custo medio da dívida foi estimado como a Selic média do cenário acrescida de spread de 1,5 ponto percentual, referencia proxima a captacoes do setor (ex.: BNDES concedeu credito a Selic + 1,37% a.a. a uma companhia do mesmo segmento em 2026). Indicador Pessimista Intermediário Otimista EBITDA 2036 (estimado) R$ 3,17 bi R$ 4,69 bi R$ 6,29 bi Alavancagem-alvo 2036 2,5x 1,5x 1,0x Dívida líquida 2036 R$ 7,93 bi R$ 7,04 bi R$ 6,29 bi Dívida líquida média (10a) R$ 6,42 bi R$ 5,97 bi R$ 5,60 bi Custo medio da dívida (Selic + 1,5%) 13,5% 10,5% 8,5% Despesa financeira média/ano R$ 867 mi R$ 627 mi R$ 476 mi % do EBITDA consumido por juros ~26% ~15,3% ~9,7% No cenário pessimista, a empresa passaria a comprometer cerca de um quarto do EBITDA apenas com o pagamento de juros, o que explica de forma mais direta o crescimento quase nulo do lucro assumido nesse cenário. No cenário otimista, a combinacao de Selic mais baixa com dívida crescendo mais devagar que o EBITDA reduz esse peso para menos de 10%, liberando caixa adicional para dividendos e reinvestimento — consistente com o payout mais generoso assumido nesse cenário."
+        "titulo": "TRAJETORIA DE DÍVIDA E DESPESA FINANCEIRA (2026-2036)",
+        "texto": "Para além da metrica isolada de alavancagem (dívida líquida/EBITDA), estimou-se a trajetoria da dívida em valores absolutos e o peso da despesa financeira sobre o EBITDA em cada cenário. Metodologia: a dívida líquida evolui conforme a alavancagem-alvo aplicada sobre o EBITDA projetado (não permanece estatica, cresce em termos absolutos mesmo quando a alavancagem relativa cai, pois o EBITDA também se expande). O custo médio da dívida foi estimado como a Selic média do cenário acrescida de spread de 1,5 ponto percentual, referência próxima a captações do setor (ex.: BNDES concedeu crédito a Selic + 1,37% a.a. a uma companhia do mesmo segmento em 2026). Indicador Pessimista Intermediário Otimista EBITDA 2036 (estimado) R$ 3,17 bi R$ 4,69 bi R$ 6,29 bi Alavancagem-alvo 2036 2,5x 1,5x 1,0x Dívida líquida 2036 R$ 7,93 bi R$ 7,04 bi R$ 6,29 bi Dívida líquida média (10a) R$ 6,42 bi R$ 5,97 bi R$ 5,60 bi Custo médio da dívida (Selic + 1,5%) 13,5% 10,5% 8,5% Despesa financeira média/ano R$ 867 mi R$ 627 mi R$ 476 mi % do EBITDA consumido por juros ~26% ~15,3% ~9,7% No cenário pessimista, a empresa passária a comprometer cerca de um quarto do EBITDA apenas com o pagamento de juros, o que explica de forma mais direta o crescimento quase nulo do lucro assumido nesse cenário. No cenário otimista, a combinação de Selic mais baixa com dívida crescendo mais devagar que o EBITDA reduz esse peso para menos de 10%, liberando caixa adicional para dividendos e reinvestimento — consistente com o payout mais generoso assumido nesse cenário."
       }
     ],
-    "fonte": "card"
+    "fonte": "card",
+    "data_tese": "junho/2026",
+    "arquivo_origem": "SMTO3_tese_cenarios_10anos.pdf"
+  },
+  "ECOR3": {
+    "ticker": "ECOR3",
+    "nome": "Ecorodovias Infraestrutura e Logística",
+    "setor": "Concessões Rodoviárias · Infraestrutura",
+    "classificacao": "Análise completa",
+    "resumo_numeros": "COTAÇÃO ATUAL · R$ 7,48 · Julho 2026 · EBITDA 2025 · R$ 5,6 bi · +18,6% a/a",
+    "o_que_faz": "",
+    "onde_atua": "",
+    "numeros": [],
+    "endividamento": "",
+    "dividendos": "",
+    "gatilhos": [],
+    "nao_gatilhos": [],
+    "projecoes": [
+      {
+        "indicador": "Preço-alvo",
+        "pessimista": "R$ 18",
+        "intermediario": "R$ 42",
+        "otimista": "R$ 75"
+      },
+      {
+        "indicador": "Upside vs. hoje",
+        "pessimista": "+140%",
+        "intermediario": "+461%",
+        "otimista": "+902%"
+      }
+    ],
+    "extras": [
+      {
+        "titulo": "O EBITDA TOTAL DO PORTFÓLIO SALTA DE R$ 5,6 BI HOJE PARA ~R$ 9,5 BI QUANDO",
+        "texto": "MADURO Isso sem nenhuma nova aquisição — apenas com o portfólio já contratado sendo executado. As concessões antigas (Anchieta-Imigrantes, Ayrton Senna, Via Dutra) já estão maduras e contribuem com ~R$ 4,8 bi de EBITDA estável."
+      },
+      {
+        "titulo": "POR QUE O MODELO FCD CONVENCIONAL DISTORCE O VALUATION DA ECOR3",
+        "texto": "O FCD aplicado sobre dados de 2025 comete dois erros opostos e sequenciais: superestima o lucro próximo (ignora que a dívida vai crescer mais R$ 18-20 bi com o capex das obras) e subestima o lucro futuro (não captura o salto de EBITDA quando as quatro concessões estiverem maduras). O valuation correto exige modelar o ciclo completo em três fases distintas com taxas de desconto que reflitam o risco de execução de cada etapa."
+      },
+      {
+        "titulo": "72% DA DÍVIDA ESTÁ INDEXADA AO IPCA — HEDGE NATURAL COM AS TARIFAS",
+        "texto": "A Ecorodovias tem proteção estrutural: as tarifas de pedágio são reajustadas pelo IPCA anualmente, e 72% da dívida também é indexada ao IPCA. Isso significa que inflação alta não corrói a margem — apenas a Selic/CDI sobre os 28% restantes é risco puro de taxa."
+      },
+      {
+        "titulo": "VALUATION POR CENÁRIO",
+        "texto": "Cotação atual (jul/2026): R$ 7,48 · Market cap: ~R$ 5,2 bi · EV atual: ~R$ 32 bi ⚠️ PESSIMISTA R$ 18 +140% vs. hoje Selic permanece acima de 12% até 2030. Obras com atrasos. EBITDA maduro de R$ 8,0 bi. EV/EBITDA 6x. Dívida pico de R$ 50 bi. 📊 BASE R$ 42 +461% vs. hoje Selic cai para 10% em 2027–28. Obras entregues no prazo. EBITDA maduro de R$ 9,5 bi. EV/EBITDA 7,5x. Dívida pico de R$ 47 bi. 🚀 OTIMISTA R$ 75 +902% vs. hoje Selic cai para 8% até 2027. Obras abaixo do orçamento. EBITDA maduro de R$ 10,5 bi. EV/EBITDA 9x. Re-rating de infraestrutura. MÉTRICA HOJE (2026) PICO OBRAS (2028–29) MADURO (2032+) BASE MADURO (2032+) OTIMISTA EBITDA R$ 5,6 bi ~R$ 7,5 bi ~R$ 9,5 bi ~R$ 10,5 bi Dívida líquida R$ 27 bi ~R$ 47 bi ~R$ 32 bi ~R$ 28 bi Lucro líquido R$ 853 mi ~zero ~R$ 2,3 bi ~R$ 3,4 bi LPA R$ 1,22 ~zero ~R$ 3,30 ~R$ 4,86 P/L implícito (R$7,48) 6,1x n/a 2,3x 1,5x"
+      },
+      {
+        "titulo": "PRINCIPAIS RISCOS E MITIGANTES",
+        "texto": "RISCO SEVERIDADE PROBABILIDADE IMPACTO NO VALUATION MITIGANTE Selic permanece acima de 12% até 2030 Alta Média Lucro negativo por 3+ anos; valuation cai para R$ 10–15 72% dívida indexada ao IPCA; hedge natural Alavancagem estoura covenant (4,75x) Alta Baixa Captação forçada; diluição dos acionistas Hoje em 3,9x; espaço de ~R$ 7 bi; dívida com prazo 7,9 anos Custo das obras supera orçamento Média Média Dívida pico sobe; alavancagem ameaça covenant Track record: últimas 4 concessões entregues dentro do prazo RISCO SEVERIDADE PROBABILIDADE IMPACTO NO VALUATION MITIGANTE Tráfego decepciona no ramp-up Média Baixa EBITDA maduro menor; valuation base cai para R$ 25–30 Concessões brownfield com demanda madura conhecida Ecoporto Santos perdido na licitação Baixa Média Perda de ~R$ 130 mi de EBITDA/ano (~2% do total) Contrato de transição ativo; foco crescente em rodovias"
+      },
+      {
+        "titulo": "CONCLUSÃO — A QUESTÃO CENTRAL",
+        "texto": "O que o mercado está precificando hoje A R$ 7,48, o mercado precifica a ECOR3 como se as 4 novas concessões não existissem — enxerga apenas a dívida de R$ 27 bi, os juros de R$ 3,1 bi e o lucro comprimido de 2025. EV/EBITDA implícito de 5,7x num negócio de infraestrutura de 30 anos é historicamente barato. O que a tese exige do investidor Aceitar carregar um ativo que terá lucro próximo de zero em 2028–29 por 6 a 8 anos até que o portfólio madure. A assimetria é real: downside limitado pelo dividend yield de 8% e pelo covenant; upside de 400–900% no cenário maduro. O risco não é operacional — é temporal e de execução. ✅ GATILHO 1 — Selic cai Cada ponto percentual de queda economiza ~R$ 220 mi em despesa financeira. Selic a 10% = +R$ 800 mi de lucro sem mudança operacional alguma. ✅ GATILHO 2 — Concessões maturam EBITDA salta de R$ 5,6 bi para R$ 9,5 bi só com portfólio já contratado. Independe de novos leilões ou aquisições. Se os dois gatilhos se combinarem — que é o cenário base num Brasil com inflação controlada — ECOR3 a R$ 7,48 é uma das maiores assimetrias do mercado brasileiro de infraestrutura."
+      },
+      {
+        "titulo": "CRIAÇÃO DE VALOR ATÉ 2032 — EBITDA CRESCENDO + DÍVIDA CAINDO DO",
+        "texto": "PICO A ECOR3 cria valor por dois mecanismos simultâneos que se materializam entre 2029 e 2032: (1) o EBITDA quase dobra com as concessões novas maturando, enquanto os juros ficam relativamente estáveis — a sobra depois dos juros vai de R$ 2,5 bi para R$ 6,5 bi; (2) a dívida cai de R$ 47 bi (pico 2029) para R$ 32 bi em 2032, aumentando diretamente o equity. São dois efeitos independentes que se somam. Efeito 1 — EBITDA crescendo com juros estáveis PERÍODO EBITDA JUROS PAGOS JUROS / EBITDA SOBRA APÓS JUROS LUCRO LÍQUIDO EST. 2026 (hoje) R$ 5,6 bi R$ 3,1 bi 55% R$ 2,5 bi ~R$ 853 mi 2028–29 (pico obras) ~R$ 7,5 bi ~R$ 5,0 bi 67% R$ 2,5 bi ~zero / prejuízo ⚠️ 2030–31 (recuperação) ~R$ 8,2 bi ~R$ 3,8 bi 46% R$ 4,4 bi ~R$ 800 mi 2032 (maturidade) ~R$ 9,5 bi ~R$ 3,0 bi 32% R$ 6,5 bi ~R$ 2,3 bi Efeito 2 — Dívida caindo do pico cria equity diretamente PERÍODO EBITDA DÍVIDA LÍQUIDA EV (7X EBITDA) EQUITY (EV − DÍVIDA) PREÇO/AÇÃO 2026 (hoje) R$ 5,6 bi R$ 27 bi R$ 39 bi R$ 12 bi R$ 17 2028–29 (pico ⚠️) ~R$ 7,5 bi ~R$ 47 bi ~R$ 52 bi ~R$ 5 bi ~R$ 7 ⚠️ 2032 (maturidade) ~R$ 9,5 bi ~R$ 32 bi ~R$ 66 bi ~R$ 34 bi ~R$ 49 O efeito combinado — os dois mecanismos somados EFEITO MECANISMO PRAZO CONTRIBUIÇÃO PREÇO ACUMULADO Preço atual Cotação de mercado hoje Agora R$ 7,48 R$ 7,48 EBITDA cresce (concessões maturam) R$ 5,6 bi → R$ 9,5 bi. Juros ficam em R$ 3 bi. Lucro quase triplica. 2026– 32 + R$ 25 R$ 32 Dívida cai do pico R$ 47 bi (2029) → R$ 32 bi (2032). Equity sobe R$ 15 bi diretamente. 2029– 32 + R$ 17 R$ 49 TOTAL — cenário maturidade 2032 Ambos os efeitos se materializando 2032 + R$ 42 R$ 49 ⚠️ Ressalvas importantes — por que R$ 49 em 2032 não é o mesmo que R$ 49 na Vale A dívida volta a subir após 2035 Novos leilões de concessão vão exigir nova captação. A ECOR3 estruturalmente nunca zera a dívida — ela oscila entre R$ 30–50 bi para sempre. R$ 49 é um recorte de maturidade, não um estado permanente. O risco de execução é real até lá Para chegar nos R$ 49, a empresa precisa entregar 4 concessões no prazo e orçamento, atravessar o pico de alavancagem de 4,5x sem quebrar o covenant (4,75x) e contar com Selic cadente. São 6 anos de risco de execução antes de capturar o valor. Conclusão com ressalva: O valor de R$ 49 em 2032 é real e defensável — mas o investidor precisa aceitar carregar uma posição com lucro próximo de zero em 2028–29, atravessar o pico de risco, e entender que o valor não é permanente como na Vale. É uma aposta em execução e tempo, não em um ativo subavaliado com margem de segurança imediata. Ciano Investimentos · Análise fundamentalista para fins informativos · Não constitui recomendação de investimento · Julho 2026"
+      }
+    ],
+    "fonte": "card",
+    "data_tese": "julho/2026",
+    "arquivo_origem": "ECOR3 ANALISE COMPLETA.pdf"
   }
 }

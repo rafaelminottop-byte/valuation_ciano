@@ -12,6 +12,7 @@ cenários, e ver o valuation por ação com o veredito automático.
 
 import base64
 import html
+from datetime import date
 from pathlib import Path
 
 import altair as alt
@@ -85,18 +86,29 @@ def _injetar_css() -> None:
                 #0E2266;
         }
         #MainMenu, footer, header {visibility: hidden;}
-        .block-container {padding-top: 2.2rem; max-width: 1120px;}
+        .block-container {padding-top: 2.4rem; padding-bottom: 3rem; max-width: 1200px;}
 
         /* Base tipográfica: quase tudo abaixo está em rem, então subir a raiz
            aumenta o app inteiro de forma proporcional (leitura mais confortável). */
-        html {font-size: 18px;}
+        html {font-size: 21px;}
         .stMarkdown p, .stMarkdown li, label, .stRadio label, .stCheckbox label {font-size: 1.02rem;}
-        [data-testid="stCaptionContainer"] p {font-size: 0.94rem; line-height: 1.5;}
-        [data-testid="stMetricValue"] {font-size: 1.9rem;}
-        [data-testid="stMetricLabel"] p {font-size: 0.92rem;}
+        [data-testid="stCaptionContainer"] p {font-size: 0.92rem; line-height: 1.55; color: #A9BBE0;}
+        [data-testid="stMetricValue"] {font-size: 2rem; font-weight: 800;}
+        [data-testid="stMetricLabel"] p {font-size: 0.9rem; letter-spacing: 0.02em;}
         div[data-testid="stDataFrame"] {font-size: 1rem;}
+        /* Campos e botões com mais respiro */
+        .stTextInput input, .stNumberInput input, .stTextArea textarea,
+        .stSelectbox div[data-baseweb="select"] {font-size: 1rem;}
+        .stButton button {font-size: 1rem; font-weight: 700; padding: 0.55rem 1.4rem; border-radius: 10px;}
+        /* Abas maiores e mais legíveis */
+        .stTabs [data-baseweb="tab-list"] {gap: 6px;}
+        .stTabs [data-baseweb="tab"] {
+            font-size: 1rem; font-weight: 700; padding: 10px 18px; border-radius: 10px 10px 0 0;
+        }
+        .stExpander summary p {font-size: 0.98rem; font-weight: 600;}
 
-        h1, h2, h3, h4 {color: #FFFFFF; font-weight: 800; letter-spacing: -0.01em;}
+        h1 {font-size: 2.4rem; margin-bottom: 0.2rem;}
+        h1, h2, h3, h4 {color: #FFFFFF; font-weight: 800; letter-spacing: -0.015em;}
 
         /* Caixa única do resultado: cenários (colunas) x métodos (linhas) */
         .ciano-matriz {
@@ -139,12 +151,19 @@ def _injetar_css() -> None:
             color: #93C5FD; font-size: 0.86rem; font-weight: 800; letter-spacing: 0.10em;
             text-transform: uppercase; margin: 18px 0 6px 0;
         }
+        .tese-data {
+            color: #A9BBE0; font-size: 0.86rem; font-weight: 600;
+            border: 1px solid #2A3F8A; border-radius: 8px; padding: 3px 10px;
+        }
+        .tese-resumo {
+            color: #CBD5E1; font-size: 0.96rem; line-height: 1.6; margin: 8px 0 2px 0;
+        }
 
-        .ciano-brand {display: inline-block; margin-bottom: 10px;}
-        .ciano-brand img {height: 56px; width: auto; display: block;}
+        .ciano-brand {display: inline-block; margin-bottom: 4px;}
+        .ciano-brand img {height: 104px; width: auto; display: block;}
         .ciano-invest {
-            color: #4B8DEF; font-size: 0.86rem; font-weight: 500;
-            letter-spacing: 0.16em; text-align: right; margin-top: -8px; padding-right: 2px;
+            color: #4B8DEF; font-size: 0.92rem; font-weight: 500;
+            letter-spacing: 0.30em; text-align: right; margin-top: -10px; padding-right: 3px;
         }
         .ciano-sub {color: #CBD5E1; font-size: 1.02rem; margin: 0 0 4px 0;}
 
@@ -194,8 +213,8 @@ def _injetar_css() -> None:
             font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
             font-size: 0.80rem; margin-bottom: 8px;
         }
-        .tese-box ul {margin: 0; padding-left: 18px;}
-        .tese-box li {color: #E2E8F0; font-size: 0.90rem; margin-bottom: 7px; line-height: 1.42;}
+        .tese-box ul {margin: 0; padding-left: 20px;}
+        .tese-box li {color: #E2E8F0; font-size: 0.96rem; margin-bottom: 10px; line-height: 1.55;}
         .tese-fortes {border-left: 4px solid #22C55E;}
         .tese-fortes .tese-h {color: #22C55E;}
         .tese-fracos {border-left: 4px solid #EF4444;}
@@ -220,8 +239,7 @@ def _cabecalho() -> None:
     st.markdown(
         f"""
         {marca}
-        <h1 style="margin:2px 0 0 0;">Valuation por EBIT projetado</h1>
-        <p class="ciano-sub">P/L a valor presente + FCD do EBIT, em 3 cenários · dados via Fundamentus</p>
+        <h1 style="margin:6px 0 0 0;">Valuation</h1>
         """,
         unsafe_allow_html=True,
     )
@@ -290,11 +308,61 @@ def _render_resultado(ticker: str, preco_atual: float, resultado_ebit: dict,
     )
 
 
+MESES_PT = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
+            "agosto", "setembro", "outubro", "novembro", "dezembro"]
+MESES_TESE_ALERTA = 6  # a partir daqui a tese merece revisão
+
+
+def idade_tese_meses(data_tese: str) -> int | None:
+    """Meses decorridos desde a data da tese ('julho/2026'). None se não parsear."""
+    if not data_tese or "/" not in str(data_tese):
+        return None
+    mes_txt, _, ano_txt = str(data_tese).partition("/")
+    try:
+        mes = MESES_PT.index(mes_txt.strip().lower()) + 1
+        ano = int(ano_txt)
+    except (ValueError, IndexError):
+        return None
+    hoje = date.today()
+    return (hoje.year - ano) * 12 + (hoje.month - mes)
+
+
+def _baixar_csv_br(df, nome_base: str, key: str) -> None:
+    """Botão de download em CSV que o Excel brasileiro abre em colunas certas.
+
+    O Excel em pt-BR espera ';' como separador e ',' como decimal; o CSV padrão
+    (',' + '.') faz ele jogar tudo numa coluna só (o "mesclado"). Aqui geramos no
+    formato BR, com BOM UTF-8 para os acentos e o ⚠️ saírem corretos.
+    """
+    csv = df.reset_index().to_csv(sep=";", decimal=",", index=False)
+    dados = ("﻿" + csv).encode("utf-8")
+    st.download_button(
+        "⬇️ Baixar CSV (Excel BR)", data=dados, file_name=f"{nome_base}.csv",
+        mime="text/csv", key=key,
+        help="Formato pronto para o Excel brasileiro (separador ; e decimal ,).",
+    )
+
+
+def _esc_md(texto: str) -> str:
+    """Escapa o cifrão para o Streamlit não tratar 'R$ x ... R$ y' como LaTeX.
+
+    O Streamlit renderiza `$...$` como fórmula matemática — e como as teses são
+    cheias de "R$", trechos inteiros viravam monoespaçado verde. Aqui o cifrão
+    vira literal.
+    """
+    return str(texto).replace("$", r"\$")
+
+
+def _esc_html(texto: str) -> str:
+    """Escapa HTML e o cifrão (entidade), para uso dentro de blocos HTML."""
+    return html.escape(str(texto)).replace("$", "&#36;")
+
+
 def _caixa_lista(titulo: str, itens: list, classe: str) -> str:
     """Caixa com lista (gatilhos / detratores)."""
     if not itens:
         return ""
-    li = "".join(f"<li>{html.escape(p)}</li>" for p in itens)
+    li = "".join(f"<li>{_esc_html(p)}</li>" for p in itens)
     return (f'<div class="tese-box {classe}"><div class="tese-h">{titulo}</div>'
             f"<ul>{li}</ul></div>")
 
@@ -305,19 +373,31 @@ def _render_tese_card(tese: dict, titulo: str, fonte: str) -> None:
 
     cabecalho = []
     if tese.get("classificacao"):
-        cabecalho.append(f'<span class="tese-tag">{html.escape(tese["classificacao"])}</span>')
+        cabecalho.append(f'<span class="tese-tag">{_esc_html(tese["classificacao"])}</span>')
     if tese.get("setor"):
-        cabecalho.append(f'<span class="tese-setor">{html.escape(tese["setor"])}</span>')
+        cabecalho.append(f'<span class="tese-setor">{_esc_html(tese["setor"])}</span>')
+    if tese.get("data_tese"):
+        cabecalho.append(f'<span class="tese-data">Tese de {_esc_html(tese["data_tese"])}</span>')
     if cabecalho:
         st.markdown(f'<div class="tese-cab">{" ".join(cabecalho)}</div>', unsafe_allow_html=True)
+    idade = idade_tese_meses(tese.get("data_tese"))
+    if idade is not None and idade >= MESES_TESE_ALERTA:
+        st.warning(
+            f"⏳ **Tese com {idade} meses** (de {tese['data_tese']}) — os números "
+            "podem estar defasados. Vale revisar antes de decidir."
+        )
+
     if tese.get("resumo_numeros"):
-        st.caption(tese["resumo_numeros"])
+        st.markdown(
+            f'<div class="tese-resumo">{_esc_html(tese["resumo_numeros"])}</div>',
+            unsafe_allow_html=True,
+        )
 
     for campo, rotulo in (("o_que_faz", "O que a empresa faz"), ("onde_atua", "Onde atua")):
         if tese.get(campo):
             st.markdown(
                 f'<div class="tese-sub">{rotulo}</div>'
-                f'<div class="tese-texto">{html.escape(tese[campo])}</div>',
+                f'<div class="tese-texto">{_esc_html(tese[campo])}</div>',
                 unsafe_allow_html=True,
             )
 
@@ -333,15 +413,15 @@ def _render_tese_card(tese: dict, titulo: str, fonte: str) -> None:
     if tese.get("numeros"):
         with st.expander("📊 Números recentes"):
             for n in tese["numeros"]:
-                st.markdown(f"- {n}")
+                st.markdown(f"- {_esc_md(n)}")
     for campo, rotulo in (("endividamento", "💰 Endividamento"), ("dividendos", "💵 Dividendos")):
         if tese.get(campo):
             with st.expander(rotulo):
-                st.write(tese[campo])
+                st.markdown(_esc_md(tese[campo]))
     for extra in tese.get("extras", []):
         if extra.get("texto"):
             with st.expander(f"📌 {extra['titulo'].title()}"):
-                st.write(extra["texto"])
+                st.markdown(_esc_md(extra["texto"]))
 
     if tese.get("projecoes"):
         st.markdown('<div class="tese-sub">Projeções — cenários de 10 anos</div>',
@@ -367,12 +447,12 @@ def _render_corpo_tese(tese: dict, titulo: str, fonte: str) -> None:
     st.markdown(f'<div class="ciano-label">{titulo}</div>', unsafe_allow_html=True)
     if tese.get("setor"):
         st.markdown(
-            f'<div class="tese-setor">Setor: {html.escape(tese["setor"])}</div>',
+            f'<div class="tese-setor">Setor: {_esc_html(tese["setor"])}</div>',
             unsafe_allow_html=True,
         )
     if tese.get("tese"):
         st.markdown(
-            f'<div class="tese-texto">{html.escape(tese["tese"])}</div>',
+            f'<div class="tese-texto">{_esc_html(tese["tese"])}</div>',
             unsafe_allow_html=True,
         )
     col_f, col_r = st.columns(2)
@@ -495,6 +575,7 @@ def _busca_em_lote(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2
         if exibir["Empresa"].isna().all():
             exibir = exibir.drop(columns=["Empresa"])
         st.dataframe(exibir, use_container_width=True)
+        _baixar_csv_br(exibir, "lote_valuation", "dl_lote")
         st.caption(
             "Cenário intermediário. Ordenado pelo upside do **LPA** (a leitura confiável). "
             "**TMA impl.** = o retorno anual que o mercado exige para a ação valer o preço de hoje "
@@ -664,6 +745,9 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
             nome = emp.get("nome") or emp["ticker"]
             st.caption(f"🇺🇸 {nome} — Yahoo Finance · TMA em dólar de "
                        f"{PREMISSAS_EUA['tma']*100:.0f}% a.a. (a TMA da barra lateral vale só para a B3).")
+
+        _render_estimado_realizado_empresa(emp["ticker"], eua)
+
         if not eua:
             _render_tese(emp["ticker"])
 
@@ -885,6 +969,7 @@ def _aba_carteira(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
             "alavancada": "Alav.", "base": "Base", "veredito": "Veredito",
         }).drop(columns=["nome"], errors="ignore").set_index("Ticker")
         st.dataframe(exibir, use_container_width=True)
+        _baixar_csv_br(exibir, f"carteira_{res['nome']}", "dl_carteira")
         st.caption(
             "Cenário intermediário, ordenado pelo upside do **LPA**. **⚠️ Alav.** = o EBIT vai "
             "para credores; use as colunas do LPA."
@@ -1083,6 +1168,7 @@ def _aba_eua() -> None:
         }
     ).drop(columns=["crescente"]).set_index("Ticker")
     st.dataframe(exibir, use_container_width=True, height=560)
+    _baixar_csv_br(exibir, "eua_valuation", "dl_eua")
     st.caption("Convicção = nº de posts que citaram a empresa (proxy de consenso de mercado, do screening de origem).")
 
 
@@ -1196,9 +1282,9 @@ def _bloco_expectativa_lucro() -> None:
 
     st.markdown('<div class="ciano-label">📈 Expectativa de lucro (B3)</div>', unsafe_allow_html=True)
     st.caption(
-        "Consenso de analistas para o lucro do próximo ano nas ações mais líquidas da B3 "
-        "(Yahoo Finance). O **nível** importa pouco — o que informa é a **direção da revisão**: "
-        "índice acima de 100 = expectativas elevadas nos últimos 90 dias; abaixo = cortes."
+        "Olha para **frente**: os analistas estão **subindo ou cortando** a estimativa de lucro do "
+        "**próximo ano** das ações mais líquidas da B3 (Yahoo Finance). O nível importa pouco — o "
+        "que informa é a **direção**: índice acima de 100 = elevaram nos últimos 90 dias; abaixo = cortaram."
     )
     c1, c2 = st.columns([1, 2])
     n_cesta = c1.number_input("Tamanho da cesta", value=30, min_value=10, max_value=60, step=5,
@@ -1226,6 +1312,9 @@ def _bloco_expectativa_lucro() -> None:
     valor = indice["valor"]
     variacao = valor - 100
     breadth = indice.get("pct_revisao_positiva")
+    # A: acumula um ponto por dia para a série longa crescer ao vivo
+    historico = le.registrar_historico(valor)
+
     m1, m2 = st.columns(2)
     m1.metric("Índice de revisão (90d)", f"{valor:.1f}", delta=f"{variacao:+.1f}% em 90 dias",
               help="Mediana da estimativa de lucro da cesta, base 100 = 90 dias atrás.")
@@ -1244,8 +1333,151 @@ def _bloco_expectativa_lucro() -> None:
                 f"({indice['n_empresas']} empresas). O autor do relatório chama a atenção para "
                 "platôs: costumam preceder viradas.")
 
-    with st.expander("📈 trajetória das revisões"):
+    aba_90d, aba_acum = st.tabs(["📈 Trajetória 90 dias", "🗓️ Histórico acumulado"])
+    with aba_90d:
         _grafico_trajetoria(indice.get("serie") or [], "Índice (base 100)")
+    with aba_acum:
+        if len(historico) >= 2:
+            _grafico_trajetoria(
+                [{"data": p["data"], "valor": p["valor"]} for p in historico],
+                "Índice (base 100)")
+            st.caption(
+                f"{len(historico)} dias registrados. Esta série **cresce ao vivo**: cada vez que "
+                "você atualiza, um ponto do dia é guardado — em semanas vira uma trajetória longa "
+                "das revisões (o de 90 dias vem do Yahoo e é sempre curto)."
+            )
+        else:
+            st.info(
+                "🌱 O histórico acumulado começa hoje. Cada atualização deste indicador guarda "
+                "um ponto do dia; volte nos próximos dias/semanas para ver a trajetória longa se "
+                "formar. (A janela de 90 dias, ao lado, já funciona desde agora.)"
+            )
+
+    _bloco_surpresa_lucro(int(n_cesta))
+
+
+def _bloco_surpresa_lucro(n_cesta: int) -> None:
+    """Índice de surpresa de resultados (estimado × reportado) — histórico longo."""
+    import surpresa_lucro as sl
+    from fundamentus_scraper import baixar_tabela_fundamentus
+
+    st.markdown('<div class="ciano-label">🎯 Surpresa de resultados (B3)</div>', unsafe_allow_html=True)
+    st.caption(
+        "Olha para **trás**: no balanço que já saiu, as empresas **bateram ou frustraram** o consenso? "
+        "Mediana da surpresa (%) da cesta por trimestre, com ~2 anos de histórico (Yahoo Finance)."
+    )
+    st.caption(
+        "ℹ️ **Futuro × passado:** este bloco (surpresa) é o **passado**; a revisão acima é o **futuro**. "
+        "Podem divergir — bater uma estimativa que os analistas já cortaram é fácil. Surpresa positiva "
+        "**com** revisão caindo é sinal de cautela, não de força."
+    )
+    if st.button("Calcular / atualizar surpresa de resultados", key="surpresa_run"):
+        df = baixar_tabela_fundamentus()
+        liq = pd.to_numeric(df["liquidez"], errors="coerce")
+        cesta = df.assign(_l=liq).nlargest(n_cesta, "_l")["ticker"].str.upper().tolist()
+        barra = st.progress(0.0, text="Buscando resultados no Yahoo Finance...")
+        st.session_state.indice_surpresa = sl.buscar_indice_surpresa(
+            [f"{t}.SA" for t in cesta], usar_cache=False,  # "atualizar" força recálculo
+            progresso=lambda i, n: barra.progress(i / n, text=f"Resultados... {i}/{n}"),
+        )
+        barra.empty()
+
+    ind = st.session_state.get("indice_surpresa")
+    if not ind:
+        st.info("Clique em **Calcular** para montar o índice de surpresa (histórico de ~2 anos).")
+        return
+    if ind.get("valor") is None:
+        st.info("Sem dados de surpresa disponíveis para a cesta.")
+        return
+
+    v = ind["valor"]
+    bateram = ind.get("pct_bateram")
+    s1, s2 = st.columns(2)
+    s1.metric("Surpresa mediana (últ. tri)", f"{v:+.1f}%",
+              help="Mediana de (EPS reportado − estimado) / estimado no trimestre mais recente.")
+    s2.metric("Empresas que bateram", f"{bateram:.0f}% da cesta" if bateram is not None else "—",
+              help="Quantas superaram o consenso no último trimestre.")
+    if v > 1:
+        st.success(f"✅ A B3 **superou** o consenso no último balanço (mediana +{v:.1f}%).")
+    elif v < -1:
+        st.warning(f"⚠️ A B3 **frustrou** o consenso no último balanço (mediana {v:.1f}%).")
+    else:
+        st.info("➖ Resultados **em linha** com o consenso no último balanço.")
+
+    aba_gap, aba_surp = st.tabs(["📉 Estimado × Realizado", "📊 Surpresa (%)"])
+    with aba_gap:
+        est_real = ind.get("serie_est_real") or []
+        if len(est_real) >= 2:
+            _grafico_estimado_realizado(est_real)
+            st.caption(
+                "LPA **médio** da cesta por trimestre. Onde a linha **Realizado** fica acima "
+                "da **Estimado**, a B3 bateu o consenso; abaixo, frustrou. A distância entre "
+                "elas é a surpresa. (O nível oscila com quais empresas reportaram — o que "
+                "importa é o **gap** entre as duas.)"
+            )
+        else:
+            st.caption("Sem dados suficientes para as duas linhas.")
+    with aba_surp:
+        _grafico_trajetoria(ind.get("serie") or [], "Surpresa (%)", sufixo="%")
+
+
+def _render_estimado_realizado_empresa(ticker: str, eua: bool) -> None:
+    """Gráfico estimado × realizado da empresa individual (consenso de analistas)."""
+    yahoo = ticker if eua else f"{ticker}.SA"
+    chave = f"earn_{yahoo}"
+    if chave not in st.session_state:
+        import surpresa_lucro as sl
+        try:
+            with st.spinner("Buscando estimativas de analistas no Yahoo Finance..."):
+                st.session_state[chave] = sl.serie_empresa(yahoo)
+        except Exception:  # noqa: BLE001
+            st.session_state[chave] = []
+
+    serie = st.session_state[chave]
+    st.markdown(
+        '<div class="ciano-label">Estimado × Realizado (consenso de analistas)</div>',
+        unsafe_allow_html=True,
+    )
+    if len(serie) < 2:
+        st.caption("Sem histórico de estimativas de analistas para este ticker no Yahoo Finance.")
+        return
+    _grafico_estimado_realizado(serie)
+    st.caption(
+        "Lucro por ação **estimado** pelos analistas × **reportado**, por trimestre "
+        "(Yahoo Finance). Onde o realizado fica acima do estimado, a empresa bateu o consenso; "
+        "abaixo, frustrou."
+    )
+
+
+def _grafico_estimado_realizado(serie: list) -> None:
+    """Duas linhas no mesmo gráfico: LPA estimado x realizado por trimestre."""
+    longo = []
+    for p in serie:
+        longo.append({"data": p["data"], "linha": "Estimado", "valor": p["estimado"]})
+        longo.append({"data": p["data"], "linha": "Realizado", "valor": p["reportado"]})
+    dfg = pd.DataFrame(longo)
+    ordem = [p["data"] for p in serie]
+    chart = (
+        alt.Chart(dfg)
+        .mark_line(point=True, strokeWidth=2.5)
+        .encode(
+            x=alt.X("data:N", sort=ordem, title=None,
+                    axis=alt.Axis(labelColor=COR_LIGHT, labelAngle=-45)),
+            y=alt.Y("valor:Q", title="LPA médio (R$)", scale=alt.Scale(zero=False),
+                    axis=alt.Axis(grid=True, gridOpacity=0.15, labelColor=COR_LIGHT)),
+            color=alt.Color("linha:N", title=None,
+                            scale=alt.Scale(domain=["Estimado", "Realizado"],
+                                            range=["#F59E0B", COR_ACCENT]),
+                            legend=alt.Legend(orient="top", labelColor="#FFFFFF")),
+            tooltip=[alt.Tooltip("data:N", title="Trimestre"),
+                     alt.Tooltip("linha:N", title=""),
+                     alt.Tooltip("valor:Q", title="LPA médio", format=".2f")],
+        )
+        .properties(height=260)
+        .configure_view(strokeWidth=0)
+        .configure(background="rgba(0,0,0,0)")
+    )
+    st.altair_chart(chart, use_container_width=True)
 
 
 def _aba_gatilhos() -> None:
