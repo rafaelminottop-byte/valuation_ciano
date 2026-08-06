@@ -8,6 +8,7 @@ venv/
 data/carteira.json
 data/teses_ia.json
 data/listas.json
+data/lucro_esperado_hist.json
 cloudflared.exe
 
 # Icone gerado a partir da logo (assets/gerar_icone.py)
