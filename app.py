@@ -12,6 +12,7 @@ cenários, e ver o valuation por ação com o veredito automático.
 
 import base64
 import html
+import re
 from datetime import date
 from pathlib import Path
 
@@ -158,6 +159,19 @@ def _injetar_css() -> None:
         .tese-resumo {
             color: #CBD5E1; font-size: 0.96rem; line-height: 1.6; margin: 8px 0 2px 0;
         }
+        .noti {
+            background: #16276E; border: 1px solid #2A3F8A; border-radius: 12px;
+            padding: 12px 16px; margin-bottom: 9px;
+        }
+        .noti.hit {border-left: 4px solid #22C55E;}
+        .noti a {color: #FFFFFF; font-weight: 600; font-size: 1rem; text-decoration: none; line-height: 1.4;}
+        .noti a:hover {text-decoration: underline; color: #93C5FD;}
+        .noti-meta {display: block; color: #9DB2E8; font-size: 0.82rem; margin-top: 5px;}
+        .noti-gat {
+            display: inline-block; background: #14532D; color: #4ADE80; font-size: 0.74rem;
+            font-weight: 700; padding: 1px 8px; border-radius: 20px; margin: 0 5px 5px 0;
+        }
+        .tese-tag.gat-chip {background:#132876; color:#93C5FD; border-color:#2A3F8A; font-weight:600;}
 
         .ciano-brand {display: inline-block; margin-bottom: 4px;}
         .ciano-brand img {height: 104px; width: auto; display: block;}
@@ -826,6 +840,7 @@ def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
         }
     ).set_index("Ticker")
     st.dataframe(exibir, use_container_width=True, height=560)
+    _baixar_csv_br(exibir, "screener_b3", "dl_screener")
 
     # Salvar o resultado como lista nomeada (reusável na aba Gatilhos)
     import listas as lst
@@ -1099,6 +1114,7 @@ def _aba_ranking(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
         }
     ).set_index("Ticker")
     st.dataframe(exibir, use_container_width=True, height=560)
+    _baixar_csv_br(exibir, "ranking_b3", "dl_ranking")
 
 
 def _aba_eua() -> None:
@@ -1480,6 +1496,127 @@ def _grafico_estimado_realizado(serie: list) -> None:
     st.altair_chart(chart, use_container_width=True)
 
 
+def _card_noticia(n: dict) -> str:
+    """HTML de uma notícia: título linkado, fonte, data e chips de gatilho."""
+    chips = "".join(f'<span class="noti-gat">⚡ {_esc_html(g)}</span>' for g in n.get("gatilhos", []))
+    meta = " · ".join(x for x in (_esc_html(n.get("fonte", "")), n.get("data", "")) if x)
+    hit = " hit" if n.get("gatilhos") else ""
+    link = html.escape(n.get("link", ""), quote=True)
+    return (f'<div class="noti{hit}">{chips}<br>' if chips else f'<div class="noti{hit}">') + (
+        f'<a href="{link}" target="_blank" rel="noopener">{_esc_html(n["titulo"])}</a>'
+        f'<span class="noti-meta">{meta}</span></div>'
+    )
+
+
+def _aba_noticias() -> None:
+    import noticias as nt
+    from teses import carregar_teses
+
+    teses = carregar_teses()
+    st.caption(
+        "Notícias das empresas com tese (Google News), com as manchetes ligadas aos "
+        "**gatilhos** da tese destacadas com ⚡. Fonte pública; cache de 2h."
+    )
+
+    # Empresas com gatilho (formato card) primeiro; depois as demais.
+    def _rotulo(tk):
+        nome = teses[tk].get("nome") or tk
+        marca = " 🎯" if teses[tk].get("gatilhos") else ""
+        return f"{tk} — {nome}{marca}"
+
+    ordenadas = sorted(teses, key=lambda k: (0 if teses[k].get("gatilhos") else 1, k))
+
+    modo = st.radio("Modo", ["Por empresa", "Radar de gatilhos (todas as teses em card)"],
+                    horizontal=True, key="noti_modo")
+    dias = st.slider("Últimos N dias", 3, 30, 14, key="noti_dias")
+
+    if modo == "Por empresa":
+        tk = st.selectbox("Empresa", ordenadas, format_func=_rotulo, key="noti_emp")
+        tese = teses[tk]
+        gatilhos = tese.get("gatilhos") or []
+        if gatilhos:
+            chips = "".join(
+                f'<span class="tese-tag gat-chip">{_esc_html(re.split(chr(8212)+"|—|–|-", g, maxsplit=1)[0].strip())}</span>'
+                for g in gatilhos
+            )
+            st.markdown(f'<div class="tese-cab">{chips}</div>', unsafe_allow_html=True)
+            st.caption("Gatilhos da tese — notícias que citam esses temas vêm marcadas com ⚡.")
+
+        if st.button("Buscar notícias", type="primary", key="noti_run"):
+            nome = tese.get("nome") or tk
+            with st.spinner(f"Buscando notícias de {nome}..."):
+                # Busca pelo TICKER (ex.: MOVI3): evita o ruído de nomes ambíguos
+                # ("Movida", "Vale", "São Martinho") e traz só o que é da empresa.
+                itens = nt.buscar_noticias(tk, dias=dias)
+                st.session_state.noti = {
+                    "itens": nt.marcar_e_ordenar(itens, nt.palavras_chave_gatilhos(tese)),
+                    "nome": f"{tk} · {nome}",
+                }
+
+        dados = st.session_state.get("noti")
+        if dados:
+            itens = dados["itens"]
+            n_hit = sum(1 for n in itens if n["gatilhos"])
+            so_gat = st.checkbox("Só as ligadas aos gatilhos ⚡", value=False, key="noti_sog")
+            mostrar = [n for n in itens if n["gatilhos"]] if so_gat else itens
+            st.markdown(
+                f'<div class="ciano-label">{dados["nome"]} — {len(mostrar)} manchetes'
+                + (f" · {n_hit} ⚡ gatilho" if n_hit else "") + "</div>",
+                unsafe_allow_html=True,
+            )
+            if not mostrar:
+                st.info("Nenhuma notícia (tente aumentar os dias ou desmarcar o filtro).")
+            for n in mostrar:
+                st.markdown(_card_noticia(n), unsafe_allow_html=True)
+        return
+
+    # --- Radar: varre as teses e mostra só o que bateu gatilho ---
+    escopo = st.radio(
+        "Varrer", [f"Todas as teses ({len(teses)})", "Só as em card (gatilhos estruturados)"],
+        horizontal=True, key="noti_escopo",
+    )
+    if escopo.startswith("Todas"):
+        alvos = [tk for tk in ordenadas if teses[tk].get("gatilhos") or teses[tk].get("pontos_fortes")]
+    else:
+        alvos = [tk for tk in ordenadas if teses[tk].get("gatilhos")]
+    st.caption(
+        f"Varre {len(alvos)} empresas e lista só as notícias que citam um catalisador. "
+        "As em formato antigo usam os pontos fortes como palavras-chave. "
+        "A 1ª varredura é mais lenta (uma busca por empresa); depois fica em cache (2h)."
+    )
+    if st.button("Rodar radar de gatilhos", type="primary", key="noti_radar"):
+        achados = []
+        barra = st.progress(0.0, text="Varrendo notícias...")
+        for i, tk in enumerate(alvos, 1):
+            tese = teses[tk]
+            nome = tese.get("nome") or tk
+            try:
+                itens = nt.buscar_noticias(tk, dias=dias)  # pelo ticker (sem ruído de nome)
+                marcadas = nt.marcar_e_ordenar(itens, nt.palavras_chave_gatilhos(tese))
+                for n in marcadas:
+                    if n["gatilhos"]:
+                        achados.append({**n, "empresa": f"{tk} · {nome}"})
+            except Exception:  # noqa: BLE001
+                pass
+            barra.progress(i / len(alvos), text=f"Varrendo... {i}/{len(alvos)}")
+        barra.empty()
+        achados.sort(key=lambda n: -n.get("ts", 0))
+        st.session_state.noti_radar_res = achados
+
+    achados = st.session_state.get("noti_radar_res")
+    if achados is not None:
+        st.markdown(
+            f'<div class="ciano-label">Radar — {len(achados)} manchetes de gatilho '
+            f'(últimos {dias} dias)</div>', unsafe_allow_html=True,
+        )
+        if not achados:
+            st.info("Nenhum gatilho no noticiário nesse período.")
+        for n in achados:
+            st.markdown(f'<div class="tese-sub" style="margin:10px 0 2px">{_esc_html(n["empresa"])}</div>',
+                        unsafe_allow_html=True)
+            st.markdown(_card_noticia(n), unsafe_allow_html=True)
+
+
 def _aba_gatilhos() -> None:
     import carteira as cart
     import listas as lst
@@ -1578,11 +1715,11 @@ def main() -> None:
         )
         valores_cenarios[nome] = {"g1": g1, "g2": g2}
 
-    # --- Abas: empresa, screener, carteira, ranking, EUA, macro e gatilhos ---
+    # --- Abas: empresa, screener, carteira, ranking, EUA, macro, notícias e gatilhos ---
     (aba_empresa, aba_screener, aba_carteira, aba_ranking, aba_eua,
-     aba_macro, aba_gatilhos) = st.tabs(
+     aba_macro, aba_noticias, aba_gatilhos) = st.tabs(
         ["🔎 Empresa", "📊 Screener B3", "⭐ Carteira", "🏅 Ranking", "🇺🇸 EUA",
-         "📉 Macro", "🔔 Gatilhos"]
+         "📉 Macro", "📰 Notícias", "🔔 Gatilhos"]
     )
     with aba_empresa:
         _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
@@ -1596,6 +1733,8 @@ def main() -> None:
         _aba_eua()
     with aba_macro:
         _aba_macro()
+    with aba_noticias:
+        _aba_noticias()
     with aba_gatilhos:
         _aba_gatilhos()
 
