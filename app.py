@@ -20,6 +20,7 @@ import altair as alt
 import pandas as pd
 import streamlit as st
 
+import ibov_ciclo
 from teses import buscar_tese
 from valuation_engine import (
     CENARIOS_PADRAO,
@@ -1677,6 +1678,93 @@ def _aba_gatilhos() -> None:
     st.dataframe(exibir, use_container_width=True)
 
 
+def _fmt_pts(n: float) -> str:
+    return f"{n:,.0f}".replace(",", ".")
+
+
+def _card_ciclo(titulo: str, texto: str, cor: str) -> str:
+    return (
+        f'<div style="flex:1 1 320px;min-width:280px;background:{COR_CARD};'
+        f'border:1px solid {COR_BORDA};border-top:3px solid {cor};border-radius:10px;padding:14px;">'
+        f'<div style="font-size:0.85rem;font-weight:700;margin-bottom:6px;">{html.escape(titulo)}</div>'
+        f'<div style="font-size:0.8rem;opacity:0.9;line-height:1.5;">{html.escape(texto)}</div></div>'
+    )
+
+
+def _grafico_ciclo(d: dict) -> None:
+    serie = d["serie"]
+    dfg = pd.DataFrame(serie)
+    dfg["ordem"] = range(len(dfg))
+    ordem_por_data = {s["data"]: i for i, s in enumerate(serie)}
+    piv = [
+        {"ordem": ordem_por_data[p["data"]], "valor": p["valor"],
+         "tipo": "Topo" if p["tipo"] == "H" else "Fundo", "data": p["data"]}
+        for p in d["pivos"] if p["data"] in ordem_por_data
+    ]
+    eixo_x = alt.X("ordem:Q", title=None, axis=alt.Axis(labels=False, grid=False, ticks=False))
+    eixo_y = alt.Y("valor:Q", title=None, scale=alt.Scale(type="log", zero=False),
+                   axis=alt.Axis(grid=True, gridOpacity=0.12, labelColor=COR_LIGHT))
+    linha = alt.Chart(dfg).mark_line(color=COR_ACCENT, strokeWidth=1.6).encode(
+        x=eixo_x, y=eixo_y,
+        tooltip=[alt.Tooltip("data:N", title="Data"), alt.Tooltip("valor:Q", title="Ibov", format=",.0f")],
+    )
+    camadas = linha
+    if piv:
+        dfp = pd.DataFrame(piv)
+        pontos = alt.Chart(dfp).mark_point(size=60, filled=True).encode(
+            x="ordem:Q", y=eixo_y,
+            color=alt.Color("tipo:N",
+                            scale=alt.Scale(domain=["Topo", "Fundo"], range=["#EF4444", "#22C55E"]),
+                            legend=alt.Legend(title=None, orient="top")),
+            tooltip=[alt.Tooltip("data:N", title="Data"), alt.Tooltip("tipo:N", title="Pivô"),
+                     alt.Tooltip("valor:Q", title="Ibov", format=",.0f")],
+        )
+        camadas = linha + pontos
+    chart = camadas.properties(height=320).configure_view(strokeWidth=0).configure(background="rgba(0,0,0,0)")
+    st.altair_chart(chart, use_container_width=True)
+
+
+def _aba_ciclo() -> None:
+    st.markdown('<div class="ciano-label">Ciclo do Ibovespa</div>', unsafe_allow_html=True)
+    st.caption("Onde o mercado está no ciclo — série longa do ^BVSP (Yahoo, mensal). "
+               "Contexto macro pra ajudar no timing das teses.")
+    with st.spinner("Carregando o histórico do Ibovespa…"):
+        d = ibov_ciclo.buscar_ciclo_ibov()
+    if d.get("erro"):
+        st.warning(d["erro"])
+        return
+
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Ibovespa", _fmt_pts(d["atual"]))
+    c2.metric("Máxima histórica", _fmt_pts(d["ath"]))
+    est = d["esticamento"]
+    c3.metric("Esticamento vs média 24m", f"{est['desvio_pct']:+.0f}%", help=est["nota"])
+
+    st.markdown(
+        '<div style="display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 4px;">'
+        + _card_ciclo("🔵 Ciclo grande (anos)", d["grande"], COR_ACCENT)
+        + _card_ciclo("🟢 Ciclo pequeno (meses)", d["pequeno"], "#22C55E")
+        + "</div>",
+        unsafe_allow_html=True,
+    )
+
+    _grafico_ciclo(d)
+
+    maiores = [l for l in d["legs"] if abs(l["amp"]) >= 15]
+    if maiores:
+        st.markdown('<div class="ciano-label">Ciclos maiores (≥15%)</div>', unsafe_allow_html=True)
+        df = pd.DataFrame([
+            {" ": "⬆️" if l["tipo"] == "alta" else "⬇️",
+             "Trecho": f"{l['de']} → {l['ate']}",
+             "Preço": f"{_fmt_pts(l['p0'])} → {_fmt_pts(l['p1'])}",
+             "Amplitude": f"{l['amp']:+.0f}%"}
+            for l in maiores
+        ])
+        st.dataframe(df, hide_index=True, use_container_width=True)
+    st.caption("Leitura educacional de estrutura de mercado, não recomendação. "
+               "Pivôs = extremos numa janela de ~9 meses.")
+
+
 def main() -> None:
     st.set_page_config(page_title="Valuation Ciano", page_icon="📈", layout="wide")
     _injetar_css()
@@ -1717,9 +1805,9 @@ def main() -> None:
 
     # --- Abas: empresa, screener, carteira, ranking, EUA, macro, notícias e gatilhos ---
     (aba_empresa, aba_screener, aba_carteira, aba_ranking, aba_eua,
-     aba_macro, aba_noticias, aba_gatilhos) = st.tabs(
+     aba_macro, aba_ciclo, aba_noticias, aba_gatilhos) = st.tabs(
         ["🔎 Empresa", "📊 Screener B3", "⭐ Carteira", "🏅 Ranking", "🇺🇸 EUA",
-         "📉 Macro", "📰 Notícias", "🔔 Gatilhos"]
+         "📉 Macro", "🔄 Ciclo", "📰 Notícias", "🔔 Gatilhos"]
     )
     with aba_empresa:
         _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
@@ -1733,6 +1821,8 @@ def main() -> None:
         _aba_eua()
     with aba_macro:
         _aba_macro()
+    with aba_ciclo:
+        _aba_ciclo()
     with aba_noticias:
         _aba_noticias()
     with aba_gatilhos:
