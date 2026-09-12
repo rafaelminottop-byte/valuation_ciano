@@ -1748,6 +1748,25 @@ def _aba_ciclo() -> None:
         unsafe_allow_html=True,
     )
 
+    p = d.get("projecao")
+    if p:
+        cor_v = ("#EF4444" if "tardia" in p["veredito"]
+                 else "#F59E0B" if p["veredito"] == "Avançada" else "#22C55E")
+        st.markdown(
+            f'<div style="background:{COR_CARD};border:1px solid {COR_BORDA};'
+            f'border-left:5px solid {cor_v};border-radius:10px;padding:14px;margin:8px 0;">'
+            f'<div style="font-size:0.78rem;opacity:0.7;text-transform:uppercase;letter-spacing:1px;">'
+            f'Maturidade da alta atual</div>'
+            f'<div style="font-size:1.3rem;font-weight:700;color:{cor_v};">{html.escape(p["veredito"])}</div>'
+            f'<div style="margin-top:8px;font-size:0.82rem;line-height:1.5;">'
+            f'<b>Upside:</b> {html.escape(p["upside_txt"])}</div>'
+            f'<div style="margin-top:4px;font-size:0.82rem;line-height:1.5;">'
+            f'<b>Tempo:</b> {html.escape(p["tempo_txt"])}</div></div>',
+            unsafe_allow_html=True,
+        )
+        st.caption("Upside e tempo = estimativa estatística das altas modernas (pós-2008), "
+                   "não previsão. Índice na máxima e esticado = risco de topo maior.")
+
     _grafico_ciclo(d)
 
     maiores = [l for l in d["legs"] if abs(l["amp"]) >= 15]

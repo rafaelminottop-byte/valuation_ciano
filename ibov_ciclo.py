@@ -17,7 +17,7 @@ import pandas as pd
 import yfinance as yf
 
 CACHE_DIR = Path(__file__).resolve().parent / ".cache"
-CACHE_FILE = CACHE_DIR / "ibov_ciclo_v2.json"
+CACHE_FILE = CACHE_DIR / "ibov_ciclo_v3.json"
 # Antes do Plano Real (jul/1994) o Ibov estava em outra moeda (hiperinflação),
 # com valores minúsculos que distorcem a análise. Começamos em 1995.
 DATA_INICIAL = "1995-01-01"
@@ -63,7 +63,7 @@ def _analisar(serie: list[dict]) -> dict:
         amp = (vals[i1] - vals[i0]) / vals[i0] * 100
         legs.append({
             "de": datas[i0][:7], "ate": datas[i1][:7],
-            "p0": vals[i0], "p1": vals[i1], "amp": amp,
+            "p0": vals[i0], "p1": vals[i1], "amp": amp, "meses": i1 - i0,
             "tipo": "alta" if amp >= 0 else "baixa",
         })
 
@@ -82,6 +82,61 @@ def _analisar(serie: list[dict]) -> dict:
     janela = min(24, n)
     media_longa = sum(vals[-janela:]) / janela
     desvio = (atual - media_longa) / media_longa * 100
+
+    # --- Projeção: upside e tempo estimados, pela estatística das ALTAS passadas ---
+    # Frame: a perna de alta atual = do último FUNDO (pivô L) até agora.
+    proj = None
+    import statistics as _st
+    fundos = [(i, t) for i, t in piv if t == "L"]
+    altas_hist = [l for l in legs if l["tipo"] == "alta"]
+    if fundos and len(altas_hist) >= 3:
+        i_fundo = fundos[-1][0]
+        preco_fundo = vals[i_fundo]
+        amp_atual = (atual - preco_fundo) / preco_fundo * 100
+        meses_atual = (n - 1) - i_fundo
+        # histórico: altas MODERNAS (pós-2008; as dos anos 90/2000 tinham inflação
+        # residual e amplitudes de +300/+700% que não se repetem) anteriores à atual
+        hist = [l for l in altas_hist if "2008-01" <= l["de"] < datas[i_fundo][:7]]
+        amps = sorted(l["amp"] for l in hist)
+        durs = sorted(l["meses"] for l in hist)
+        if amps and durs:
+            amp_med, amp_max = _st.median(amps), max(amps)
+            dur_med, dur_max = _st.median(durs), max(durs)
+            alvo_med = preco_fundo * (1 + amp_med / 100)
+            alvo_max = preco_fundo * (1 + amp_max / 100)
+            up_med = (alvo_med / atual - 1) * 100
+            up_max = (alvo_max / atual - 1) * 100
+            madura = amp_atual >= amp_med or meses_atual >= dur_med
+            if up_med <= 2:
+                upside_txt = (f"Limitado. A alta (+{amp_atual:.0f}%) já superou a amplitude típica das "
+                              f"altas modernas (+{amp_med:.0f}%). Upside adicional só num ciclo forte "
+                              f"(~+{up_max:.0f}%, alvo ~{_fmt(alvo_max)}).")
+            else:
+                upside_txt = (f"~+{up_med:.0f}% até a amplitude típica (alvo ~{_fmt(alvo_med)}); "
+                              f"num ciclo forte, até +{up_max:.0f}% (~{_fmt(alvo_max)}).")
+            if meses_atual >= dur_max:
+                tempo_txt = (f"{meses_atual} meses — já é a alta mais LONGA da era moderna "
+                             f"(máx anterior {dur_max:.0f}m). Madura/tardia.")
+            elif meses_atual >= dur_med:
+                tempo_txt = (f"{meses_atual} meses — acima da duração típica ({dur_med:.0f}m); restam "
+                             f"~{dur_max - meses_atual:.0f}m até o ciclo mais longo já visto ({dur_max:.0f}m).")
+            else:
+                tempo_txt = f"{meses_atual} meses — restam ~{dur_med - meses_atual:.0f}m até a duração típica ({dur_med:.0f}m)."
+            veredito = ("Madura / tardia" if meses_atual >= dur_max
+                        else "Avançada" if (amp_atual >= amp_med or meses_atual >= dur_med)
+                        else "Jovem")
+            proj = {
+                "veredito": veredito, "upside_txt": upside_txt, "tempo_txt": tempo_txt,
+                "desde": datas[i_fundo][:7], "fundo": preco_fundo,
+                "amp_atual": amp_atual, "meses_atual": meses_atual,
+                "amp_hist_med": amp_med, "amp_hist_max": amp_max,
+                "dur_hist_med": dur_med, "dur_hist_max": dur_max,
+                "alvo_med": alvo_med, "alvo_max": alvo_max,
+                "upside_med": up_med, "upside_max": up_max,
+                "restante_meses_med": dur_med - meses_atual,
+                "restante_meses_max": dur_max - meses_atual,
+                "madura": madura,
+            }
 
     # narrativas
     na_maxima = atual >= ath * 0.99
@@ -113,6 +168,7 @@ def _analisar(serie: list[dict]) -> dict:
         "grande": grande,
         "pequeno": pequeno,
         "esticamento": {"media": media_longa, "desvio_pct": desvio, "nota": est_nota},
+        "projecao": proj,
         "erro": None,
     }
 
@@ -158,6 +214,16 @@ if __name__ == "__main__":
         print("GRANDE:", d["grande"])
         print("PEQUENO:", d["pequeno"])
         print("esticamento:", f"{d['esticamento']['desvio_pct']:+.0f}%", d["esticamento"]["nota"])
+        p = d.get("projecao")
+        if p:
+            print(f"PROJEÇÃO: alta atual +{p['amp_atual']:.0f}% em {p['meses_atual']}m "
+                  f"(desde {p['desde']}, fundo {_fmt(p['fundo'])})")
+            print(f"  altas históricas: mediana +{p['amp_hist_med']:.0f}%/{p['dur_hist_med']:.0f}m, "
+                  f"máx +{p['amp_hist_max']:.0f}%/{p['dur_hist_max']:.0f}m")
+            print(f"  UPSIDE até alvo mediano: {p['upside_med']:+.0f}% (~{_fmt(p['alvo_med'])}) | "
+                  f"até alvo máx: {p['upside_max']:+.0f}% (~{_fmt(p['alvo_max'])})")
+            print(f"  TEMPO restante estimado: {p['restante_meses_med']:.0f}m (mediana) a "
+                  f"{p['restante_meses_max']:.0f}m (máx) | madura={p['madura']}")
         print("pernas:", len(d["legs"]), "| pivôs:", len(d["pivos"]))
         for l in d["legs"][-6:]:
             print(f"  {'ALTA ' if l['tipo']=='alta' else 'BAIXA'} {l['de']}->{l['ate']} {l['amp']:+.0f}%")
