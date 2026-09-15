@@ -1,0 +1,127 @@
+{
+  "_meta": {
+    "titulo": "Case base do ciclo da bolsa brasileira (1994 -> hoje)",
+    "objetivo": "Banco de episodios rotulados: em cada regime, o estado das 4 alavancas (lucro, multiplo, juro, fluxo) + contexto politico/fiscal, e o que o Ibov fez DEPOIS. Serve para decidir por ANALOGIA ('a que momento o hoje se parece?'), nao por previsao.",
+    "escala_alavanca": "verde = a favor da alta | amarelo = neutro | vermelho = contra | n/d = ainda nao preenchido (nao inventar)",
+    "campos": {
+      "selic_direcao": "subindo | caindo | estavel — direcao dominante no periodo",
+      "juro_real": "Selic - IPCA (ex-post). PREENCHER via BCB SGS (ja temos em macro.py); null onde ainda nao puxado",
+      "pl_ibov": "P/L do indice no periodo — FONTE PENDENTE (nao inventar)",
+      "fluxo_estrangeiro": "saldo do estrangeiro na B3 — FONTE PENDENTE",
+      "ibov_desfecho": "o que o indice fez na perna seguinte (dos pivos da serie ^BVSP, ja calculados em ibov_ciclo.py)"
+    },
+    "como_usar_para_decidir": "1) medir as 4 alavancas de HOJE; 2) achar o episodio historico com estado de alavancas mais parecido; 3) olhar o desfecho medio daquele estado. A licao de cada episodio isola qual alavanca decidiu.",
+    "status": "SEMENTE — regime politico, direcao da Selic e desfecho do Ibov preenchidos com seguranca; juro_real/pl/fluxo a completar com dado real."
+  },
+  "vetores_em_observacao_2026": {
+    "nota": "Fatores vivos que moldam o desfecho da alavanca-mae (juro) e o episodio '2022-hoje'. Registrar SEMPRE os dois lados, para nao virar viesado.",
+    "dispersao_small_vs_large": {
+      "dado": "P/L mediana grandes ~11.7x (Ibov, no justo) vs small/mid ~8.2x (fundamentus, set/2026) — small ~30% mais baratas",
+      "mecanismo": "Estrangeiro entra pelos nomes liquidos primeiro; small cap so sobe quando o dinheiro LOCAL roda pra dentro, o que exige Selic caindo.",
+      "analogo": "2016-19: indice small cap (SMLL) superou MUITO o Ibov na queda de juro. Small = beta da ignicao.",
+      "leitura": "O 'barato' que resta esta nas small caps, nao no indice. E o pure-play na tese 'juro cair', com mais risco/retorno."
+    },
+    "ia_disrupcao": {
+      "tipo": "Choque EXOGENO global (como 2008/Covid no case base), dois gumes",
+      "lado_ruim": "Correcao das mega-techs caras nos EUA -> risk-off global -> dolar sobe -> estrangeiro VENDE nomes liquidos de emergentes (Brasil junto). Contagio vem ANTES.",
+      "lado_bom": "Se virar rotacao 'US tech caro -> value/emergente barato' E a Selic cair aqui, Brasil vira destino (barato + juro caindo + commodities). Dinheiro jorra pra ca.",
+      "condicao": "Os dois lados dependem da MESMA alavanca (juro domestico). Sem Selic caindo, Brasil so apanha do risk-off e nao colhe a rotacao."
+    },
+    "eleicao_fiscal_2026": {
+      "dado": "Eleicao out/2026. Regime fiscal do proximo governo decide se a Selic cede (vira 2016-19) ou trava (vira 2011-15).",
+      "leitura": "E o fiel da balanca da alavanca-mae. Nao e 'risco lateral' — e a variavel dominante da tese."
+    }
+  },
+  "episodios": [
+    {
+      "id": "1994-1998",
+      "periodo": "jul/1994 - 1998",
+      "governo": "FHC 1",
+      "regime": "Plano Real, ancora cambial (cambio semi-fixo), juros altissimos p/ defender o real; choques externos (Mexico 94, Asia 97, Russia 98)",
+      "alavancas": {"lucro": "n/d", "multiplo": "n/d", "juro": "vermelho", "fluxo": "amarelo"},
+      "selic_direcao": "estavel-alto", "juro_real": null, "pl_ibov": null, "fluxo_estrangeiro": null,
+      "ibov_desfecho": "Alta forte 1995->1997 (+332%) seguida de queda -50% ate ago/1998 nas crises externas",
+      "licao": "Cambio fixo + juro altissimo: bolsa refem de crise externa. Ganho engolido pela vulnerabilidade."
+    },
+    {
+      "id": "1999-2002",
+      "periodo": "1999 - 2002",
+      "governo": "FHC 2",
+      "regime": "Fim da ancora, cambio flutuante, nasce o TRIPE (cambio flutuante + metas de inflacao + superavit primario); crise energetica 2001; medo da eleicao Lula em 2002",
+      "alavancas": {"lucro": "n/d", "multiplo": "n/d", "juro": "vermelho", "fluxo": "vermelho"},
+      "selic_direcao": "subindo", "juro_real": null, "pl_ibov": null, "fluxo_estrangeiro": null,
+      "ibov_desfecho": "Queda ate o fundo de set/2002 (medo do Lula, risco-pais explode). Fundo historico do ciclo.",
+      "licao": "Incerteza politica + juro subindo = fundo de mercado. O medo do regime que vem foi o gatilho de baixa."
+    },
+    {
+      "id": "2003-2008",
+      "periodo": "2003 - mai/2008",
+      "governo": "Lula 1 e 2",
+      "regime": "Choque de credibilidade (carta ao povo), tripe mantido, SUPERCICLO DE COMMODITIES, Selic caindo, grau de investimento em 2008",
+      "alavancas": {"lucro": "verde", "multiplo": "verde", "juro": "verde", "fluxo": "verde"},
+      "selic_direcao": "caindo", "juro_real": null, "pl_ibov": null, "fluxo_estrangeiro": null,
+      "ibov_desfecho": "Bull secular +742% (8.623 -> 72.593). A maior alta da era moderna.",
+      "licao": "As 4 alavancas alinhadas ao mesmo tempo = alta secular. Lula de esquerda NAO impediu — o que importou foi o tripe + commodity + juro caindo."
+    },
+    {
+      "id": "2008-2010",
+      "periodo": "mai/2008 - out/2010",
+      "governo": "Lula 2",
+      "regime": "Crise financeira global (Lehman) -> crash; depois estimulo fiscal/monetario global e recuperacao em V",
+      "alavancas": {"lucro": "amarelo", "multiplo": "verde", "juro": "verde", "fluxo": "verde"},
+      "selic_direcao": "caindo", "juro_real": null, "pl_ibov": null, "fluxo_estrangeiro": null,
+      "ibov_desfecho": "Crash -50% em 6m, depois +93% ate out/2010",
+      "licao": "Choque exogeno global derruba tudo, mas com juro caindo e liquidez a recuperacao e rapida. Barato + estimulo = V."
+    },
+    {
+      "id": "2011-2015",
+      "periodo": "2011 - 2015",
+      "governo": "Dilma 1 e inicio 2",
+      "regime": "'Nova matriz economica': intervencionismo, juro manipulado p/ baixo e depois subindo, tabelamento (energia/Petrobras), deterioracao fiscal, margens/lucros caem",
+      "alavancas": {"lucro": "vermelho", "multiplo": "vermelho", "juro": "vermelho", "fluxo": "vermelho"},
+      "selic_direcao": "subindo", "juro_real": null, "pl_ibov": null, "fluxo_estrangeiro": null,
+      "ibov_desfecho": "Bear/lateral longo: topos decrescentes 2010/2012/2014, fundo em jan/2016 (~40k). ~5 anos perdidos.",
+      "licao": "AQUI esta o contraexemplo-chave: mesmo 'barato', a bolsa afundou porque o REGIME estragou lucro, multiplo, juro e fluxo juntos. Barato nao basta — foi o oposto de 2003-08."
+    },
+    {
+      "id": "2016-2019",
+      "periodo": "2016 - dez/2019",
+      "governo": "Temer / inicio Bolsonaro",
+      "regime": "Virada liberal: teto de gastos, reforma trabalhista e da Previdencia, Selic despenca de 14,25% p/ 4,5%, retomada de credibilidade fiscal",
+      "alavancas": {"lucro": "amarelo", "multiplo": "verde", "juro": "verde", "fluxo": "verde"},
+      "selic_direcao": "caindo", "juro_real": null, "pl_ibov": null, "fluxo_estrangeiro": null,
+      "ibov_desfecho": "Bull +186% (40.406 -> 115.645). O melhor analogo de 'reprecificacao por queda de juro'.",
+      "licao": "A IGNICAO e o juro caindo + fiscal melhorando. Lucro nem estava forte — o motor foi multiplo expandindo com Selic despencando. Este e o episodio a comparar com a tese de hoje."
+    },
+    {
+      "id": "2020",
+      "periodo": "2020",
+      "governo": "Bolsonaro",
+      "regime": "Covid: crash e depois recuperacao com Selic em minima historica (2%)",
+      "alavancas": {"lucro": "vermelho", "multiplo": "verde", "juro": "verde", "fluxo": "amarelo"},
+      "selic_direcao": "caindo", "juro_real": null, "pl_ibov": null, "fluxo_estrangeiro": null,
+      "ibov_desfecho": "Crash -37% em 3m, recuperacao +74% ate jun/2021",
+      "licao": "Juro a 2% reinfla tudo mesmo com lucro no chao. Reforca: o juro manda no multiplo."
+    },
+    {
+      "id": "2021-2022",
+      "periodo": "2021 - meados 2022",
+      "governo": "Bolsonaro",
+      "regime": "Inflacao pos-Covid, Selic sobe de 2% p/ 13,75%, ruido fiscal e eleitoral",
+      "alavancas": {"lucro": "verde", "multiplo": "vermelho", "juro": "vermelho", "fluxo": "amarelo"},
+      "selic_direcao": "subindo", "juro_real": null, "pl_ibov": null, "fluxo_estrangeiro": null,
+      "ibov_desfecho": "Topo em jun/2021, lateral/baixa -22% ate jun/2022",
+      "licao": "Lucro forte NAO segurou a bolsa quando o juro disparou e comprimiu o multiplo. O analogo direto do 'Vies 2' (EBIT forte nao basta)."
+    },
+    {
+      "id": "2022-hoje",
+      "periodo": "jun/2022 - hoje (set/2026)",
+      "governo": "Lula 3",
+      "regime": "Fiscal frouxo (arcabouco fragil, deficit), Selic de volta a ~15%, MAS lucro/EBIT forte, bolsa barata e investidor local sub-alocado; estrangeiro voltando",
+      "alavancas": {"lucro": "verde", "multiplo": "amarelo", "juro": "vermelho", "fluxo": "amarelo"},
+      "selic_direcao": "subindo-alto", "juro_real": null, "pl_ibov": "10.9x (fundamentus ponderado por liquidez, set/2026; validado vs Oceans14)", "earnings_yield": "9.2%", "fluxo_estrangeiro": null,
+      "ibov_desfecho": "Alta +92% ate topo fev/2026 (188.787); hoje 185.500. Alta MADURA (44m, 2x a duracao tipica).",
+      "licao": "O momento a decidir. Alavancas divididas: lucro e valuation a favor, juro contra, fluxo no meio. A pergunta e se o juro cede (vira 2016-19) ou trava (vira 2011-15). O regime fiscal do proximo governo e o fiel da balanca."
+    }
+  ]
+}

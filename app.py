@@ -12,6 +12,7 @@ cenários, e ver o valuation por ação com o veredito automático.
 
 import base64
 import html
+import json
 import re
 from datetime import date
 from pathlib import Path
@@ -1266,14 +1267,16 @@ def _aba_macro() -> None:
 
     st.markdown('<div class="ciano-label">🇧🇷 Brasil — Macro</div>', unsafe_allow_html=True)
     b = dados.get("brasil", {})
-    d1, d2, d3 = st.columns(3)
+    d1, d2, d3, d4 = st.columns(4)
     _indicador_macro(d1, "Selic meta", b.get("selic"), lambda v: f"{v:.2f}%", sufixo="%",
                      ajuda="Taxa básica de juros (meta, a.a.).")
     _indicador_macro(d2, "IPCA (12 meses)", b.get("ipca12m"), lambda v: f"{v:.2f}%", sufixo="%",
                      ajuda="Inflação acumulada em 12 meses.")
-    _indicador_macro(d3, "Dívida Bruta / PIB", b.get("divida_pib"), lambda v: f"{v:.1f}%", sufixo="%",
+    _indicador_macro(d3, "CDI (12 meses)", b.get("cdi12m"), lambda v: f"{v:.2f}%", sufixo="%",
+                     ajuda="CDI acumulado nos últimos 252 pregões, composto a partir da taxa diária anualizada (SGS 4389).")
+    _indicador_macro(d4, "Dívida Bruta / PIB", b.get("divida_pib"), lambda v: f"{v:.1f}%", sufixo="%",
                      ajuda="Dívida bruta do governo geral sobre o PIB.")
-    e1, e2, e3 = st.columns(3)
+    e1, e2, e3, e4 = st.columns(4)
     _indicador_macro(e1, "Juro real ex-ante", b.get("juro_real_ex_ante"), lambda v: f"{v:.1f}%",
                      sufixo="%",
                      ajuda="((1+Selic Focus)/(1+IPCA Focus) − 1). Juro real alto pressiona a economia e o valuation.")
@@ -1281,6 +1284,8 @@ def _aba_macro() -> None:
                      ajuda="Mediana das expectativas de inflação (Focus/BC). A trajetória mostra se estão ancorando.")
     _indicador_macro(e3, "Focus — Selic", b.get("focus_selic"), lambda v: f"{v:.2f}%", sufixo="%",
                      ajuda="Mediana das expectativas para a Selic (Focus/BC).")
+    _indicador_macro(e4, "Focus — PIB", b.get("focus_pib"), lambda v: f"{v:.2f}%", sufixo="%",
+                     ajuda="Mediana das expectativas de crescimento do PIB (Focus/BC).")
 
     ref = (b.get("focus_ipca") or {}).get("ref")
     if ref:
@@ -1288,6 +1293,37 @@ def _aba_macro() -> None:
             f"Focus com ano de referência {ref}. Fontes: Yahoo Finance, "
             "BLS (EUA) e Banco Central do Brasil (SGS/Olinda)."
         )
+
+    st.markdown('<div class="ciano-label">📊 Valuation do mercado (earnings yield × NTN-B)</div>',
+                unsafe_allow_html=True)
+    st.caption(
+        "P/L agregado do mercado (Fundamentus, ponderado por liquidez — outliers de lucro "
+        "quase zero são descartados; validado contra o P/L Ibovespa do Oceans14). "
+        "Earnings yield = 1/P/L. Spread contra a NTN-B de 10 anos (Tesouro Transparente) "
+        "é o prêmio de risco de equity: quanto mais comprimido, menos a bolsa compensa o "
+        "risco extra frente à renda fixa real — mas cruze sempre com a trajetória de lucro "
+        "(bloco abaixo): spread baixo + lucro expandindo é sinal diferente de spread baixo "
+        "+ lucro contraindo."
+    )
+    pl_m = b.get("pl_mercado", {})
+    ntnb = b.get("ntnb_10a", {})
+    spread = b.get("spread_ey_ntnb", {})
+    f1, f2, f3, f4 = st.columns(4)
+    _indicador_macro(f1, "P/L mercado (pond. liquidez)", pl_m, lambda v: f"{v:.2f}x",
+                     ajuda=f"{pl_m.get('n_papeis', '—')} papéis líquidos com P/L positivo e "
+                           "não-outlier (P/L < 30x) usados na ponderação.")
+    _indicador_macro(f2, "Earnings yield", {"valor": pl_m.get("earnings_yield")}, lambda v: f"{v:.2f}%",
+                     sufixo="%", ajuda="1 / P/L do mercado.")
+    _indicador_macro(f3, "NTN-B 10 anos", ntnb, lambda v: f"{v:.2f}%", sufixo="%",
+                     ajuda=f"Vencimento usado: {ntnb.get('vencimento', '—')}. "
+                           f"Data-base: {ntnb.get('data', '—')}.")
+    _indicador_macro(f4, "Spread (p.p.)", spread, lambda v: f"{v:+.2f}",
+                     ajuda="Earnings yield − NTN-B 10a. Positivo = bolsa paga prêmio sobre a "
+                           "renda fixa real; negativo = bolsa cara frente à NTN-B.")
+    if pl_m.get("erro"):
+        st.warning(f"P/L do mercado indisponível: {pl_m['erro']}")
+    if ntnb.get("erro"):
+        st.warning(f"NTN-B indisponível: {ntnb['erro']}")
 
     _bloco_expectativa_lucro()
 
@@ -1772,16 +1808,187 @@ def _aba_ciclo() -> None:
     maiores = [l for l in d["legs"] if abs(l["amp"]) >= 15]
     if maiores:
         st.markdown('<div class="ciano-label">Ciclos maiores (≥15%)</div>', unsafe_allow_html=True)
-        df = pd.DataFrame([
+        linhas = [
             {" ": "⬆️" if l["tipo"] == "alta" else "⬇️",
              "Trecho": f"{l['de']} → {l['ate']}",
+             "Duração": f"{l['meses']} m",
              "Preço": f"{_fmt_pts(l['p0'])} → {_fmt_pts(l['p1'])}",
              "Amplitude": f"{l['amp']:+.0f}%"}
             for l in maiores
-        ])
-        st.dataframe(df, hide_index=True, use_container_width=True)
+        ]
+        # última(s) linha(s): projeção para fins de 2027 e 2028 pelo ritmo histórico
+        proj = d.get("projecao") or {}
+        for a in proj.get("anos", []):
+            linhas.append({
+                " ": "🔮",
+                "Trecho": f"Proj. dez/{a['ano']} (base → forte)",
+                "Duração": f"+{a['meses_frente']} m",
+                "Preço": f"{_fmt_pts(a['base'])} → {_fmt_pts(a['forte'])}",
+                "Amplitude": f"{a['up_base']:+.0f}% → {a['up_forte']:+.0f}%",
+            })
+        st.dataframe(pd.DataFrame(linhas), hide_index=True, use_container_width=True)
+        if proj.get("anos"):
+            st.caption(
+                f"🔮 Projeção estatística (não previsão): compõe o Ibov atual pelo crescimento "
+                f"anualizado das altas modernas — base ~{proj['g_anual_base']:.0f}%/ano "
+                f"(mediana), forte ~{proj['g_anual_forte']:.0f}%/ano (máx). "
+                "Ignora recessões/choques; quanto mais longe, mais frágil."
+            )
     st.caption("Leitura educacional de estrutura de mercado, não recomendação. "
                "Pivôs = extremos numa janela de ~9 meses.")
+
+
+DATA_CICLOS = Path(__file__).resolve().parent / "data" / "ciclos_historicos.json"
+_COR_ALAVANCA = {"verde": "#22C55E", "amarelo": "#EAB308", "vermelho": "#EF4444"}
+_EMOJI_ALAVANCA = {"verde": "🟢", "amarelo": "🟡", "vermelho": "🔴"}
+
+
+def _cor_alavanca(chave: str) -> str:
+    return _COR_ALAVANCA.get((chave or "").split("-")[0], "#64748B")
+
+
+def _emoji_alavanca(chave: str) -> str:
+    return _EMOJI_ALAVANCA.get((chave or "").split("-")[0], "⚪")
+
+
+@st.cache_data(ttl=6 * 3600, show_spinner=False)
+def _cenarios_dados_vivos() -> dict:
+    """Puxa os números de HOJE das 4 alavancas: P/L, dispersão small×large, juro."""
+    out = {"pl": None, "ey": None, "pl_grande": None, "pl_small": None,
+           "selic": None, "juro_real": None}
+    try:
+        import fundamentus_scraper as fs
+        df = fs.baixar_tabela_fundamentus()
+        r = fs.pl_agregado_ponderado(df)
+        out["pl"], out["ey"] = r.get("valor"), r.get("earnings_yield")
+        pl = pd.to_numeric(df["p_l"], errors="coerce")
+        liq = pd.to_numeric(df["liquidez"], errors="coerce")
+        val = (pl > 0) & (pl < 30) & (liq > 0)
+        d = pd.DataFrame({"pl": pl[val], "liq": liq[val],
+                          "ticker": df["ticker"][val]}).sort_values("liq", ascending=False)
+        grandes = d.head(40)
+        smalls = d[(d["liq"] > 50000) & (~d["ticker"].isin(grandes["ticker"]))]
+        out["pl_grande"] = float(grandes["pl"].median())
+        if len(smalls):
+            out["pl_small"] = float(smalls["pl"].median())
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        import macro as mac
+        b = mac.buscar_macro().get("brasil", {})
+
+        def _val(x):
+            return x.get("valor") if isinstance(x, dict) else x
+        out["selic"], out["juro_real"] = _val(b.get("selic")), _val(b.get("juro_real_ex_ante"))
+    except Exception:  # noqa: BLE001
+        pass
+    return out
+
+
+def _card_alavanca(nome: str, cor_chave: str, valor: str, desc: str) -> str:
+    cor = _cor_alavanca(cor_chave)
+    return (
+        f'<div style="flex:1 1 210px;min-width:190px;background:{COR_CARD};'
+        f'border:1px solid {COR_BORDA};border-left:4px solid {cor};border-radius:10px;padding:12px 14px;">'
+        f'<div style="font-size:0.7rem;letter-spacing:.05em;text-transform:uppercase;opacity:.65;">{html.escape(nome)}</div>'
+        f'<div style="font-size:1.15rem;font-weight:800;color:{cor};margin:2px 0 4px;">{html.escape(valor)}</div>'
+        f'<div style="font-size:0.72rem;opacity:0.85;line-height:1.4;">{html.escape(desc)}</div></div>'
+    )
+
+
+def _aba_cenarios() -> None:
+    st.markdown('<div class="ciano-label">Cenários — onde estamos no ciclo</div>', unsafe_allow_html=True)
+    st.caption("As 4 alavancas que movem a bolsa (lucro, múltiplo, juro, fluxo), o estado de hoje "
+               "e o case base histórico desde 1994. Decidir por analogia, não por previsão.")
+    try:
+        base = json.loads(DATA_CICLOS.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        st.error("Não consegui ler data/ciclos_historicos.json.")
+        return
+
+    viv = _cenarios_dados_vivos()
+    hoje = next((e for e in base.get("episodios", []) if e["id"] == "2022-hoje"), {})
+    alav = hoje.get("alavancas", {})
+
+    # --- as 4 alavancas hoje ---
+    st.markdown('<div class="ciano-label" style="margin-top:6px;">🎛️ As 4 alavancas hoje</div>',
+                unsafe_allow_html=True)
+    pl_txt = f"P/L {viv['pl']:.1f}x" if viv.get("pl") else "P/L —"
+    ey_txt = f" · EY {viv['ey']:.1f}%" if viv.get("ey") else ""
+    if viv.get("pl_small") and viv.get("pl_grande"):
+        mult_desc = (f"Grandes ~{viv['pl_grande']:.1f}x (no justo) vs small ~{viv['pl_small']:.1f}x "
+                     "(baratas). O 'barato' está nas small caps.")
+    else:
+        mult_desc = "P/L do mercado ponderado por liquidez (Fundamentus)."
+    juro_txt = f"Selic {viv['selic']:.1f}%" if viv.get("selic") else "Selic —"
+    juro_desc = (f"Juro real ~{viv['juro_real']:.1f}%. " if viv.get("juro_real") else "") + \
+        "A alavanca-mãe: sem ela ceder, as outras não ignitam."
+    cards = (
+        _card_alavanca("Lucro / EBIT", alav.get("lucro", ""), "Forte", "Combustível real da alta; verificável nos balanços.")
+        + _card_alavanca("Múltiplo", alav.get("multiplo", ""), pl_txt + ey_txt.strip(), mult_desc)
+        + _card_alavanca("Juro", alav.get("juro", ""), juro_txt, juro_desc)
+        + _card_alavanca("Fluxo / alocação", alav.get("fluxo", ""), "Sub-alocado", "Local pouco em bolsa; energia potencial que espera o juro cair.")
+    )
+    st.markdown(f'<div style="display:flex;flex-wrap:wrap;gap:12px;">{cards}</div>', unsafe_allow_html=True)
+
+    # --- os dois cenários condicionais ---
+    st.markdown('<div class="ciano-label" style="margin-top:16px;">🔀 Os dois caminhos (o juro decide)</div>',
+                unsafe_allow_html=True)
+    dois = (
+        _card_ciclo(
+            "🟢 Se a Selic ceder → análogo 2016-19",
+            "Múltiplo expande + local roda pra bolsa + small caps lideram. Você tem uma alavanca A MAIS que 2016 "
+            "(o lucro já forte), então seria um 2016-19 turbinado. Foi quando o Ibov fez +186%.",
+            "#22C55E")
+        + _card_ciclo(
+            "🔴 Se travar em ~14% → análogo 2011-15",
+            "CDI paga demais, o local não sai da renda fixa, o múltiplo não expande. Nem lucro forte nem bolsa "
+            "'vazia' seguram — foi a 'década perdida' 2011-2016. Barato pode ficar barato por anos.",
+            "#EF4444")
+    )
+    st.markdown(f'<div style="display:flex;flex-wrap:wrap;gap:12px;">{dois}</div>', unsafe_allow_html=True)
+    st.caption("Fiel da balança = regime fiscal do próximo governo (eleição out/2026). Não é 'risco lateral' — "
+               "é a variável dominante da tese.")
+
+    # --- case base histórico ---
+    st.markdown('<div class="ciano-label" style="margin-top:16px;">📚 Case base — ciclos desde 1994</div>',
+                unsafe_allow_html=True)
+    dfh = pd.DataFrame([
+        {"Período": e["periodo"], "Governo": e["governo"],
+         "Lucro": _emoji_alavanca(e["alavancas"].get("lucro", "")),
+         "Múlt.": _emoji_alavanca(e["alavancas"].get("multiplo", "")),
+         "Juro": _emoji_alavanca(e["alavancas"].get("juro", "")),
+         "Fluxo": _emoji_alavanca(e["alavancas"].get("fluxo", "")),
+         "O que o Ibov fez depois": e.get("ibov_desfecho", "")}
+        for e in base.get("episodios", [])
+    ])
+    st.dataframe(dfh, hide_index=True, use_container_width=True)
+    st.caption("🟢 a favor · 🟡 neutro · 🔴 contra. Padrão histórico: **nenhum bull secular com juro subindo** — "
+               "a ignição foi sempre a Selic cedendo.")
+
+    with st.expander("💡 Lições de cada episódio (o que decidiu)"):
+        for e in base.get("episodios", []):
+            st.markdown(f"**{e['periodo']} — {e['governo']}**  \n{e.get('licao', '')}")
+
+    # --- vetores vivos ---
+    vet = base.get("vetores_em_observacao_2026", {})
+    if vet:
+        st.markdown('<div class="ciano-label" style="margin-top:10px;">🛰️ Vetores em observação (2026)</div>',
+                    unsafe_allow_html=True)
+        for chave, titulo in [("dispersao_small_vs_large", "Small caps ainda baratas"),
+                              ("ia_disrupcao", "IA — choque exógeno de dois gumes"),
+                              ("eleicao_fiscal_2026", "Eleição / fiscal 2026")]:
+            v = vet.get(chave)
+            if not v:
+                continue
+            with st.expander(f"🔹 {titulo}"):
+                for k, val in v.items():
+                    if k == "nota":
+                        continue
+                    st.markdown(f"- **{k.replace('_', ' ').capitalize()}:** {val}")
+
+    st.caption("Leitura estruturada de tese, não recomendação de investimento. Dados de hoje: Fundamentus "
+               "(P/L) e Banco Central (juro); histórico preenchido aos poucos.")
 
 
 def main() -> None:
@@ -1824,9 +2031,9 @@ def main() -> None:
 
     # --- Abas: empresa, screener, carteira, ranking, EUA, macro, notícias e gatilhos ---
     (aba_empresa, aba_screener, aba_carteira, aba_ranking, aba_eua,
-     aba_macro, aba_ciclo, aba_noticias, aba_gatilhos) = st.tabs(
+     aba_macro, aba_ciclo, aba_cenarios, aba_noticias, aba_gatilhos) = st.tabs(
         ["🔎 Empresa", "📊 Screener B3", "⭐ Carteira", "🏅 Ranking", "🇺🇸 EUA",
-         "📉 Macro", "🔄 Ciclo", "📰 Notícias", "🔔 Gatilhos"]
+         "📉 Macro", "🔄 Ciclo", "🔀 Cenários", "📰 Notícias", "🔔 Gatilhos"]
     )
     with aba_empresa:
         _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
@@ -1842,6 +2049,8 @@ def main() -> None:
         _aba_macro()
     with aba_ciclo:
         _aba_ciclo()
+    with aba_cenarios:
+        _aba_cenarios()
     with aba_noticias:
         _aba_noticias()
     with aba_gatilhos:

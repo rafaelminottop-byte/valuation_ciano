@@ -17,7 +17,7 @@ import pandas as pd
 import yfinance as yf
 
 CACHE_DIR = Path(__file__).resolve().parent / ".cache"
-CACHE_FILE = CACHE_DIR / "ibov_ciclo_v3.json"
+CACHE_FILE = CACHE_DIR / "ibov_ciclo_v4.json"
 # Antes do Plano Real (jul/1994) o Ibov estava em outra moeda (hiperinflação),
 # com valores minúsculos que distorcem a análise. Começamos em 1995.
 DATA_INICIAL = "1995-01-01"
@@ -102,6 +102,29 @@ def _analisar(serie: list[dict]) -> dict:
         if amps and durs:
             amp_med, amp_max = _st.median(amps), max(amps)
             dur_med, dur_max = _st.median(durs), max(durs)
+            # retornos de 12 meses da PRÓPRIA série moderna (pós-2008) -> ritmo realista.
+            # (annualizar pernas curtas de alta dá taxas absurdas; o retorno anual do
+            #  índice é a base honesta para projetar fins de ano.)
+            from datetime import date as _date
+            base_i = next((k for k, s in enumerate(serie) if s["data"] >= "2008-01-01"), 0)
+            ret12 = [(vals[k] / vals[k - 12] - 1) * 100 for k in range(max(12, base_i), n)]
+            g_base = _st.median(ret12) if ret12 else 0.0            # ano típico
+            g_forte = (_st.quantiles(ret12, n=4)[2] if len(ret12) >= 4 else max(ret12)) \
+                if ret12 else 0.0                                    # ano forte (~p75)
+            ultima = _date.fromisoformat(datas[-1])
+            anos_proj = []
+            for ano in (2027, 2028):
+                alvo_dez = _date(ano, 12, 1)
+                meses_frente = (alvo_dez.year - ultima.year) * 12 + (alvo_dez.month - ultima.month)
+                if meses_frente <= 0:
+                    continue
+                base = atual * (1 + g_base / 100) ** (meses_frente / 12)
+                forte = atual * (1 + g_forte / 100) ** (meses_frente / 12)
+                anos_proj.append({
+                    "ano": ano, "meses_frente": meses_frente,
+                    "base": base, "forte": forte,
+                    "up_base": (base / atual - 1) * 100, "up_forte": (forte / atual - 1) * 100,
+                })
             alvo_med = preco_fundo * (1 + amp_med / 100)
             alvo_max = preco_fundo * (1 + amp_max / 100)
             up_med = (alvo_med / atual - 1) * 100
@@ -136,6 +159,8 @@ def _analisar(serie: list[dict]) -> dict:
                 "restante_meses_med": dur_med - meses_atual,
                 "restante_meses_max": dur_max - meses_atual,
                 "madura": madura,
+                "g_anual_base": g_base, "g_anual_forte": g_forte,
+                "anos": anos_proj,
             }
 
     # narrativas
