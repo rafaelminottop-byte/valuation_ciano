@@ -23,7 +23,15 @@
       "ciclo pecuário brasileiro em inversão encarecendo o gado, pressionando margens na operação doméstica",
       "risco de execução na integração das 13 plantas da Marfrig (46 unidades industriais é operação de altíssima complexidade)",
       "conversão de EBITDA em caixa ainda limitada pelas despesas financeiras elevadas"
-    ]
+    ],
+    "gatilhos": [
+      "Desalavancagem pós-aquisição da Marfrig (alavancagem caiu de 3,7x para 2,6x em 2025)",
+      "redução da oferta de carne nos EUA abrindo espaço para exportações sul-americanas",
+      "queda no ciclo do gado brasileiro barateando a matéria-prima",
+      "China retomando importações sem salvaguardas",
+      "ganhos de margem com escala das novas plantas"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "JSLG3": {
     "ticker": "JSLG3",
@@ -49,7 +57,15 @@
       "exposição ao custo de combustível e manutenção que comprime margens em períodos de alta do diesel",
       "competição crescente de transportadoras regionais e locadoras de caminhões",
       "integração de múltiplas aquisições traz risco de cultura e sistemas"
-    ]
+    ],
+    "gatilhos": [
+      "Redução da Selic favorecendo refinanciamento da dívida",
+      "novas aquisições no setor fragmentado",
+      "expansão da plataforma asset-light via Truckpad",
+      "crescimento do agronegócio brasileiro demandando mais logística",
+      "maturação de contratos de longo prazo já assinados"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "VAMO3": {
     "ticker": "VAMO3",
@@ -74,7 +90,15 @@
       "queda de 55% no lucro líquido em 2025 reflete essa pressão",
       "meta de expansão de frota adiada de 2025 para 2028",
       "inadimplência de clientes pode crescer em cenários de recessão"
-    ]
+    ],
+    "gatilhos": [
+      "Queda da Selic reduzindo custo financeiro da frota",
+      "renovação de frota nacional para norma Euro 6",
+      "crescimento do agronegócio demandando mais maquinário",
+      "expansão de contratos com clientes estratégicos",
+      "maturação do portfólio de ativos atualmente locados"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "JALL3": {
     "ticker": "JALL3",
@@ -99,7 +123,15 @@
       "concentração de operações em uma única usina em Goiás",
       "mandato de mistura de etanol pode ser alterado por decisão política",
       "câmbio desfavorável pode comprimir a margem das exportações de açúcar"
-    ]
+    ],
+    "gatilhos": [
+      "Alta nos preços internacionais do açúcar",
+      "expansão da demanda por etanol (mandato de mistura E30)",
+      "exportação de energia elétrica nos períodos de safra",
+      "queda nos custos de produção com mecanização crescente",
+      "potencial de crescimento via novas usinas"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "RIAA3": {
     "ticker": "RIAA3",
@@ -249,7 +281,15 @@
       "Raízen passa por pressão de margens na distribuição de combustíveis",
       "complexidade operacional de uma holding com múltiplas empresas listadas",
       "risco regulatório no segmento de gás (Compass)"
-    ]
+    ],
+    "gatilhos": [
+      "Desalavancagem da holding",
+      "valorização das subsidiárias, especialmente Raízen e Rumo",
+      "aumento do valor de mercado da participação na Vale com alta do minério",
+      "distribução de dividendos das controladas para a holding",
+      "queda da Selic melhorando o valuation de subsidiárias de infraestrutura"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "SOND5": {
     "ticker": "SOND5",
@@ -273,7 +313,14 @@
       "exposição ao preço do petróleo que influencia o nível de investimentos da Petrobras",
       "risco operacional em perfuração offshore em águas profundas",
       "custo elevado de manutenção de sondas pode pressionar margens"
-    ]
+    ],
+    "gatilhos": [
+      "Expansão do programa de investimentos da Petrobras no pré-sal",
+      "renovação e ampliação de contratos de longo prazo",
+      "alta no preço do petróleo",
+      "entrada de novas operadoras internacionais no Brasil"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "PETR4": {
     "ticker": "PETR4",
@@ -299,7 +346,15 @@
       "dependência do governo federal como controlador",
       "passivos ambientais e trabalhistas históricos",
       "transição energética global pode reduzir a demanda por petróleo no longo prazo"
-    ]
+    ],
+    "gatilhos": [
+      "Alta no preço do Brent",
+      "crescimento da produção do pré-sal atingindo 3 milhões de barris/dia",
+      "distribuição de dividendos extraordinários",
+      "redução de intervenção política",
+      "queda do risco-Brasil reduzindo a taxa de desconto"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "JHSF3": {
     "ticker": "JHSF3",
@@ -325,7 +380,15 @@
       "concentração geográfica em São Paulo",
       "projetos de longo prazo (Catarina) com retorno distante",
       "risco de execução em projetos de grande escala como o aeroporto e o outlet"
-    ]
+    ],
+    "gatilhos": [
+      "Expansão do complexo Catarina",
+      "novos empreendimentos residenciais de luxo",
+      "crescimento da base de clientes premium",
+      "abertura de novas unidades Fasano no exterior",
+      "aumento do ticket médio nas operações existentes"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "MGLU3": {
     "ticker": "MGLU3",
@@ -351,7 +414,15 @@
       "inadimplência da Luizacred exposta ao ciclo de crédito de massa",
       "necessidade de capital contínuo para competir em fulfillment e tecnologia",
       "reputação da marca prejudicada pelo histórico de destruição de valor entre 2021-2023"
-    ]
+    ],
+    "gatilhos": [
+      "Queda da Selic reduzindo o custo do crédito ao consumidor",
+      "retomada do consumo das classes C e D",
+      "rentabilização do marketplace com take rate crescente",
+      "fusões e aquisições estratégicas",
+      "melhora no ciclo de crédito da Luizacred"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "BRAV3": {
     "ticker": "BRAV3",
@@ -376,7 +447,15 @@
       "exposição à volatilidade do Brent",
       "custo de operação offshore mais elevado que onshore",
       "acesso a capital mais limitado que grandes petroleiras"
-    ]
+    ],
+    "gatilhos": [
+      "Aumento da produção nos campos do Polo Potiguar e Atlanta",
+      "integração operacional pós-fusão gerando sinergias",
+      "alta do Brent",
+      "potencial de novos campos licitados pela ANP",
+      "redução de custos via eficiência operacional"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "LOGG3": {
     "ticker": "LOGG3",
@@ -400,7 +479,15 @@
       "risco de vacância em momentos de desaceleração econômica",
       "concentração de receita em poucos grandes clientes de e-commerce",
       "competição crescente de outros desenvolvedores logísticos"
-    ]
+    ],
+    "gatilhos": [
+      "Expansão do e-commerce demandando mais centros de distribuição regionais",
+      "crescimento industrial",
+      "queda da taxa de vacância nos galpões existentes",
+      "novos contratos de locação de longo prazo",
+      "venda de ativos maduros com ganho de capital"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "EUCA3": {
     "ticker": "EUCA3",
@@ -425,7 +512,15 @@
       "concorrência de produtos importados em momentos de câmbio apreciado",
       "mercado de tintas competitivo com grandes players multinacionais",
       "menor escala que concorrentes globais limita o poder de barganha com distribuidores"
-    ]
+    ],
+    "gatilhos": [
+      "Crescimento da construção civil e reformas",
+      "aumento das exportações de painéis",
+      "queda nos custos de energia",
+      "nova linha de MDF aumentando capacidade",
+      "expansão da linha de tintas premium"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "BAZA3": {
     "ticker": "BAZA3",
@@ -450,7 +545,15 @@
       "menor eficiência operacional comparada a bancos privados",
       "exposição a inadimplência do crédito rural em anos de clima desfavorável",
       "dependência de políticas públicas de crédito subsidiado"
-    ]
+    ],
+    "gatilhos": [
+      "Expansão do crédito rural na Amazônia",
+      "crescimento do agronegócio no Norte e Centro-Oeste",
+      "aprovação de novos programas de financiamento federal",
+      "valorização da bioeconomia atraindo investimentos",
+      "melhora na inadimplência com crescimento econômico regional"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "BBAS3": {
     "ticker": "BBAS3",
@@ -588,32 +691,63 @@
       "concorrência intensa de outros grandes grupos educacionais",
       "risco regulatório em EaD com mudanças nas regras do MEC",
       "dependência de políticas governamentais como Fies e ProUni para crescimento"
-    ]
-  },
-  "RSUL": {
-    "ticker": "RSUL",
-    "nome": "Refinaria de Petróleo Riograndense",
-    "setor": "Refino de Petróleo",
-    "tese": "A Refinaria Riograndense (RSUL) é uma das poucas refinarias privadas independentes do Brasil, atuando no Sul do país. Opera em um nicho protegido: a região Sul tem demanda crescente por derivados e a empresa tem contratos de longo prazo com distribuidoras. O valuation descontado reflete a percepção de risco regulatório, mas a tese é de que o negócio é defensivo e consistentemente lucrativo.",
-    "atividade": "Refino de petróleo para produção de combustíveis, lubrificantes e outros derivados, com distribuição focada na região Sul do Brasil.",
-    "pontos_fortes": [
-      "Única refinaria privada independente no Sul do Brasil",
-      "localização estratégica no maior polo industrial do país",
-      "contratos de longo prazo com receita estável",
-      "ativos físicos substituídos por custo muito acima do valor de mercado",
-      "Aumento das margens de refino",
-      "crescimento da demanda por lubrificantes industriais",
-      "elevação do preço dos derivados",
-      "novos contratos de fornecimento",
-      "eficiência energética reduzindo custos operacionais"
     ],
-    "pontos_fracos": [
-      "Liquidez muito baixa das ações dificultando a formação de preço",
-      "exposição à volatilidade do preço do petróleo que impacta margens de refino",
-      "risco regulatório da ANP sobre operações de refinaria independente",
-      "capacidade de refino limitada frente às grandes refinarias da Petrobras",
-      "risco ambiental inerente à operação de refinaria"
-    ]
+    "gatilhos": [
+      "Expansão do EaD com custo por aluno significativamente menor",
+      "retomada do Fies e ProUni",
+      "redução de inadimplência com melhora do crédito estudantil",
+      "crescimento orgânico nas modalidades à distância",
+      "desinvestimento de ativos não estratégicos"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
+  },
+  "RSUL4": {
+    "ticker": "RSUL4",
+    "nome": "Metalúrgica Riosulense",
+    "setor": "Bens Industriais / Material Rodoviário (autopeças)",
+    "classificacao": "Deep Value (risco de liquidez + dados distorcidos)",
+    "resumo_numeros": "Preço ~R$ 38,44 · Market cap real ~R$ 230 mi (6,07 mi papéis; NÃO os R$ 96 mi reportados, que subdimensionam as ações) · Caixa líquido ~R$ 39,9 mi · P/L 3,82 · P/VP 0,78 · P/EBIT 2,46 · EV/EBIT REAL ~2,0 (o 0,59 dos sites é inconsistente) · DY ~6,5% · Liquidez média diária ~R$ 193 mil",
+    "o_que_faz": "Metalúrgica de autopeças de Rio do Sul (SC) que fabrica componentes para motores — válvulas, guias, sedes de válvula, tuchos e peças de precisão — para montadoras e mercado de reposição. Negócio industrial tradicional, verticalizado e lucrativo, mas de porte pequeno (microcap). (Autopeças de motor, Mercado de reposição, Fornecimento a montadoras)",
+    "onde_atua": "Sede e produção em Rio do Sul, Santa Catarina, com vendas para o mercado brasileiro e exportação. Ações preferenciais negociadas na B3 como RSUL4 (e ordinárias RSUL3), com free float de ~24% e base majoritariamente de pessoa física (~97% dos investidores).",
+    "numeros": [
+      "TESE CENTRAL: a ação caiu ~43% em 12 meses (de ~R$ 68 para ~R$ 38) SEM deterioração operacional — foi compressão de múltiplo (de-rating), não queda de lucro.",
+      "LPA (lucro por ação) estável: 2022 R$ 11,02 · 2023 R$ 8,92 · 2024 R$ 9,67 · 2025 R$ 10,61 · TTM 2026 R$ 10,07.",
+      "Margens constantes há 5 anos: Margem Bruta ~41%, Margem EBIT ~22,6%, Margem Líquida ~14,6%.",
+      "ROE 20,3% (em queda de níveis muito altos porque o patrimônio/VPA cresce rápido: VPA subiu de R$ 13,18 em 2021 para R$ 49,55 agora).",
+      "CAGR de receita de 5 anos de +16,6% — receita crescente.",
+      "Múltiplos comprimidos em 12 meses (números confiáveis): P/L 6,58 -> 3,82; P/VP 1,55 -> 0,78. A ação negocia abaixo do valor patrimonial (P/VP < 1) — isso é real.",
+      "ALERTA DE DADO: os múltiplos de firma dos agregadores (EV/EBIT 0,59; EV/EBITDA 0,40) são INCONSISTENTES — pela própria conta deles (P/EBIT 2,46 + caixa líquido), o EV/EBIT teria que ser ~1,4 a 2,0. A causa é o market cap subdimensionado (~R$ 96 mi implicaria só ~2,5 mi ações, mas a B3 lista 6,07 mi papéis -> market cap real ~R$ 230 mi). Corrigido, EV/EBIT fica ~2,0, não 0,59."
+    ],
+    "endividamento": "Balanço sólido: caixa líquido (dívida líquida negativa de ~R$ 39,9 milhões), dívida líquida/EBITDA de -0,39x, liquidez corrente de 2,97 e patrimônio líquido de ~R$ 300 milhões. Não é uma empresa em stress financeiro — é uma empresa barata com caixa.",
+    "dividendos": "Volta a pagar: dividendos de R$ 2,24/ação (abr/2025) e R$ 2,51/ação (data com dez/2025, pago em fev/2026). DY em torno de 6,5% com payout de ~22%. Não houve corte de dividendo — a hipótese inicial de 'cortou provento' foi descartada pelos dados.",
+    "gatilhos": [
+      "Deep value com fundamento intacto — EV/EBIT de 0,59 e P/VP de 0,78 com lucro estável e caixa líquido; qualquer normalização de múltiplo destrava upside grande.",
+      "Trígono Capital acumulando posição — gestora de valor especializada em small caps atingiu ~19,98% das preferenciais (divulgado em 10/06/2026), sinalizando que investidor que estuda a fundo enxergou valor.",
+      "Retomada de dividendos — pagamentos em 2025 e 2026 recompõem o atrativo de renda (DY ~6,5%).",
+      "Reprecificação de múltiplo — a queda foi de-rating, não queda de resultado; uma volta do P/L à média histórica (~5-6x) já implica valorização relevante.",
+      "Caixa líquido dá resiliência — permite atravessar ciclo ruim de juros altos sem risco de refinanciamento."
+    ],
+    "nao_gatilhos": [
+      "RISCO PRINCIPAL É LIQUIDEZ, NÃO O NEGÓCIO — liquidez média diária de apenas ~R$ 193 mil. Poucas ordens de venda derrubam o preço 40%, e é difícil montar OU desmontar posição relevante sem afundar a cotação.",
+      "Value trap de iliquidez — o desconto pode persistir por anos justamente porque a ação quase não negocia; barata não vira cara sem catalisador de liquidez.",
+      "Trígono secando o float — a gestora acumulando ~20% de um free float já pequeno (~24%) reduz ainda mais o que sobra para negociar, agravando a iliquidez.",
+      "Setor cíclico de autopeças — sensível a juros altos, câmbio e ao ritmo da indústria automotiva; margem forte hoje pode comprimir em desaceleração.",
+      "Microcap dominada por pessoa física (~97%) — mais suscetível a movimentos de manada e a distorções de preço.",
+      "Sem exposição a energia, data center ou IA — é tese industrial clássica de valor, não de crescimento estrutural."
+    ],
+    "extras": [
+      {
+        "titulo": "LEITURA DO VALUATION DO APP (+341% a +645%) — COM RESSALVA",
+        "texto": "O engine apontou preço justo de R$ 114-193 (método LPA, TMA 29,1%, upside +198% a +403%) e R$ 169-286 (método EBIT, TMA 78,8%, upside +341% a +645%). Auditoria dos dados encontrou distorção: o método EBIT está CONTAMINADO por um EV/EBIT falso (0,59) que vem de market cap subdimensionado nos agregadores — corrigido para o market cap real (~R$ 230 mi), o EV/EBIT é ~2,0 e o upside do método EBIT cai muito. O método LPA (TMA 29%, +198%) é o mais confiável, pois usa o LPA de R$ 10,07 que passou na checagem de consistência (P/L 3,82 e P/VP 0,78 batem). Conclusão honesta: a ação é barata de verdade (P/L < 4, abaixo do book), mas NÃO é o 6-bagger que o método EBIT sugere — o '+645%' é 'bom demais para ser verdade' por dado ruim. Some-se a isso a iliquidez, que o modelo não precifica."
+      },
+      {
+        "titulo": "POR QUE CAIU (RESUMO)",
+        "texto": "A queda de ~43% NÃO veio de resultado ruim — lucro, margem e ROE seguem sólidos e a empresa tem caixa líquido. Foi compressão de múltiplo numa microcap ilíquida em ambiente de juros altos, onde o investidor foge de ilíquidas para renda fixa. O fato relevante da Trígono (compra de ~20%) é REAÇÃO à queda, não causa dela: gestora de valor aproveitou o preço baixo para acumular e, ao cruzar as faixas de 15% e 20%, foi obrigada a comunicar (Resolução CVM 44)."
+      }
+    ],
+    "fonte": "card",
+    "data_tese": "setembro/2026",
+    "arquivo_origem": "analise_interativa_statusinvest_investidor10"
   },
   "VBBR3": {
     "ticker": "VBBR3",
@@ -639,7 +773,15 @@
       "exposição à transição energética de longo prazo (elétrico reduzindo demanda por gasolina)",
       "dependência de fornecimento da Petrobras como principal fornecedora",
       "risco de inadimplência de postos revendedores"
-    ]
+    ],
+    "gatilhos": [
+      "Aumento das margens de distribuição pós-otimização do portfólio",
+      "expansão de postos de GNV e carregadores elétricos",
+      "crescimento das lojas de conveniência",
+      "captura de sinergias com fusões e aquisições",
+      "penetração em biocombustíveis (etanol de segunda geração)"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "SUZB3": {
     "ticker": "SUZB3",
@@ -665,7 +807,15 @@
       "risco cambial com receitas em dólar e custos em real",
       "risco de queda abrupta da demanda chinesa por celulose",
       "custo de capital elevado para sustentar o crescimento"
-    ]
+    ],
+    "gatilhos": [
+      "Projeto Cerrado (fábrica de Ribas do Rio Pardo, MS) — este é um evento transformacional: uma única fábrica que coloca a Suzano em patamar de produção sem equivalente no mundo, maior que a produção total de celulose de muitos países, reduzindo o custo médio de toda a empresa",
+      "aumento da demanda global por celulose sustentável",
+      "substituição de plástico por embalagens de papel impulsionada pela regulação ESG",
+      "maturação das florestas plantadas reduzindo custo de matéria-prima",
+      "potencial de diversificação em têxtil de eucalipto (Lyocell)"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "VALE3": {
     "ticker": "VALE3",
@@ -778,7 +928,15 @@
       "custo de pessoal ainda elevado em relação à eficiência privada almejada",
       "exposição a risco hidrológico com reservatórios abaixo do ideal",
       "investimentos em transmissão são de longo prazo, com retorno diluído no tempo"
-    ]
+    ],
+    "gatilhos": [
+      "Programa de demissão voluntária reduzindo custos com pessoal",
+      "revisão tarifária das concessões",
+      "venda de ativos não estratégicos",
+      "expansão em energia renovável",
+      "desinvestimento de termelétricas ineficientes"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "TKNO3": {
     "ticker": "TKNO3",
@@ -801,7 +959,14 @@
       "concorrência de produtos importados em segmentos industriais",
       "exposição ao ciclo industrial brasileiro",
       "histórico limitado de dividendos e geração de caixa consistente"
-    ]
+    ],
+    "gatilhos": [
+      "Retomada do crescimento industrial",
+      "exportações beneficiadas pelo câmbio",
+      "eficiência operacional",
+      "novos contratos com clientes estratégicos"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "SLCE3": {
     "ticker": "SLCE3",
@@ -827,7 +992,15 @@
       "câmbio pode se apreciar reduzindo receita em reais",
       "custo de insumos (fertilizantes, defensivos) volátil e dependente de importação",
       "risco de arrendamentos não renovados ao fim dos contratos"
-    ]
+    ],
+    "gatilhos": [
+      "Alta nos preços internacionais da soja e do algodão",
+      "expansão de área plantada por arrendamento",
+      "ganhos de produtividade por tecnologia",
+      "queda no custo de insumos",
+      "real depreciado favorecendo receita em dólar"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "RANI3": {
     "ticker": "RANI3",
@@ -852,7 +1025,15 @@
       "custos de energia e logística no Sul do Brasil",
       "concorrência de papel reciclado importado em momentos de câmbio apreciado",
       "capacidade de expansão limitada pela disponibilidade de matéria-prima de pinus"
-    ]
+    ],
+    "gatilhos": [
+      "Crescimento do e-commerce aumentando a demanda por embalagens",
+      "substituição de plástico por papelão",
+      "expansão de capacidade produtiva",
+      "alta dos preços de papel",
+      "novos contratos com grandes redes de varejo"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "KLBN4": {
     "ticker": "KLBN4",
@@ -877,7 +1058,15 @@
       "custo de energia relevante no processo produtivo",
       "concentração de clientes em poucos grandes grupos de embalagem",
       "risco de overcapacity no setor se múltiplos projetos entrarem em operação ao mesmo tempo"
-    ]
+    ],
+    "gatilhos": [
+      "Crescimento do e-commerce demandando mais papelão ondulado",
+      "substituição de embalagens plásticas por papel",
+      "expansão de capacidade com o Projeto Caetê (nova fábrica)",
+      "alta nos preços de papel no mercado internacional",
+      "contratos de longo prazo com multinacionais"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "PRIO3": {
     "ticker": "PRIO3",
@@ -903,7 +1092,15 @@
       "exposição à volatilidade do Brent",
       "dependência de poucos campos grandes para a maior parte da produção",
       "custo de capital para novos campos pode ser elevado em ambiente de juros altos"
-    ]
+    ],
+    "gatilhos": [
+      "Campo Wahoo — este é o catalisador transformacional da tese, não incremental: quando entrar em produção, vai praticamente dobrar a produção total da empresa, representando uma inflexão radical no fluxo de caixa",
+      "aumento contínuo da produção do campo Frade com novas intervenções",
+      "alta no preço do Brent amplificando resultado em toda a produção",
+      "novas aquisições de campos maduros replicando o modelo comprovado",
+      "eficiência operacional reduzindo custo de lifting"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "LEVE3": {
     "ticker": "LEVE3",
@@ -929,7 +1126,15 @@
       "exposição à volatilidade da produção das montadoras",
       "dependência do controlador alemão Mahle para tecnologia",
       "mercado de autopeças competitivo com fornecedores asiáticos"
-    ]
+    ],
+    "gatilhos": [
+      "Crescimento das vendas de veículos no Brasil",
+      "aumento das exportações para Europa e EUA",
+      "consolidação da participação de mercado em reposição",
+      "crescimento do mercado de reposição com frota envelhecida",
+      "dividendos crescentes com geração de caixa estável"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "NVDA": {
     "ticker": "NVDA",
@@ -955,7 +1160,15 @@
       "concorrência crescente de AMD, Intel e chips proprietários (Google TPU, Apple Silicon)",
       "restrições de exportação para a China impactando receita relevante",
       "concentração de receita em poucos grandes clientes de data center"
-    ]
+    ],
+    "gatilhos": [
+      "Crescimento acelerado de data centers de IA",
+      "lançamento da arquitetura Blackwell Ultra",
+      "adoção crescente de IA em empresas (enterprise AI)",
+      "expansão para mercados de robótica e veículos autônomos",
+      "chips de IA para países emergentes"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "BALM4": {
     "ticker": "BALM4",
@@ -980,7 +1193,15 @@
       "concorrência de plataformas de aluguel por temporada (Airbnb)",
       "exposição a viagens corporativas que podem ser substituídas por reuniões virtuais",
       "custos fixos elevados em períodos de baixa ocupação"
-    ]
+    ],
+    "gatilhos": [
+      "Retomada das viagens corporativas",
+      "crescimento do turismo doméstico",
+      "expansão da malha aérea",
+      "melhora nas taxas de ocupação",
+      "contratos com empresas para hospedagem corporativa"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "RECV3": {
     "ticker": "RECV3",
@@ -1005,7 +1226,15 @@
       "exposição à volatilidade do preço do petróleo",
       "risco regulatório da ANP em concessões onshore",
       "menor escala que PRIO limita acesso a capitais em condições mais favoráveis"
-    ]
+    ],
+    "gatilhos": [
+      "Expansão da produção nos campos existentes",
+      "novas rodadas da ANP com licitação de campos maduros",
+      "alta do Brent",
+      "eficiência no custo de lifting",
+      "novas aquisições de campos terrestres"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "CMIN3": {
     "ticker": "CMIN3",
@@ -1030,7 +1259,15 @@
       "passivo de licenças ambientais e questões com comunidades locais em Congonhas (MG)",
       "menor diversificação de produtos que a Vale",
       "grupo CSN com dívida elevada na holding pode pressionar a subsidiária"
-    ]
+    ],
+    "gatilhos": [
+      "Estímulos fiscais da China à construção e infraestrutura",
+      "alta nos preços de minério de ferro",
+      "expansão da capacidade produtiva",
+      "apreciação do dólar",
+      "novos contratos de fornecimento de longo prazo"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "SBSP3": {
     "ticker": "SBSP3",
@@ -1056,7 +1293,15 @@
       "risco de conflito entre gestão privada (Equatorial) e o governo do estado de SP como controlador",
       "exposição a secas que afetam a disponibilidade de água",
       "passivos trabalhistas e judiciais históricos"
-    ]
+    ],
+    "gatilhos": [
+      "Eficiência operacional com a nova gestão privada",
+      "universalização do esgoto conforme metas regulatórias",
+      "revisão tarifária favorável",
+      "redução de perdas de água (atualmente elevadas)",
+      "expansão da base de clientes com novos municípios"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "POMO4": {
     "ticker": "POMO4",
@@ -1189,7 +1434,15 @@
       "concorrência de fabricantes de silos estrangeiros",
       "dependência de crédito rural para que os clientes financiem as compras",
       "risco de desaceleração do crescimento agrícola no Brasil"
-    ]
+    ],
+    "gatilhos": [
+      "Crescimento da produção de grãos no Brasil",
+      "políticas de incentivo ao aumento da capacidade de armazenagem",
+      "expansão da fronteira agrícola no Cerrado",
+      "demanda por modernização de armazéns obsoletos",
+      "exportações de equipamentos"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "ABCB4": {
     "ticker": "ABCB4",
@@ -1214,7 +1467,15 @@
       "risco de competição de bancos internacionais e fintechs em trade finance",
       "sensibilidade ao ciclo econômico que afeta a demanda das empresas por crédito",
       "dependência do controlador árabe pode limitar a flexibilidade estratégica"
-    ]
+    ],
+    "gatilhos": [
+      "Crescimento do crédito corporativo com a retomada econômica",
+      "aumento do comércio exterior brasileiro",
+      "expansão da carteira sem deterioração de qualidade",
+      "redução de custo de captação com queda da Selic",
+      "novos serviços de banco de investimento"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "MILLS3": {
     "ticker": "MILLS3",
@@ -1264,7 +1525,15 @@
       "execução complexa do turnaround na Sabesp",
       "alavancagem cresce com cada nova aquisição",
       "exposição a desastres climáticos como o ocorrido no Rio Grande do Sul"
-    ]
+    ],
+    "gatilhos": [
+      "Melhora das perdas de energia nas concessões recentes (GO e RS)",
+      "eficiência operacional na Sabesp",
+      "novas aquisições de distribuidoras ou concessões de saneamento",
+      "queda da inadimplência com formalização da economia",
+      "crescimento da demanda de energia elétrica"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "SEER3": {
     "ticker": "SEER3",
@@ -1289,7 +1558,15 @@
       "competição crescente de grandes redes nacionais entrando nas regiões-alvo",
       "qualidade percebida abaixo dos líderes nacionais pode limitar o pricing power",
       "risco regulatório do MEC nas autorizações de novos cursos"
-    ]
+    ],
+    "gatilhos": [
+      "Expansão do EaD com margens superiores ao presencial",
+      "crescimento da base de alunos no Norte e Nordeste",
+      "retomada do Fies e ProUni",
+      "melhora na inadimplência",
+      "aquisições de instituições regionais com desconto"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "PLPL3": {
     "ticker": "PLPL3",
@@ -1311,7 +1588,14 @@
       "mercado de tecnologia para petróleo e gás dependente dos investimentos das operadoras",
       "risco de competição de grandes players de tecnologia internacionais",
       "concentração de clientes no setor de E&P"
-    ]
+    ],
+    "gatilhos": [
+      "Digitalização das operações de E&P",
+      "expansão da base de clientes",
+      "novos produtos de software",
+      "crescimento do setor de petróleo no Brasil"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "BBSE3": {
     "ticker": "BBSE3",
@@ -1337,7 +1621,15 @@
       "crescimento de seguros digitais pode reduzir a vantagem da rede física",
       "exposição ao risco agrícola no seguro rural em anos de clima adverso",
       "margens podem ser pressionadas por aumento de sinistros"
-    ]
+    ],
+    "gatilhos": [
+      "Crescimento do agronegócio aumentando demanda por seguro rural",
+      "expansão de seguros de vida com conscientização crescente",
+      "aumento da base de clientes do BB",
+      "crescimento da previdência privada com reforma previdenciária",
+      "alta da Selic beneficiando resultado financeiro do float"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "TGMA3": {
     "ticker": "TGMA3",
@@ -1362,7 +1654,15 @@
       "dependência de poucos grandes clientes (montadoras)",
       "frota de cegonheiros exige renovação constante com custo elevado",
       "risco de desaceleração nas vendas de veículos"
-    ]
+    ],
+    "gatilhos": [
+      "Crescimento das vendas de veículos no Brasil",
+      "entrada de novas marcas chinesas demandando logística",
+      "expansão de serviços de valor agregado (preparação de veículos)",
+      "novos contratos com montadoras",
+      "crescimento do mercado de veículos elétricos"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "LAVV3": {
     "ticker": "LAVV3",
@@ -1387,7 +1687,15 @@
       "concorrência intensa de outras incorporadoras premium em SP",
       "risco de distratos em cenários de crise",
       "custo de terrenos em São Paulo é muito elevado, comprimindo margens potenciais"
-    ]
+    ],
+    "gatilhos": [
+      "Queda da Selic reduzindo o custo do financiamento imobiliário",
+      "valorização dos imóveis em São Paulo",
+      "lançamentos bem-recebidos em bairros premium",
+      "crescimento do crédito imobiliário",
+      "demanda por imóveis de investimento"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "CSUD3": {
     "ticker": "CSUD3",
@@ -1409,7 +1717,14 @@
       "risco de migração tecnológica por parte dos clientes para soluções próprias",
       "margem de serviços de contact center pressionada pela automação",
       "menor crescimento em ambiente de juros altos reduzindo transações de cartão"
-    ]
+    ],
+    "gatilhos": [
+      "Crescimento das transações digitais no Brasil",
+      "novos contratos com bancos e varejistas",
+      "expansão de programas de fidelidade",
+      "crescimento do crédito ao consumidor"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "AXYA3": {
     "ticker": "AXYA3",
@@ -1432,7 +1747,14 @@
       "concorrência de grandes players de defesa e segurança internacionais",
       "risco político de mudanças nas prioridades de segurança do governo",
       "empresa ainda pequena com liquidez reduzida"
-    ]
+    ],
+    "gatilhos": [
+      "Crescimento do orçamento de defesa e segurança pública",
+      "novos contratos com órgãos federais",
+      "expansão de sistemas de monitoramento de fronteiras",
+      "projetos de cidades inteligentes"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "ROMI3": {
     "ticker": "ROMI3",
@@ -1457,7 +1779,15 @@
       "exportações limitadas comparadas ao potencial",
       "tempo de ciclo longo entre pedido e entrega afeta a previsibilidade de receita",
       "mercado de máquinas industriais exige relacionamento de longo prazo"
-    ]
+    ],
+    "gatilhos": [
+      "Reindustrialização brasileira favorecida pelo câmbio",
+      "crescimento das exportações de bens industriais",
+      "demanda por modernização de parques industriais",
+      "crescimento da indústria automotiva",
+      "expansão para novos mercados na América Latina"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "FIQE3": {
     "ticker": "FIQE3",
@@ -1478,7 +1808,13 @@
       "exposição a mudanças regulatórias do MEC",
       "dependência de políticas de financiamento estudantil",
       "histórico de resultados ainda em consolidação"
-    ]
+    ],
+    "gatilhos": [
+      "Crescimento do mercado educacional",
+      "expansão de cursos técnicos e profissionalizantes",
+      "demanda por qualificação profissional"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "B3SA3": {
     "ticker": "B3SA3",
@@ -1529,7 +1865,15 @@
       "concorrência de AWS, Microsoft e Google em segurança e redes em nuvem",
       "clientes migrando para arquiteturas de rede definida por software",
       "valuation premium pode limitar o upside"
-    ]
+    ],
+    "gatilhos": [
+      "Crescimento de data centers exigindo mais infraestrutura de rede",
+      "demanda crescente por segurança cibernética",
+      "migração para assinaturas de software aumentando receita recorrente",
+      "expansão de Webex e colaboração",
+      "crescimento de IA demandando redes de ultra-baixa latência"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "ROXO34": {
     "ticker": "ROXO34",
@@ -1555,7 +1899,15 @@
       "regulação bancária crescente pode limitar produtos e margens",
       "concorrência de bancos digitais em todos os mercados de atuação",
       "valuation ainda alto exige crescimento acelerado de rentabilidade para se justificar"
-    ]
+    ],
+    "gatilhos": [
+      "Aumento do ARPAC (receita média por cliente) com novos produtos",
+      "expansão no México e Colômbia",
+      "crescimento do NuInvest (plataforma de investimentos)",
+      "captura de clientes de alta renda com NuUltra",
+      "expansão de crédito pessoal e imobiliário"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "VIVA3": {
     "ticker": "VIVA3",
@@ -1601,7 +1953,14 @@
       "competição intensa de outras incorporadoras premium na capital",
       "lançamentos concentrados em poucos projetos de alto valor criam volatilidade de resultado trimestral",
       "velocidade de vendas (VSO) pode cair em ambientes de juros altos"
-    ]
+    ],
+    "gatilhos": [
+      "Queda da Selic reduzindo custo do crédito imobiliário e aumentando a demanda",
+      "lançamentos de novos empreendimentos",
+      "valorização de terrenos em carteira",
+      "crescimento da demanda por imóveis premium em São Paulo"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "GRND3": {
     "ticker": "GRND3",
@@ -1627,7 +1986,15 @@
       "expansão internacional da Melissa depende de tendências de moda que são imprevisíveis",
       "câmbio apreciado reduz a competitividade das exportações",
       "poucas catalisadores de crescimento acelerado no curto prazo"
-    ]
+    ],
+    "gatilhos": [
+      "Crescimento das exportações da Melissa para mercados premium",
+      "expansão de lojas próprias Melissa no exterior",
+      "câmbio depreciado favorecendo exportações",
+      "volta do crescimento do varejo doméstico",
+      "novos produtos de alto valor agregado"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "AURE3": {
     "ticker": "AURE3",
@@ -1652,7 +2019,15 @@
       "necessidade de investimentos em fontes complementares (eólica e solar) para compensar sazonalidade",
       "exposição ao mercado livre de energia com volatilidade de preços",
       "dívida de longo prazo associada aos ativos de geração"
-    ]
+    ],
+    "gatilhos": [
+      "Reajuste tarifário das concessões existentes",
+      "expansão em energia eólica e solar",
+      "crescimento do mercado livre de energia",
+      "queda da Selic valorizando ativos de longa duração",
+      "novos projetos de expansão de capacidade"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "ABEV3": {
     "ticker": "ABEV3",
@@ -1678,7 +2053,15 @@
       "exposição à Argentina, mercado com instabilidade econômica crônica",
       "custo de insumos (cevada, alumínio, vidro) volátil",
       "pressão regulatória sobre publicidade de bebidas alcoólicas"
-    ]
+    ],
+    "gatilhos": [
+      "Premiumização da cerveja aumentando ticket médio",
+      "crescimento das bebidas não-alcoólicas (hidratantes, chás)",
+      "expansão do chope em novos bares e restaurantes",
+      "recuperação das vendas na Argentina",
+      "melhora de margens com redução de custos de insumos"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "FLRY3": {
     "ticker": "FLRY3",
@@ -1704,7 +2087,15 @@
       "competição crescente de laboratórios regionais e de redes de baixo custo",
       "dependência de convênios de saúde que têm poder de barganha crescente",
       "custos de tecnologia e equipamentos médicos continuamente crescentes"
-    ]
+    ],
+    "gatilhos": [
+      "Integração pós-fusão com a+ gerando sinergias",
+      "crescimento de exames de alto valor (genômica, oncologia)",
+      "expansão geográfica em regiões não cobertas",
+      "aumento da demanda por medicina preventiva",
+      "expansão do plano de saúde popular"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "ITUB4": {
     "ticker": "ITUB4",
@@ -1730,7 +2121,15 @@
       "risco de inadimplência em cenários de recessão",
       "regulação bancária crescente pode limitar produtos e margens",
       "concorrência de fintechs e bancos digitais em produtos de menor margem"
-    ]
+    ],
+    "gatilhos": [
+      "Crescimento do crédito com a recuperação econômica",
+      "expansão digital reduzindo custo operacional",
+      "crescimento da operação na América Latina",
+      "novos produtos de investimento captando a migração da poupança",
+      "aumento de dividendos com geração de caixa crescente"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "IGTA3": {
     "ticker": "IGTA3",
@@ -1755,7 +2154,15 @@
       "custo de expansão muito elevado para novos empreendimentos de luxo",
       "dependência de marcas internacionais que podem sair dos shoppings",
       "risco de vacância em momentos de crise econômica"
-    ]
+    ],
+    "gatilhos": [
+      "Expansão de marcas internacionais de luxo no Brasil",
+      "aumento do ABL (área bruta locável) com expansões",
+      "crescimento do e-commerce integrado com lojas físicas premium",
+      "novos empreendimentos mistos (residencial + commercial)",
+      "melhora das margens operacionais"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "GGPS3": {
     "ticker": "GGPS3",
@@ -1780,7 +2187,15 @@
       "dependência de mão de obra intensiva — risco trabalhista e de custos com aumento de salário mínimo",
       "rotatividade elevada de funcionários é custo operacional relevante",
       "integração de múltiplas aquisições pode ser mais lenta que o esperado"
-    ]
+    ],
+    "gatilhos": [
+      "Novas aquisições de empresas regionais",
+      "expansão de serviços de maior valor (tecnologia em facilities)",
+      "renovação de contratos com margens melhores",
+      "crescimento do terceirização de serviços no setor público",
+      "expansão para América Latina"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "STLD": {
     "ticker": "STLD",
@@ -1831,7 +2246,15 @@
       "execução da transformação digital mais lenta que o Itaú",
       "pressão de custo operacional elevado com rede de agências extensa",
       "exposição a crédito PME que tem inadimplência estruturalmente maior que corporate"
-    ]
+    ],
+    "gatilhos": [
+      "Recuperação do ROE acima de 15%",
+      "queda da inadimplência",
+      "expansão do seguro com a Bradesco Seguros",
+      "redução de custo operacional via digitalização",
+      "crescimento de produtos de investimento"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "MOND": {
     "ticker": "MOND",
@@ -1878,7 +2301,15 @@
       "fracasso da tentativa de aquisição da Figma sinaliza limitações ao crescimento inorgânico",
       "concorrência de Microsoft Copilot integrado ao Office",
       "crescimento de receita desacelerando à medida que o mercado amadurece"
-    ]
+    ],
+    "gatilhos": [
+      "Adoção crescente do Adobe Firefly (IA generativa) pelos clientes",
+      "aumento de preços das assinaturas Creative Cloud",
+      "expansão da Experience Cloud para empresas",
+      "crescimento do mercado de conteúdo digital",
+      "novos clientes atraídos pelas ferramentas de IA"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "RADL3": {
     "ticker": "RADL3",
@@ -1904,7 +2335,15 @@
       "exposição ao custo de aluguel de lojas em shoppings e ruas de alto fluxo",
       "margens pressionadas por mix mais voltado a genéricos e populares",
       "crescimento de pontos desacelera à medida que o mercado fica mais saturado"
-    ]
+    ],
+    "gatilhos": [
+      "Envelhecimento da população aumentando consumo de medicamentos",
+      "expansão da rede de lojas em novas praças",
+      "crescimento dos serviços de saúde nas farmácias",
+      "programa de fidelidade Identidade gerando dados e fidelização",
+      "expansão do e-commerce de farmácias"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "VIVT3": {
     "ticker": "VIVT3",
@@ -1930,7 +2369,15 @@
       "investimentos elevados e contínuos em rede (fibra e 5G) consomem caixa",
       "crescimento de receita moderado em mercado maduro",
       "risco regulatório da Anatel sobre tarifas e condições de cobertura"
-    ]
+    ],
+    "gatilhos": [
+      "Expansão da rede de fibra (FTTH) substituindo ADSL e TV a cabo",
+      "crescimento de B2B com serviços de nuvem e segurança",
+      "queda de churn no pós-pago premium",
+      "renovação do espectro de radiofrequências",
+      "dividendos crescentes com geração de caixa estável"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "BMOB3": {
     "ticker": "BMOB3",
@@ -1955,7 +2402,15 @@
       "modelo de negócio menos conhecido pelos investidores brasileiros",
       "crescimento em novos países requer tempo e capital",
       "risco de obsolescência tecnológica dos serviços oferecidos"
-    ]
+    ],
+    "gatilhos": [
+      "Crescimento de smartphones em mercados emergentes",
+      "novos contratos com operadoras",
+      "expansão de serviços de maior valor agregado",
+      "crescimento do mercado africano",
+      "consolidação no setor via aquisições"
+    ],
+    "gatilhos_fonte": "relatorio_2.0"
   },
   "WIZC3": {
     "ticker": "WIZC3",
