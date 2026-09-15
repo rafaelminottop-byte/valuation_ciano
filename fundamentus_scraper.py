@@ -174,6 +174,39 @@ def baixar_tabela_fundamentus(
     return df
 
 
+def pl_agregado_ponderado(
+    df: pd.DataFrame = None, pl_max: float = 30.0, liq_min: float = 0.0
+) -> dict:
+    """P/L agregado do mercado, ponderado por liquidez (mesma lógica do Oceans14).
+
+    Faz a média do P/L de cada papel ponderada pela liquidez em 2 meses —
+    quanto mais líquido, mais peso. ``pl_max`` descarta outliers (empresas com
+    lucro momentaneamente perto de zero geram P/L de centenas/milhares de
+    vezes, o que dominaria a média sozinho — ex.: um papel líquido com P/L de
+    3000x). Validado contra o P/L Ibovespa do Oceans14 (oceans14.com.br/acoes/
+    historico-pl-bovespa): ~11x batendo dentro de ~3% com pl_max=30.
+
+    Devolve {valor (P/L), earnings_yield (%), n_papeis}.
+    """
+    if df is None:
+        df = baixar_tabela_fundamentus()
+
+    p_l = pd.to_numeric(df.get("p_l"), errors="coerce")
+    liq = pd.to_numeric(df.get("liquidez"), errors="coerce")
+    usar = (p_l > 0) & (p_l < pl_max) & (liq > liq_min)
+
+    p_l_usar, liq_usar = p_l[usar], liq[usar]
+    if liq_usar.sum() <= 0:
+        return {"valor": None, "earnings_yield": None, "n_papeis": 0}
+
+    pl_medio = float((p_l_usar * liq_usar).sum() / liq_usar.sum())
+    return {
+        "valor": pl_medio,
+        "earnings_yield": (1 / pl_medio) * 100,
+        "n_papeis": int(usar.sum()),
+    }
+
+
 def buscar_dados_ticker(ticker: str, df: pd.DataFrame = None) -> dict:
     """Retorna os dados de um ticker específico prontos para o valuation_engine."""
     if df is None:

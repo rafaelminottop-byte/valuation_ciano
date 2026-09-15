@@ -34,13 +34,14 @@ CACHE_DIR = Path(__file__).resolve().parent / ".cache"
 # O nome do cache tem versão: ao mudar o FORMATO do que é guardado (ex.: incluir
 # as séries históricas), incremente para invalidar caches antigos — senão o app
 # serve um cache velho, sem os campos novos (foi exatamente o que aconteceu).
-CACHE_VERSAO = 2
+CACHE_VERSAO = 4
 CACHE_FILE = CACHE_DIR / f"macro_v{CACHE_VERSAO}.json"
 CACHE_TTL_SEGUNDOS = 3 * 60 * 60  # 3 horas
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
-# Séries do SGS/BC: código -> nº de pontos do histórico (432 é diária; as outras, mensais)
+# Séries do SGS/BC: código -> nº de pontos do histórico (432/4389 são diárias; as outras, mensais)
 SGS_SELIC, SGS_IPCA12M, SGS_DIVIDA_PIB = 432, 13522, 13762
+SGS_CDI = 4389  # CDI diário, anualizado base 252
 BLS_CPI = "CUUR0000SA0"  # CPI-U, todos os itens (EUA)
 
 _ipv4_ativo = False
@@ -219,6 +220,80 @@ def _cpi_eua() -> dict:
     return _pacote(yoy)
 
 
+def _cdi_12m(cdi_diario: list[dict]) -> dict:
+    """CDI acumulado em 12 meses, compondo a taxa diária anualizada (base 252).
+
+    Cada ponto do SGS 4389 já vem anualizado; convertemos para fator diário
+    (252 dias úteis/ano) e compomos os últimos ~252 pregões.
+    """
+    pontos = [p for p in (cdi_diario or []) if p.get("valor") is not None][-260:]
+    if len(pontos) < 200:
+        return {"valor": None, "data": None, "serie": []}
+    serie = []
+    janela = pontos[-252:]
+    fator = 1.0
+    for p in janela:
+        fator *= (1 + p["valor"] / 100) ** (1 / 252)
+    serie.append({"data": janela[-1]["data"], "valor": (fator - 1) * 100})
+    return _pacote(serie)
+
+
+URL_TESOURO_TAXAS = (
+    "https://www.tesourotransparente.gov.br/ckan/dataset/"
+    "df56aa42-484a-4a59-8184-7676580c81e3/resource/"
+    "796d2059-14e9-44e3-80c9-2d9e30b405c1/download/precotaxatesourodireto.csv"
+)
+# CSV oficial é pesado (~14MB, todo o histórico desde 2002) — cache próprio e
+# mais longo (o yield da NTN-B muda pouco de um dia para o outro) para não
+# baixar isso a cada ciclo de 3h do resto do painel macro.
+CACHE_NTNB = CACHE_DIR / "ntnb_v1.json"
+CACHE_TTL_NTNB = 20 * 60 * 60  # 20h
+
+
+def _ntnb_10a() -> dict:
+    """Yield da NTN-B (Tesouro IPCA+, sem cupom) com vencimento mais próximo
+    de 10 anos, via CSV oficial do Tesouro Transparente. Cache de ~20h."""
+    if CACHE_NTNB.exists() and (time.time() - CACHE_NTNB.stat().st_mtime) < CACHE_TTL_NTNB:
+        try:
+            return json.loads(CACHE_NTNB.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    import pandas as pd  # import local: só esta função precisa de pandas aqui
+
+    _forcar_ipv4()
+    r = requests.get(URL_TESOURO_TAXAS, headers=HEADERS, timeout=60)
+    r.raise_for_status()
+    df = pd.read_csv(pd.io.common.BytesIO(r.content), sep=";", encoding="latin1")
+    df["Data Base"] = pd.to_datetime(df["Data Base"], format="%d/%m/%Y")
+    df["Data Vencimento"] = pd.to_datetime(df["Data Vencimento"], format="%d/%m/%Y")
+    df["Taxa Compra Manha"] = df["Taxa Compra Manha"].astype(str).str.replace(",", ".").astype(float)
+
+    ipca = df[df["Tipo Titulo"] == "Tesouro IPCA+"]
+    ultima_data = ipca["Data Base"].max()
+    dia = ipca[ipca["Data Base"] == ultima_data].copy()
+    alvo = ultima_data + pd.DateOffset(years=10)
+    dia["dist"] = (dia["Data Vencimento"] - alvo).abs()
+    melhor = dia.sort_values("dist").iloc[0]
+
+    out = {
+        "valor": float(melhor["Taxa Compra Manha"]),
+        "data": ultima_data.strftime("%d/%m/%Y"),
+        "vencimento": melhor["Data Vencimento"].strftime("%d/%m/%Y"),
+        "serie": [],
+    }
+    CACHE_DIR.mkdir(exist_ok=True)
+    CACHE_NTNB.write_text(json.dumps(out, ensure_ascii=False), encoding="utf-8")
+    return out
+
+
+def spread_earnings_yield_ntnb(earnings_yield_pct: float, ntnb_pct: float) -> float | None:
+    """Spread (p.p.) entre o earnings yield agregado do mercado e a NTN-B de 10 anos."""
+    if earnings_yield_pct is None or ntnb_pct is None:
+        return None
+    return earnings_yield_pct - ntnb_pct
+
+
 def _coletar() -> dict:
     """Busca tudo na rede. Cada indicador falha isolado (vira {'erro': ...})."""
     def seguro(fn, *a):
@@ -233,16 +308,38 @@ def _coletar() -> dict:
         "treasury10a": seguro(_yahoo, "^TNX"),
         "cpi_eua": seguro(_cpi_eua),
     }
+    cdi_diario = seguro(_sgs, SGS_CDI, 2)
     brasil = {
         "selic": seguro(_sgs, SGS_SELIC, 3),        # diária -> 3 anos
         "ipca12m": seguro(_sgs, SGS_IPCA12M, 5),    # mensal -> 5 anos
         "divida_pib": seguro(_sgs, SGS_DIVIDA_PIB, 5),
+        "cdi12m": seguro(_cdi_12m, cdi_diario.get("serie")),
         "focus_ipca": seguro(_focus, "IPCA"),
         "focus_selic": seguro(_focus, "Selic"),
+        "focus_pib": seguro(_focus, "PIB Total"),
+        "ntnb_10a": seguro(_ntnb_10a),
     }
     brasil["juro_real_ex_ante"] = serie_juro_real(
         brasil["focus_selic"].get("serie"), brasil["focus_ipca"].get("serie")
     )
+
+    def _pl_mercado():
+        from fundamentus_scraper import baixar_tabela_fundamentus, pl_agregado_ponderado
+        return pl_agregado_ponderado(baixar_tabela_fundamentus())
+
+    pl_mercado = seguro(_pl_mercado)
+    brasil["pl_mercado"] = {
+        "valor": pl_mercado.get("valor"), "data": None, "serie": [],
+        "earnings_yield": pl_mercado.get("earnings_yield"),
+        "n_papeis": pl_mercado.get("n_papeis"),
+        "erro": pl_mercado.get("erro"),
+    }
+    brasil["spread_ey_ntnb"] = {
+        "valor": spread_earnings_yield_ntnb(
+            pl_mercado.get("earnings_yield"), brasil["ntnb_10a"].get("valor")
+        ),
+        "data": None, "serie": [],
+    }
     return {"global": global_, "brasil": brasil, "ts": time.time()}
 
 
