@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Estudos Católicos</title>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="marca">
+      <span class="logo">✝</span>
+      <div>
+        <h1>Estudos Católicos</h1>
+        <p class="sub">Temas da fé · Santos · Quiz</p>
+      </div>
+    </div>
+    <nav class="abas">
+      <button class="aba ativa" data-modo="temas">📖 Temas</button>
+      <button class="aba" data-modo="santos">✝ Santos</button>
+      <button class="aba" data-modo="quiz">✓ Quiz</button>
+    </nav>
+  </header>
+
+  <main id="conteudo"></main>
+
+  <footer class="rodape">
+    Feito para crescer aos poucos · edite os arquivos em <code>dados/</code> para adicionar conteúdo
+  </footer>
+
+  <script src="dados/temas.js"></script>
+  <script src="dados/santos.js"></script>
+  <script src="dados/questoes.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

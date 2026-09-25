@@ -1,0 +1,953 @@
+[00:00:00] Drawdown máximo médio, depois de 100 simulações com 1.000 trades, o que dão 100.000 trades executados.
+[00:00:08] Tudo bem, senhores? Todos eles com payoff de 2 para 1. O sujeito arrisca uma unidade de risco, buscando duas unidades de risco.
+[00:00:14] Adicionalmente, a gente vai cruzar a terceira informação, que é esse gráfico que busca mostrar para a gente.
+[00:00:18] A gente vai cruzar esse eixo horizontal de drawdown máximo médio com taxa de acerto que está aqui embaixo.
+[00:00:23] 60% de taxa de acerto, 55, 50...
+[00:00:25] Vamos cruzar também com quanto que o trader hipotético ou os traders hipotéticos tomam de risco por trade em cima do capital operacional.
+[00:00:32] Então, a primeira linha azul lá é o cara que toma 1% de risco em cima do capital operacional.
+[00:00:37] Tem gente aí que toma 1% de risco do capital operacional? Provavelmente tem.
+[00:00:40] Aí, a linha laranja, que é a segunda linha de baixo para cima, esse cara toma 2% de risco por trade.
+[00:00:46] Tem gente aí que toma 2% de risco por trade em cima do capital operacional, que a unidade de risco é 2% do capital?
+[00:00:50] Sem dúvida nenhuma.
+[00:00:51] A linha verde é uma grave. Uma grave toma 5% de risco em cima do capital operacional por trade, não é isso senhora? Tudo bem?
+[00:00:59] Bom, vamos interpretar aqui, só para a gente entender o que esse gráfico está mostrando, tá?
+[00:01:02] Vamos pegar a linha azul aqui, tá? Então vamos supor que esse trader que eu vou chamar de trader azul,
+[00:01:06] esse trader azul, se ele tiver 60% de taxa de acerto,
+[00:01:10] lembrando que ele arrisca apenas 1% na unidade de risco dele é 1% em cima do capital operacional,
+[00:01:14] ele vai ter um drawdown máximo médio de apenas 7,7%.
+[00:01:17] Isso é muito a pouco, senhora, isso é muito pouco, né?
+[00:01:19] Drawdown de 7,7% é em trading, isso aqui não é renda fixa, isso aqui é trading, é muito pouco, tá?
+[00:01:24] Se a taxa de acerto dele deixar de 60% e virar 40% não interessa o motivo, isso aqui é um exercício hipotético,
+[00:01:30] e ele continuar arriscando os 1% que ele arrisca, o drawdown dele já aumenta.
+[00:01:33] Ele tem que estar preparado para um drawdown máximo médio depois de 10 mil trades executados,
+[00:01:38] de 19,1% quase 20%. Agora eu vou inflamar um pouco o cenário, não é isso?
+[00:01:42] Vamos aqui para a linha verde, linha verde é uma grave, né?
+[00:01:44] Ele arrisca 5% por trade em cima do capital operacional.
+[00:01:49] Se uma grave acerta 50% dos trades, ele tem que estar preparado
+[00:01:53] para um drawdown máximo médio de cerca de 44% na conta, tudo bem?
+[00:01:56] E se tiver uma fase um pouquinho mais difícil, 45% de taxa de acerto, ele tem que estar preparado para 54%,
+[00:02:00] e se essa fase piorar mais ainda, ele tiver 40% de acerto apenas,
+[00:02:03] ele tem que estar preparado para 66,5% de drawdown.
+[00:02:08] Tá dando para entender o que é isso aqui? Uma conta que tinha 100 mil virou 44%.
+[00:02:11] Tudo bem? Aqui, uma conta que tinha 100 mil de pico virou 44%.
+[00:02:14] Isso para o cara que arrisca 5%. Sou eu esse cara, sou eu esse cara.
+[00:02:17] Isso para 40% de taxa de acerto, não é isso? Beleza.
+[00:02:23] Sabe quantos trades eu acertei nos últimos 13 trades de day trade que eu fiz?
+[00:02:28] 13 trades, eu estou contemplando o período de 1 de julho a hoje.
+[00:02:34] Eu fiz 13 trades, sendo 10 deles em julho e sendo 3 deles em agosto que nós estamos agora.
+[00:02:40] Em 13 trades, eu acertei 3 trades.
+[00:02:45] Quanto que isso dá de taxa de acerto, senhores? 23%, não é isso?
+[00:02:50] 23%. Qual seria o drawdown máximo médio de um modelo que tem payoff 2 para 1
+[00:02:56] e acerta 23% e toma por trade 5% de risco em cima do capital operacional?
+[00:03:00] Quem sabe? Nota, para 40% de taxa de acerto, já estão em 66,5%.
+[00:03:11] Vai dar mais, porque eu estou acertando 23, então eu estou errando mais.
+[00:03:15] Sabe quanto é? 100%.
+[00:03:27] Sabe quanto eu perdi nesses 3 trades? 17%.
+[00:03:43] Essa é a minha diferença para todos vocês, só essa.
+[00:03:46] Essa é a principal.
+[00:03:52] Quando eu digo vocês, eu não estou falando de maneira pejorativa, estou falando o seguinte.
+[00:03:55] O meu resultado é o que é 70%, 80% por causa do que eu falei para vocês
+[00:04:01] até agora com 10 minutos de aula.
+[00:04:05] Vocês já perceberam que eu parei de operar? Alguém já percebeu aqui?
+[00:04:08] Ou está difícil de perceber assim? Está muito complicado de entender?
+[00:04:11] Que eu estou com nujo do gráfico?
+[00:04:13] Que eu estou dando todas as desculpas para mim mesmo para não operar essa merda aí?
+[00:04:16] Alguém já entendeu isso aqui?
+[00:04:18] É porque se eu continuar acelerando com 23% de taxa de acerto,
+[00:04:20] que é o que eu estou nos últimos 13 trades,
+[00:04:22] eu vou me foder por.
+[00:04:23] Essa é a diferença, pessoal.
+[00:04:26] Essa é a diferença.
+[00:04:30] Se eu fizesse um trade desse aí,
+[00:04:35] esse trade de agora de venda aí,
+[00:04:37] que é um trade fora, né?
+[00:04:39] Do modelo? Qual é a chance maior desse aí?
+[00:04:42] Isso vai aumentar meu trodão.
+[00:04:44] Aí depois eu tenho uma coisa chamada, isso aqui,
+[00:04:48] chama de curva de recuperação. Cadê o negócio assim?
+[00:04:51] Se eu perder, senhores, 20% da minha conta,
+[00:04:56] que é o que eu mais ou menos perdi no isso,
+[00:04:58] eu falei 17, né?
+[00:04:59] Como é que você chegou nessa conta?
+[00:05:00] Eu fiquei 1.4 nível negativo em julho
+[00:05:03] e estou 2 níveis negativos esse mês.
+[00:05:05] 2 mais 1.4, 3.4, 3.4 vezes 5% dá 17%.
+[00:05:08] 17%.
+[00:05:09] Eu estou aqui, não estou?
+[00:05:10] Eu estou alguma coisa aqui dentro, né?
+[00:05:12] Entre 15 e 20, né?
+[00:05:14] Quanto que eu tenho que fazer agora na minha conta
+[00:05:16] para eu voltar para cima?
+[00:05:17] 20%, não é isso?
+[00:05:18] Olha como está certo.
+[00:05:19] 20% são quantos níveis, assim, 4%.
+[00:05:21] Se eu fizer 4 níveis,
+[00:05:23] eu estou com 3.4 negativo,
+[00:05:24] se eu fizer 4, eu vino para cima, não é isso?
+[00:05:26] Quanto que são 4 níveis, senhores?
+[00:05:27] 20%.
+[00:05:28] Vocês acham trivial fazer 20%?
+[00:05:30] Vocês acham que, sim, qualquer hora que quiser,
+[00:05:32] o Zé liga o motor lá, liga uma turbina
+[00:05:34] e ele faz aí 2 trades que dão alva aí,
+[00:05:36] qualquer momento.
+[00:05:38] Eu estou gerenciando isso aqui,
+[00:05:39] para eu não entrar aqui,
+[00:05:41] porque se eu entrar aqui, irmãozão,
+[00:05:42] é valar.
+[00:05:43] Se eu entrar aqui na zona nebulosa,
+[00:05:47] no triângulo das bermudas,
+[00:05:49] nas fósseas das marianas,
+[00:05:50] aqui é a hora de voltar, tá?
+[00:05:52] Quanto que eu tenho de rentabilidade
+[00:05:53] até agora na conta, pessoal?
+[00:05:54] 150% em cima do capital,
+[00:05:55] bom, não é?
+[00:05:56] Porra, em 8 meses?
+[00:05:57] Já com esse período aí.
+[00:05:58] Olha aqui quanto que eu vou ter que fazer.
+[00:06:00] Eu vou ter que fazer 8,150,
+[00:06:01] se eu continuar operando igual um loco.
+[00:06:03] Aí aqueles 20% de drawdown
+[00:06:05] vai virar 60%.
+[00:06:06] Olha quanto que eu tenho que fazer.
+[00:06:07] Quem faz isso aí?
+[00:06:08] Ninguém.
+[00:06:10] Ninguém.
+[00:06:11] E aí tu quer continuar operando
+[00:06:13] igual um loco, porra?
+[00:06:14] Por que?
+[00:06:20] Porque você é o brabo, porra.
+[00:06:21] Não é?
+[00:06:22] Você é o brabo, porra.
+[00:06:25] Pô, como é que eu vou ficar fora disso aqui?
+[00:06:33] Stop de hoje
+[00:06:34] desse trade aí com um contrato
+[00:06:35] 100 reais.
+[00:06:36] Eu pergunto.
+[00:06:40] E sim, stopa.
+[00:06:49] Já explicamos o que é topo
+[00:06:50] referência, senão?
+[00:06:51] É, senão?
+[00:06:52] Já tivemos aula de dinâmica de preço,
+[00:06:56] senão?
+[00:06:57] Já.
+[00:06:58] Já falamos que operar contra a força dominante
+[00:07:00] é o que a gente não faz.
+[00:07:01] Salvo em operações de retorno à média.
+[00:07:03] E eu também já falei que são operações
+[00:07:04] a riscadiscas, senão.
+[00:07:07] Então, eu posso te cobrar, não posso.
+[00:07:08] Porque eu já entreguei o conteúdo.
+[00:07:11] O que eu não posso é te cobrar
+[00:07:12] pelo conteúdo que eu não entreguei.
+[00:07:14] Eu já falei de drawdown na turma 16.
+[00:07:15] Não.
+[00:07:16] Por isso que eu estou explicando aqui
+[00:07:17] e peguei um slide da aula, não é isso?
+[00:07:18] Eu não estou cobrando o que vocês já sabem
+[00:07:19] e saibam isso diante mão.
+[00:07:20] Porque eu não dei esse conteúdo para vocês.
+[00:07:21] Então, por isso que eu estou explicando aqui,
+[00:07:22] botei a panilhezinha, explique aí
+[00:07:23] com paciência, mostrei o grafo.
+[00:07:24] Não é isso?
+[00:07:25] Olha, a corba de recuperação você tem.
+[00:07:26] A gente tem que estar ligado nisso aqui.
+[00:07:27] Caralho, é a primeira vez que eu vejo.
+[00:07:28] Legal, porque você não foi exposto ainda.
+[00:07:29] Agora, vamos lá.
+[00:07:34] Não está, assim, claro, translúcido, límpido.
+[00:07:37] Tem alguma dúvida?
+[00:07:42] Que isso aqui é um pivô de alta?
+[00:07:43] Tem alguma dúvida?
+[00:07:44] Alguém tem dúvida em relação a isso, pessoal?
+[00:07:45] Vamos lá.
+[00:07:46] Que isso aqui é um pivô de alta?
+[00:07:47] Tem alguma dúvida?
+[00:07:49] Tem alguma dúvida?
+[00:07:50] Que isso aqui?
+[00:07:52] É um topo de referência?
+[00:07:54] Tem alguma dúvida?
+[00:07:55] Que que um topo de referência precisa?
+[00:07:56] Vamos lá.
+[00:07:57] Primeiro é que precisa ser um topo, não é isso?
+[00:07:59] Ele precisa ter máxima, máxima mais alta, máxima mais baixa.
+[00:08:01] A gente tem isso aqui no 11, 1 e 2.
+[00:08:03] Tudo bem?
+[00:08:04] Tudo bem.
+[00:08:05] Esse topo, ele tem que ter profundidade, penetração na pernada anterior.
+[00:08:07] Vamos ver a pernada anterior, essa aqui.
+[00:08:08] Topo, fundo.
+[00:08:09] Olha o quanto a gente andou contra.
+[00:08:11] Isso aqui tem profundidade, senhoras.
+[00:08:12] O pelo amor de Deus, né?
+[00:08:13] É o limite da profundidade.
+[00:08:14] Se eu for mais um pouco, eu...
+[00:08:15] Tem profundidade?
+[00:08:17] Teve choque de preço?
+[00:08:18] Teve, pô.
+[00:08:23] Pivô de alta, pô.
+[00:08:24] Algo de dinâmica de preço.
+[00:08:26] Aqui, a gente vinha em um zig-zag descendente,
+[00:08:29] que vocês toda hora para mim no grupo ficavam perguntando,
+[00:08:31] ó, grave, como é a referência, entendeu mesmo?
+[00:08:33] Porque eu tô marcando aqui.
+[00:08:34] Aí, eu tô com a referência rompeia,
+[00:08:35] e tu fez a porra do trade.
+[00:08:36] O que que adiantou?
+[00:08:37] Me perguntou pra caralho, cheio de pergunta.
+[00:08:39] Ah, qual eu tô referendo?
+[00:08:40] É porque eu tô vendo aqui nos estudos
+[00:08:41] que eu tô fazendo da NASA.
+[00:08:42] Eu não sei o que.
+[00:08:43] Adiantou o quê?
+[00:08:46] Primeira reboladinha, o cara.
+[00:08:47] Pow!
+[00:08:48] Trade, vambora, bota um tempo o take-out.
+[00:08:49] É evento, vum, vamo.
+[00:08:50] Vai.
+[00:08:51] Se.
+[00:08:52] Fuder.
+[00:08:53] E tem que me ouvir e tem que me engolir,
+[00:08:54] porque eu já dei a porra do conceito.
+[00:08:55] Então tem que me engolir.
+[00:08:56] Me atura aí e bota a bola pra frente.
+[00:08:58] Me atura.
+[00:08:59] Tem que me atuar igual os agálogos.
+[00:09:00] Porra.
+[00:09:01] Mudou a dinâmica, porra.
+[00:09:03] Zé, mudou a dinâmica pra sempre.
+[00:09:05] Meu amigo, eu não sei nem se eu vou estar vivo.
+[00:09:06] Eu posso morrer no Corre-lâmpago,
+[00:09:07] aqui durante o Corre-lâmpago.
+[00:09:08] Eu não sei se vai desencadear
+[00:09:09] uma puta de uma tendência de alto
+[00:09:10] índice futuro, vai romper top histórico
+[00:09:11] daqui a dois semanas.
+[00:09:12] Eu não sei.
+[00:09:13] Eu sei o seguinte.
+[00:09:14] A formação descendente de topos e fundos
+[00:09:15] descendentes que tava clara no 50,
+[00:09:16] ela foi alterada.
+[00:09:17] Ela foi alterada.
+[00:09:18] O que que nós fazemos?
+[00:09:20] Tira a mão.
+[00:09:21] Tira a mão.
+[00:09:27] Como botaram no grupo lá hoje?
+[00:09:28] Não botaram no grupo de manhã lá?
+[00:09:29] Será que foi?
+[00:09:30] Porra, a gente não fazia nada aqui.
+[00:09:31] Ah, a gente não fazia nada.
+[00:09:32] Dia mais fácil que esse?
+[00:09:33] Quer um dia mais fácil?
+[00:09:34] Hoje tá mole.
+[00:09:35] Tá molezinha.
+[00:09:36] Tá chupetinha hoje.
+[00:09:37] Hoje tá chupetinha.
+[00:09:38] Molezinha.
+[00:09:39] Podia comprar.
+[00:09:40] Não, o stocasco de 80 fumasse.
+[00:09:41] Não tava pra comprar.
+[00:09:43] Chegou uma hora que ficou
+[00:09:44] a menos de 7 mil pontos da 200.
+[00:09:45] Não ficou, galera.
+[00:09:46] Mesmo que o stocasco deixasse,
+[00:09:47] dava pra fazer três de retornar
+[00:09:48] média com menos de 7 mil pontos?
+[00:09:49] Não.
+[00:09:50] Então compra hoje.
+[00:09:51] Tá completamente descartado, não é isso?
+[00:09:52] Tudo bem?
+[00:09:53] Tudo bem.
+[00:09:54] E venda.
+[00:09:55] Alterou a dinâmica?
+[00:09:57] Qual é a única chance
+[00:10:00] de operação hoje?
+[00:10:01] Tem?
+[00:10:02] Tem, senhores.
+[00:10:05] Só se o stocasco ficar
+[00:10:08] abaixo de 60 no próximo queno
+[00:10:09] de 50 minutos.
+[00:10:10] E aí, a chance
+[00:10:12] é fazer o quê, Leônard?
+[00:10:14] E se o queno do 4
+[00:10:17] tem que fechar um preço bem mais
+[00:10:18] baixo.
+[00:10:19] Não, Divo, se a gente
+[00:10:20] passar com o stocasco
+[00:10:21] pra baixo de 60,
+[00:10:22] tô seguindo no teu raciocínio,
+[00:10:23] que tá perfeito.
+[00:10:24] Passou pra baixo de 60,
+[00:10:25] em algum momento,
+[00:10:26] dentro da área operacional,
+[00:10:27] aí, a gente tem 58 minutos
+[00:10:28] pra isso acontecer.
+[00:10:31] Eu vou poder vender?
+[00:10:33] Ah, não, Zé.
+[00:10:34] Não é só por isso, né?
+[00:10:35] Porque também tá fechado a 200.
+[00:10:36] Eu podia tá colado na 200.
+[00:10:37] Eu podia tá até 1.200.
+[00:10:38] 2.200.
+[00:10:39] A dinâmica alterou.
+[00:10:40] Tudo bem?
+[00:10:41] Tudo bem?
+[00:10:42] Então, a única operação hoje,
+[00:10:44] que é a favor da força dominante,
+[00:10:46] força dominante essa,
+[00:10:47] que sofreu uma alteração
+[00:10:48] significativa hoje,
+[00:10:49] no decorrer do dia de hoje,
+[00:10:50] em qualquer ano,
+[00:10:51] no gráfico de 50,
+[00:10:52] é comprar.
+[00:10:53] Tô olhando agora aqui.
+[00:10:54] Eu posso comprar?
+[00:10:55] Não, o stocasco em 66.
+[00:10:56] Tá claro.
+[00:10:57] Tá claro.
+[00:10:59] E se até uma hora,
+[00:11:00] esse stocasco vir pra baixo de 60,
+[00:11:02] se tiver um micropivô de alta
+[00:11:03] no gráfico de 10 minutos,
+[00:11:04] eu posso comprar?
+[00:11:05] Pode.
+[00:11:06] Pode.
+[00:11:07] Pode.
+[00:11:08] Só com um micropivô,
+[00:11:09] não, senão de queno também, mas
+[00:11:10] são 6 eventos, né?
+[00:11:11] 2 estruturas e 4 senão de queno.
+[00:11:13] Tem que fazer.
+[00:11:14] Ah, Zé, mas a vinda deu certo, né?
+[00:11:16] A gente vai pra essa discussão mesmo.
+[00:11:21] Porque essa discussão é foda, né?
+[00:11:22] Pessoal,
+[00:11:25] não opera todo dia.
+[00:11:29] Não opera todo dia.
+[00:11:37] Ainda tem gente teimando nesse sentido.
+[00:11:39] Eu nunca vi dar certo.
+[00:11:45] Pode ser que você seja o primeiro.
+[00:11:46] Pode.
+[00:11:47] Pode ser que você faça uma abordagem distinta
+[00:11:48] daquelas que eu tentei.
+[00:11:50] Pode, porra.
+[00:11:51] Pode.
+[00:11:52] Pode ser.
+[00:11:53] Eu não posso ser arrogante intelectualmente
+[00:11:54] pra não botar uma porcentagem,
+[00:11:56] né?
+[00:11:57] É, de que sim,
+[00:11:59] vai dar pra ter sucesso dessa forma.
+[00:12:01] Mas é muito difícil.
+[00:12:02] É muito difícil.
+[00:12:03] E pra quem tá entrando,
+[00:12:05] eu preciso o primeiro conter a hemorragia, né?
+[00:12:08] Porque tem dois tipos de alunos que vêm pra cá, pessoal.
+[00:12:11] Ou aqueles que estão começando nisso aqui,
+[00:12:13] ou aqueles que estão sangrando nisso aqui, né?
+[00:12:15] Só tem dois tipos, qual é o outro?
+[00:12:16] Só tem dois.
+[00:12:17] Ou o cara que entra aqui desde o começo,
+[00:12:19] ou muito próximo do começo,
+[00:12:20] porque ele entende que ele quer aprender certo,
+[00:12:22] a maneira certa e tal, beleza?
+[00:12:23] E o cara que tentou, tentou, tentou, tentou.
+[00:12:25] Então, primeiro,
+[00:12:27] eu tenho que conter a hemorragia
+[00:12:30] desse segundo cara aqui.
+[00:12:31] Vocês estão vendo, pessoal?
+[00:12:33] Eu fiz três trades esse mês.
+[00:12:35] Vontade de virar o jogo não me falta.
+[00:12:38] Só que do jeito que tá de
+[00:12:44] 40, 50 dias corridos pra cá, portanto,
+[00:12:47] 30 pegões pra cá,
+[00:12:49] metas de a certeza é 23%.
+[00:12:51] 23%.
+[00:12:54] Se eu continuar acelerando, galera,
+[00:12:56] com essa configuração nefasta,
+[00:12:58] tá fácil de operação?
+[00:12:59] Não tá, eu não sou de falar disso,
+[00:13:00] mas tá difícil pra caralho, porra.
+[00:13:01] Tá difícil, essa porra tá tentando cair.
+[00:13:03] Há um cacetão de tempo, não cai, chara.
+[00:13:04] Por quê? Porque tá distando a média.
+[00:13:06] Pô, eu entendo alguma coisa disso aqui, porra.
+[00:13:07] Eu preciso que você também acredite em mim.
+[00:13:08] Tá longe pra caralho da 200.
+[00:13:10] Cai errático, cai, mas não cai.
+[00:13:11] Cai, mas não cai.
+[00:13:12] Não cai com gosto, só isso.
+[00:13:13] Você vai cair com vontade, com tesão.
+[00:13:15] Não cai, porque tá longe da 200.
+[00:13:17] Aí que esse gráfico fica me chamando?
+[00:13:18] Ó, tem um tradizinho de retorno à média pra tu fazer, tá?
+[00:13:20] Ó, tem um tradizinho de retorno à média pra tu fazer,
+[00:13:22] pra tu se foder, tá?
+[00:13:23] Ó, tem um tradizinho...
+[00:13:24] Todo o jeito fica me cantando pra eu comprar essa bosta.
+[00:13:26] Só que até aqui é compra, o quê?
+[00:13:28] Compa é difícil, porque é contra a contamanada
+[00:13:30] de gnu da savana africana.
+[00:13:32] Tu tá andando em a gazela,
+[00:13:33] e tu tá andando conta essa porra,
+[00:13:34] e é difícil, caralho.
+[00:13:36] É difícil tu achar aqui um tradizinho
+[00:13:38] que entaste tudo e que tu pega aqui um puta
+[00:13:40] um tradizão de retorno à média difícil, ó.
+[00:13:42] Vou encaixar isso aqui.
+[00:13:43] Vai dar?
+[00:13:44] Um ou dois ou três no mês?
+[00:13:45] Talvez dê, mas é um ou dois ou três no mês.
+[00:13:47] Porra, e agora a dinâmica alterou.
+[00:13:49] Pô, beleza.
+[00:13:50] Dá pra eu comprar.
+[00:13:52] Porra, dá.
+[00:13:53] Eu tô perto da Vinci.
+[00:13:54] Eu tô longe da resistência.
+[00:13:55] Um tantão, 3.700 pontos.
+[00:13:56] Porra, dá pra eu comprar.
+[00:13:57] Já tem um pivô de alta me amparando.
+[00:13:58] Já mudou a força dominante.
+[00:14:00] Dê curto prazo.
+[00:14:01] É, mas aí é curto prazo.
+[00:14:02] Isso aqui não é d3, cara.
+[00:14:03] Tu quer falar longo prazo?
+[00:14:04] Eu não consigo falar longo pra dentro de ações.
+[00:14:05] Quanto mais d3?
+[00:14:06] Então é curto prazo.
+[00:14:07] No curto prazo a força dominante alterou.
+[00:14:09] A força dominante alterou.
+[00:14:10] Tô matadando pra eu comprar com a puta.
+[00:14:11] Também não tá dando, ó.
+[00:14:12] Sessenta ou três chocadas.
+[00:14:13] Meu irmão, há trinta dias que o gáfico parece que tá com uma vontade de falar
+[00:14:16] que o operé errado, que o meu sistema tá ultrapassado e que eu tenho um velho
+[00:14:18] de sistema.
+[00:14:19] E há trinta dias eu mando a merda.
+[00:14:21] Tem trinta dias que ele tenta me convencer a fazer uma coisa que eu não quero.
+[00:14:23] E tem trinta dias que eu falo que eu não vou fazer.
+[00:14:25] Essa é a batalha dos últimos trinta dias.
+[00:14:26] E essa porra ainda me tomou 17% da minha comida de capital.
+[00:14:28] Se eu der a puta.
+[00:14:29] E se eu perder a cabeça vai ser pior.
+[00:14:31] Porque aí o 17 vira 60, se vira 60, 50% de rentabilidade.
+[00:14:33] É o momento de ficar tranquilo.
+[00:14:35] É aqui.
+[00:14:36] É nessa fase.
+[00:14:37] Você que tá desanimadinho aí, que sentou na turma nova e caralho,
+[00:14:39] que não teve um ganho ainda aqui.
+[00:14:40] Porra, é eu segui no Instagram, cara.
+[00:14:41] Todo dia tu postava um treino de mil pontos.
+[00:14:42] Foi só eu entrar.
+[00:14:43] É nessa fase aqui que vai fazer a diferença.
+[00:14:46] Entre a performance de quem vai se dar bem nisso aqui
+[00:14:49] e de quem vai ficar perdendo tempo perdendo dinheiro nessa merda.
+[00:14:51] É nesse momento aqui.
+[00:14:52] Não tem momento de mais aprendizado que esse.
+[00:14:54] Eu sei que é chato, é custoso, toma energia,
+[00:14:57] desistimula.
+[00:14:59] Desistimula.
+[00:15:00] Eu sei.
+[00:15:01] Me desistimula também.
+[00:15:02] Também.
+[00:15:03] Eu estaria muito mais satisfeito, muito mais feliz, muito mais realizado
+[00:15:06] se eu tivesse feito 5, 6, 7 níveis mais passados
+[00:15:08] e se eu já tivesse 4 pra frente aqui.
+[00:15:10] Mas essa é a hora.
+[00:15:12] Essa é a hora.
+[00:15:14] Essa é a hora.
+[00:15:15] É agora.
+[00:15:17] É aqui que faz a diferença.
+[00:15:18] É aqui que não dá pra se machucar.
+[00:15:19] É aqui que não dá pra fazer trade.
+[00:15:20] É agora.
+[00:15:21] Porque senão tu vai entrar naquela curva de recuperação lá, irmão.
+[00:15:23] A conta vai diminuir 30, 40, 50, 60% e ó,
+[00:15:25] não tem mais volta.
+[00:15:26] Sabe o que tu vai fazer?
+[00:15:27] É o que tu fez antes de entrar aqui?
+[00:15:29] Teu risco era de 100 reais por trade,
+[00:15:31] e tu fala assim, porra irmão,
+[00:15:32] tenta tentar recuperar.
+[00:15:33] Eu vou aumentar de 100 para 200 reais, o risco.
+[00:15:34] Por que aí?
+[00:15:35] Ninguém nunca fez isso aqui, né?
+[00:15:37] Eu já usei todas essas drogas, pessoal.
+[00:15:39] Porra.
+[00:15:40] Gente, o meu stocacho tá em...
+[00:15:42] Estou vendo vocês falando aí, o meu stocacho tá em 6 a 8, tá errado?
+[00:15:44] O meu tá em 8 períodos e tá em 60.
+[00:15:49] Tá tudo 6 a 8 aqui também.
+[00:15:51] O meu tá em 6 a 8.
+[00:15:52] No computador, vocês estão vendo no celular?
+[00:15:54] Não, eu tô vendo no computador, 60, 90, 61.
+[00:15:56] O meu tá no notebook, 8 períodos e tá em 60 agora.
+[00:15:59] O meu tá em 6 a 7.
+[00:16:00] Tem 60 também.
+[00:16:01] Rapaz.
+[00:16:02] Acabou de cair para 59 e vou em uns quebrados.
+[00:16:04] Calma aí, deixa eu inserir o edicador de novo.
+[00:16:06] Pô, é loucura, né cara?
+[00:16:07] Já fechei o croft, abri de novo e nada.
+[00:16:09] Aqui tá 67, 68 também, tá?
+[00:16:11] 67, 68 também.
+[00:16:13] 50 minutos.
+[00:16:15] Calma aí.
+[00:16:16] Acabei de tirar ele da tela e vou inserir de novo.
+[00:16:19] 6 a 7.
+[00:16:20] O meu eu fiz a mesma coisa,
+[00:16:22] é excluir e influir novamente.
+[00:16:24] Mas deu o mesmo valor pra mim.
+[00:16:25] É, deu o mesmo valor pra mim.
+[00:16:26] Deu a mesma coisa.
+[00:16:28] A linha laranja do chocar média eu nem uso, pessoal.
+[00:16:31] Pois, vê aí.
+[00:16:32] Tirei e coloquei de novo e tá tudo certo.
+[00:16:35] Eu também, 6 a 7.
+[00:16:36] Aqui tira e coloca, funciona, vou tomar 6 a 7.
+[00:16:38] 6 agora.
+[00:16:39] 6 a 7.
+[00:16:40] Tá.
+[00:16:41] Eu tô falando isso que a gente comprando e tal.
+[00:16:43] E o indicador tá cagado.
+[00:16:44] Tá exatamente igual.
+[00:16:45] Tirei e coloquei o indicador tudo de novo, do zero.
+[00:16:46] Vou até que fazer aquela porra que a gente não gosta tudo de novo.
+[00:16:48] É grade fixa ali.
+[00:16:49] Eu tirei e coloquei de novo.
+[00:16:50] Tá.
+[00:16:51] Portanto,
+[00:16:53] eu sei da encedade vocês.
+[00:16:55] Eu sei.
+[00:16:56] Todo mundo gosta de fazer 3.
+[00:16:57] Todo mundo gosta de clicar.
+[00:16:58] Afinal de contas, como assim?
+[00:16:59] É porra.
+[00:17:00] Eu já sei, pessoal.
+[00:17:01] Só que o caminho pra melhora passa pelo remédio que eu tô tentando dar pra vocês.
+[00:17:04] O caminho da melhora passa por aqui.
+[00:17:07] Então eu sei que o remédio é amargo.
+[00:17:09] É difícil pra mim até hoje.
+[00:17:10] Até hoje eu prova esse remédio e quase que a porra do que eu vomito.
+[00:17:12] Eu não tô falando que o remédio não é amargo.
+[00:17:14] Eu não tô mentindo pra vocês.
+[00:17:15] Eu não tô falando que a molezinha, como assim você não consegue?
+[00:17:16] Porra.
+[00:17:17] Não, não tô falando isso, porra.
+[00:17:18] É difícil pra caralho.
+[00:17:19] Mas você vai ter que conseguir pra você vencer nisso aqui.
+[00:17:21] É condição sine qua não.
+[00:17:23] Sine qua não.
+[00:17:25] Se eu tivesse acelerando, senhores,
+[00:17:27] qual seria o meu drawdown de momento?
+[00:17:30] Seria 17% como eu tô?
+[00:17:32] Não.
+[00:17:33] Não.
+[00:17:34] Pra ter entregue uma fração importantíssima daquilo que eu consegui no ano,
+[00:17:38] ficando tentando resolver isso aí, metendo ordem todo dia loucamente.
+[00:17:41] Não caiam na falácia D.
+[00:17:45] Ah, é 80 reais.
+[00:17:47] Vou tentar esse trade aqui.
+[00:17:48] Ah, é 100 reais.
+[00:17:49] O trade de hoje pescaria e tal.
+[00:17:50] Eu fiquei com 500 pontos, 100 reais, ou 200 reais, ou 300 reais.
+[00:17:53] Pô, não me afeta.
+[00:17:54] Meu patrimônio é 400 mil.
+[00:17:55] Então, porra, se eu perder hoje aqui 200 reais, tá tranquilo.
+[00:17:57] Eu tenho 10 mil na conta pra operar.
+[00:17:58] Não cai nisso, pessoal.
+[00:17:59] Por quê?
+[00:18:00] Porque quando você chegar, se Deus quiser,
+[00:18:01] você vai chegar meritocraticamente.
+[00:18:02] Desse jeito não vai chegar.
+[00:18:03] Mas se você chegar na hora de começar a operar cada vez maior,
+[00:18:07] esses vícios vão ser levados pra esse outro universo
+[00:18:10] em que você tá operando maior.
+[00:18:12] Então eu sempre faço uma pergunta aqui dentro
+[00:18:14] que é uma pergunta provocativa.
+[00:18:15] Aqui não precisa responder.
+[00:18:16] Faria esse mesmo trade com 5, 10, 15, 20, 50, 100 mil reais de risco?
+[00:18:20] Pergunta 1, pergunta 2, se tomasse o stop,
+[00:18:22] qual seria a primeira coisa que viria na sua cabeça?
+[00:18:23] Não seria aquela armaçana que ele pivou de alta
+[00:18:24] no gráfico de 5, 10, 20, 20,
+[00:18:25] que a gente falou de manhã no grupo.
+[00:18:26] Henrique perguntou esse negócio,
+[00:18:27] antes do horário operacional,
+[00:18:28] ou sei lá como é que eu olho, ainda respondi ele lá.
+[00:18:30] Ah, mas deu certo.
+[00:18:32] Que merda, né?
+[00:18:36] Porque tem que tomar cuidado pra essa tatuagem não ficar.
+[00:18:40] Tudo bem?
+[00:18:41] Deu pra entender, galera.
+[00:18:43] Essa aula é uma aula importante.
+[00:18:45] É o momento de ficar tranquilo.
+[00:18:47] É difícil.
+[00:18:48] Paca sete, né?
+[00:18:50] Paca pra todo mundo.
+[00:18:51] Pra mim até hoje é um inferno.
+[00:18:53] Mas a gente tá naquela fase
+[00:18:55] que é melhor não fazer onda na piscina.
+[00:18:59] Quanto mais tu mexe na piscina, mais a água esfria.
+[00:19:02] Então fica ali, a aguinha aqui,
+[00:19:04] só a boquinha pra fora fica igual aquela porra
+[00:19:06] que eles colocou de ela.
+[00:19:07] Nem piscas.
+[00:19:08] Fica só assim,
+[00:19:09] porque quanto mais mexe, mais fede.
+[00:19:10] Fechou?
+[00:19:11] Fechou, mano, sério.
+[00:19:15] José, bom dia.
+[00:19:16] Tudo bem?
+[00:19:17] Tudo, tudo.
+[00:19:18] É uma dúvida.
+[00:19:19] Quando começou o dia,
+[00:19:20] quando o treide retornar à média sabendo de todo risco,
+[00:19:23] caso não tivesse violado e mudado a dinanca,
+[00:19:25] mas tivesse o topo.
+[00:19:26] E a situação do mês e do drown out e tudo que você trouxe.
+[00:19:29] Trouxe.
+[00:19:30] E da dinâmica vendedora.
+[00:19:31] Você venderia com algum sinal,
+[00:19:32] com alguma estrutura,
+[00:19:33] ou ainda assim seria um treide aí sim dentro do molde?
+[00:19:35] Porque não violou,
+[00:19:36] mas muito arriscado,
+[00:19:38] dada a sua situação,
+[00:19:39] você não tomaria o treide,
+[00:19:40] ou não a estrutura, não sei,
+[00:19:41] se não tivesse rompido e armado o pivo de alta.
+[00:19:44] Cara,
+[00:19:45] eu tomaria esse treide com um sinal de kendo,
+[00:19:47] ou simples,
+[00:19:48] seria o melhor treide na configuração de mercado
+[00:19:50] que a gente tem para fazer.
+[00:19:51] É um treide de venda
+[00:19:52] a favor da força dominante ampla
+[00:19:53] desses últimos todos os dias.
+[00:19:55] Um treide que eu estaria a 5.800,
+[00:19:58] 6.000 no máximo,
+[00:19:59] pontos da média móvel de 250,
+[00:20:01] que abre de novo a janela
+[00:20:02] para eu operar a favor da força dominante.
+[00:20:03] Então eu tomaria esse treide
+[00:20:04] com tranquilidade,
+[00:20:05] seria o melhor treide para fazer.
+[00:20:07] Seria o melhor treide para fazer,
+[00:20:08] porque ele é muito menos arriscado
+[00:20:09] que o treide de retorno à média.
+[00:20:11] Porque é o treide a favor da força dominante.
+[00:20:12] Então sem dúvida nenhuma,
+[00:20:13] que dentro os cenários de hoje,
+[00:20:15] para mim seria o melhor cenário.
+[00:20:17] Então assim, eu torci pacacete
+[00:20:18] para normais privó de auto no gráfico
+[00:20:19] de 10 minutos
+[00:20:20] e meter um sinal lá de reversão e ir embora.
+[00:20:21] Então assim, se eu tivesse esse sinal
+[00:20:23] que foi vendido,
+[00:20:24] eu teria vendido esse sinal tranquilamente,
+[00:20:25] mas com quem os pontos estão lindos?
+[00:20:26] Se não tivesse feita dinâmica lá.
+[00:20:28] Então sem dúvida nenhuma.
+[00:20:30] Outra dúvida seria,
+[00:20:32] que eu te falei no particular,
+[00:20:33] eu fiz errado,
+[00:20:34] eu tenho um pouco desse visto
+[00:20:35] da questão da margem de erro.
+[00:20:36] Você traz isso para resistência,
+[00:20:37] que é uma região,
+[00:20:38] exatamente, ter que tocar na região.
+[00:20:39] E quando eu parava lá
+[00:20:40] nos 2015 da vida,
+[00:20:41] tinha a questão de também
+[00:20:43] aplicar essa mesma regga
+[00:20:44] para outras situações.
+[00:20:45] E aí que eu errei,
+[00:20:46] até que eu já fiz um trecho fora do modelo.
+[00:20:48] Essa questão para rompimento de toubo
+[00:20:51] para quadrar uma outra dinâmica,
+[00:20:53] é simples assim.
+[00:20:54] Passa o 5, 10 pontos, pronto, violou.
+[00:20:55] Você ainda não sabe se rompeu, claro.
+[00:20:56] Vai esperar ver o gráfico da direita,
+[00:20:57] mas violou, pronto.
+[00:20:58] Tira, acabou a sua...
+[00:21:00] Dinâmica, dinâmica de preço
+[00:21:02] é sempre na violação.
+[00:21:03] Violou por 5 pontos.
+[00:21:05] Alterou a dinâmica, quer dizer.
+[00:21:06] Pensa o seguinte,
+[00:21:07] não deixa de ser um pivô de alta
+[00:21:09] no 50,
+[00:21:11] porque rompeu ou violou o toubo anterior
+[00:21:13] por 5, 10, 15, 100 pontos.
+[00:21:14] É um pivô de alta.
+[00:21:15] O que é um pivô de alta?
+[00:21:16] Violação de um toubo anterior
+[00:21:18] com fundo antes do prévio.
+[00:21:19] A gente teve essa configuração
+[00:21:20] no gráfico de 50 minutos,
+[00:21:21] então isso já basta.
+[00:21:22] Nem sempre a gente vai ter
+[00:21:23] uma armação de um pivô de alta
+[00:21:24] e já explode para cima.
+[00:21:25] Hoje no caso, o que que aconteceu?
+[00:21:27] A gente armou o pivô de alta
+[00:21:28] sem fôlego.
+[00:21:29] Lembra do maratonista?
+[00:21:30] Lembra do estocado?
+[00:21:31] Quando chegou na linha de largada,
+[00:21:32] o que que era a linha de largada?
+[00:21:33] O rompimento do toubo anterior
+[00:21:34] que ativou o pivô.
+[00:21:35] Quando terminou a maratona,
+[00:21:36] eu cheguei para você e falei,
+[00:21:37] porra, sério, corre mais,
+[00:21:39] esse recuo não é rejeição de toubo.
+[00:21:41] Esse recuo
+[00:21:42] é o que probabilisticamente
+[00:21:43] era para acontecer.
+[00:21:44] É obvio que a gente tem que
+[00:21:45] medir esse recuo,
+[00:21:46] esse recuo não para devolver
+[00:21:47] a perna da toda anterior
+[00:21:48] e fudeu, vai fazer um choque de venda.
+[00:21:49] Ali, realinha ou a dinâmica
+[00:21:50] de novo,
+[00:21:51] ou a dinâmica de doa, beleza.
+[00:21:52] Esse respira, esperados.
+[00:21:53] Só que acho que bateu hoje
+[00:21:54] na máxima de hoje,
+[00:21:55] a DT8,
+[00:21:56] eu sei lá quanto que bateu.
+[00:21:57] Exato, mais de 80.
+[00:21:58] Exato, então é normal
+[00:21:59] que a gente não veja
+[00:22:00] continuando puxando loucamente.
+[00:22:01] É normal que entram.
+[00:22:02] algum respiro,
+[00:22:03] será que esse respiro
+[00:22:04] a gente não sabe, né? Agora, eu também não tenho como falar que isso aqui, ó, o gráfico
+[00:22:12] tava assim, pessoal. Então quer dizer, se perder aqui, esse é um conceito que a gente nem trabalha,
+[00:22:18] mas vamos lá. Então quer dizer que se perder aqui é uma rejeição de topo. Como assim isso
+[00:22:22] aqui não pode acontecer, pessoal? A gente vê isso toda hora no índice. Isso aqui não dá pra
+[00:22:27] achar que isso aqui é uma rejeição de topo, não tem materialidade pra isso, porra. A gente só vai
+[00:22:32] saber que rejeitou topo, pessoal, depois de ter rejeitado topo. Eu falei, aí, caralho,
+[00:22:37] rejeitou topo, não loupe. Porra, mas eu não vou vender aqui, né? E eu também não posso
+[00:22:41] vender aqui sem isso tudo estar na tela e falar, não, a probabilidade desse trade aqui de
+[00:22:45] devolver todo esse movimento aqui poderosíssimo e altíssimo. Não, é baixíssimo. Por acaso,
+[00:22:49] hoje aconteceu e deu o alvo do trade, ó. Sei lá como é que é aqui, desculpe. Aqui,
+[00:22:56] caralho. Por acaso foi lá. Por acaso foi. Então, não se coloque em operações de baixa
+[00:23:07] probabilidade. Não se coloque, tá? Se tivesse tá errado, né? Eu quero falar o seguinte,
+[00:23:14] tem que tomar cuidado e por isso que eu faço... tem que tomar cuidado com a tatuagem mental que
+[00:23:19] fica, entendeu? Sim. Porque às vezes, objetivamente, você, ah, não, não, potência errada, puta,
+[00:23:22] pelo menos aí deu dor nível, eu sei que foi errado. Amanhã tá fazendo a mesma
+[00:23:25] coisa daqui a um mês, entendeu? Porque aquela, o sum consciente tá assim, ó, tu fez essa
+[00:23:28] porra aí, te deu um dinheiro, pô. Tu fez essa porra aí, te deu um dinheiro, tu fez isso aí,
+[00:23:30] te tirou da perrengue naquele mês lá. Aí tu faz de novo. Só que de 100 operações dessa,
+[00:23:33] a gente já sabe, né? Como é que vai ser? Ah, valeu, obrigado. Tudo certo,
+[00:23:39] galera. Deu com entender? É um momento de segurar. Sem dúvida alguma, pessoal. É
+[00:23:47] o momento mais desafiador de day trade dos últimos quatro anos. Tô falando pra mim.
+[00:23:52] Sem dúvida. Sem dúvida. Eu não tenho dúvida que eu tô falando. Dúvida. Eu, eu, eu, eu nunca
+[00:23:57] tive uma sequência tão desafiadora em prez e trades em 30 dias de pregão como
+[00:24:01] tô tendo agora. E vou ter que passar por ela, vou ter que sair vivo do outro lado,
+[00:24:05] vou ter que ser humilde, vou ter que aprender, vou ter que segurar, vou ter que
+[00:24:09] entender que eu não sou o brabo, porque tem épocas no ano que o cara acha que
+[00:24:11] ele é o brabo. Graças a Deus, eu tenho um pouco esse problema, mas às vezes ele vem,
+[00:24:14] mas eu tenho um pouco, né? Graças a Deus. Manda. Você falou de período de desafiador, mas
+[00:24:18] você acha que teve janeiro também, não foi? Não, mas não tanto tempo, cara. Não tanto tempo.
+[00:24:22] Já não eu fechei positivo. Já não eu fechei positivo.
+[00:24:25] É que você ficou com os três, é, você ficou em off, né? Você ficou com os dois, três semanas esperando a oportunidade e só caiu.
+[00:24:30] Não, aí tudo bem. Eu não tô falando de momento desafiador pela baixa de sinais operacionais.
+[00:24:35] Eu tô falando de momento desafiador, porque eu tô somando julho. Com a gosto, eu tô três níveis e meio pra trás.
+[00:24:40] É muito raro isso acontecer, cara. Muito raro. Muito raro. Então, de sequência de pregões
+[00:24:45] corridos, eu não tenho dúvida que esses últimos 30 pregões, mais ou menos, o que a gente teve
+[00:24:48] até agora, né, julho e a gosto, é um momento mais desafiador. E na minha concepção,
+[00:24:53] eu tô passando relativamente bem, pô. Tô com 3.4 nível pra trás. E o pessoal, que fique claro,
+[00:24:57] eu tô fazendo o corte de 1º de julho até agora, pô. Eu tô amplamente positivo no ano.
+[00:25:00] Isso aqui não tá colocando em risco o meu resultado do ano. Pelo amor de Deus, pessoal.
+[00:25:04] Mas é um momento que eu tenho que segurar, eu tenho que ter a humildade de falar assim, caralho mesmo.
+[00:25:08] Porra, dos últimos 13 trades que eu fiz, deu certo 3 trades.
+[00:25:13] Sendo que um desses três trades que deu certo, eu fiz 110 pontos.
+[00:25:15] Eu fiquei o dia inteiro posicionado, eu terminou com 103. Quer dizer, nem conta, né?
+[00:25:17] Então assim, se for botar, a taxa é muito baixa, né?
+[00:25:20] Cara, tem que ter humildade, porra, de ver que caralho mesmo.
+[00:25:22] Porra, tá foda, tô tentando de tudo aqui. Tá esquisito. Tá esquisito.
+[00:25:26] Então, o que que faz nesse momento? Pessoal, vocês estão vendo na frente de vocês?
+[00:25:30] A aula, eu sempre falo aqui na mentoria sobre controle de drawdown.
+[00:25:32] Vocês estão vendo isso acontecer na frente de vocês? Eu tô no controle do drawdown.
+[00:25:35] Tô lógico. Tiveram sinais que eu evitei.
+[00:25:40] Porque eu entendo que aquele trade não tem a probabilidade fodida de me botar pra frente,
+[00:25:44] que a chance maior é me fudê, então fico quieto.
+[00:25:46] Eu quero o ouro do ouro do filhameão do ouro.
+[00:25:48] Agora, quando eu tô amplamente pra frente no mês e não sei o que, não sei o que lá,
+[00:25:50] você pode tentar fazer uma coisinha aqui um pouquinho mais arrojada do que outra.
+[00:25:54] Tudo bem, você tem gordura, tem que saber gerenciar isso bem também, né?
+[00:25:56] Porque se não, vira quase que uma indicepina operacional.
+[00:25:59] Então, uma coisa ou outra.
+[00:26:00] Mas por um momento que eu tô, eu preciso, gente, eu preciso de duas operações boas.
+[00:26:03] Se eu fizer duas operações boas, eu apago o julho inteiro e apago a gosto.
+[00:26:07] Então, porra, vou me concentrar nessa porra. E eu vou segurar a onda.
+[00:26:10] Vou segurar a onda. Curva de recuperação.
+[00:26:13] Se eu perder 40% agora, eu tenho que fazer 50 tanto.
+[00:26:15] É difícil. Eu só tenho mais quantos meses até o final do ano.
+[00:26:17] Desconsidera gosto. Tem mais quatro meses, pessoal.
+[00:26:19] O que o meu cara faz? 100% em quatro meses.
+[00:26:22] Oh, difícil.
+[00:26:25] Eu tô dizendo difícil porque eu aparo com 5% de risco.
+[00:26:27] O cara que eu aparo com 2% de risco é impossível.
+[00:26:29] Eu quero ter que acertar quantos trechos.
+[00:26:31] Tem que fazer quantos níveis do mês.
+[00:26:32] Tem que fazer 20 níveis todo mês até o final do ano.
+[00:26:33] Vai, vai. O modelo não dá isso.
+[00:26:35] É o que eu aparo com 500, que é bastante coisa.
+[00:26:37] E, sabendo que eu aparo com 5%, eu também...
+[00:26:39] Lembra aquele gráfico que eu estou mostrando no começo da aula?
+[00:26:40] Eu sei que a minha exposição ao drawdown é maior do que quem eu aparo com 2%,
+[00:26:43] com 1%, com 3%, com 4%.
+[00:26:45] Então, quando está ganhando, ganha forte, porque cada trade correto
+[00:26:48] vira 10% segundo o capital operacional, mas você tem a ré também.
+[00:26:51] A ré é rápida também. Então, eu tenho que tomar conta, é.
+[00:26:53] Porque eu estou operando já num tamanho.
+[00:26:55] Nesses anos todos, cheguei nesse tamanho aqui.
+[00:26:57] Pessoal, eu sempre falo aqui, é nada, tá?
+[00:27:00] É sempre que eu aparo com 5 mil de risco no dia.
+[00:27:02] É nada. Tem gente que opera muito maior.
+[00:27:03] Não, é cavalarmente maior. Não é nada.
+[00:27:05] Eu sou cocô do cavalo bandido.
+[00:27:07] Dentro da corretora, a nível de resultado...
+[00:27:09] Percentual ou não?
+[00:27:11] Então, é que já me abriu as portas aqui, abriu.
+[00:27:13] Mas de tamanho de mão, pô, sou cocô do cavalo bandido, pessoal.
+[00:27:15] Tem gente que faz day 3 no mês aí, que acerta tudo.
+[00:27:17] Aí, cara, faz 500 mil, 300 mil, 200 mil.
+[00:27:19] Eu no mês aqui que dá tudo certo aqui, eu faço 30 pau.
+[00:27:21] No final do mês. No ano do dia.
+[00:27:23] No final do mês. 6 níveis. Eu faço 30 pau, só sem níveis.
+[00:27:25] Na verdade, 7 níveis, né?
+[00:27:27] Para você ter líquido 30 mil, mais ou menos.
+[00:27:29] É assim. Eu opero pequeno.
+[00:27:31] Mas...
+[00:27:33] É nessa hora que você vê.
+[00:27:35] E se eu tivesse operando com 20 pau de risco em um portrêdeo?
+[00:27:37] Tá? Vou 80 mil para trás, pessoal.
+[00:27:39] 80 mil para mim, na minha realidade, é muito dinheiro, pô.
+[00:27:41] É muito dinheiro. Você acha que eu estaria...
+[00:27:43] É que eu não estou tranquilo, mas...
+[00:27:45] Você acha que eu estaria tranquilo? Não estaria tranquilo, pô.
+[00:27:47] Eu estaria lidando pior com essa situação do que eu estou lidando agora.
+[00:27:49] Vocês não estão me vendo desesperados? Eu não estou...
+[00:27:51] Desesperado fora das câmeras aqui, que você não estou indo desespero.
+[00:27:53] Eu estou dormindo. Eu não estou remédio para dormir. Eu não estou com leiro.
+[00:27:55] Tá tudo bem. Eu estou tudo bem.
+[00:27:59] Porque eu estou dentro daquilo que tá bom para mim.
+[00:28:01] Mas num ano positivo, sei lá quantos...
+[00:28:03] Tá tranquilo para mim. Agora, pô, imagina.
+[00:28:05] Tu está para trás 80. Imagina eu ter feito 100
+[00:28:07] no ano de lucro líquido e agora eu perdi 80.
+[00:28:09] Caralho, muita coisa. Eu não consigo viver assim.
+[00:28:11] Tá? Então tem muito também do que a pessoa aguenta.
+[00:28:13] É uma grande verdade, é essa.
+[00:28:15] Tá? Então é isso.
+[00:28:17] É hora de estar tranquilo.
+[00:28:19] É hora de estar com o regulamento de baixo
+[00:28:21] do braço total.
+[00:28:23] Por quê? É sim. Olha aqui
+[00:28:25] de janeiro de 23, quando eu comecei esse programa aqui com vocês.
+[00:28:27] Poucas vezes, ou quase nenhuma, eu falei
+[00:28:29] isso que eu estou falando para vocês. É um momento
+[00:28:31] difícil.
+[00:28:33] É um momento difícil.
+[00:28:35] Tá? Não sei por qual motivo, não interessa.
+[00:28:37] Um já vai falar que é negócio da eleição. Eu não sei.
+[00:28:39] Como é que eu vou dizer? Qual é a prova que eu tenho para dizer que tá difícil
+[00:28:41] por causa da eleição? Eu não sei, porra.
+[00:28:43] Não interessa o que que é. Não muda. Eu saber o motivo
+[00:28:45] do porquê tá difícil. O fato é, está difícil, entendeu?
+[00:28:47] Não muda, eu saber o motivo. Ah, soube o motivo. Vai melhorar.
+[00:28:49] Se eu soube o motivo, não vai melhorar para continuar a minha bosta.
+[00:28:51] Tá difícil. Então, se tá difícil, eu tenho que
+[00:28:53] segurar. É o que eu estou fazendo.
+[00:28:55] Eu todo dia eu peço, pelo amor de Deus,
+[00:28:57] pra eu fazer o seu sinal todo dia, até sair,
+[00:28:59] dessa gráfica melhorar um pouquinho, mudar, entendeu?
+[00:29:01] Eu sento aqui, já sento com medo, eu olhando
+[00:29:03] com o olho só, falando pelo amor de Deus,
+[00:29:05] não ative isso aqui, não, é engraça de não ativou.
+[00:29:07] É, porra, eu estou assim, né?
+[00:29:09] Porque gata escaldado, né?
+[00:29:11] Tá? Gata escaldado, tá?
+[00:29:13] Não, Ralinho, não tem que pedir desculpa a ninguém.
+[00:29:15] Bom, eu já cansei de fazer merda aqui também.
+[00:29:17] Tem que pedir desculpa, porra, eu quero que vocês aprendam,
+[00:29:19] porra, e que vocês corram o menor
+[00:29:21] risco possível na curva de aprendizado.
+[00:29:23] Por que eu preciso tomar conta de vocês nesse
+[00:29:25] melhor dizendo, né? Então é isso, você não deve desculpar ninguém, porra. Não existe isso.
+[00:29:30] Existe é. Eu quero que você entenda o risco, porra. Isso pra mim tá ótimo. Entendeu? Não,
+[00:29:35] beleza. Agora eu entendi o que esse filho da puta me falando. É isso. Se chegou nessa conclusão
+[00:29:39] aqui no final da sala, tá ótimo pra mim. Tá ainda ganhando dinheiro aí? Porra, tá bom pra caralho.
+[00:29:42] Tu ganhou dinheiro e ainda aprendeu um negócio pra tu não fazer mais a frente. Meu irmão,
+[00:29:44] você tem dia melhor que esse, eu desconheço. Queria eu todo dia, eu ganhar um dinheiro
+[00:29:47] e ainda aprender todo dia a não fazer um negócio que vai me fuder na frente. Caralho,
+[00:29:50] puta que pariu. Eu estaria bilionário em dólar, né? Eu estaria no mesmo e...
+[00:29:53] com mesmo eate do Elon Musk, porra. Então é assim. Não tem isso não, cara. Não tem isso, tá?
+[00:29:59] Eu preciso tomar conta de vocês. Estamos em um mar desafiador. Eu não escolho o mar.
+[00:30:06] Cada turma que começa aqui começa num mar. Tem várias turmas que começaram aqui
+[00:30:09] também no desafio. Uma porrada de turma começou aqui, o primeiro mês e meio foi
+[00:30:12] um de três, não dava sinal, não sei o que depois. Foi embora. Pessoa porra,
+[00:30:15] eu nunca fiquei positivo e dei treito agora. Ah, me mando relatório. Porra,
+[00:30:17] olha aqui, deixa eu entender a mentoria, porra, meu resultado melhor. Então,
+[00:30:19] são fases. A gente está numa fase complicada. Numa fase que eu deteste
+[00:30:24] essa palavra, porque eu não vou desaparar na minha vida, que é difícil.
+[00:30:27] Uma fase que está realmente difícil. Tá realmente difícil, tá? Então a gente
+[00:30:30] tem que ter parcimônia, tem que ter muita paciência, né? Não acham que
+[00:30:32] para mim é que está fácil. Não, a vida do cara tá tranquila.
+[00:30:35] Não tá, você tá a merda, não gosta do resultado do momento. Tá uma merda,
+[00:30:37] eu queria estar com um resultado melhor, eu queria estar entregando
+[00:30:39] um resultado melhor para você, mas também eu entendo que eu não sou
+[00:30:41] Deus, não dá para mexer no gráfico, né? Se dá para mexer no gráfico,
+[00:30:43] eu vou fazer exatamente o que eu queria fazer e bola para ver, não dá.
+[00:30:45] Então eu tenho que esperar, eu tenho que esperar de os melhores e até lá
+[00:30:48] você vai tomar conta de vocês, esse é o meu objetivo, entendeu?
+[00:30:50] Eu não posso perder um tripulante nesse mar revolto aí.
+[00:30:52] Agora o barco vai te apoiar, irmão, vocês vão enjoar, vocês vão
+[00:30:54] vomitar, vai dar náusea, vai, o risco de acidente no convéio
+[00:30:56] aumenta, então tem que estar tudo muito bem preso.
+[00:30:58] É isso que eu estou avisando para vocês, entendeu?
+[00:31:00] É isso que eu estou avisando. Gente, vocês vão enjoar,
+[00:31:02] tá mexendo muito. Então, mas eu não vou perder ninguém.
+[00:31:04] Tá todo mundo de colete, entendeu? Não vou perder ninguém.
+[00:31:06] Tá todo mundo fazendo procedimento padrão, quando a gente
+[00:31:08] está se deslocando e não tá pescando, tá todo mundo dentro
+[00:31:10] do barco sem ficar no convéio fumando cigarra e batendo papo,
+[00:31:12] né? Então, eu tenho que tomar conta da tripulação.
+[00:31:15] Eu estou tentando fazer no momento, tá?
+[00:31:17] É isso, é um trabalho difícil e é um trabalho de todo dia.
+[00:31:20] Eu tô quase todos os dias aqui falando com vocês, não é isso?
+[00:31:22] A gente tá muito em contato, eu preciso estar o tempo todo em contato com vocês.
+[00:31:24] Tem um mercado que vocês andam mais sozinhos e que eu sei que
+[00:31:26] tá tranquilo pra você andar um pouquinho mais sozinho, né?
+[00:31:28] Porque o mar tá calmo, o barco tá fundiado, porra,
+[00:31:30] não tá ventando, porra, foda-se, quer fumar um cigarro lá na puta
+[00:31:32] que pariu do barco lá com o chupé pra fora do barco?
+[00:31:34] Fuma, mas não vai dar merda. Agora, nessa fase aqui, não.
+[00:31:36] Então, nessa fase, até porque tu fumas cigarro dentro do barco,
+[00:31:38] tu ir lá pra fora pra fumar o quê? Olha a merda que vai dar.
+[00:31:40] Tu vai me cair na porra do mar, tu vai se fuder,
+[00:31:42] eu vou ter que parar o barco, voltar, te resgatar, olha a merda, né?
+[00:31:44] Então, pra gente não ter esse problema, nem eu nem você,
+[00:31:46] fica tranquilinho aqui dentro do barco, entendeu?
+[00:31:48] Vai chegar a hora que o mar, o mar vai acalmar, porque isso sempre acontece.
+[00:31:50] E a gente vai falar, porra, meu irmão, caralho, passando por aquela porra lá.
+[00:31:52] Julia Agu, lembra? Julia Agu, esse ano é um polêmico, né?
+[00:31:54] Aí a gente vai tá lá em novembro, em outubro, né?
+[00:31:56] Porra, a gente pra frente, caralho, porra,
+[00:31:58] ver se é que ela faz ou não faz. Ah, mas sempre passa.
+[00:32:00] Tem uma porra de fase difícil aqui, sem passar, né?
+[00:32:02] Sem passar. Fechou?
+[00:32:04] É isso, abraço a vocês.

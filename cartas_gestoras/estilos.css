@@ -1,0 +1,76 @@
+:root{
+  --marinho:#151a2b;
+  --marinho2:#232b45;
+  --ciano:#fc2764;
+  --ciano-claro:#ff7ea3;
+  --fundo:#f5f6f9;
+  --card:#ffffff;
+  --texto:#151a2b;
+  --texto2:#5a6478;
+  --borda:#e4e7ef;
+  --verde:#2e7d4f;
+  --verde-bg:#e6f3ec;
+  --sombra:0 2px 14px rgba(21,26,43,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;background:var(--fundo);color:var(--texto);line-height:1.6}
+
+/* Topo */
+.topo{background:linear-gradient(135deg,var(--marinho),var(--marinho2));color:#fff;padding:20px 24px;box-shadow:var(--sombra);border-bottom:3px solid var(--ciano)}
+.marca{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.logo{width:44px;height:44px;object-fit:contain;display:block;filter:drop-shadow(0 2px 6px rgba(252,39,100,.35))}
+.topo h1{font-size:21px;font-weight:700}
+.sub{color:var(--ciano-claro);font-size:13px}
+.abas{display:flex;gap:8px;flex-wrap:wrap}
+.aba{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.15);padding:8px 16px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;transition:.15s}
+.aba:hover{background:rgba(255,255,255,.18)}
+.aba.ativa{background:var(--ciano);color:var(--marinho);border-color:var(--ciano)}
+
+/* Layout */
+main{max-width:920px;margin:24px auto;padding:0 16px}
+.rodape{text-align:center;color:var(--texto2);font-size:12px;padding:24px}
+.rodape code{background:#e5e9f0;padding:2px 6px;border-radius:4px}
+
+/* Controles */
+.controles{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;align-items:center}
+.busca{flex:1;min-width:200px;padding:12px 16px;border:1px solid var(--borda);border-radius:10px;font-size:15px;background:var(--card)}
+.busca:focus{outline:none;border-color:var(--ciano);box-shadow:0 0 0 3px rgba(252,39,100,.2)}
+select{padding:12px 14px;border:1px solid var(--borda);border-radius:10px;font-size:14px;background:var(--card);cursor:pointer}
+.contador{color:var(--texto2);font-size:13px;margin-bottom:14px}
+
+/* Card de carta */
+.carta{background:var(--card);border:1px solid var(--borda);border-radius:14px;padding:20px 22px;margin-bottom:16px;box-shadow:var(--sombra);transition:.15s}
+.carta.lida{opacity:.62}
+.carta-topo{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.carta-gestora{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:15px;color:var(--marinho)}
+.pill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:#eef2f7;color:var(--texto2)}
+.pill.cat{background:rgba(252,39,100,.14);color:#c81050}
+.carta-data{color:var(--texto2);font-size:12px;white-space:nowrap}
+.carta h3{font-size:17px;margin:2px 0 8px;color:var(--marinho)}
+.tese{font-style:italic;color:var(--texto2);border-left:3px solid var(--ciano);padding-left:12px;margin:10px 0 14px}
+.carta ul{margin:8px 0 12px;padding-left:20px}
+.carta li{margin-bottom:7px;font-size:14.5px}
+.meta-linha{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.tag{font-size:11px;background:#eef2f7;color:var(--texto2);padding:3px 9px;border-radius:6px}
+.ativos{font-size:13px;color:var(--texto);margin-top:10px}
+.ativos b{color:var(--marinho)}
+.carta-acoes{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
+.btn{border:none;cursor:pointer;font-size:13px;font-weight:700;padding:8px 14px;border-radius:8px;transition:.15s}
+.btn-ler{background:var(--ciano);color:#fff}
+.btn-ler:hover{background:#d81a5e}
+.btn-marcar{background:#eef2f7;color:var(--texto)}
+.btn-marcar:hover{background:#e0e6ee}
+.carta.lida .btn-marcar{background:var(--verde-bg);color:var(--verde)}
+a.link-pdf{color:#c81050;font-size:13px;font-weight:600;text-decoration:none}
+a.link-pdf:hover{text-decoration:underline}
+
+/* Gestoras */
+.grid-gestoras{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.gestora-card{background:var(--card);border:1px solid var(--borda);border-radius:12px;padding:16px 18px;box-shadow:var(--sombra)}
+.gestora-card h3{font-size:16px;color:var(--marinho);margin-bottom:6px}
+.gestora-card .info{font-size:12.5px;color:var(--texto2);margin-bottom:10px}
+.gestora-card a{color:#c81050;font-size:13px;font-weight:600;text-decoration:none}
+.gestora-card a:hover{text-decoration:underline}
+.gestora-card .n-cartas{font-size:12px;color:var(--ciano);font-weight:700}
+
+.vazio{text-align:center;color:var(--texto2);padding:40px 20px;font-size:15px}

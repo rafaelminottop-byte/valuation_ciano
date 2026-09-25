@@ -1,0 +1,851 @@
+FONTE: https://www.dynamo.com.br/wp-content/uploads/2026/04/Carta-Dynamo-128.pdf
+PAGINAS: 8
+CARACTERES: 41748
+
+Carta
+DYNAMO 128
+Na Carta passada, tratamos das “consequências 
+não intencionais” (CnIs) das iniciativas humanas, definidas 
+quando uma ação deliberada provoca um efeito particular 
+diferente do que se desejava no momento da realização 
+do ato, resultado este que muito provavelmente não teria 
+ocorrido caso a iniciativa original não tivesse sido tomada. 
+Lembramos que as CnIs são fenômenos pervasivos a tal 
+ponto que já adquiriram o status de “Lei”, podendo admitir 
+a taxonomia de “negativas” ou “positivas”. As negativas ge
+-
+ralmente descrevem situações cujo efeito ocorreu na direção 
+contrária da intenção inicial.
+Vimos que a economia em geral e o ambiente corpo-
+rativo em particular são próprios para a ocorrência de CnIs. 
+Exploramos duas linhas de explicações: a primeira enfatiza 
+as limitações do nosso aparato cognitivo nas tomadas de 
+decisões individuais e coletivas, incapaz de abranger todas as 
+variáveis que interferem em nossas decisões e compreender 
+seus desdobramentos; a segunda identifica que os ambientes 
+regidos pela lógica da complexidade – ou seja, formados 
+por um grande número de interações frequentes, como a 
+economia, o mercado e as empresas –,  dispõem, pela sua 
+natureza, da capacidade de produzir comportamentos e 
+atributos diferentes daqueles observados a partir da análise 
+isolada da atuação de seus participantes. São realidades 
+que desafiam um padrão mental monolítico/linear e o nosso 
+conhecido apreço por atribuir causalidade em toda parte. 
+Diante do desconforto com a ambiguidade, o desejo de 
+controle e direcionamento aflora, provocando intervenções 
+que quase sempre resultam desastrosas. 
+Concentramos a análise nas CnIs negativas já que 
+nossa preocupação primária como gestores é a de pre
+-
+servação de patrimônio dos nossos investidores. Formar 
+entendimentos e estabelecer disciplinas capazes de nos 
+ajudar a perceber tempestivamente decisões empresariais 
+que venham a resultar em surpresas desfavoráveis será sem
+-
+pre de inestimável valor. Terminamos o texto enumerando 
+algumas destas diligências e reconhecendo com humildade 
+a dificuldade da tarefa.
+Aproveitando a simetria, a ideia agora seria explorar o 
+outro lado: as CnIs positivas. A investigação aqui seria mais 
+na linha da curiosidade intelectual, já que o efeito prático 
+de explorar opcionalidades, pelo que dissemos acima sobre 
+nossas prioridades enquanto gestores, apresenta valência 
+menor do que evitar perdas.
+Também são numerosos os exemplos de CnI positi
+-
+vas. Infiltramos propositalmente na Carta passada um dos 
+mais famosos: a descoberta da penicilina. Como ilustração, 
+podemos lembrar outros talvez já bem conhecidos. Ao final 
+do século XIX, o físico alemão Wilhelm Roentgen investi
+-
+gava se raios catodos poderiam permear o vidro. Apesar 
+de usar um cartão preto para cobrir o tubo, Roentgen foi 
+surpreendido por uma luz verde incandescente que escapou 
+e foi se projetar em uma tela florescente próxima. Através 
+de sucessivos experimentos, observou que a luz misteriosa 
+atravessava a maioria das substâncias, mas deixava sombras 
+em objetos sólidos. Ainda sem compreender a razão, nascia 
+o incógnito raio-X.
+Poucos anos depois, o médico Charles Richet e cien
+-
+tista Paul Portier participavam de uma viagem oceanográfica 
+a bordo do veleiro do Príncipe Alberto de Mônaco, entusiasta 
+da biologia marinha, quando foram instigados a estudar as 
+toxinas contidas nos filamentos de águas-vivas. Experiências 
+com pombos confirmaram o poder paralisante da substân
+-
+cia. Quando aplicados em cães, de forma surpreendente, 
+alguns vieram a óbito súbito após uma segunda injeção. 
+Estava descoberta a reação anafilática, ensejando avanços 
+fundamentais em imunologia, que conferiram a Richet o 
+Nobel de medicina em 1913.
+A disciplina da medicina é particularmente rica em 
+descobertas inesperadas: antibióticos, anestésicos, antide
+-
+pressivos, drogas quimioterápicas e anticoagulantes, a lista 
+é longa. Em 1947, dois alergistas do hospital Johns Hopkins 
+prescreveram um novo anti-histamínico, dramamine, para 
+o tratamento de urticária. A paciente que sofria frequentes 
+enjoos reportou que nada sentiu após ter ingerido o remédio 
+antes de uma viagem sinuosa. Após um ensaio clínico de 
+larga escala a droga foi aprovada. Ano passado, estima-se 
+que o Dramin e seus pares foram responsáveis por cerca de 
+U$ 1,5 bilhão em vendas. 
+No mundo empresarial e no ambiente de negócios 
+também são numerosos os casos de CnIs positivas, des
+-
+cobertas acidentais que se provaram sucesso comercial. 
+O Post-it da 3M é uma das mais famosas. Spencer Silver, 
+64/4  2025
+Os Serendipitistas
+2
+quando percebeu que a barra de chocolate em seu bolso 
+havia quase derretido. Testou outros alimentos, e o milho 
+virou pipoca, o ovo cru aqueceu até explodir. Estava criado 
+o forno de micro-ondas.
+A força dos sucessos não intencionais, afastados 
+das intenções iniciais, alcança não apenas produtos, mas 
+também modelos de negócios e propósitos empresariais. 
+A Tiny Speck era uma start-up voltada para o projeto de 
+um jogo online original, chamado Glitch. Após três anos 
+de desenvolvimento e alguns milhões de dólares gastos, o 
+produto fracassou. Acontece que a equipe percebeu que 
+a ferramenta desenvolvida para comunicação interna era 
+superior às existentes e decidiu pivotar o software. Assim 
+nasceu a Slack 1, “não de um plano, mas de um desvio”. 
+Sete anos após o lançamento da plataforma, a companhia 
+foi vendida à Salesforce por U$ 27,7 bilhões. 
+O YouTube foi concebido originalmente em 2005 
+como um site de encontros online chamado “Tune In, Hook 
+Up”, onde os usuários deveriam postar seus vídeos pessoais 
+a fim de atrair parceiros. A ideia jamais pegou tração até que 
+Jawed Karim postou um vídeo chamado “Eu no zoológico” 
+e os fundadores decidiram abrir a plataforma para qualquer 
+tipo de vídeo. No ano seguinte, o YouTube se transforma -
+ria em um dos primeiros “unicórnios” da era moderna da 
+internet, sendo adquirido pelo Google por U$ 1,65 bilhão. 
+O Instagram era inicialmente um aplicativo de check
+-
+-in baseado em localização chamado Burbn, que também 
+permitia baixar fotos. Inspirado no FourSquare, o Burbn 
+não deu certo. Os fundadores perceberam que as pessoas 
+gostavam mesmo de tirar e postar fotos de seus celulares. E 
+assim, desenvolveram uma forma fácil de fazê-lo. Lançado 
+em 2010, em três meses, o Instagram já tinha um milhão 
+de usuários. Em 2012, o Facebook adquiriu o Instagram 
+por U$ 1 bilhão.
+Nos anos de 1960s, a Honda decidiu entrar no mer
+-
+cado de motocicletas nos Estados Unidos. Aparentemente, 
+sem um plano muito bem definido, a ideia inicial era atender 
+o mercado intermediário. Ocorreu que os funcionários da 
+Honda usavam motos pequenas, de 50 cilindradas, para 
+fins pessoais e distração. Rodando por Los Angeles, atraíam 
+atenção, a ponto de um comprador da Sears ligar mostrando 
+interesse. A Honda compreendeu a oportunidade e mesmo 
+sem haver um plano inicial para fazê-lo, decidiu fabricar 
+as “cinquentinhas”, que eram vendidas não nos canais de 
+1 Do acrônimo em inglês Searchable Log of All Conversation 
+and Knowledge – registro pesquisável de todas as conversas e 
+conhecimentos.
+cientista da companhia, buscava criar um super adesivo 
+para aplicações em equipamentos aeroespaciais, mas seus 
+experimentos redundaram em resultado contrário: uma cola 
+de fraca aderência que não deixava vestígios nas superfícies. 
+Considerado um fracasso, o composto foi engavetado, até 
+que seis anos depois, outro cientista da 3M, Art Fry, frustrado 
+com o desempenho dos marcadores em seu livro de cantos 
+litúrgicos, lembrou-se da descoberta. Após testes em labo
+-
+ratório, o produto foi lançado comercialmente com grande 
+sucesso, não apenas como simples marcador, mas como 
+“uma forma totalmente nova de comunicação”. Estima-se 
+que a marca rendeu em 2024 para 3M cerca de U$ 1,2 
+bilhão em vendas.
+Na segunda metade da década de 1970, os enge
+-
+nheiros do instituto de tecnologia de produto da Canon 
+realizavam pesquisas sobre tecnologias de impressão para a 
+próxima geração de máquinas copiadoras, entre as quais a 
+impressão a jato de tinta, que já se mostrava potencialmente 
+promissora. A tecnologia padrão na época baseava-se na 
+capacidade de determinados materiais como o quartzo 
+gerarem carga elétrica quando submetidos a estresse me
+-
+cânico (efeito piezoelétrico). Durante um dos testes, um ferro 
+de solda quente tocou acidentalmente a agulha de uma 
+seringa cheia de tinta, fazendo com que a tinta espirrasse 
+da ponta da agulha. Um membro da equipe de pesquisa, 
+observando o imprevisto, percebeu que o calor, em vez da 
+pressão, talvez pudesse ser usado para induzir o spray de 
+tinta. Após sucessivos refinamentos, a Canon se tornou líder 
+de mercado de impressora jato de tinta com esta tecnologia.
+Outra descoberta acidental que se transformou em 
+produto icônico foi o velcro. Após um passeio pelos Alpes 
+com seu cão, o engenheiro suíço Georges de Mestral voltou 
+para casa com inúmeros carrapichos de bardanas grudados 
+em sua roupa e no pelo do animal. Ficou curioso pelas 
+propriedades aderentes da planta e decidiu colocá-la no 
+microscópio, quando observou que ela era formada por 
+inúmeros pequenos ganchos. Após sucessivos testes, o nylon 
+foi escolhido como material ideal. Estava criado o velcro em 
+1941, cujo nome combina em francês as palavras veludo 
+(velour) e gancho (crochet). A indústria da moda não acolheu 
+com entusiasmo a inovação num primeiro momento, mas o 
+material ganhou popularidade na década de sessenta quan
+-
+do foi amplamente utilizado pela NASA em trajes espaciais 
+e equipamentos.
+Percy Spencer foi um jovem curioso, desde cedo intri-
+gado pelo fascínio da eletricidade. Na marinha americana, 
+ajudou a desenvolver o magnétron, uma válvula a vácuo de 
+alta potência geradora de correntes, tecnologia usada na 
+2ª Guerra para detectar movimentos aéreos. Como pesqui
+-
+sador da Raytheon, antiga American Appliance Company, 
+Spencer fazia experiências com radares e magnétrons 
+3
+revenda especializados, mas em lojas de artigos desportivos, 
+atendendo a demanda de uma classe média afluente. 
+Os exemplos de CnIs positivas se multiplicam em 
+diversas disciplinas, da medicina à economia, da história à 
+tecnologia, da pesquisa básica à política, nas artes, negócios 
+e organizações, carreiras e biografias. A ponto que a língua 
+inglesa cunhou uma palavra um tanto quanto estranha: 
+“serendipity”. Algumas traduções para línguas vernáculas 
+parecem mais usadas, mas no português “serendipidade” 
+certamente não pegou. Preferimos dizer “acaso feliz”, ou 
+“surpresa agradável” que, como veremos logo a seguir, são 
+versões simplificadas que não capturam o sentido completo 
+do termo original. Desculpando-nos desde já, no restante 
+do texto, assumimos o anglicismo.
+A palavra foi cunhada em 1754 pelo escritor Horace 
+Walpole, surgindo pela primeira vez em uma carta para 
+um amigo. Walpole referia-se a um “conto de fada bobo” 
+chamado “ As Viagens e Aventuras dos Três Príncipes de 
+Serendip”
+2 (nome do antigo Ceilão, hoje Sri Lanka), onde 
+os protagonistas “estavam sempre fazendo descobertas, por 
+acidente ou sagacidade, de coisas que eles não estavam 
+buscando” (Merton & Barber, 2004). Ou seja, serendipity 
+seria uma certa “ sagacidade acidental”. A ambiguidade 
+do significado já estava lá, desde a origem, e nem por isso 
+impediu sua contínua difusão na língua inglesa. Robert K. 
+Merton – olha ele aqui novamente – encantado por sua 
+dupla valência e sonoridade, chegou a escrever um livro de 
+trezentas páginas sobre a história, a semântica, a sociologia 
+e as implicações morais da palavra
+3.
+Desde então, o interesse pelo conceito só faz crescer. 
+Uma busca na plataforma de artigos acadêmicos Scielo 
+aponta em torno de 1,4 mil artigos com a palavra “serendi
+-
+pity” no título. No goodreads, encontramos 3,8 mil obras, 
+inclusive coleções completas. Séries de podcasts, identifica
+-
+mos pelo menos oito. É claro que nossa curiosidade aqui 
+estará restrita ao que diz respeito às companhias. 
+No dicionário, o termo admite duas definições: (i) 
+“situação agradável que acontece sem aviso, de maneira 
+inesperada”, estando aqui associada à eventualidade, 
+fortuna ou sorte; ou (ii) no sentido de uma “habilidade de des
+-
+cobrir alguma coisa por acaso, sem intenção nem previsão”, 
+conectada neste caso com aptidão, talento, capacidade. Os 
+2 Como de costume, as referências completas utilizadas neste texto 
+podem ser encontradas em nosso site: https://www.dynamo.com.br
+3 Merton terminou o esboço do texto em 1958, mas a obra “The 
+Travels and Advetures of Serendipity: A Study in Sociolocigal 
+Semantics and the Sociology of Science” só foi publicada em 
+2004 por Elinor Barber, um ano após seu falecimento.
+artigos acadêmicos sugerem definições que combinam os 
+elementos acima, e assim temos: “descoberta surpreendente 
+que resulta de momentos não planejados nos quais nossas 
+decisões e ações levam a resultados valiosos” (Busch, 2024), 
+“descoberta inesperada de uma oportunidade gerada por 
+uma ação proposital” (Fultz & Hmieleski, 2021), ou ainda 
+“descoberta acidental de algo que, post hoc, se mostra va
+-
+lioso” (Cunha et al., 2010).  Na literatura de gestão, alguns 
+associam o conceito a um processo, outros a um resultado. 
+Fazendo uma síntese, são quatro os elementos principais que 
+caracterizam serendipity, os três primeiros dizem respeito às 
+condições, o último ao resultado: (i) uma iniciativa ou busca, 
+geralmente, mas não necessariamente proposital; (ii) alguma 
+competência prévia, conhecimento ou preparo anterior, as
+-
+sociado a atributos tais como sagacidade, estado de alerta, 
+intuição; (iii) a ocorrência de algum evento contingente, uma 
+surpresa; (iv) um resultado valioso, que pode ser uma nova 
+possibilidade ou solução, uma descoberta interessante, uma 
+alternativa promissora.
+Encontramos também uma tipologia para os dife
+-
+rentes casos de serendipity. De forma simplificada, temos:
+• Tipo I, também chamada de “arquimedesana”, ocorre 
+quando o indivíduo busca a solução para o problema 
+A, que não vem pela maneira esperada, mas através 
+de uma informação ou evento insuspeito B, como a 
+banheira que permitiu Arquimedes entender o princípio 
+do empuxo e resolver o problema específico que o rei 
+Heirão lhe havia proposto. No caso dos exemplos aci
+-
+ma, o Youtube se classifica nesse grupo: a solução para 
+o problema do engajamento veio por um insight novo, 
+não planejado nem esperado, de abrir o conteúdo ao 
+invés de ficar restrito ao tema específico de promover 
+encontros;
+• Tipo II, ou “colombiana”, ocorre quando se procura a 
+solução para o problema A, mas ao invés de resolver A 
+se descobre algo novo B, tal qual Colombo buscando 
+chegar às Índias encontra a América. Aqui, estariam 
+os casos do Post-it, da Canon, do Slack, do raio-X, do 
+micro-ondas e do choque anafilático;
+• Tipo III, ou “galileana”, ocorre quando, ainda que não 
+se esteja engajado ativamente em algum problema, uma 
+informação ou evento novo e surpreendente motiva a 
+descoberta de algo inesperado. Neste caso, a ênfase 
+recaí sobre a condição (ii) acima, as competências pré
+-
+vias do indivíduo, que o permitem perceber e despertar 
+para a oportunidade, ainda que não estivesse em um 
+modo de busca ativa, como Galileo que observava pelo 
+telescópio o relevo da lua, quando descobriu quatro 
+luas do planeta Júpiter. Neste caso, os exemplos de 
+descobertas acionadas de forma despretensiosa seriam 
+4
+o Velcro e o interesse do mercado americano pelas 
+“motinhas” da Honda.
+Neste último grupo também poderíamos enquadrar 
+um tipo de fenômeno que por vezes ocorre no ambiente em-
+presarial. Isso acontece quando uma companhia operando 
+business as usual é alcançada por uma tendência eventu
+-
+almente pouco previsível no ecossistema de negócios, seja 
+o aparecimento de uma nova tecnologia, sejam alterações 
+inusitadas de comportamentos, de forma que tais mudanças 
+proporcionam oportunidades que alavancam suas capaci
+-
+dades, beneficiando-a de uma forma inesperada.
+Exemplos clássicos são: o efeito da disseminação de 
+aparelhos de tv nos lares americanos na década de 1950, 
+que permitiu às grandes companhias de bens de consumo 
+como a Procter & Gamble, com capacidade financeira para 
+comprar tempo de anúncio e acessar este valioso canal, 
+aumentar sua distância competitiva em relação aos players 
+menores; o advento da refrigeração que alavancou as vendas 
+da Coca-Cola; a chegada do vídeo cassete que permitiu à 
+Disney monetizar seu vasto estoque de conteúdo de filmes. 
+No Brasil, podemos citar a Vale se beneficiando no super 
+ciclo de crescimento chinês; os ventos de popa percebidos 
+pela Weg se aproveitando de megatendências globais como 
+eficiência energética, energias renováveis e mobilidade elé
+-
+trica, e a Localiza explorando parcerias com os aplicativos 
+de mobilidade, transformando uma tecnologia adjacente ao 
+seu negócio em linha de receita.
+O conceito de serendipity, ainda que envolvendo 
+um componente acidental, uma participação do acaso, 
+difere-se da pura sorte, pois supõe “agência” em algum 
+momento do processo. Ou seja, alguém ativamente agindo, 
+por vezes buscando a solução de um problema, outras vezes 
+percebendo o valor acionado pela oportunidade inesperada. 
+Serendipity é um processo de interação entre sorte e ação 
+humana. “Descobertas serendipitosas são acidentais, mas 
+não fortuitas” (Cunha, 2005). “Sorte é um evento, serendi
+-
+pity é uma capacidade” (De Rond, 2005). Capacidade que 
+pode ser conhecimento prévio, alguma aptidão ou talento 
+específico, criatividade, sagacidade, intuição, estado de 
+alerta, habilidade para “ligar os pontos soltos”, ou “enxergar 
+pontes onde outros veem buracos”. Serendipity é o elo entre 
+o imprevisto e a inovação, onde o desvio de rota torna-se 
+o destino principal. É o encontro do evento fortuito com um 
+componente de capacidade que produz o estalar da eureca 
+promissora.
+Até aqui, estamos lidando em nível individual. 
+Fleming, Richet, Roentgen, de Mestral, Spencer, Arquimedes 
+são todos serendipitistas, possuem em graus distintos uma 
+capacidade de combinar disciplina, preparo, curiosidade, 
+intuição e abertura ou plasticidade mental para reconhe
+-
+cer o potencial de um evento, informação ou fenômeno 
+inesperado. A esta altura cabe a pergunta, e as companhias? 
+Além de atributo pessoal, existe algo como serendipity or -
+ganizacional? Por que aparentemente umas companhias 
+parecem ter mais “sorte” do que as outras? Se a sorte favore
+-
+ce os mais preparados, o que a preparação significa para as 
+companhias? Seria possível definir desenhos organizacionais 
+de forma a facilitar eventos serendipitosos nas empresas? 
+Como alavancar o valor dos acontecimentos não esperados 
+nas companhias? De que maneira diferentes companhias 
+respondem às descobertas acidentais? 
+Nas Cartas Dynamo 75 e 76, “Os Afortunados” e 
+“Os Competentes”, investigamos os papéis da “Sorte” e da 
+“Competência” na atividade de investimento. Percorremos 
+a saga das artimanhas da sorte como protagonista do 
+imponderável desde os tempos remotos de personagem 
+da mitologia grega (Tyche) até sua versão moderna como 
+eventual agente infiltrado no princípio da incerteza do mundo 
+quântico. A inevitável tensão desse dualismo – “Fortuna x 
+Virtude”, “Fortuna x Atenas (Sabedoria)”, “sorte x talento”, 
+“acaso x habilidade” – permeou toda a linha de argumenta
+-
+ção tendo um papel central nos textos. Ao mesmo tempo, lá 
+também reconhecemos que se a Fortuna fustiga e desarruma, 
+“nada mais eficaz do que a combinação poderosa de esfor
+-
+ço, talento e persistência para favorecer o estranho e quase 
+paradoxal dito popular que recomenda “ajudar a sorte ”” 
+(Carta Dynamo 75). E assim, ao final, ainda que respeitando 
+cada insinuação da Sorte, a partir da nossa experiência na 
+Dynamo, tentamos afirmar o mérito da Competência pro
+-
+pondo um roteiro que disciplina a atividade de análise de 
+investimento através de “quatro trilhas” (Carta Dynamo 76). 
+O conceito de serendipity abriga a ambivalência 
+destas duas dimensões, mas ao invés de tratá-las como 
+forças conflitantes prefere propor armistício e seguir a linha 
+da síntese, o “ajudar a sorte” da passagem acima, tão bem 
+retratada em diversas citações que já se tornaram clássicas: 
+“A sorte favorece apenas a mente preparada” (Blaise Pascal); 
+“Quanto mais eu pratico, mais sorte tenho” (Gary Player); 
+“Acredito muito na sorte; quanto mais duro eu trabalho, mais 
+sorte tenho” (Thomas Jefferson). Aqui, sorte (acidente) não 
+consiste necessariamente em um princípio de desordem, mas 
+se apropriada com competência (sagacidade), pode resultar 
+em consequências (descobertas) favoráveis. Sendo serendi
+-
+pity parte sorte, parte processo/capacidade, cabe a dúvida: 
+seria razoável imaginar que se possa intervir ao menos nessa 
+segunda metade a fim de alavancar as possibilidades de 
+criação e acionamento de eventos serendipitosos no am
+-
+biente empresarial? Seria possível aprender a disciplina de 
+conectar pontos e adquirir a destreza de promover e conferir 
+significado a acontecimentos inesperados? 
+Alguns acreditam que sim, mas a tarefa envolve não 
+poucos desafios. Sabemos que o mundo está cada vez mais 
+5
+conectado, instável e incerto. Com o ambiente de negócios 
+crescentemente exposto a acidentes e surpresas, o reflexo 
+padrão das companhias é despender esforço organizacional 
+e elevado volume de recursos produtivos a fim de evitar o 
+inesperado. Parte relevante do mandato do time de gestão 
+como tradicionalmente entendido consiste em perseguir 
+previsibilidade e intervir a fim de produzir estabilidade. 
+Outro “inimigo” do surgimento de descobertas 
+acidentais favoráveis seria uma perseguição exclusiva e 
+“excessiva” por eficiência, quando iniciativas de inovação e 
+linhas de pesquisa passam a ser percebidas apenas como 
+despesas. E assim projetos que agridem as métricas de 
+eficiência são interrompidos, sem considerar que eventual
+-
+mente poderiam desencadear descobertas promissoras ou 
+novas linhas de expansão de negócios. Quando o modo 
+sobrevivência é acionado, inovação é apagada do painel 
+de monitoramento.
+Adicionalmente, muitas vezes é preciso vencer forças 
+de resistência no interior da organização, superar o status 
+quo de uma mentalidade dominante. Eventos novos podem 
+exigir mudanças em rotinas, em comportamentos e até em 
+valores, o que naturalmente provoca reações de quem está 
+bem adaptado “à maneira pela qual as coisas são feitas por 
+aqui” e assentado na hierarquia da companhia. Ou seja, 
+o reflexo do establishment tende a abafar ou procrastinar 
+ameaças aos ritos e normas vigentes, muitas vezes entendidas 
+como risco de se desviar “o curso natural de projeção de 
+carreiras”. Independentemente de seu mérito inicial, desco
+-
+bertas precisam sobreviver aos circuitos de poder através 
+dos quais qualquer inovação deveria avançar.
+Quando o objetivo da gestão é reduzir incerteza, 
+surpresas devem ser evitadas. O mérito da previsibilidade 
+precede um eventual acontecimento benéfico ex post. E 
+assim, descobertas serendipitosas não encontram espaço 
+para progredir. A fim de se reconhecer o valor da serendipity 
+como subproduto organizacional e superar essa mentalida
+-
+de estabelecida seria preciso avançar em uma agenda de 
+mudança cultural e talvez até de reformatação de desenhos 
+internos. Entre as possíveis iniciativas se encontram:
+(i) Aumentar a quantidade e/ou a diversidade de inte -
+rações, perspectivas e experiências distintas a fim de 
+encorajar uma maior fertilização (“polinização-cruza
+-
+da”) de ideias e conhecimento.  Em uma companhia 
+onde o conhecimento encontra-se disperso, é mais 
+razoável que algo valioso seja descoberto em conjun
+-
+to, emergindo de um encontro não óbvio. Quando 
+as empresas facilitam a circulação de informações e 
+dividem o conhecimento, aumentam as chances de 
+produção de novas ideias. Aqui, serendipity deixa de 
+ser um atributo pessoal, uma particular capacidade do 
+indivíduo de produzir um insight promissor, e passa a 
+ser um fenômeno de natureza relacional, incorporado 
+ao conceito mais intangível de “capital social”. A intera
+-
+ção frequente entre os indivíduos é o que permite que 
+algo considerado insignificante para alguns chame a 
+atenção de outro (como o Post-it da 3M “engavetado” 
+por anos)
+4;
+(ii) Cultivar um ambiente de segurança psicológica que 
+permita às pessoas se expressarem com franqueza sem 
+o receio de serem punidas ou humilhadas. Incentivar 
+as manifestações espontâneas, acolhendo com sincero 
+respeito as sugestões mais despretensiosas e até apa
+-
+rentemente pueris. Com isso, aumenta-se a propensão 
+de se discutir ideias mais exploratórias, ainda não tão 
+desenvolvidas;
+(iii) Além de encorajar a mistura de talentos e experiências 
+diversas em um ambiente de franqueza e confiança, 
+a literatura sugere como ingrediente cultural saudável 
+alguma tolerância à autonomia para experimentação, 
+algum grau de “relaxamento controlado”, a fim de per
+-
+mitir que eventos não-intencionais favoráveis possam 
+ocorrer;
+(iv) Estimular na rotina institucional da companhia uma 
+mentalidade de se prestar atenção e valorizar informa
+-
+ções não esperadas, desenvolvendo visão periférica, 
+um olhar para o diferente e até para o “estranho”, 
+e a partir daí colocar empenho efetivo para levá-las 
+adiante;
+(v) Estabelecer desenhos organizacionais e espaços físicos 
+que promovam encontros, acolham surpresas e sejam 
+mais condutivos às novas informações.
+Trata-se de uma agenda que visa aumentar as 
+chances de eventos acidentais favoráveis ocorrerem, sem 
+a pretensão de que é possível engenheirá-los ou mesmo 
+gerenciá-los. Descobertas serendipitosas podem ser facilita
+-
+das, mas são um processo emergente. Companhias podem 
+criar condições para elas ocorrerem, aumentar as chances 
+de acontecer, sem garantir resultados. Justamente porque 
+o conhecimento é algumas vezes descoberto por acidente, 
+a Administração deveria estar alerta para descobertas não 
+intencionais. O problema é que o conhecimento valioso 
+não esperado é impossível de se prever e de se antecipar, o 
+que gera uma incongruência com o que tradicionalmente 
+se espera do time de executivos.
+4 A título de curiosidade, este expediente converge com um 
+argumento mais recente que vem circulando nos departamentos 
+de pesquisa científica de que a integração de diferentes 
+abordagens das disciplinas e conhecimento prático em uma 
+pesquisa “transdisciplinar” promoveria conhecimento científico 
+e resultados novos, inovativos e de melhor qualidade (crf Marg 
+et al. 2023) 
+6
+Os chamados unknown-unknowns – a ausência de 
+entendimento/cognição do que não se conhece, ou lacunas 
+de conhecimento a respeito de contingências futuras rele -
+vantes que carecem de descrição ex-ante – estão por toda 
+parte em um mundo cada vez mais incerto. Sem serendipity 
+não se consegue descobrir os unknown-unknowns pela sim-
+ples razão que não sabemos quais coisas procurar e onde 
+procurá-las. Nenhuma exploração é capaz de antecipar 
+comportamentos de consumidores que emergem depois de 
+um choque/crise que ninguém havia experimentado antes, 
+como o que ocorreu na Covid. Como é possível identificar 
+os novos recursos necessários para satisfazer demandas 
+que ninguém ainda imaginou? A pesquisa também não 
+configura uma opção válida quando não se sabe o que 
+procurar; nem mesmo a experimentação seria viável porque 
+não temos à mão hipóteses sobre o que testar. Descobertas 
+sobre unknowns-unknowns chegam como surpresas e assim, 
+por definição, requerem eventos serendipitosos (cfr Santos 
+e Williamson, 2021). 
+Ed Catmull, ex-CEO da Pixar, famoso por criar uma 
+cultura de trabalho em equipe, confiança mútua e criativi
+-
+dade, apontou o caminho: “Como executivos, temos que 
+resistir à nossa tendência natural de evitar ou minimizar riscos, 
+o que, de fato é muito mais fácil de falar do que fazer... Se 
+você quer ser original, você precisa aceitar incerteza, ainda 
+que seja desconfortável... O que podemos fazer é construir 
+um ambiente que alimente a confiança, as relações respeito
+-
+sas e libere a criatividade de cada um... Nosso edifício, que 
+é ideia do Steve Jobs, é outra maneira pela qual tentamos 
+trazer pessoas de diferentes departamentos para interagir. A 
+maioria dos prédios são projetados com um propósito fun
+-
+cional, mas o nosso é estruturado para maximizar encontros 
+inadvertidos” (Catmull, 2008).
+A unidade do Google em Boston, que fica ao lado 
+do MIT (Massachussets Institute of Tecnology) adotou como 
+política contratar professores sêniores dos departamentos de 
+ciência e engenharia da computação e cercá-los de jovens 
+talentosos, desenvolvedores, engenheiros de dados etc. que 
+trabalham juntos formando clusters. Aparentemente, eles não 
+têm metas corporativas específicas, nem são cobrados para 
+executar tarefas determinadas. O conceito é deixar o grupo 
+livre com autonomia para gerar ideias criativas e testar a 
+capacidade de implementá-las. Um desenho que poderia 
+ser chamado de “squads serendipitosos”.
+A sede da Apple em Cupertino na Califórnia (Apple 
+Park) é talvez uma das expressões mais ousadas do desejo de 
+cultivar encontros e colaboração no ambiente de trabalho. 
+Concebido para abrigar cerca de doze mil colaboradores, 
+completamente circular, em forma de anel, estrutura de vi
+-
+dro, com longos passeios comuns facilitando a circulação, 
+um grande espaço verde no centro e sete grandes “cafés”, 
+entre inúmeras outras facilidades. A construção materializa 
+a convicção de Steve Jobs de que o processo de inovação 
+depende não apenas do talento individual, mas da colabora
+-
+ção, da interação espontânea e da habilidade de indivíduos 
+habilidosos juntos forjarem decisões coletivas.
+Alguns executivos consideram serendipity como parte 
+importante do progresso de suas companhias e até como 
+fonte de sucesso empresarial. Jeff Bezos disse uma vez que 
+“sempre haverá serendipity envolvida na descoberta”
+5. 
+Hubert Joly, quando CEO do Bestbuy, afirmou que “nossa 
+reação ao inesperado define o que somos”. Tom Linebarger, 
+CEO da Cummins, sugeriu que “cultivar serendipity consiste 
+em uma abordagem ativa de liderança em tempos de incer-
+teza” (cfr. Busch, 2024).
+Bem, é claro que reconhecemos aqui que estamos 
+diante de uma agenda sujeita a ceticismos e críticas. A 
+começar pelo chamado “viés de sobrevivência” implícito 
+nos eventos serendipitosos: para cada exemplo favorável 
+que mencionamos, quantos esforços frustrados não te
+-
+riam ficado pelo caminho? Adicionalmente, a decisão de 
+despender recursos a fim de promover mudança cultural, 
+provocar encontros distantes e produzir conhecimento não 
+convencional que apenas eventualmente pode se provar útil 
+ex post, soa ingênua ou descabida quando vista pela ótica 
+dos imperativos de competição acirrada, particularmente 
+em um ambiente de negócios muitas vezes inóspito para 
+executivos e empresários no país. Um “desperdício” que pode 
+se provar custoso. Este seria um desenho adequado para as 
+grandes (e ricas) companhias de tecnologia americanas, que 
+podem ostentar o “luxo” orçamentário de incorrer em linhas 
+de despesa sem qualquer visibilidade futura de contrapartida 
+de receita. Entendemos perfeitamente o argumento, e não 
+há quem se oponha a ele. 
+É verdade que nenhuma empresa em sã consciência 
+deveria depender exclusivamente de um tipo de conhecimen
+-
+to ou aprendizado incerto, impossível de ser antecipado. No 
+entanto, descobertas serendipitosas podem resultar de pro
+-
+cessos de busca exploratória intencionais, e algumas destas 
+companhias chegaram lá, em parte colhendo os frutos deste 
+desenho, plantado de forma intencional em seus modelos 
+de negócios. Isto talvez possa explicar por que algumas 
+5 Não há como não ouvir ecos desta frase do Fundador na carta 
+do CEO da Amazon, Andy Jassy, em setembro de 2024, onde 
+ele reforça a importância da cultura de colaboração e inovação 
+da companhia e, a fim de estarem todos “suficientemente 
+conectados”,  convida todo o seu “time” a voltar ao trabalho 
+presencial como antes da Covid.
+7
+companhias aparentemente parecem mais protegidas pelo 
+acaso do que outras.
+Nestas duas últimas Cartas, nos dedicamos a compre-
+ender o intrigante tema das consequências não-intencionais 
+(CnIs) das ações humanas, orientando como de costume o 
+foco das nossas lentes para o ambiente empresarial e nossa 
+condição de investidor. Na Carta anterior, tratamos das CnIs-
+negativas, que ocorrem quando desígnios supostamente bem 
+traçados desviam de sua finalidade original e o efeito da 
+ação deliberada assume direção oposta à intenção inicial. 
+Enquanto buscamos investimentos com equações de risco
+-
+-retorno adequadas e priorizamos a proteção patrimonial 
+dos nossos investidores, identificar oportunamente decisões 
+empresariais que venham a se frustrar mais à frente constitui 
+uma diligência valiosa em nossa função-objetivo. Daí nosso 
+esforço por compreender as origens deste fenômeno perva-
+sivo. Identificamos duas linhas de explicações e discorremos 
+como a economia, os negócios e as companhias são am
+-
+bientes propícios para estes deslocamentos indesejados. Por 
+fim, arriscamos uma pauta de diligências a fim de tentarmos 
+aprimorar nosso processo de análise buscando reduzir a 
+incidência destes resultados desfavoráveis.
+Aproveitando a simetria, nesta Carta tratamos das 
+CnI-positivas, quando os desvios no caminho das intenções 
+iniciais são tais que provocam resultados não esperados 
+favoráveis. Apesar de igualmente intrigantes, esmiuçá-los 
+apresenta valência menor em nossos propósitos, já que 
+jamais justificamos nossas teses de investimentos com base 
+em um espectro de opcionalidades que eventualmente 
+possam surgir. Daí o texto mais curto e menos denso. Ainda 
+assim, como curiosidade, decidimos percorrer uma parte da 
+vasta literatura sobre o assunto, o que nos levou a explorar 
+o conceito de serendipity e nos remeteu ao clássico dilema 
+da demarcação de fronteiras entre sorte e talento. 
+Neste caso, a pauta de resoluções sugeridas talvez 
+seja mais distante da realidade da maior parte das com
+-
+panhias brasileiras, imersas na faina diária dos ganhos 
+milimétricos de competitividade e eficiência marginal. De 
+qualquer forma, acreditamos ser válida a reflexão, até por
+-
+que, como vimos, em um mundo volátil e incerto a sensação 
+de um ambiente de negócios aparentemente controlado 
+pode se revelar como expressão traiçoeira de um unknow -
+-unknown. Por outro lado, descobertas transformacionais 
+também se originam de encontros acidentais. Sendo assim, 
+estimulá-los pode fazer sentido estratégico.
+Nossos leitores bem sabem o quanto identificamos 
+destreza na atividade de investimentos à capacidade de 
+navegarmos entre disciplinas diversas, perseguindo cons -
+truir um coletivo de modelos mentais, à altura da natureza 
+multivalente do nosso objeto de investigação.
+A história da Dynamo é uma batalha sisífica pelo 
+contínuo aperfeiçoamento, seja na profundidade vertical 
+dessa realidade inexpugnável que são as companhias e 
+seus negócios, seja na abrangência horizontal do domínio 
+de técnicas e ferramentas que não cessam de evoluir. Tudo 
+isso preservado em um reservatório de experiências decan
+-
+tadas por um sem-número de acertos e erros, felizmente 
+mais aqueles do que esses, ao longo de trinta e dois anos. 
+Um dos múltiplos benefícios deste patrimônio é o preparo, 
+ou uma certa habilidade idiossincrática, de promover cone
+-
+xões afastadas, identificar tendências dispersas promissoras 
+e, eventualmente até, provocar o acaso do que pode se 
+revelar favorável. Em outras palavras, o cultivar de uma 
+certa fragrância serendipitosa, o que, acreditamos, tem nos 
+proporcionado benefícios consideráveis.
+Terminamos com uma nota de curiosidade doméstica. 
+Walking the talk, além de virmos buscando aqui na Dynamo 
+uma maior diversidade de identidades e experiências de 
+vida, e de fomentarmos a intensidade de interações como 
+elemento central do nosso desenho de organização, pro
+-
+curamos também desenvolver diversidade cognitiva, seja 
+individualmente através de formações distintas, seja coleti
+-
+vamente através da exposição do nosso time a um amplo 
+repertório de disciplinas aparentemente não conectadas com 
+o nosso dia a dia. E assim, temos recebido especialistas em 
+áreas variadas: poetas, ornitólogos, historiadores, cineastas, 
+ 
+Dynamo Cougar x Ibovespa  
+Rentabilidade em R$ até Março de 2026
+(*) Ibovespa Fechamento. O índice é apresentado para mera refe -
+rência econômica e não constitui meta ou parâmetro de performance 
+do Fundo.
+      
+Período  Dynamo Cougar Ibovespa*
+120 meses
+60 meses
+36 meses
+24 meses
+12 meses
+No ano (2026)
+No mês 
+(Março)
+ 249,1% 274,5%
+ 18,6% 69,7%
+ 76,9% 84,0%
+ 32,7% 46,3%
+ 49,0% 43,9%
+ 9,9% 16,3%
+ 2,3% -0,7%
+DYNAMO COUGAR x IBOVESPA 
+(Rentabilidade em US$*)
+DYNAMO ADMINISTRAÇÃO DE RECURSOS LTDA.
+Av. Ataulfo de Paiva, 1235 / 6º andar – Leblon – 22440-034 – Rio – RJ – Tel.: (21) 2512-9394 – Contato: dynamo@dynamo.com.br
+   DYNAMO COUGAR  IBOVESPA**
+Período No Ano Desde No Ano Desde
+   01/09/93  01/09/93
+ 1993 38,8%  38,8% 7,7% 7,7%
+ 1994 245,6%  379,5% 62,6% 75,1%
+ 1995 -3,6% 362,2% -14,0% 50,5%
+ 1996 53,6% 609,8% 53,2% 130,6%
+ 1997 -6,2% 565,5% 34,7% 210,6%
+ 1998 -19,1% 438,1% -38,5% 91,0%
+ 1999 104,6% 1.001,2% 70,2% 224,9%
+ 2000 3,0% 1.034,5% -18,3% 165,4%
+ 2001 -6,4% 962,4% -25,0% 99,0%
+ 2002 -7,9% 878,9% -45,5% 8,5%
+ 2003 93,9% 1.798,5% 141,3% 161,8%
+ 2004 64,4% 3.020,2% 28,2% 235,7%
+ 2005 41,2% 4.305,5% 44,8% 386,1%
+ 2006 49,8% 6.498,3% 45,5% 607,5%
+ 2007 59,7% 10.436,6% 73,4% 1.126,8%
+ 2008 -47,1% 5.470,1% -55,4% 446,5%
+ 2009 143,7% 13.472,6% 145,2% 1.239,9%
+ 2010 28,1% 17.282,0% 5,6% 1.331,8%
+ 2011 -4,4% 16.514,5%  -27,3% 929,1%
+ 2012 14,0% 18.844,6%  -1,4% 914,5%
+ 2013 -7,3% 17.456,8%  -26,3% 647,9%
+ 2014 -6,0% 16.401,5%  -14,4% 540,4%
+ 2015 -23,3% 12.560,8%  -41,0% 277,6%
+ 2016 42,4% 17.926,4%  66,5% 528,6%
+ 2017 25,8% 22.574,0%  25,0% 685,6%
+ 2018 -8,9% 20.567,8%  -1,8% 671,5%
+ 2019 53,2% 31.570,4%  26,5% 875,9%
+ 2020 -2,2% 30.886,1%  -20,2% 679,0%
+ 2021 -23,0% 23.762,3%  -18,0% 538,9%
+ 2022 -7,8% 21.899,9%  12,0% 615,4%
+ 2023 32,1% 28.965,0%  31,8% 842,8%
+ 2024 -30,8% 20.002,8%  -29,9% 560,7%
+ 2025 56,1% 31.224,4%  50,8% 845,5%
+ 2026*** 15,9% 36.264,9% 22,6% 1.121,6%
+Para mais informações sobre a Dynamo,  
+sobre o Dynamo Cougar ou para comparar a 
+performance do Fundo com diversos índices,  
+em períodos específicos, visite nosso site: 
+www.dynamo.com.br
+Esta carta é publicada somente com o propósito de divulgação de informações e não deve ser considerada como uma oferta de venda do Dynamo Cougar ou de qualquer 
+outro fundo, nem tampouco como uma recomendação de investimento ou desinvestimento em nenhum dos valores mobiliários citados. Todos os julgamentos e estimativas 
+aqui contidos são apenas exposições de opiniões e podem mudar a qualquer momento, sem necessidade de aviso. As informações contidas neste documento são, no melhor 
+entendimento da Dynamo, materialmente precisas. Não obstante, a Dynamo não se responsabiliza por eventuais erros, omissões ou imprecisões nas informações divulgadas. 
+A rentabilidade obtida no passado não representa garantia de resultados futuros. A rentabilidade divulgada é líquida das taxas de administração e performance, mas não é 
+líquida de impostos, ajuste de performance e taxa de saída, caso aplicáveis. O investimento em fundos de investimentos apresenta riscos. Leia cuidadosamente o regulamento 
+antes de investir. O regulamento do Dynamo Cougar está disponível na página da Dynamo na rede mundial de computadores em www.dynamo.com.br. Os investimentos 
+em fundos não são garantidos pelo administrador ou por qualquer mecanismo de seguro, ou ainda, pelo Fundo Garantidor de Crédito. Supervisão e Fiscalização: Comissão 
+de Valores Mobiliários – CVM Serviço de Atendimento ao Cidadão em www.cvm.gov.br.
+(*) Tendo em vista se tratar de um Fundo existente desde 1993, os valores foram 
+convertidos para dólar (US$) como forma de expurgar a volatilidade da moeda 
+brasileira ao logo do período e, dessa forma, minimizar o risco de possíveis inter
+-
+pretações equivocadas do leitor em uma decisão de investimento/desinvestimento. 
+O Dynamo Cougar é um fundo de investimento em cotas de fundo de investimento 
+em ações e está fechado para captação. (**) Ibovespa fechamento. O índice é 
+apresentado para mera referência econômica e não constitui meta ou parâmetro 
+de performance do Fundo. (***) Rentabilidade até Março de 2026.
+Informações adicionais:
+• Data de Início: 01/09/1993
+• Objetivo: Proporcionar aos cotistas valorização real de suas 
+cotas a médio e longo prazo, mediante aplicação de, no 
+mínimo, 95% (noventa e cinco por cento) do seu patrimô-
+nio líquido em cotas do Dynamo Cougar Master Fundo de 
+Investimento em Ações (“Fundo Master”)
+• Público-alvo: Investidores qualificados
+• Status: Fechado para aplicações
+• Carência para resgate: 12 meses de carência ou taxa 
+de liquidez de 3% para resgates dentro deste período*
+• Cota de Resgate: D+12 (corridos)*
+• Pagamento do Resgate: 
+D+2 (úteis) da conversão da cota* 
+• Tributação aplicável: Renda variável
+• Classificação Anbima: Ações Livre
+• Taxa de administração: 1,90% ao ano no Fundo + 
+0,10% ao ano no Fundo Master
+• Taxa de Performance: 15% do que exceder IPCA + IMAB*
+• Patrimônio líquido médio mensal dos últimos 12 
+(doze) meses: R$ 5.593,9 milhões.
+(*) Veja descrição detalhada no regulamento.
+esportistas, enxadristas, cientistas, enfim, um amplo espectro 
+de interesses. São conversas informais e abertas, através 
+das quais nos aproximamos de competências diversas, ex -
+ploramos aprendizados e exercitamos metáforas. Para nós, 
+verdadeiros encontros serendipitosos.
+ 
+Rio de Janeiro, 06 de abril de 2026.

@@ -1834,8 +1834,90 @@ def _aba_ciclo() -> None:
                 f"(mediana), forte ~{proj['g_anual_forte']:.0f}%/ano (máx). "
                 "Ignora recessões/choques; quanto mais longe, mais frágil."
             )
+    _bloco_maturidade(d)
+
     st.caption("Leitura educacional de estrutura de mercado, não recomendação. "
                "Pivôs = extremos numa janela de ~9 meses.")
+
+
+def _bloco_maturidade(d: dict) -> None:
+    """Medidor de maturidade da alta atual + anatomia dos topos passados."""
+    proj = d.get("projecao") or {}
+    est = d.get("esticamento") or {}
+    meses = proj.get("meses_atual")
+    dur_med = proj.get("dur_hist_med")
+    dur_max = proj.get("dur_hist_max")
+    if not (meses and dur_med and dur_max):
+        return
+
+    st.markdown('<div class="ciano-label" style="margin-top:18px;">⏳ Maturidade da alta atual</div>',
+                unsafe_allow_html=True)
+    total = max(meses * 1.12, dur_max * 1.15)
+    p_med = dur_med / total * 100
+    p_max = dur_max / total * 100
+    p_voce = min(meses / total * 100, 99.5)
+    # zonas: verde ate tipica, amarelo tipica->recorde, vermelho alem
+    barra = (
+        f'<div style="position:relative;height:26px;border-radius:6px;overflow:hidden;'
+        f'background:linear-gradient(90deg,#22C55E 0%,#22C55E {p_med:.1f}%,'
+        f'#EAB308 {p_med:.1f}%,#EAB308 {p_max:.1f}%,#EF4444 {p_max:.1f}%,#EF4444 100%);"></div>'
+    )
+    def _marca(pct, cor, label, top):
+        return (
+            f'<div style="position:absolute;left:{pct:.1f}%;top:{top}px;transform:translateX(-50%);'
+            f'text-align:center;font-size:0.62rem;color:{cor};white-space:nowrap;">'
+            f'<div style="width:2px;height:30px;background:{cor};margin:0 auto;"></div>{label}</div>'
+        )
+    marcas = (
+        _marca(p_med, "#CBD5E1", f"típica<br>{dur_med:.0f}m", 26)
+        + _marca(p_max, "#CBD5E1", f"recorde<br>{dur_max:.0f}m", 26)
+        + f'<div style="position:absolute;left:{p_voce:.1f}%;top:-34px;transform:translateX(-50%);'
+        f'text-align:center;font-size:0.72rem;font-weight:800;color:#F87171;white-space:nowrap;">'
+        f'você está aqui ▾<br>{meses}m</div>'
+    )
+    st.markdown(
+        f'<div style="position:relative;margin:44px 0 60px;">{barra}{marcas}</div>',
+        unsafe_allow_html=True,
+    )
+    razao = meses / dur_med
+    passou = meses >= dur_max
+    resumo = (
+        f"**{meses} meses** de alta — **{razao:.1f}× a duração típica** ({dur_med:.0f}m)"
+        + (f", e **já superou o recorde da era moderna** ({dur_max:.0f}m)." if passou
+           else f", ainda abaixo do recorde ({dur_max:.0f}m).")
+    )
+    if est.get("desvio_pct") is not None:
+        resumo += f" Esticamento vs média de 24m: **{est['desvio_pct']:+.0f}%** — {est.get('nota', '')}."
+    st.markdown(resumo)
+
+    # --- Anatomia dos topos ---
+    anat = d.get("anatomia_topos") or []
+    med = d.get("anatomia_medianas") or {}
+    if anat:
+        st.markdown('<div class="ciano-label" style="margin-top:10px;">🔬 Anatomia dos topos — o que veio depois</div>',
+                    unsafe_allow_html=True)
+
+        def _p(x):
+            return f"{x:+.0f}%" if x is not None else "—"
+        linhas = [
+            {"Topo": a["topo"], "Nível": _fmt_pts(a["nivel"]),
+             "+3m": _p(a["r3"]), "+6m": _p(a["r6"]), "+12m": _p(a["r12"]),
+             "Queda máx": _p(a["queda_max"]),
+             "Recuperar": (f"{a['recup_meses']}m" if a["recup_meses"] else "não recup."),
+             "": "◀ atual" if a["atual"] else ""}
+            for a in anat
+        ]
+        if med.get("r3") is not None:
+            linhas.append({
+                "Topo": "MEDIANA", "Nível": "—",
+                "+3m": _p(med["r3"]), "+6m": _p(med["r6"]), "+12m": _p(med["r12"]),
+                "Queda máx": _p(med["queda_max"]),
+                "Recuperar": (f"{med['recup_meses']:.0f}m" if med.get("recup_meses") else "—"),
+                "": ""})
+        st.dataframe(pd.DataFrame(linhas), hide_index=True, use_container_width=True)
+        st.caption("Depois de um topo, a bolsa caiu na mediana ~−17% em 6m, com queda máxima de ~−41% e "
+                   "**~36 meses para recuperar** o nível (2008 levou 112m). O topo de fev/2026 até agora caiu "
+                   "bem menos que a mediana — comporta-se mais como pausa que como rollover, mas é cedo.")
 
 
 DATA_CICLOS = Path(__file__).resolve().parent / "data" / "ciclos_historicos.json"

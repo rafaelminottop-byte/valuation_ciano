@@ -17,7 +17,7 @@ import pandas as pd
 import yfinance as yf
 
 CACHE_DIR = Path(__file__).resolve().parent / ".cache"
-CACHE_FILE = CACHE_DIR / "ibov_ciclo_v4.json"
+CACHE_FILE = CACHE_DIR / "ibov_ciclo_v5.json"
 # Antes do Plano Real (jul/1994) o Ibov estava em outra moeda (hiperinflação),
 # com valores minúsculos que distorcem a análise. Começamos em 1995.
 DATA_INICIAL = "1995-01-01"
@@ -163,6 +163,34 @@ def _analisar(serie: list[dict]) -> dict:
                 "anos": anos_proj,
             }
 
+    # --- Anatomia dos topos: o que o Ibov fez depois de cada topo historico ---
+    import statistics as _st2
+    anatomia = []
+    for i, t in piv:
+        if t != "H":
+            continue
+        pv = vals[i]
+        def _ret(k):
+            return (vals[i + k] / pv - 1) * 100 if i + k < n else None
+        low = min(vals[i:])
+        qmax = (low / pv - 1) * 100
+        rec = next((k - i for k in range(i + 1, n) if vals[k] >= pv), None)
+        anatomia.append({
+            "topo": datas[i][:7], "nivel": pv,
+            "r3": _ret(3), "r6": _ret(6), "r12": _ret(12),
+            "queda_max": qmax, "recup_meses": rec,
+            "atual": i == piv[-1][0] and t == "H",
+        })
+    # medianas dos topos passados (exclui o topo mais recente se for o atual)
+    passados = [a for a in anatomia if not a["atual"]]
+    def _medi(campo):
+        xs = [a[campo] for a in passados if a[campo] is not None]
+        return _st2.median(xs) if xs else None
+    anatomia_med = {
+        "r3": _medi("r3"), "r6": _medi("r6"), "r12": _medi("r12"),
+        "queda_max": _medi("queda_max"), "recup_meses": _medi("recup_meses"),
+    }
+
     # narrativas
     na_maxima = atual >= ath * 0.99
     if na_maxima:
@@ -194,6 +222,8 @@ def _analisar(serie: list[dict]) -> dict:
         "pequeno": pequeno,
         "esticamento": {"media": media_longa, "desvio_pct": desvio, "nota": est_nota},
         "projecao": proj,
+        "anatomia_topos": anatomia,
+        "anatomia_medianas": anatomia_med,
         "erro": None,
     }
 

@@ -1,0 +1,631 @@
+[00:00:00] que foi o objeto de dúvida hoje de alguns alunos sobre o conceito de barra de exaustão
+[00:00:06] do conceito de barra de exaustão
+[00:00:13] além de eu reforçar as três coisas ou as três restrições ou as três regras
+[00:00:22] que nós temos que ter para carpa uma barra e eleger ela como uma possível barra de exaustão
+[00:00:30] eu também vou falar sobre barra de exaustão em tempo gráfico curto e longo
+[00:00:35] que também parece que é uma dúvida de vocês em algum momento
+[00:00:40] aposto isso, vou falar um pouco sobre o gráfico de hoje
+[00:00:44] sobre o que a gente tem de contexto e formação até aqui
+[00:00:50] e depois brevemente vou falar também um pouquinho sobre o dólar
+[00:00:56] a primeira regra da barra de exaustão
+[00:01:27] é que ela tem que vir em um possível, por que usar a palavra possível?
+[00:01:31] porque a gente nunca sabe, a gente vai saber a posteriori, nunca priori
+[00:01:35] mas ela tem que vir em um possível final de movimento
+[00:01:38] então por exemplo, uma barra de exaustão jamais pode estar aqui
+[00:01:43] por que está longe de ser um possível final de movimento?
+[00:01:48] aqui a coisa já muda, a gente figura a medida que a gente já teve
+[00:01:53] uma queda substancial que novamente a gente não sabe se essa queda vai se aprofundar
+[00:01:59] por isso que é possível final de movimento, essa é a primeira regra
+[00:02:03] porque quanto mais próxima essa barra barruda está do início do movimento
+[00:02:09] mais ela tem de ignição, de estar indoçando, incentivando
+[00:02:14] aquele movimento que está recém-nascido do que de fato está mais perto de morrer
+[00:02:19] então a primeira coisa está no possível final de movimento
+[00:02:22] a segunda coisa é a gente ter uma barra que chama muita, não é pouca
+[00:02:28] muita atenção quanto a sua amplitude
+[00:02:32] então tem que ser uma barra realmente notável, uma barra realmente bem maior
+[00:02:36] do que muitas outras que vieram antes dela
+[00:02:40] precisa ser a maior barra do contrato, não, mas tem que ser uma da que cinco maiores do mínimo
+[00:02:44] porque também aí se não daqui a pouco começa qualquer coisa
+[00:02:47] está elegível a ser uma barra dessa
+[00:02:50] outro ponto e último, é a questão do volume
+[00:02:54] dessa barra, que tem que ser um volume que é assim como a amplitude da barra
+[00:02:57] também chama muita atenção
+[00:03:00] é o maior volume do dia, não interessa
+[00:03:03] porque ontem, transantão, dianteante ontem podem ter várias barras
+[00:03:06] inclusive que superam o volume dessa barra que teve o tal maior volume do dia
+[00:03:09] até aqui falando por exemplo de D3 de gráfico de 10 minutos
+[00:03:12] então a análise do volume, é uma análise que você tira o zoom do gráfico
+[00:03:15] e aquele volume, porra, ele é muito importante você olhando para trás
+[00:03:20] porra, ele é um dos cinco maiores, um dos seis maiores
+[00:03:24] um dos três maiores, ou maior, aí é ideal demais, quer dizer, o maior
+[00:03:28] porra, o segundo maior volume, não tem que ser um volume
+[00:03:32] acima da média apenas, volume acima da média tem toda hora
+[00:03:35] principalmente no índice futuro de porra, de 10 a meio dia
+[00:03:38] toda hora tem a barra que explode, aquela média móvel de 20 períodos de volume
+[00:03:41] então é uma coisa absolutamente corriqueira
+[00:03:44] então reforçando aí os três regras, restrições
+[00:03:51] a gente vê barra de exaustão no 10 minutos ou no 50
+[00:03:56] o pesado é a resposta a ser ruim, mas dá para ver nos dois, não é isso?
+[00:04:00] a barra de exaustão no 10 minutos, se isso aqui for um gráfico de 10 minutos
+[00:04:03] esse aqui é um gráfico de 10 minutos, ou um gráfico se semanal
+[00:04:06] ela vai funcionar como possível o evento, então a eliminação dessa barra
+[00:04:13] pode funcionar como um possível evento, gatilho, sinal, de compra
+[00:04:18] vai ser muito difícil que você consiga colocar o stop na mínima dela
+[00:04:21] porque essas barras são gigantescas, provavelmente você vai ter que trabalhar aqui
+[00:04:23] com algumas opções de stop alternativo
+[00:04:27] você é bom, mas a gente vai comprar uma barra de exaustão de barra
+[00:04:30] essa região aqui no 50 minutos é uma região de suporte
+[00:04:34] então você tem o filé m1, você tem uma barra de exaustão
+[00:04:36] fundando numa região de possível suporte
+[00:04:38] ou você tem uma barra de exaustão num possível trade
+[00:04:41] de afastamento da média, eu imagino que a média move de 200
+[00:04:46] está aqui por exemplo, lá nos 50 minutos, ela está aqui assim
+[00:04:50] e essa distância aqui é 14 mil pontos
+[00:04:54] porra, você tem uma boa desculpa, um bom evento, um bom gatilho
+[00:04:57] um bom ponto de entrada possível para você fazer uma compra de retorno médio
+[00:05:01] é possível a barra de exaustão no gráfico de 50 minutos
+[00:05:05] a gente vai conseguir fazer menos com uma barra de exaustão no gráfico de 50 minutos
+[00:05:08] tendo em vista que você não vai conseguir operar no gráfico de 50 minutos
+[00:05:13] a eliminação dessa barra
+[00:05:16] porque primeiro que já vai ter subido muito no gráfico de 10 minutos
+[00:05:19] até lá, 2.000, 2.500, 1.800 pontos
+[00:05:21] segundo que você não tem ponto de ocoragem de stop e tal
+[00:05:23] mas você olha possível exaustão, cara, eu olho
+[00:05:25] eu estou aqui, vejo uma barra grande, vejo que tem o segundo maior volume do contrato
+[00:05:27] está no final de um movimento, porra, essa porra pode parar aqui
+[00:05:30] então nos 50 minutos, ou no mensal, uma barra de exaustão
+[00:05:33] nunca vai funcionar como evento, vai funcionar como um warning
+[00:05:36] como uma coisa que você está olhando e está falando
+[00:05:38] porra, pode parar aqui, deixa eu ver como é que está no gráfico curto
+[00:05:40] de repente o gráfico curto é um microfone de alta e você está afastado as médias
+[00:05:42] ou está numa região que você pode entender
+[00:05:44] então, barra de exaustão, como evento, no 10 minutos e no semanal
+[00:05:48] nós fizemos aqui pelo menos um trade que eu me lembro de gráfico semanal
+[00:05:51] que nós fizemos com barra de exaustão foi na energia
+[00:05:53] seu amigão de trade foi em 2024
+[00:05:55] é mais raro a gente ter barra de exaustão no position
+[00:06:00] porque o position produz muito poucos sinais no ano
+[00:06:03] o day trade produz muito mais sinais
+[00:06:05] então por uma questão de probabilidade é muito mais fácil
+[00:06:07] você ter uma ocorrência de barra de exaustão em day trade no ano
+[00:06:09] do que você ter uma ocorrência de barra de exaustão no position
+[00:06:11] está então o primeiro conceito que eu queria
+[00:06:14] utilizar esse, segundo conceito
+[00:06:17] o índice está em tendência de baixo
+[00:06:23] nós estamos falando isso aqui no mínimo 10 dias
+[00:06:27] e todas as vezes que eu falo
+[00:06:29] eu cinto essa mesma coisa que você também não deve mais aguentar
+[00:06:31] mas como o óbvio é para ser falado
+[00:06:33] e o processo de educacional bem da repetição
+[00:06:37] não cai demais
+[00:06:39] então nós temos uma tendência de baixo
+[00:06:41] vimos um movimento forte na quarta-feira onde foi feriado
+[00:06:43] Zé, movimento forte?
+[00:06:44] é, movimento forte
+[00:06:45] eu sempre falo que quando a bolsa cai ou sobe
+[00:06:47] acima de 2% a gente pode falar que é um movimento forte
+[00:06:49] qualquer coisa inferior a 2% está tendo de certa normalidade
+[00:06:52] não tivemos um movimento forte
+[00:06:54] movimento esse que é esse aqui
+[00:06:56] e a gente fechou
+[00:06:58] se não na mínima do dia, mas quase na mínima do dia
+[00:07:00] a gente vê pouco vestígio
+[00:07:02] comprador no pregão
+[00:07:04] de quarta-feira, hoje a gente tem aquela abertura
+[00:07:06] que é o cenário intermediário
+[00:07:08] que é aquele cenário que eu pinto mais ou menos assim
+[00:07:10] que é abertura no preço
+[00:07:12] é um ligeiro gap de alta
+[00:07:14] ou abre no preço é um ligeiro marginal gap de baixo
+[00:07:16] não é aquele cenário que é o gap de alta
+[00:07:18] e não é aquele cenário que é o gap de baixo
+[00:07:20] o gap de alta muito nos ajudaria
+[00:07:22] porque
+[00:07:24] se a gente tem uma abertura
+[00:07:26] perdão
+[00:07:28] se a gente tem uma abertura que já nos leva novamente
+[00:07:30] a zona de valor justo
+[00:07:32] a gente consequentemente
+[00:07:34] corrigiria este cara aqui
+[00:07:36] e aí a gente tem um zigzag descendente
+[00:07:38] e aí é esperar
+[00:07:40] o sinal de venda
+[00:07:42] como nós fizemos aqui
+[00:07:44] não foi isso?
+[00:07:46] primo gêmeo
+[00:07:48] aquele que foi feito na segunda feira
+[00:07:50] e se ele se apresentasse de novo nós teríamos que fazer
+[00:07:52] novamente independente do resultado
+[00:07:54] esse cenário aqui seria o melhor cenário
+[00:07:56] não abriu no pior cenário
+[00:07:58] porque o pior cenário seria o gap de baixa
+[00:08:00] com a aceleração de movimento, isso seria muito ruim
+[00:08:02] que aí já basicamente decretar o final do dia
+[00:08:04] a não ser que esse movimento fosse de uma potência
+[00:08:06] grande
+[00:08:08] ou seja, uma queda superior a 1,5%
+[00:08:10] 2% novamente
+[00:08:12] e aí a gente aprecie uma janela
+[00:08:14] de afastamento sensível da média móvel de 20
+[00:08:16] uma coisa de 4.000, 3.500 pontos da média móvel de 20
+[00:08:18] e consequentemente a gente abriu uma janela de 8.000
+[00:08:20] pontos da média móvel de 200 períodos
+[00:08:22] e aí a gente poderia fazer
+[00:08:24] aquilo que é muito perigoso
+[00:08:26] que se chama 3 de retorno à média
+[00:08:28] essa é a abertura de hoje
+[00:08:30] não diz nada
+[00:08:32] sopa de chuchu com água de bateria de carro
+[00:08:34] desporra nenhuma, abertura
+[00:08:36] que não traz emoção nenhuma
+[00:08:38] e tudo o que a gente quer aqui nesse gráfico
+[00:08:40] é que esse gráfico consiga pelo menos fazer
+[00:08:42] alguma coisa como isso
+[00:08:44] a gente voltar
+[00:08:46] para a zona de valor justo
+[00:08:48] porque a gente está numa tendência de baixa
+[00:08:50] e de repente a gente conseguir
+[00:08:52] alguma venda
+[00:08:54] aqui
+[00:08:56] não parece
+[00:08:58] que o gráfico está com vontade
+[00:09:00] de fazer isso pelo menos até agora, são 11.14
+[00:09:02] portanto, o dia até aqui
+[00:09:04] é provavelmente um dos mais fáceis do ano
+[00:09:06] porque eu estava vendo aqui a Disney Plus
+[00:09:08] estava vendo a semifinal aqui
+[00:09:10] torcendo por mencic perder
+[00:09:12] e zero emoção
+[00:09:14] ai teve esse sinal aqui
+[00:09:16] ai o stocasho não deixou você vender
+[00:09:19] graças a Deus
+[00:09:21] você teria sido estopado
+[00:09:23] ai fez esse sinal aqui
+[00:09:28] mas deu uma alternativa aqui
+[00:09:30] mas o stocasho também não deixou você vender
+[00:09:32] não é isso
+[00:09:34] nada a fazer
+[00:09:36] nada a fazer, essa venda aqui
+[00:09:38] para o cara que está teimando
+[00:09:40] aquele último qual, o teimosão
+[00:09:42] o criativo, o gênio
+[00:09:44] ele vendeu aqui também, estopou no zero a zero
+[00:09:46] vendeu o sem-stocasho
+[00:09:48] vendeu a 6.900 pontos a 2M
+[00:09:50] mas e tem de retorno à média
+[00:09:52] teve
+[00:09:54] que foi esse aqui, que na verdade não é esse
+[00:09:56] porque
+[00:09:58] o Kendo 11 tinha uma mínima acima
+[00:10:00] dessa mínima que os senhores estão vendo aqui
+[00:10:02] quando o trade foi acionado
+[00:10:04] portanto, estopou em segundo
+[00:10:06] fez uma nova mínima aqui e tirou
+[00:10:08] cara, vamos avaliar esse trade
+[00:10:10] essa comprativa
+[00:10:12] porra
+[00:10:16] 6.200 pontos
+[00:10:18] da 200
+[00:10:20] 1.200 pontos
+[00:10:22] da média móvel de 20
+[00:10:24] esse é um trade seguro de retorno à média
+[00:10:29] mas a gente chegou a ficar hoje
+[00:10:31] 7.000 e 3.000
+[00:10:33] eu vi, 7.400 pontos aqui
+[00:10:35] quer dizer, em algum momento do dia hoje
+[00:10:37] a gente estava começando a caminhar em terreno
+[00:10:39] que de repente nos abriria
+[00:10:41] mais a frente dele, cai mais
+[00:10:43] nos abriria alguma janela
+[00:10:45] de queda
+[00:10:47] de fazer um trade retorno à média, perdão
+[00:10:49] essa janela foi
+[00:10:51] fechada com venência aqui
+[00:10:53] a gente sobe já 1.300 pontos, já corrige
+[00:10:55] e a gente está aqui naquele limbo do limear
+[00:10:57] do 6.000 e 7.000 pontos que eu falo pra vocês não fazerem
+[00:10:59] trade retorno à média
+[00:11:01] e a gente fala isso aqui toda semana
+[00:11:03] porque é um tema
+[00:11:05] que é quase cabalístico, espiritual
+[00:11:07] porque ele sempre vem à tona
+[00:11:09] nos momentos mais assim
+[00:11:11] o tal do trade retorno à média
+[00:11:13] não existe, ele vem
+[00:11:15] é um espectro
+[00:11:17] a gente está na fase dos ovnis
+[00:11:19] inclusive aqui no Brasil
+[00:11:21] nada feito
+[00:11:23] o que a gente quer que aconteça aqui
+[00:11:25] eu vou desenhar pra você
+[00:11:27] é isso aqui que eu quero que aconteça
+[00:11:34] isso aqui vai ser assim ou isso aqui vai ser assim
+[00:11:36] não sei, se for assim, tu vai vender um sinal indicando
+[00:11:38] já estou te dando bisota, porque ninguém chorar
+[00:11:40] você vai vender um martelinho aqui assim
+[00:11:42] não né, aí se for subindo assim
+[00:11:44] paulatino
+[00:11:46] aí boguinho
+[00:11:48] aí vai
+[00:11:50] aí vai
+[00:11:52] aí você vem aqui e faz assim
+[00:11:54] eu já estou te dando também o trade
+[00:11:56] para não ter problema
+[00:11:58] porra, mas subiu pra caralho
+[00:12:00] subiu pra caralho, isso é notícia
+[00:12:02] o trâmpio, a guerra da Ucrânia acabou
+[00:12:04] porra, não sei o que dizer
+[00:12:06] porra, foda hein
+[00:12:08] estou a fim de fazer essa porra aí
+[00:12:10] estou com o nível pra trás, sexta-feira
+[00:12:12] porra, já me fudia essa semana
+[00:12:14] porra, não
+[00:12:16] porra, onde você quer que esse movimento pare
+[00:12:18] porra, antes da 20 né, chefe
+[00:12:20] você é pra eu desenhar, eu vou desenhar ele aqui
+[00:12:22] porque aqui já fica meio esvelório estragado
+[00:12:24] ah não, mas aqui vou dar pra vender
+[00:12:26] porque eu estou por referência
+[00:12:28] não, tudo bem, já entendi
+[00:12:30] eu estou falando que vai piorando, entende
+[00:12:32] você sempre tá piorando, tá putrificando
+[00:12:34] tá vindo um cheiro, aquele cheiro de carne
+[00:12:36] a gente quer um negócio mais comportado
+[00:12:38] mais perfeito
+[00:12:40] aí veio aqui
+[00:12:42] a gente vai fechar esse queiro daqui a 10 minutos
+[00:12:44] ele vai passar de 41 pra 55
+[00:12:46] aí tu vai ter 55 aqui
+[00:12:48] porra, se tu tiver um micro pivozinho
+[00:12:50] de baixa aqui no 10, é coisa linda
+[00:12:52] melhora, você tá entendendo
+[00:12:54] a gente já sabe o que esse gráfico tem que fazer
+[00:12:56] ele tem que subir
+[00:12:58] e se ele subir, pra você falar assim
+[00:13:00] tá vendo, era 3 de retorno na média
+[00:13:02] não, é o respiro pra vender de novo
+[00:13:04] é aquela melhora da UTI
+[00:13:06] que todo mundo da família fica contenta
+[00:13:08] um dia seguinte pede pra trazer o documento
+[00:13:10] e uma roupa
+[00:13:14] o gráfico não está precisando fazer isso
+[00:13:16] ainda, não tá
+[00:13:18] pra gente
+[00:13:20] eu preciso que ele vim um cadinho aqui
+[00:13:22] cadinho, cadinho, só um negocinho
+[00:13:24] só um papachão pra gente resolver
+[00:13:26] só isso, de preferência se romper a máxima no dia
+[00:13:28] mas se romper a máxima no dia
+[00:13:30] mas o gráfico não é duro que romper a máxima no dia
+[00:13:34] mudou o que aqui
+[00:13:36] nada, né, se romper a máxima no dia
+[00:13:38] então já tô respondendo a outra dúvida
+[00:13:40] então se romper a máxima no dia, até porque esse ad convive comigo
+[00:13:42] né, que pra chegar na vinte tem que romper a máxima no dia
+[00:13:44] então romper a máxima no dia aqui não pode ser um problema pra você
+[00:13:46] você tem que olhar a máxima no dia e o batimento
+[00:13:48] tá 78, né
+[00:13:50] e essa aturação de 99, né
+[00:13:52] e tu falar, puta que merda, vou ter que parar de ver a porra
+[00:13:54] no jogo pra botar a porra da ordem no grau
+[00:13:56] que merda, né, porque hoje é muito melhor
+[00:13:58] não operar, né, estou torcendo pra não dar nada
+[00:14:00] né, uma torcida aqui
+[00:14:02] né, fruando né, negócio subindo 5%
+[00:14:04] negócio subindo 4,5, negócio subindo 1
+[00:14:06] chun, sobe 1,25
+[00:14:08] né, a 1,50, 1, dolar voando
+[00:14:10] né, olha lá
+[00:14:12] porra, dolar voando
+[00:14:14] aí tu quer criar um problema pra você
+[00:14:16] você tá com tesão de criar
+[00:14:18] um problema, né isso, então tá lá
+[00:14:20] vai ficando olhando isso aqui e se satisfaz
+[00:14:22] ai cara, maneiro
+[00:14:24] porra, legal
+[00:14:26] aí visa
+[00:14:28] ii, carai, bom martelão
+[00:14:30] porra, né, fica meio aqui
+[00:14:32] meio Bob Marguer assim, olhando
+[00:14:34] né, torcendo pra não dar um trem
+[00:14:36] isso, torcendo assim
+[00:14:38] olha, olha, olha, olha, ótimo, já cai logo daqui
+[00:14:40] já fica logo podre, né isso aqui
+[00:14:42] já me liberta, ó, já podrece logo
+[00:14:44] entende, é o dia de hoje pessoal
+[00:14:46] o dia de hoje não tem nada, não tem nada aqui
+[00:14:48] pra eu ganhar um dinheiro, só pra se foder
+[00:14:50] tem nada pra eu ganhar um dinheiro
+[00:14:52] eu já sei o que eu preciso pra ganhar dinheiro
+[00:14:54] é isso aqui, mas o grafo não tá querendo
+[00:14:56] ele não tá concordando muito comigo não
+[00:14:58] tá, bom
+[00:15:00] sinal
+[00:15:02] temos um sinal
+[00:15:05] muito importante
+[00:15:07] no dólar, que é o primeiro
+[00:15:09] pivô de alta no gráfico diário do dólar
+[00:15:11] do ano
+[00:15:13] então no curto prazo
+[00:15:15] apesar de que o peso
+[00:15:17] é pra baixo, mas no curto prazo
+[00:15:21] os compradores conseguiram fazer algo inédito
+[00:15:23] em 2026, quer armar um lindo
+[00:15:25] anto cheio de quentro, um lindo pivô
+[00:15:27] de alta no gráfico diário
+[00:15:29] no gráfico diário
+[00:15:31] tem bastante
+[00:15:33] espaço
+[00:15:35] mais ou menos até aqui
+[00:15:37] mais ou menos onde tá o alvo
+[00:15:39] no gráfico semanal
+[00:15:41] a gente tem uma facilidade pra subir
+[00:15:43] até a média móvel de 20, que tá mais ou menos ali
+[00:15:45] no gráfico mensal
+[00:15:48] a gente tem
+[00:15:50] caminho livre
+[00:15:52] até aqui, os 5 e
+[00:15:54] os 5 e 70
+[00:15:59] não seria nada demais
+[00:16:01] graficamente, eu tô falando do fundamento do dólar
+[00:16:03] seu banco central vai deixar, para com esse papo que ninguém sabe
+[00:16:05] você vai ter leilão do banco do cempo, queria eu saber
+[00:16:07] quer ver, eu vendia junto com o banco central
+[00:16:09] queria eu ter uma fonte lá, que me desce um zap
+[00:16:11] vamos vender agora, tá 4 bid do dólar
+[00:16:13] ensaia essa merda, essa compra aí
+[00:16:15] mas daria aqui pra vir no 5 e 8
+[00:16:17] 5 e 70
+[00:16:19] com facilidade
+[00:16:21] bonito pivô de alta no gráfico diário
+[00:16:23] uma barra de impulso
+[00:16:25] descanso no tempo
+[00:16:27] sente a 20, sente a 20, sente a 20
+[00:16:29] sente a 20, sente a 20, sente a 20
+[00:16:31] com a frustração, não é isso?
+[00:16:33] porrada a gente vendeu aqui, vendeu?
+[00:16:35] vendeu, vendeu todo mundo
+[00:16:37] ele tá continuando lambendo
+[00:16:39] do dólar sobe um e 30, coisa pra caralho
+[00:16:41] subiu um e 30 por dólar e a bolsa subi 30
+[00:16:43] ou cai 30, essa magnitude
+[00:16:45] movimento
+[00:16:47] que tecnicamente chama atenção
+[00:16:49] você vai palvo, não sei
+[00:16:51] ele também já não programou como trader
+[00:16:53] o que eu pude fazer eu fiz
+[00:16:55] tava ligado e peguei o gato aqui
+[00:16:57] se o gato vai celebra e eu vai virar onça pintada
+[00:16:59] ninguém sabe
+[00:17:01] portanto
+[00:17:03] movimento bonito
+[00:17:05] aquele 3 de longo prazo
+[00:17:07] daquele dol x11
+[00:17:09] tá com um pouquinho mais de 300
+[00:17:11] já tá bem melhor do que ter posto de renda fixa
+[00:17:13] porque tá dando 300% de cd no período
+[00:17:15] porque a renda fixa dá 1% no mês
+[00:17:17] tô exagerando aqui
+[00:17:19] e aqui deu 3%
+[00:17:21] tá bom, 3% eu falo merda
+[00:17:25] mais, mais, mais, 3,5, 3,6
+[00:17:27] então tá valendo a pena
+[00:17:31] e assim a gente vai
+[00:17:33] assim a gente vai se defendendo da bolsa
+[00:17:35] né, olha lá
+[00:17:39] a gente tá aqui né
+[00:17:47] a gente vai se defendendo
+[00:17:49] vai fazer 10%
+[00:17:53] na uma ação aí, aqui da bolsa
+[00:17:55] vai fazer nesse período
+[00:17:57] difícil hein, difícil
+[00:17:59] vai fazer 3 de 40%
+[00:18:01] difícil tá
+[00:18:03] não embove nos últimos meses
+[00:18:05] ou comprou algum nico aí
+[00:18:07] nem sei o que subiu 40% aí nos últimos dois meses
+[00:18:09] tem que ver aí
+[00:18:11] então a gente vai se virando dessa forma
+[00:18:13] meio camaleão, meio dançando
+[00:18:15] conforme a música
+[00:18:17] tá
+[00:18:19] e aqui
+[00:18:21] sem sinais ainda de acontecer aquilo que
+[00:18:23] minimamente a gente precisaria que acontecesse
+[00:18:25] pra que nós tivéssemos alguma oportunidade de operar hoje
+[00:18:27] tentando nos aproveitar aí
+[00:18:29] dessa tendência de baixa
+[00:18:31] nada feito até agora, mas tem muita água pra rolar
+[00:18:33] até uma hora, são 11h30
+[00:18:35] são 11h30, então tem que continuar aqui focado
+[00:18:37] mas já sabendo
+[00:18:39] aquilo que você quer
+[00:18:41] tá preguiçoso hoje, tá com sono, tá sensável
+[00:18:43] você faz assim, você vem aqui, e você bota um alarme
+[00:18:45] pronto, entendeu
+[00:18:47] bota um alarme aqui
+[00:18:49] e pronto
+[00:18:51] vai trabalhar, vai ver, rolando a rua
+[00:18:53] vai almoçar, e bota um alarme
+[00:18:55] porque se chegar aqui
+[00:18:57] já é capaz desse cara aqui ter
+[00:18:59] subido um pouquinho
+[00:19:01] que não custa nada pra você se avisar
+[00:19:05] pretende fazer aquela estratégia de sair
+[00:19:07] não, não Guilherme, vou sair com tudo no alvo
+[00:19:09] até porque eu já to comprado pra longo prazo
+[00:19:11] em outro ativo, né, de dólar também
+[00:19:13] Zé, para trade
+[00:19:15] você faz no mini dólar
+[00:19:17] WTO, sim
+[00:19:19] longo prazo eu nunca, eu nunca tinha operado do alt x11
+[00:19:21] eu falei aqui pra vocês e sem aula, pessoal, quando eu comprei
+[00:19:23] já tinha começado a turma de vocês, eu nunca operei o do alt x11
+[00:19:25] é a primeira vez que eu to operando do alt x11
+[00:19:27] eu sempre comprei para longo prazo no futuro
+[00:19:29] aquele trade que eu fiz em 2023
+[00:19:31] que eu comprei no 5 e vendi no 6, deu 1.000 pontos e eu fui rolando
+[00:19:33] contrato futuro, mas é chato
+[00:19:35] aí dessa vez eu comprei o do alt x11
+[00:19:37] agora, qual o problema do do alt x11?
+[00:19:39] ele, apesar
+[00:19:41] de na descrição do ativo
+[00:19:43] tá dizendo que ele emula
+[00:19:45] um para um o dólar
+[00:19:47] esporte, mas na prática
+[00:19:49] não, os movimentos do dólar futuro
+[00:19:51] são muito mais espais módicos e fortes
+[00:19:53] do que do do alt x11
+[00:19:55] portanto, eu estaria
+[00:19:57] ganhando mais dinheiro
+[00:19:59] se eu tivesse me posicionado no 496
+[00:20:01] lá no dólar futuro
+[00:20:03] eu estaria ganhando mais dinheiro do que eu estou ganhando
+[00:20:05] no do alt x11
+[00:20:07] então essa questão da paridade de um para um
+[00:20:09] do do alt x11, com o dólar esporte a mentira
+[00:20:11] ou eu tenho azar
+[00:20:13] de pegar um momento que está vendo uma descorrelação
+[00:20:15] pode acontecer também
+[00:20:17] então eu estou aqui sendo
+[00:20:19] estou sendo aqui intelectualmente
+[00:20:21] tentando ser preciso, pode ser um momento de desencontro
+[00:20:23] pode, a porra, se é um para um tem desencontro
+[00:20:25] mas tudo bem
+[00:20:27] então tudo na vida é aprendizado
+[00:20:29] eu estaria fazendo muito mais dinheiro
+[00:20:31] se eu tivesse
+[00:20:33] comprado no dólar futuro
+[00:20:35] vai para a vida, a gente só pende assim
+[00:20:37] só pende experimentando coisas novas e também está tudo bem
+[00:20:39] estou vendo os dois, então não pode ser calmar mesmo
+[00:20:41] só para vocês terem uma ideia, 496
+[00:20:43] eu estaria fazendo uns 200 pontos
+[00:20:45] já
+[00:20:47] no dólar
+[00:20:49] razoável
+[00:20:51] esse tem a questão do alavancagem
+[00:20:53] daria quase 4%
+[00:20:55] viu que o do alt x11
+[00:20:57] está com 3 e meio
+[00:20:59] tem uma diferença
+[00:21:01] não é um para um certinho
+[00:21:03] e também tem uma questão de liquidez
+[00:21:05] o do alt x11
+[00:21:07] é catastroficamente menos líquido
+[00:21:09] do que o dólar futuro
+[00:21:11] o do alt x11
+[00:21:13] negocia por dia na média
+[00:21:15] 254 mil reais
+[00:21:18] e o dólar futuro
+[00:21:22] é uma diferença pouca
+[00:21:24] é 53 bilhões
+[00:21:26] o dólar futuro no dia
+[00:21:28] 53 bilhões e meio de reais
+[00:21:30] 254 mil reais por dia
+[00:21:32] no do alt x11
+[00:21:34] como eu vou pegar o do alt x11 de novo? nunca
+[00:21:36] ou quando estiver com 90 anos
+[00:21:38] essa porra tiver um volume de macho
+[00:21:40] que não tem
+[00:21:42] então vivendo e aprendendo, estar lá mantida a posição
+[00:21:44] não vou me fazer, a posição está mantida
+[00:21:46] mas pelo que entendi
+[00:21:48] continua sendo a melhor opção
+[00:21:50] para quem
+[00:21:52] faz isso que eu costumo fazer com o dólar
+[00:21:54] que é de vez em quando fazer essas operações
+[00:21:56] o dólar futuro ainda parece ser o melhor
+[00:21:58] caminho, agora
+[00:22:00] isso para quem está ativo na tela
+[00:22:02] imagina a pessoa que quer comprar dólar
+[00:22:04] e faz outra coisa da vida dela
+[00:22:06] não fica aqui como eu quase todos os dias acompanhando
+[00:22:08] apesar de ser part time
+[00:22:10] a pessoa quer comprar dólar
+[00:22:12] e ela não quer comprar fisco e deixar em casa
+[00:22:14] que ela vai se puder quando ela for vender no campo
+[00:22:16] no banco, então aí pudeu mais aí
+[00:22:18] o período de você deixar em casa
+[00:22:20] e aí ela computou o x11
+[00:22:22] puta ferramenta
+[00:22:24] ferramenta top
+[00:22:26] o cara que quer se posicionar e não quer ter físico
+[00:22:28] puta ferramenta
+[00:22:30] sempre olhando
+[00:22:34] como que o usuário vai usar a coisa
+[00:22:36] se o cara é um heavy user
+[00:22:38] como eu sou
+[00:22:40] o cara que vai usar na exaustão da coisa
+[00:22:42] eu sou heavy user, o heavy user não é bom
+[00:22:44] não é bom
+[00:22:46] tem rivotril demais
+[00:22:48] mas
+[00:22:50] que está ali tranquilo, pô, tem uma carteira
+[00:22:52] e nessa carteira ele quer ter um pouco de dólar
+[00:22:54] que é a dolarização
+[00:22:56] direta, existe a dolarização
+[00:22:58] indireta, e existe a dolarização direta
+[00:23:00] então por exemplo
+[00:23:02] você tem um patrimônio muito extenso
+[00:23:04] 500 milhões de reais
+[00:23:06] 3% do seu patrimônio está em obra
+[00:23:08] de arte de artistas internacionais, vivos ou mortes
+[00:23:10] é uma dolarização indireta, a medida que essas obras de arte
+[00:23:12] elas têm um valor no mercado internacional e esse valor é ditado pelo dólar
+[00:23:14] em qualquer lugar do mundo
+[00:23:16] então a medida que o dólar
+[00:23:18] em algum momento
+[00:23:20] passou de 5 para 10 reais
+[00:23:22] essas obras de arte vão respeitar esses 10 reais
+[00:23:24] porque elas são especificadas em dólar
+[00:23:26] isso é a dolarização indireta
+[00:23:28] a dolarização direta é você comprar o dólar
+[00:23:30] e aí você tem formas
+[00:23:32] é física, você vai na casa de câmbio
+[00:23:34] você vai no seu banco
+[00:23:36] ou
+[00:23:38] você comprar um fundo
+[00:23:40] que replica o dólar
+[00:23:42] essas coisas que replicam o dólar
+[00:23:44] mas BDR, não, BDR é dolarização indireta
+[00:23:46] não é direta
+[00:23:48] são opções
+[00:23:50] para você manejar, gerenciar, regular
+[00:23:52] adaptar o seu portfólio
+[00:23:54] de investimento
+[00:23:56] o fato é
+[00:23:58] a gente quando faz uma compra
+[00:24:00] seja de um papel, seja de uma moeda
+[00:24:02] a gente só consegue garantir o momento da compra
+[00:24:04] o que vai acontecer depois
+[00:24:06] a gente não consegue garantir
+[00:24:08] mas eu não sei se todos têm a mesma visão que eu
+[00:24:10] e nem são obrigadas, até porque eu posso estar errado
+[00:24:12] mas eu acho que bater 4, 91 de dólar é uma piada
+[00:24:14] piada por que piada?
+[00:24:16] porque a gente está piorando
+[00:24:18] economicamente
+[00:24:20] o nosso risco, a cada mês
+[00:24:22] ele piora e aumenta
+[00:24:24] e sabidamente
+[00:24:26] nesse momento você está
+[00:24:28] posicionado, com parte do seu patrimônio
+[00:24:30] em uma moeda forte
+[00:24:32] te garantir uma vantagem competitiva de parte do portfólio
+[00:24:34] isso não funciona mais bem
+[00:24:36] porque não é para o fundo
+[00:24:38] eu acho que Abril é uma janela importante
+[00:24:40] para nós brasileiros
+[00:24:42] Para nós, brasileiros, de forma geral, quem tem patrimônio no Brasil, comprou a dola com um
+[00:24:48] colchão de segurança muito bom. Ou seja, uma simetria de risco muito favorável. É lógico
+[00:24:56] que o dola pode vir para R$3,50. Mas a questão é o quão mais perto do R$5,80 nós estamos
+[00:25:01] do que do R$3,50? Eu acho que estamos muito mais perto do R$5,80. Em todo o ano que
+[00:25:04] vai lá, até porque é sofrimento. Mas, tendo em vista o frame, a moldura, a coisa
+[00:25:09] é como está e para onde caminha. Eu acho que foi uma super ultra mega promoção dola dia
+[00:25:15] R$4,90. R$4,95, R$4,93. Novamente posso estar errado. Não tem problema se eu estiver errado,
+[00:25:19] porque se eu estiver errado vai estopar. Então, está tudo bem. Mas acho que abriu uma promoção.
+[00:25:25] Assim como também acho que abriu uma promoção em Oracle, assim como acho que estou falando
+[00:25:29] aqui é um tempão. Quebra uma promoção em mercado livre, queda de 50%. Enfim, é isso.
+[00:25:38] Fechou então? Zero dúvidas? Amor, né? Beijo, até uma hora.
+[00:25:53] Obrigado por estar aqui para a tarde e a todos. Um abraço.

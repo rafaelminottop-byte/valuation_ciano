@@ -13,3 +13,10 @@ cloudflared.exe
 
 # Icone gerado a partir da logo (assets/gerar_icone.py)
 assets/ciano.ico
+.env
+.env.*
+!.env.example
+node_modules/
+.next/
+.vercel/
+.claude/settings.local.json
