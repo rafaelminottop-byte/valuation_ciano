@@ -86,6 +86,18 @@ window.QUESTOES.push(
       "Materialidade financeira."],
     correta:1,
     explicacao:"Greenwashing é a prática de divulgar ou comercializar um produto/empresa como mais sustentável ou 'verde' do que efetivamente é, sem lastro em critérios ESG concretos, mensuráveis e verificáveis. É um risco relevante de reputação e regulatório (inclusive com normas específicas de rotulagem de fundos ESG no Brasil e em outras jurisdições, que exigem consistência entre o nome/marketing do fundo e sua metodologia real).",
-    macete:"Greenwashing = 'maquiagem verde' — marketing ESG sem metodologia real por trás. Vira risco regulatório e reputacional." }
+    macete:"Greenwashing = 'maquiagem verde' — marketing ESG sem metodologia real por trás. Vira risco regulatório e reputacional." },
+
+  // ===== ÍNDICE DE SUSTENTABILIDADE EMPRESARIAL (ISE) =====
+  { topico:"ESG",
+    enunciado:"Sobre o Índice de Sustentabilidade Empresarial (ISE), considere as afirmativas: I. Sua metodologia envolve filtros de exclusão setorial por questões de sustentabilidade. II. Nenhum setor econômico poderá ter participação superior a 15%. III. Os ativos são ponderados pelo valor de mercado do free float. Está correto o que se afirma apenas em:",
+    alternativas:[
+      "I e II.",
+      "I e III.",
+      "II e III.",
+      "I, II e III."],
+    correta:2,
+    explicacao:"I (errada): o ISE NÃO usa exclusão setorial; sua metodologia é de INCLUSÃO, avaliando empresas candidatas a partir de questionário preenchido voluntariamente. II (correta): se um setor econômico ultrapassa 15%, o excedente é redistribuído proporcionalmente aos demais ativos da carteira. III (correta): os ativos são ponderados pelo valor de mercado do free float (fração livre para negociação).",
+    macete:"ISE: inclusão (não exclusão) via questionário voluntário; teto de 15% por setor; peso pelo free float. A pegadinha é a afirmativa I (exclusão)." }
 
 );

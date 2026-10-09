@@ -57,6 +57,18 @@ window.QUESTOES.push(
       "Um valor sempre nulo em carteiras diversificadas, pela lei dos grandes números."],
     correta:0,
     explicacao:"A EL é uma perda 'esperada' — previsível em média — e por isso é tratada como custo do negócio, devendo ser precificada na taxa de juros cobrada dos tomadores e/ou provisionada contabilmente. O capital regulatório/econômico é dimensionado para cobrir a PERDA INESPERADA (unexpected loss), ou seja, a variabilidade/dispersão em torno da perda esperada, que é o verdadeiro 'risco' na acepção de incerteza. EL não é zero mesmo em carteiras diversificadas — a diversificação reduz a perda inesperada (volatilidade), não a perda esperada média.",
-    macete:"EL = precifica/provisiona (é esperado, não é risco). Capital cobre a PERDA INESPERADA (a variação em torno da EL) — isso sim é risco." }
+    macete:"EL = precifica/provisiona (é esperado, não é risco). Capital cobre a PERDA INESPERADA (a variação em torno da EL) — isso sim é risco." },
+
+  // ===== EL x LGD: DISTINÇÃO ENTRE AS DEFINIÇÕES =====
+  { topico:"Risco de Crédito",
+    enunciado:"Sobre a perda esperada de um título de crédito, considere: I. A Perda Esperada (EL) é a diferença entre o valor do título no mercado e o valor após o default, multiplicada pela probabilidade de default. II. A EL é a diferença entre o valor de mercado e o valor esperado após o default. III. O LGD é a multiplicação entre a probabilidade de default e a diferença entre o valor de mercado e o valor após o default. IV. O LGD é a diferença entre o valor de mercado e o valor esperado do título após o default. As afirmativas corretas são:",
+    alternativas:[
+      "I e II.",
+      "II e III.",
+      "I, II e III.",
+      "I e IV."],
+    correta:3,
+    explicacao:"O LGD (Loss Given Default) é a diferença entre o valor de mercado do título e o valor esperado caso ocorra o default (a severidade da perda) → afirmativa IV correta. A Perda Esperada (EL) é o resultado da multiplicação do LGD pela probabilidade de default → afirmativa I correta (ela descreve exatamente LGD × PD). A II confunde EL com LGD (falta multiplicar pela PD) e a III confunde LGD com EL (LGD não leva a PD). Logo, corretas apenas I e IV.",
+    macete:"LGD = (valor mercado − valor após default) → severidade. EL = LGD × PD. Trocar uma pela outra é a pegadinha (I descreve EL; IV descreve LGD)." }
 
 );

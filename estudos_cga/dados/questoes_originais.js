@@ -120,6 +120,18 @@ window.QUESTOES.push(
     alternativas:["Sempre zero","A média ponderada dos desvios-padrão (sem benefício de diversificação)","Menor que o de qualquer ativo isolado","Impossível de calcular"],
     correta:1,
     explicacao:"Com correlação +1 não há benefício de diversificação: o risco da carteira é a média ponderada dos riscos individuais. O ganho de diversificação só aparece quando a correlação é menor que 1.",
-    macete:"ρ = +1 → zero diversificação (risco = média ponderada). Só há ganho quando ρ < 1." }
+    macete:"ρ = +1 → zero diversificação (risco = média ponderada). Só há ganho quando ρ < 1." },
+
+  // ===== SWAP DE TAXA DE JUROS (HEDGE DE PASSIVO PREFIXADO) =====
+  { topico:"Derivativos",
+    enunciado:"A Empresa Alfa S.A. emitiu dívida PREFIXADA a 14% a.a. e aplicou os recursos em investimentos que rendem CDI + 0,80% a.a. A administração passa a acreditar que os juros vão CAIR e decide fazer um swap de taxa de juros para proteger (hedge) a posição. Qual swap representa a estratégia de hedge adequada?",
+    alternativas:[
+      "Ativo: taxa fixa / Passivo: CDI.",
+      "Ativo: CDI / Passivo: taxa fixa.",
+      "Ativo: inflação (IPCA) / Passivo: CDI + spread.",
+      "Ativo: taxa de câmbio / Passivo: taxa fixa."],
+    correta:0,
+    explicacao:"A empresa tem um PASSIVO prefixado (paga 14% fixo). Se os juros caem, essa dívida fica relativamente mais cara (custo de oportunidade), pois continua pagando taxa alta fixa. Para se proteger, ela quer trocar a obrigação de pagar FIXO por pagar CDI (pós-fixado), beneficiando-se da queda do CDI. No swap isso é: ponta ATIVA em taxa fixa (recebe fixo, que compensa os 14% que paga) e ponta PASSIVA em CDI (passa a pagar CDI). Resultado: o passivo efetivo vira pós-fixado e cai junto com os juros.",
+    macete:"Hedge troca a natureza do que te prejudica. Passivo prefixado + espera queda de juros → swap recebendo FIXO e pagando CDI (Ativo: fixa / Passivo: CDI)." }
 
 );

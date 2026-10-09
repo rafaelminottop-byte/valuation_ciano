@@ -98,6 +98,30 @@ window.QUESTOES.push(
       "É devolvida ao investidor assim que a posição gera lucro no ajuste diário do dia."],
     correta:1,
     explicacao:"A margem requerida é dimensionada pelo risco da posição — normalmente calculada por metodologias que consideram volatilidade histórica/implícita, liquidez do ativo e cenários de estresse (ex.: metodologias de margem por cenários da clearing). Em momentos de maior volatilidade de mercado, as clearings costumam elevar as exigências de margem para todas as posições sensíveis àquele risco, e não apenas para posições vendidas — posições compradas alavancadas (como em futuros) também exigem margem.",
-    macete:"Margem varia com o RISCO (volatilidade/liquidez/estresse), não é valor fixo. Sobe quando o mercado fica mais volátil. Vale para compra e venda de contratos futuros." }
+    macete:"Margem varia com o RISCO (volatilidade/liquidez/estresse), não é valor fixo. Sobe quando o mercado fica mais volátil. Vale para compra e venda de contratos futuros." },
+
+  // ===== FI-INFRA x SUFIXO "CRÉDITO PRIVADO" (denominação e divulgação) =====
+  { topico:"Regulação e Fundos",
+    enunciado:"Uma classe tipificada como Renda Fixa, com debêntures incentivadas, CRI e cotas de FIDC ligados a infraestrutura, superará 50% do patrimônio em ativos de emissores privados. A denominação preliminar traz 'Investimento em Infraestrutura' e o material destaca a isenção tributária para pessoa física, sem detalhar condições do benefício nem riscos de concentração e liquidez. A providência compatível com a tipificação e a divulgação é:",
+    alternativas:[
+      "acrescentar o sufixo 'Crédito Privado' à denominação, preservar a expressão 'Investimento em Infraestrutura' e manter o destaque tributário já previsto.",
+      "manter a denominação vinculada à infraestrutura, dispensar o sufixo 'Crédito Privado' e revisar o material de divulgação do produto.",
+      "tratar a classe como Renda Fixa – Crédito Privado, evidenciar os riscos de concentração e liquidez e dispensar o regime de infraestrutura na denominação.",
+      "manter a denominação de infraestrutura e revisar o material, reservando ao regulamento os riscos de concentração e liquidez."],
+    correta:1,
+    explicacao:"O FI-Infra é DISPENSADO do sufixo 'Crédito Privado', mas deve MANTER a denominação vinculada à infraestrutura (regime próprio). Essa dispensa não elimina o risco de crédito da carteira. Por isso o material de divulgação PRECISA ser revisado: o destaque do benefício tributário tem de vir acompanhado das condições para sua manutenção e dos riscos relevantes (concentração, liquidez). A alternativa D é sedutora, mas erra ao RETIRAR do material de divulgação justamente os riscos que precisam ser evidenciados ao investidor (reservá-los só ao regulamento não basta).",
+    macete:"FI-Infra: mantém 'infraestrutura', dispensa 'Crédito Privado' — mas o material de divulgação deve mostrar riscos e condições do benefício fiscal (não esconder no regulamento)." },
+
+  // ===== DISPENSAS DE TAXA DE PERFORMANCE POR PÚBLICO-ALVO (FIF) =====
+  { topico:"Regulação e Fundos",
+    enunciado:"Uma classe de cotas de Fundo de Investimento Financeiro (FIF) prevê expressamente em seu regulamento as dispensas admitidas em razão do público-alvo. Sobre as dispensas relativas à taxa de performance, é correto afirmar:",
+    alternativas:[
+      "as classes destinadas exclusivamente a investidores qualificados ficam dispensadas de observar integralmente as regras de cobrança e de método de cálculo da taxa de performance.",
+      "as classes destinadas exclusivamente a investidores profissionais ficam dispensadas de observar as regras relativas aos critérios de cobrança e ao método de cálculo da taxa de performance.",
+      "as dispensas independem de previsão no regulamento, decorrendo automaticamente do público-alvo da classe.",
+      "não há qualquer dispensa em razão do público-alvo, aplicando-se as mesmas regras a todas as classes."],
+    correta:1,
+    explicacao:"Desde que expressamente previsto no regulamento, as classes/subclasses destinadas EXCLUSIVAMENTE a investidores PROFISSIONAIS ficam dispensadas de observar tanto os critérios de cobrança quanto o método de cálculo da taxa de performance (dispensa ampla). As destinadas a investidores QUALIFICADOS têm dispensa apenas PARCIAL (restrita a alguns critérios) — por isso a alternativa que lhes atribui dispensa integral está errada. As dispensas NÃO são automáticas: dependem de previsão expressa no regulamento. E existe, sim, tratamento distinto conforme o público-alvo.",
+    macete:"Taxa de performance: profissional = dispensa AMPLA; qualificado = dispensa PARCIAL. Sempre depende de previsão no regulamento (não é automática)." }
 
 );
