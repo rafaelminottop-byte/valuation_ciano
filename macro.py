@@ -34,7 +34,7 @@ CACHE_DIR = Path(__file__).resolve().parent / ".cache"
 # O nome do cache tem versão: ao mudar o FORMATO do que é guardado (ex.: incluir
 # as séries históricas), incremente para invalidar caches antigos — senão o app
 # serve um cache velho, sem os campos novos (foi exatamente o que aconteceu).
-CACHE_VERSAO = 4
+CACHE_VERSAO = 5
 CACHE_FILE = CACHE_DIR / f"macro_v{CACHE_VERSAO}.json"
 CACHE_TTL_SEGUNDOS = 3 * 60 * 60  # 3 horas
 HEADERS = {"User-Agent": "Mozilla/5.0"}
@@ -304,6 +304,7 @@ def _coletar() -> dict:
 
     global_ = {
         "dxy": seguro(_yahoo, "DX-Y.NYB"),
+        "dolar_real": seguro(_yahoo, "BRL=X"),   # USD/BRL (quanto vale 1 dólar em reais)
         "ouro": seguro(_yahoo, "GC=F"),
         "treasury10a": seguro(_yahoo, "^TNX"),
         "cpi_eua": seguro(_cpi_eua),
@@ -339,6 +340,19 @@ def _coletar() -> dict:
             pl_mercado.get("earnings_yield"), brasil["ntnb_10a"].get("valor")
         ),
         "data": None, "serie": [],
+    }
+
+    # Diferencial de juro REAL Brasil - EUA (o "carry"): o prêmio de juro real que o
+    # investidor ganha ao ficar no real em vez do dólar. É o principal motor da
+    # relação câmbio/juros — mas só atrai capital se o risco-país estiver contido.
+    def _num(d):
+        return d.get("valor") if isinstance(d, dict) else None
+    br_real = _num(brasil.get("juro_real_ex_ante"))
+    tnx, cpi = _num(global_.get("treasury10a")), _num(global_.get("cpi_eua"))
+    us_real = (tnx - cpi) if (tnx is not None and cpi is not None) else None
+    carry = (br_real - us_real) if (br_real is not None and us_real is not None) else None
+    global_["carry_real"] = {
+        "valor": carry, "br_real": br_real, "us_real": us_real, "data": None, "serie": [],
     }
     return {"global": global_, "brasil": brasil, "ts": time.time()}
 
