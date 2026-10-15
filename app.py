@@ -84,18 +84,20 @@ def _injetar_css() -> None:
         <style>
         .stApp {
             background:
-                radial-gradient(1100px 600px at 15% -10%, #132876 0%, rgba(19,40,118,0) 55%),
-                radial-gradient(900px 600px at 110% 10%, #16307f 0%, rgba(22,48,127,0) 50%),
-                #0E2266;
+                radial-gradient(1400px 520px at 50% -20%, #13265F 0%, rgba(19,38,95,0) 70%),
+                #0C1A48;
         }
         #MainMenu, footer, header {visibility: hidden;}
-        .block-container {padding-top: 2.4rem; padding-bottom: 3rem; max-width: 1200px;}
+        .block-container {
+            padding-top: 2.2rem; padding-bottom: 3.5rem; max-width: 1120px;
+            margin-left: 2.2rem; margin-right: auto;
+        }
 
-        /* Base tipográfica: quase tudo abaixo está em rem, então subir a raiz
-           aumenta o app inteiro de forma proporcional (leitura mais confortável). */
-        html {font-size: 21px;}
+        /* Base tipográfica: quase tudo abaixo está em rem, então a raiz escala
+           o app inteiro. 18px dá leitura confortável com mais respiro/organização. */
+        html {font-size: 18px;}
         .stMarkdown p, .stMarkdown li, label, .stRadio label, .stCheckbox label {font-size: 1.02rem;}
-        [data-testid="stCaptionContainer"] p {font-size: 0.92rem; line-height: 1.55; color: #A9BBE0;}
+        [data-testid="stCaptionContainer"] p {font-size: 0.92rem; line-height: 1.6; color: #AEBCE6;}
         [data-testid="stMetricValue"] {font-size: 2rem; font-weight: 800;}
         [data-testid="stMetricLabel"] p {font-size: 0.9rem; letter-spacing: 0.02em;}
         div[data-testid="stDataFrame"] {font-size: 1rem;}
@@ -235,6 +237,67 @@ def _injetar_css() -> None:
         .tese-fortes .tese-h {color: #22C55E;}
         .tese-fracos {border-left: 4px solid #EF4444;}
         .tese-fracos .tese-h {color: #EF4444;}
+
+        /* ---- Navegação por páginas na sidebar (radio estilizado como menu) ---- */
+        section[data-testid="stSidebar"] {padding-top: 6px;}
+        .nav-grupo {
+            color: #8696CB; font-size: 0.70rem; font-weight: 800; letter-spacing: 0.16em;
+            text-transform: uppercase; margin: 16px 10px 6px;
+        }
+        .nav-grupo:first-of-type {margin-top: 4px;}
+        section[data-testid="stSidebar"] div[role="radiogroup"] {gap: 3px;}
+        section[data-testid="stSidebar"] div[role="radiogroup"] > label {
+            width: 100%; margin: 0; padding: 9px 14px; border-radius: 10px; cursor: pointer;
+            color: #C3CEF0; font-weight: 600; transition: background .12s, color .12s;
+        }
+        section[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {background: #15245C;}
+        section[data-testid="stSidebar"] div[role="radiogroup"] > label > div:first-child {display: none;}
+        section[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {
+            background: #1B2E74; color: #FFFFFF; box-shadow: inset 3px 0 0 #4C8DFF;
+        }
+        section[data-testid="stSidebar"] div[role="radiogroup"] label p {font-size: 1rem; font-weight: 600;}
+        /* separador acima do bloco de premissas, que aparece só nas páginas de análise */
+        section[data-testid="stSidebar"] [data-testid="stHeading"] h2 {
+            font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
+            color: #8696CB; margin-top: 10px;
+        }
+
+        /* Tabela de resultado rola na horizontal em telas estreitas, sem estourar a página */
+        .ciano-matriz-wrap {width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;}
+        .ciano-matriz {min-width: 520px;}
+
+        /* No desktop a barra de navegação fica SEMPRE visível (não some ao recolher) */
+        @media (min-width: 901px) {
+            section[data-testid="stSidebar"] {
+                transform: none !important; visibility: visible !important;
+                width: 300px !important; min-width: 300px !important;
+            }
+            section[data-testid="stSidebar"][aria-expanded="false"] {margin-left: 0 !important;}
+            [data-testid="stSidebarCollapseButton"] {display: none !important;}
+        }
+
+        /* ---- Responsivo: tablet ---- */
+        @media (max-width: 900px) {
+            html {font-size: 16.5px;}
+            .block-container {margin-left: auto; margin-right: auto; padding-left: 1.2rem; padding-right: 1.2rem;}
+            .ciano-brand img {height: 78px;}
+            h1 {font-size: 2rem;}
+        }
+        /* ---- Responsivo: celular ---- */
+        @media (max-width: 640px) {
+            html {font-size: 15px;}
+            .block-container {padding-top: 1.4rem; padding-left: 0.9rem; padding-right: 0.9rem;}
+            .ciano-brand img {height: 60px;}
+            .ciano-invest {font-size: 0.78rem; letter-spacing: 0.22em;}
+            h1 {font-size: 1.7rem; margin-top: 26px !important;}
+            .ciano-cards {gap: 12px;}
+            .ciano-card {min-width: 100%; padding: 16px 18px;}
+            .ciano-card .val {font-size: 1.7rem;}
+            .ciano-matriz td .v {font-size: 1.4rem;}
+            .ciano-matriz th, .ciano-matriz td {padding: 12px 12px;}
+            [data-testid="stMetricValue"] {font-size: 1.6rem;}
+            .ciano-verdict {font-size: 1.1rem; padding: 12px 18px;}
+        }
         </style>
         """,
         unsafe_allow_html=True,
@@ -255,7 +318,7 @@ def _cabecalho() -> None:
     st.markdown(
         f"""
         {marca}
-        <h1 style="margin:6px 0 0 0;">Valuation</h1>
+        <h1 style="margin:40px 0 4px 0;">Valuation</h1>
         """,
         unsafe_allow_html=True,
     )
@@ -275,10 +338,10 @@ def _celula(r, preco_atual: float, moeda: str) -> str:
 
 
 def _celula_tma(tma) -> str:
-    """Célula da TMA implícita — o retorno que o mercado exige para pagar o preço de hoje."""
+    """Célula da TIR implícita — o retorno que o mercado exige para pagar o preço de hoje."""
     if tma is None:
         return '<td><span class="na">&gt;600%</span></td>'
-    # Uma TMA implícita muito alta não é o mercado sendo irracional: é sinal de que
+    # Uma TIR implícita muito alta não é o mercado sendo irracional: é sinal de que
     # o fluxo usado não pertence ao acionista (dívida). Destacamos em vermelho.
     cor = "#EF4444" if tma > 0.40 else "#FFFFFF"
     return f'<td><div class="v" style="color:{cor};">{tma*100:.1f}%</div></td>'
@@ -288,7 +351,7 @@ def _render_resultado(ticker: str, preco_atual: float, resultado_ebit: dict,
                       resultado_lpa: dict = None, moeda: str = "R$",
                       tma_lucro: float = None, tma_ebit: float = None,
                       tem_lpa: bool = True) -> None:
-    """Caixa única: cenários (colunas) × métodos LPA/EBIT (linhas) + TMA implícita."""
+    """Caixa única: cenários (colunas) × métodos LPA/EBIT (linhas) + TIR implícita."""
     cenarios = list(resultado_ebit["resultados"].keys())
 
     def linha(rotulo: str, sub: str, resultado: dict, tma_impl, mostrar_tma: bool) -> str:
@@ -301,13 +364,14 @@ def _render_resultado(ticker: str, preco_atual: float, resultado_ebit: dict,
 
     cabecalho = "".join(f"<th>{c.capitalize()}</th>" for c in cenarios)
     tabela = (
+        '<div class="ciano-matriz-wrap">'
         '<table class="ciano-matriz">'
         '<thead><tr><th style="text-align:left;">Preço justo por ação</th>'
-        f'{cabecalho}<th>TMA implícita</th></tr></thead>'
+        f'{cabecalho}<th>TIR implícita</th></tr></thead>'
         "<tbody>"
         + linha("Método LPA", "sobre o lucro líquido", resultado_lpa, tma_lucro, tem_lpa)
         + linha("Método EBIT", "sobre o EBIT", resultado_ebit, tma_ebit, True)
-        + "</tbody></table>"
+        + "</tbody></table></div>"
     )
 
     st.markdown('<div class="ciano-label">Resultado</div>', unsafe_allow_html=True)
@@ -318,7 +382,7 @@ def _render_resultado(ticker: str, preco_atual: float, resultado_ebit: dict,
     st.markdown(tabela, unsafe_allow_html=True)
     st.caption(
         "Cada célula: preço justo por ação e o upside sobre o preço atual. "
-        "**TMA implícita** = o retorno anual que o mercado precisa estar exigindo para a ação "
+        "**TIR implícita** = o retorno anual que o mercado precisa estar exigindo para a ação "
         "valer o preço de hoje (cenário intermediário) — é o desconto que ele impõe. "
         "Quando a do EBIT dispara, é sinal de que o EBIT não é do acionista."
     )
@@ -583,9 +647,9 @@ def _busca_em_lote(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2
         exibir = df.rename(columns={
             "ticker": "Ticker", "nome": "Empresa", "preco": f"Preço {moeda}",
             "justo_lpa": f"Justo LPA {moeda}", "upside_lpa": "Upside LPA (%)",
-            "tma_lpa_pct": "TMA impl. LPA (%)",
+            "tma_lpa_pct": "TIR impl. LPA (%)",
             "justo_ebit": f"Justo EBIT {moeda}", "upside_ebit": "Upside EBIT (%)",
-            "tma_ebit_pct": "TMA impl. EBIT (%)",
+            "tma_ebit_pct": "TIR impl. EBIT (%)",
             "alavancada": "Alav.", "base": "Base", "veredito": "Veredito",
         }).set_index("Ticker")
         if exibir["Empresa"].isna().all():
@@ -594,9 +658,9 @@ def _busca_em_lote(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2
         _baixar_csv_br(exibir, "lote_valuation", "dl_lote")
         st.caption(
             "Cenário intermediário. Ordenado pelo upside do **LPA** (a leitura confiável). "
-            "**TMA impl.** = o retorno anual que o mercado exige para a ação valer o preço de hoje "
+            "**TIR impl.** = o retorno anual que o mercado exige para a ação valer o preço de hoje "
             "(o desconto que ele impõe). **⚠️ Alav.** = as óticas divergem: o EBIT vai para "
-            "credores, então o *Justo EBIT* está superestimado e a *TMA impl. EBIT* fica irreal — "
+            "credores, então o *Justo EBIT* está superestimado e a *TIR impl. EBIT* fica irreal — "
             "use as colunas do LPA."
         )
     if lote["falhas"]:
@@ -730,7 +794,7 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
                 ticker=emp["ticker"], ebit_atual=lpa, **comuns
             )
 
-        # TMA implícita: o retorno que o mercado exige para a ação valer o preço de hoje.
+        # TIR implícita: o retorno que o mercado exige para a ação valer o preço de hoje.
         from lentes import leitura_reversa
 
         lr = leitura_reversa(emp["preco_atual"], emp["ebit_por_acao"], lpa,
@@ -747,7 +811,7 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
                 st.warning(
                     "⚠️ **Empresa alavancada** — boa parte do EBIT vai para credores, "
                     "não para o acionista. Confie na linha do **Método LPA**; a do EBIT "
-                    "superestima o preço justo (e a TMA implícita dele fica irreal)."
+                    "superestima o preço justo (e a TIR implícita dele fica irreal)."
                 )
         elif emp.get("base") != "Lucro":
             st.caption("Sem lucro por ação disponível — só a linha do EBIT se aplica.")
@@ -980,9 +1044,9 @@ def _aba_carteira(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
         exibir = res["df"].rename(columns={
             "ticker": "Ticker", "preco": "Preço R$",
             "justo_lpa": "Justo LPA R$", "upside_lpa": "Upside LPA (%)",
-            "tma_lpa_pct": "TMA impl. LPA (%)",
+            "tma_lpa_pct": "TIR impl. LPA (%)",
             "justo_ebit": "Justo EBIT R$", "upside_ebit": "Upside EBIT (%)",
-            "tma_ebit_pct": "TMA impl. EBIT (%)",
+            "tma_ebit_pct": "TIR impl. EBIT (%)",
             "alavancada": "Alav.", "base": "Base", "veredito": "Veredito",
         }).drop(columns=["nome"], errors="ignore").set_index("Ticker")
         st.dataframe(exibir, use_container_width=True)
@@ -1256,14 +1320,26 @@ def _aba_macro() -> None:
     st.markdown('<div class="ciano-label">🌎 Global / Fluxo</div>', unsafe_allow_html=True)
     g = dados.get("global", {})
     c1, c2, c3, c4 = st.columns(4)
-    _indicador_macro(c1, "DXY (índice dólar)", g.get("dxy"), lambda v: f"{v:.2f}",
-                     delta_key="var_ano", ajuda="Dólar contra uma cesta de moedas.")
-    _indicador_macro(c2, "Ouro (US$/oz)", g.get("ouro"),
+    _indicador_macro(c1, "Dólar (R$)", g.get("dolar_real"), lambda v: f"R$ {v:.2f}".replace(".", ","),
+                     delta_key="var_ano", ajuda="USD/BRL — quanto vale 1 dólar em reais (Yahoo). "
+                     "Sobe = real mais fraco.")
+    _indicador_macro(c2, "DXY (índice dólar)", g.get("dxy"), lambda v: f"{v:.2f}",
+                     delta_key="var_ano", ajuda="Dólar contra uma cesta de moedas fortes.")
+    _indicador_macro(c3, "Ouro (US$/oz)", g.get("ouro"),
                      lambda v: f"US$ {v:,.0f}".replace(",", "."), delta_key="var_ano")
-    _indicador_macro(c3, "Treasury 10 anos", g.get("treasury10a"), lambda v: f"{v:.2f}%",
+    _indicador_macro(c4, "Treasury 10 anos", g.get("treasury10a"), lambda v: f"{v:.2f}%",
                      sufixo="%", delta_key="var_ano", ajuda="Juro longo dos EUA — o 'sem risco' em dólar.")
-    _indicador_macro(c4, "Inflação EUA (CPI 12m)", g.get("cpi_eua"), lambda v: f"{v:.2f}%",
+    e1, e2 = st.columns(2)
+    _indicador_macro(e1, "Inflação EUA (CPI 12m)", g.get("cpi_eua"), lambda v: f"{v:.2f}%",
                      sufixo="%", ajuda="CPI cheio em 12 meses (fonte: BLS).")
+    carry = g.get("carry_real") or {}
+    cr, brr, usr = carry.get("valor"), carry.get("br_real"), carry.get("us_real")
+    _indicador_macro(e2, "Carry: juro real BR − EUA", carry, lambda v: f"{v:+.1f} pp",
+                     ajuda=(f"Diferencial de juro REAL (BR {brr:.1f}% − EUA {usr:.1f}%). "
+                            if (brr is not None and usr is not None) else "")
+                     + "O prêmio de juro real por ficar no real em vez do dólar — o principal "
+                     "motor da relação câmbio/juros. Quanto maior, mais atrai capital — MAS só "
+                     "se o risco fiscal/país estiver contido.")
 
     st.markdown('<div class="ciano-label">🇧🇷 Brasil — Macro</div>', unsafe_allow_html=True)
     b = dados.get("brasil", {})
@@ -2073,70 +2149,189 @@ def _aba_cenarios() -> None:
                "(P/L) e Banco Central (juro); histórico preenchido aos poucos.")
 
 
+# Episódios históricos para ancorar a leitura dos gráficos de câmbio.
+_EVENTOS_CAMBIO = [
+    ("2015-09", "Crise fiscal 2015"),
+    ("2020-03", "Covid 2020"),
+    ("2022-10", "Eleição 2022"),
+    ("2024-12", "Susto fiscal 2024"),
+    ("2026-10", "Pós-eleição 2026"),
+]
+
+
+def _anota_eventos(dfbase, campo: str, cor: str = "#8696CB"):
+    ev = pd.DataFrame([{"data": pd.to_datetime(d + "-01"), "label": t} for d, t in _EVENTOS_CAMBIO])
+    ev = ev[ev["data"] >= dfbase["data"].min()]
+    regua = alt.Chart(ev).mark_rule(color=cor, strokeDash=[3, 3], opacity=0.55).encode(x="data:T")
+    txt = alt.Chart(ev).mark_text(
+        angle=270, align="left", baseline="middle", dx=5, fontSize=9, color="#AEBCE6",
+    ).encode(x="data:T", y=alt.value(10), text="label:N")
+    return regua + txt
+
+
+def _aba_cambio() -> None:
+    import cambio as cmb
+
+    st.markdown('<div class="ciano-label">Juro × Risco × Câmbio</div>', unsafe_allow_html=True)
+    st.caption("O que mexe no real: risco-país e dólar andam quase colados; o carry (juro real BR−EUA) é o "
+               "reforço. Fontes: BCB, Yahoo, BLS, Ipeadata (EMBI) e worldgovernmentbonds (CDS 5a). Cache 12h.")
+    if st.button("Atualizar câmbio", type="primary", key="cambio_upd"):
+        with st.spinner("Buscando câmbio, carry e risco…"):
+            st.session_state.cambio = cmb.buscar_cambio(usar_cache=False)
+    dados = st.session_state.get("cambio")
+    if dados is None:
+        with st.spinner("Carregando câmbio, carry e risco (pode levar ~1 min na 1ª vez)…"):
+            dados = cmb.buscar_cambio()
+            st.session_state.cambio = dados
+    if dados.get("erro"):
+        st.error(dados["erro"])
+        return
+
+    a = dados["atual"]
+    # --- leitura de hoje: 3 cartões ---
+    risco_cor = "verde" if (a.get("cds") and a.get("cds_min") and a["cds"] <= a["cds_min"] * 1.4) else "amarelo"
+    cds_txt = f"{a['cds']:.0f} bps" if a.get("cds") is not None else "—"
+    cds_desc = (f"perto da mínima (faixa {a['cds_min']:.0f}–{a['cds_max']:.0f})"
+                if a.get("cds_min") else "CDS 5 anos do Brasil")
+    carry_txt = f"+{a['carry']:.1f} pp" if a.get("carry") is not None else "—"
+    carry_desc = (f"BR {a['br_real']:.1f}% − EUA {a['us_real']:.1f}% · alto atrai capital"
+                  if a.get("br_real") is not None and a.get("us_real") is not None else "juro real BR − EUA")
+    dol_txt = f"R$ {a['dolar']:.2f}".replace(".", ",") if a.get("dolar") is not None else "—"
+    dol_desc = (f"{a['dolar_var_ano']:+.1f}% no ano" if a.get("dolar_var_ano") is not None else "USD/BRL")
+    cards = (
+        _card_alavanca("Risco-país (CDS 5a)", risco_cor, cds_txt, cds_desc)
+        + _card_alavanca("Carry (juro real BR−EUA)", "verde" if (a.get("carry") or 0) >= 4 else "amarelo",
+                         carry_txt, carry_desc)
+        + _card_alavanca("Dólar", "", dol_txt, dol_desc)
+    )
+    st.markdown(f'<div style="display:flex;flex-wrap:wrap;gap:12px;">{cards}</div>', unsafe_allow_html=True)
+
+    corr = a.get("corr_risco_dolar")
+    st.markdown(
+        '<div style="background:#16245E;border:1px solid #27366F;border-left:3px solid #22C55E;'
+        'border-radius:12px;padding:13px 16px;margin:14px 0 6px;font-size:0.95rem;">'
+        'Leitura de hoje: <b style="color:#22C55E;">risco baixo + carry alto → ambiente favorável ao real.</b> '
+        'O mercado precifica pouco risco fiscal agora, e por isso o real se fortaleceu no ano. '
+        'É a evidência da alavanca risco/fluxo da tese (aba Cenários).</div>',
+        unsafe_allow_html=True,
+    )
+
+    df = pd.DataFrame(dados["serie"])
+    df["data"] = pd.to_datetime(df["data"] + "-01")
+
+    # --- Gráfico 1: risco x dólar (eixos independentes) ---
+    st.markdown('<div class="ciano-label" style="margin-top:14px;">📈 Risco e dólar, lado a lado</div>',
+                unsafe_allow_html=True)
+    base = alt.Chart(df)
+    eixo_x = alt.X("data:T", title=None, axis=alt.Axis(labelColor=COR_LIGHT, grid=False))
+    l_risco = base.mark_line(color="#F87171", strokeWidth=1.8).encode(
+        x=eixo_x,
+        y=alt.Y("risco:Q", title="Risco-país (EMBI-equiv, bps)",
+                axis=alt.Axis(titleColor="#F87171", labelColor="#F87171", grid=False)),
+        tooltip=[alt.Tooltip("data:T", title="Mês"), alt.Tooltip("risco:Q", title="Risco (bps)", format=".0f")],
+    )
+    l_dolar = base.mark_line(color="#4C8DFF", strokeWidth=1.8).encode(
+        x=eixo_x,
+        y=alt.Y("dolar:Q", title="Dólar (R$)", scale=alt.Scale(zero=False),
+                axis=alt.Axis(titleColor="#4C8DFF", labelColor="#4C8DFF", grid=False)),
+        tooltip=[alt.Tooltip("data:T", title="Mês"), alt.Tooltip("dolar:Q", title="Dólar (R$)", format=".2f")],
+    )
+    ch1 = alt.layer(l_risco, l_dolar, _anota_eventos(df, "risco")).resolve_scale(y="independent")
+    ch1 = ch1.properties(height=330).configure_view(strokeWidth=0).configure(background="rgba(0,0,0,0)")
+    st.altair_chart(ch1, use_container_width=True)
+    cap = "As duas linhas sobem e descem quase coladas"
+    if corr is not None:
+        cap += f" — correlação de {corr:.2f} nas variações de 12 meses"
+    st.caption(cap + ". Picos de risco (2015, 2020) batem com saltos do dólar. "
+               "Risco = EMBI até 2024 + CDS ao vivo (na escala do EMBI).")
+
+    # --- Gráfico 2: carry no tempo (aprendizado) ---
+    st.markdown('<div class="ciano-label" style="margin-top:10px;">🎓 Carry — juro real BR − EUA</div>',
+                unsafe_allow_html=True)
+    dfc = df.dropna(subset=["carry"])
+    area = alt.Chart(dfc).mark_area(
+        line={"color": "#EAB308", "strokeWidth": 1.8}, color="rgba(234,179,8,0.14)",
+    ).encode(
+        x=alt.X("data:T", title=None, axis=alt.Axis(labelColor=COR_LIGHT, grid=False)),
+        y=alt.Y("carry:Q", title="Carry (pontos)", axis=alt.Axis(labelColor=COR_LIGHT, gridOpacity=0.12)),
+        tooltip=[alt.Tooltip("data:T", title="Mês"), alt.Tooltip("carry:Q", title="Carry (pp)", format="+.1f")],
+    )
+    ch2 = alt.layer(area, _anota_eventos(dfc, "carry")).properties(height=250)
+    ch2 = ch2.configure_view(strokeWidth=0).configure(background="rgba(0,0,0,0)")
+    st.altair_chart(ch2, use_container_width=True)
+    st.caption("O carry é a ISCA (prêmio de juro real por ficar no real) — mas sozinho não segura o câmbio: "
+               "é mais lento e previsível que o risco. Subiu forte no ciclo de alta da Selic (2021-22) e segue "
+               "alto hoje. Compare com o dólar acima: o carry importa, mas o risco manda.")
+    st.caption("Leitura educacional da relação juro-risco-câmbio, não recomendação de investimento.")
+
+
 def main() -> None:
-    st.set_page_config(page_title="Valuation Ciano", page_icon="📈", layout="wide")
+    st.set_page_config(
+        page_title="Valuation Ciano", page_icon="📈", layout="wide",
+        initial_sidebar_state="expanded",
+    )
     _injetar_css()
     _cabecalho()
 
-    # --- Barra lateral: premissas e cenários editáveis ---
-    st.sidebar.header("Premissas")
-    tma = _pct_para_fracao(
-        st.sidebar.number_input("TMA (%)", value=PREMISSAS_PADRAO["tma"] * 100, step=0.5)
-    )
-    retorno_alvo = _pct_para_fracao(
-        st.sidebar.number_input(
-            "Retorno alvo P/L (%)", value=PREMISSAS_PADRAO["retorno_alvo_pl"] * 100, step=0.5
-        )
-    )
-    anos_fase_1 = int(
-        st.sidebar.number_input("Anos fase 1", value=PREMISSAS_PADRAO["anos_fase_1"], step=1, min_value=1)
-    )
-    anos_fase_2 = int(
-        st.sidebar.number_input("Anos fase 2", value=PREMISSAS_PADRAO["anos_fase_2"], step=1, min_value=1)
-    )
+    # --- Navegação por páginas na sidebar (agrupada) ---
+    paginas_analise = ["🔎 Empresa", "📊 Screener B3", "⭐ Carteira", "🏅 Ranking"]
+    paginas_mercado = ["🔀 Cenários", "🔄 Ciclo", "📉 Macro", "💵 Câmbio", "🌎 EUA"]
+    paginas_acomp = ["📰 Notícias", "🔔 Gatilhos"]
+    ordem = paginas_analise + paginas_mercado + paginas_acomp
 
-    st.sidebar.header("Cenários (crescimento do EBIT)")
-    valores_cenarios = {}
-    for nome, params in CENARIOS_PADRAO.items():
-        st.sidebar.subheader(nome.capitalize())
-        g1 = _pct_para_fracao(
+    st.sidebar.markdown('<div class="nav-grupo">Navegação</div>', unsafe_allow_html=True)
+    pagina = st.sidebar.radio("Navegação", ordem, label_visibility="collapsed")
+
+    # Premissas aparecem só nas páginas de análise (onde de fato são usadas)
+    if pagina in paginas_analise:
+        st.sidebar.markdown("---")
+        st.sidebar.header("Premissas")
+        tma = _pct_para_fracao(
+            st.sidebar.number_input("TMA (%)", value=PREMISSAS_PADRAO["tma"] * 100, step=0.5)
+        )
+        retorno_alvo = _pct_para_fracao(
             st.sidebar.number_input(
-                f"{nome} — fase 1 (%)", value=params["crescimento_fase_1"] * 100, step=0.5, key=f"{nome}_g1"
+                "Retorno alvo P/L (%)", value=PREMISSAS_PADRAO["retorno_alvo_pl"] * 100, step=0.5
             )
         )
-        g2 = _pct_para_fracao(
-            st.sidebar.number_input(
-                f"{nome} — fase 2 (%)", value=params["crescimento_fase_2"] * 100, step=0.5, key=f"{nome}_g2"
-            )
+        anos_fase_1 = int(
+            st.sidebar.number_input("Anos fase 1", value=PREMISSAS_PADRAO["anos_fase_1"], step=1, min_value=1)
         )
-        valores_cenarios[nome] = {"g1": g1, "g2": g2}
+        anos_fase_2 = int(
+            st.sidebar.number_input("Anos fase 2", value=PREMISSAS_PADRAO["anos_fase_2"], step=1, min_value=1)
+        )
+        st.sidebar.header("Cenários (crescimento do EBIT)")
+        valores_cenarios = {}
+        for nome, params in CENARIOS_PADRAO.items():
+            st.sidebar.subheader(nome.capitalize())
+            g1 = _pct_para_fracao(
+                st.sidebar.number_input(
+                    f"{nome} — fase 1 (%)", value=params["crescimento_fase_1"] * 100, step=0.5, key=f"{nome}_g1"
+                )
+            )
+            g2 = _pct_para_fracao(
+                st.sidebar.number_input(
+                    f"{nome} — fase 2 (%)", value=params["crescimento_fase_2"] * 100, step=0.5, key=f"{nome}_g2"
+                )
+            )
+            valores_cenarios[nome] = {"g1": g1, "g2": g2}
 
-    # --- Abas: empresa, screener, carteira, ranking, EUA, macro, notícias e gatilhos ---
-    (aba_empresa, aba_screener, aba_carteira, aba_ranking, aba_eua,
-     aba_macro, aba_ciclo, aba_cenarios, aba_noticias, aba_gatilhos) = st.tabs(
-        ["🔎 Empresa", "📊 Screener B3", "⭐ Carteira", "🏅 Ranking", "🇺🇸 EUA",
-         "📉 Macro", "🔄 Ciclo", "🔀 Cenários", "📰 Notícias", "🔔 Gatilhos"]
-    )
-    with aba_empresa:
-        _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
-    with aba_screener:
-        _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
-    with aba_carteira:
-        _aba_carteira(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
-    with aba_ranking:
-        _aba_ranking(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
-    with aba_eua:
-        _aba_eua()
-    with aba_macro:
-        _aba_macro()
-    with aba_ciclo:
-        _aba_ciclo()
-    with aba_cenarios:
-        _aba_cenarios()
-    with aba_noticias:
-        _aba_noticias()
-    with aba_gatilhos:
-        _aba_gatilhos()
+        prem = (tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
+        if pagina == "🔎 Empresa":
+            _aba_empresa(*prem)
+        elif pagina == "📊 Screener B3":
+            _aba_screener(*prem)
+        elif pagina == "⭐ Carteira":
+            _aba_carteira(*prem)
+        elif pagina == "🏅 Ranking":
+            _aba_ranking(*prem)
+    else:
+        paginas_mercado_fn = {
+            "🔀 Cenários": _aba_cenarios, "🔄 Ciclo": _aba_ciclo,
+            "📉 Macro": _aba_macro, "💵 Câmbio": _aba_cambio, "🌎 EUA": _aba_eua,
+            "📰 Notícias": _aba_noticias, "🔔 Gatilhos": _aba_gatilhos,
+        }
+        paginas_mercado_fn[pagina]()
 
 
 if __name__ == "__main__":
