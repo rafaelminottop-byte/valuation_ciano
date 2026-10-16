@@ -160,7 +160,15 @@ def baixar_tabela_fundamentus(
     if usar_cache and _cache_valido(CACHE_FILE, ttl_segundos):
         return pd.read_pickle(CACHE_FILE)
 
-    resp = requests.get(URL_RESULTADO, headers=HEADERS, timeout=30)
+    try:
+        resp = requests.get(URL_RESULTADO, headers=HEADERS, timeout=30)
+    except requests.exceptions.SSLError:
+        # O Fundamentus às vezes serve certificado com hostname inválido. O dado é
+        # público, então caímos para sem verificação de SSL (mesmo tratamento do
+        # BCB/Ipeadata), em vez de quebrar todo o valuation da B3.
+        import urllib3
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        resp = requests.get(URL_RESULTADO, headers=HEADERS, timeout=30, verify=False)
     resp.raise_for_status()
     resp.encoding = "iso-8859-1"
 
