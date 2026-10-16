@@ -31,6 +31,21 @@ from valuation_engine import (
 )
 
 # --- Paleta da marca (design system Ciano v1.1) ---
+# Setores do Yahoo (inglês) -> português, para o screener de ações americanas.
+_SETORES_PT = {
+    "Technology": "Tecnologia",
+    "Industrials": "Indústria",
+    "Financial Services": "Financeiro",
+    "Consumer Cyclical": "Consumo cíclico",
+    "Healthcare": "Saúde",
+    "Consumer Defensive": "Consumo defensivo",
+    "Communication Services": "Comunicação",
+    "Energy": "Energia",
+    "Real Estate": "Imobiliário",
+    "Basic Materials": "Materiais básicos",
+    "Utilities": "Utilidades (energia/água)",
+}
+
 COR_BG = "#0E2266"
 COR_ACCENT = "#3B82F6"
 COR_LIGHT = "#CBD5E1"
@@ -833,6 +848,11 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
 
 
 def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) -> None:
+    mercado = st.radio("Mercado", ["🇧🇷 B3", "🌎 EUA"], horizontal=True, key="scr_mercado")
+    if mercado.startswith("🌎"):
+        _aba_eua()
+        return
+
     from fundamentus_scraper import baixar_tabela_fundamentus
     from screener import rodar_screener
 
@@ -887,6 +907,31 @@ def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
     if so_desconto:
         tabela = tabela[tabela["veredito"] == "desconto"]
 
+    # Setor (via Yahoo, cacheado) + filtro por setor, em português.
+    import setores_b3 as sb3
+    tks = list(tabela["ticker"].astype(str).str.upper())
+    mapa = sb3.carregar_mapa()
+    faltam = [t for t in tks if t not in mapa]
+    if faltam:
+        barra = st.progress(0.0, text=f"Buscando setor de {len(faltam)} ações (1ª vez; depois fica em cache)…")
+        mapa = sb3.garantir_setores(tks, progresso=lambda f, t: barra.progress(f / t, text=f"Setor… {f}/{t}"))
+        barra.empty()
+    else:
+        mapa = sb3.garantir_setores(tks)
+    tabela["setor"] = tabela["ticker"].astype(str).str.upper().map(
+        lambda t: _SETORES_PT.get(mapa.get(t, "—"), mapa.get(t, "—")))
+
+    setores_disp = sorted(s for s in tabela["setor"].unique() if s and s != "—")
+    sel = st.multiselect(
+        "Setores", setores_disp, default=setores_disp, key="scr_setores",
+        help="Filtra por setor — ex.: desmarque Tecnologia para ver só as não-tech.",
+    )
+    if sel and len(sel) < len(setores_disp):
+        tabela = tabela[tabela["setor"].isin(sel)]
+    if tabela.empty:
+        st.info("Nenhuma ação nos setores selecionados.")
+        return
+
     st.markdown(
         f'<div class="ciano-label">Ranking — {len(tabela)} ações</div>',
         unsafe_allow_html=True,
@@ -894,6 +939,7 @@ def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
     exibir = tabela.rename(
         columns={
             "ticker": "Ticker",
+            "setor": "Setor",
             "base": "Base",
             "alerta": "Alerta",
             "preco_atual": "Preço (R$)",
@@ -1212,6 +1258,16 @@ def _aba_eua() -> None:
     so_crescente = c4.checkbox("Só EBIT crescente", value=False, key="eua_cresc")
     atualizar = c5.checkbox("Atualizar dados (ignora cache)", value=False, key="eua_upd")
 
+    setores_univ = sorted({x.get("setor") for x in universo if x.get("setor")})
+    sel_pt = st.multiselect(
+        "Setores", [_SETORES_PT.get(s, s) for s in setores_univ],
+        default=[_SETORES_PT.get(s, s) for s in setores_univ], key="eua_setores",
+        help="Filtra por setor — ex.: desmarque Tecnologia para ver só as não-tech. "
+        "Reaplica na hora, sem precisar rodar de novo.",
+    )
+    pt_para_en = {_SETORES_PT.get(s, s): s for s in setores_univ}
+    setores_sel = {pt_para_en[s] for s in sel_pt}
+
     if st.button("Rodar valuation EUA", type="primary", key="eua_run"):
         barra = st.progress(0.0, text="Buscando dados no Yahoo Finance...")
 
@@ -1235,6 +1291,15 @@ def _aba_eua() -> None:
     if ranking.empty:
         st.info("Nenhuma empresa passou nos filtros.")
         return
+
+    # Filtro de setores aplicado na exibição (reage na hora, sem re-rodar o Yahoo).
+    if setores_sel and len(setores_sel) < len(setores_univ):
+        ranking = ranking[ranking["setor"].isin(setores_sel)]
+    if ranking.empty:
+        st.info("Nenhuma empresa nos setores selecionados.")
+        return
+    ranking = ranking.copy()
+    ranking["setor"] = ranking["setor"].map(lambda s: _SETORES_PT.get(s, s))
 
     n_desc = int((ranking["veredito"] == "desconto").sum())
     st.markdown(
@@ -1260,12 +1325,22 @@ def _grafico_trajetoria(serie: list, rotulo: str, sufixo: str = "") -> None:
         st.caption("Sem histórico disponível para este indicador.")
         return
     dfg = pd.DataFrame(serie)
-    dfg["ordem"] = range(len(dfg))
+    # Tenta usar os anos de verdade no eixo X (datas dd/mm/aaaa). Se não parsear,
+    # cai para a ordem sequencial sem rótulos (comportamento antigo).
+    dfg["dt"] = pd.to_datetime(dfg["data"], dayfirst=True, errors="coerce")
+    usar_tempo = dfg["dt"].notna().mean() > 0.8
+    if usar_tempo:
+        eixo_x = alt.X("dt:T", title=None,
+                       axis=alt.Axis(format="%Y", tickCount="year", labelColor=COR_LIGHT,
+                                     grid=False, labelAngle=0))
+    else:
+        dfg["ordem"] = range(len(dfg))
+        eixo_x = alt.X("ordem:Q", title=None, axis=alt.Axis(labels=False, grid=False, ticks=False))
     linha = (
         alt.Chart(dfg)
         .mark_line(color=COR_ACCENT, strokeWidth=2)
         .encode(
-            x=alt.X("ordem:Q", title=None, axis=alt.Axis(labels=False, grid=False, ticks=False)),
+            x=eixo_x,
             y=alt.Y("valor:Q", title=None, scale=alt.Scale(zero=False),
                     axis=alt.Axis(grid=True, gridOpacity=0.15, labelColor=COR_LIGHT)),
             tooltip=[alt.Tooltip("data:N", title="Data"),
@@ -1352,18 +1427,23 @@ def _aba_macro() -> None:
                      ajuda="CDI acumulado nos últimos 252 pregões, composto a partir da taxa diária anualizada (SGS 4389).")
     _indicador_macro(d4, "Dívida Bruta / PIB", b.get("divida_pib"), lambda v: f"{v:.1f}%", sufixo="%",
                      ajuda="Dívida bruta do governo geral sobre o PIB.")
+    ref = (b.get("focus_ipca") or {}).get("ref")
+    ano = f"para o fim de {ref}" if ref else "para o ano de referência"
+    ano_cheio = f"para o ano cheio de {ref}" if ref else "para o ano cheio"
     e1, e2, e3, e4 = st.columns(4)
     _indicador_macro(e1, "Juro real ex-ante", b.get("juro_real_ex_ante"), lambda v: f"{v:.1f}%",
                      sufixo="%",
                      ajuda="((1+Selic Focus)/(1+IPCA Focus) − 1). Juro real alto pressiona a economia e o valuation.")
     _indicador_macro(e2, "Focus — IPCA", b.get("focus_ipca"), lambda v: f"{v:.2f}%", sufixo="%",
-                     ajuda="Mediana das expectativas de inflação (Focus/BC). A trajetória mostra se estão ancorando.")
+                     ajuda=f"Mediana das expectativas de mercado (Focus/BC) para o IPCA acumulado {ano_cheio} "
+                     "(inflação do ano inteiro, não mensal). A trajetória mostra se estão ancorando.")
     _indicador_macro(e3, "Focus — Selic", b.get("focus_selic"), lambda v: f"{v:.2f}%", sufixo="%",
-                     ajuda="Mediana das expectativas para a Selic (Focus/BC).")
+                     ajuda=f"Mediana das expectativas (Focus/BC) para a taxa Selic {ano} (onde o mercado "
+                     "acha que o juro vai estar no fim do ano).")
     _indicador_macro(e4, "Focus — PIB", b.get("focus_pib"), lambda v: f"{v:.2f}%", sufixo="%",
-                     ajuda="Mediana das expectativas de crescimento do PIB (Focus/BC).")
+                     ajuda=f"Mediana das expectativas (Focus/BC) para o crescimento do PIB {ano_cheio} "
+                     "(ano inteiro vs. o anterior — não é trimestre).")
 
-    ref = (b.get("focus_ipca") or {}).get("ref")
     if ref:
         st.caption(
             f"Focus com ano de referência {ref}. Fontes: Yahoo Finance, "
@@ -2274,8 +2354,8 @@ def main() -> None:
     _cabecalho()
 
     # --- Navegação por páginas na sidebar (agrupada) ---
-    paginas_analise = ["🔎 Empresa", "📊 Screener B3", "⭐ Carteira", "🏅 Ranking"]
-    paginas_mercado = ["🔀 Cenários", "🔄 Ciclo", "📉 Macro", "💵 Câmbio", "🌎 EUA"]
+    paginas_analise = ["🔎 Empresa", "📊 Screener", "⭐ Carteira", "🏅 Ranking"]
+    paginas_mercado = ["🔀 Cenários", "🔄 Ciclo", "📉 Macro", "💵 Câmbio"]
     paginas_acomp = ["📰 Notícias", "🔔 Gatilhos"]
     ordem = paginas_analise + paginas_mercado + paginas_acomp
 
@@ -2319,7 +2399,7 @@ def main() -> None:
         prem = (tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
         if pagina == "🔎 Empresa":
             _aba_empresa(*prem)
-        elif pagina == "📊 Screener B3":
+        elif pagina == "📊 Screener":
             _aba_screener(*prem)
         elif pagina == "⭐ Carteira":
             _aba_carteira(*prem)
@@ -2328,7 +2408,7 @@ def main() -> None:
     else:
         paginas_mercado_fn = {
             "🔀 Cenários": _aba_cenarios, "🔄 Ciclo": _aba_ciclo,
-            "📉 Macro": _aba_macro, "💵 Câmbio": _aba_cambio, "🌎 EUA": _aba_eua,
+            "📉 Macro": _aba_macro, "💵 Câmbio": _aba_cambio,
             "📰 Notícias": _aba_noticias, "🔔 Gatilhos": _aba_gatilhos,
         }
         paginas_mercado_fn[pagina]()
