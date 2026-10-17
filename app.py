@@ -1918,133 +1918,84 @@ def _grafico_ciclo(d: dict) -> None:
 
 def _aba_ciclo() -> None:
     st.markdown('<div class="ciano-label">Ciclo do Ibovespa</div>', unsafe_allow_html=True)
-    st.caption("Onde o mercado está no ciclo — série longa do ^BVSP (Yahoo, mensal). "
-               "Contexto macro pra ajudar no timing das teses.")
+    st.caption("Onde o mercado está no ciclo, por dois eixos objetivos: quão ESTICADO o preço está "
+               "(distância da média de 200 semanas) e há quanto TEMPO a alta dura (meses desde o "
+               "último fundo maior). Série do ^BVSP (Yahoo).")
     with st.spinner("Carregando o histórico do Ibovespa…"):
         d = ibov_ciclo.buscar_ciclo_ibov()
+        mat = ibov_ciclo.buscar_maturidade()
     if d.get("erro"):
         st.warning(d["erro"])
         return
 
-    c1, c2, c3 = st.columns(3)
-    c1.metric("Ibovespa", _fmt_pts(d["atual"]))
-    c2.metric("Máxima histórica", _fmt_pts(d["ath"]))
-    est = d["esticamento"]
-    c3.metric("Esticamento vs média 24m", f"{est['desvio_pct']:+.0f}%", help=est["nota"])
-
-    st.markdown(
-        '<div style="display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 4px;">'
-        + _card_ciclo("🔵 Ciclo grande (anos)", d["grande"], COR_ACCENT)
-        + _card_ciclo("🟢 Ciclo pequeno (meses)", d["pequeno"], "#22C55E")
-        + "</div>",
-        unsafe_allow_html=True,
-    )
-
-    p = d.get("projecao")
-    if p:
-        cor_v = ("#EF4444" if "tardia" in p["veredito"]
-                 else "#F59E0B" if p["veredito"] == "Avançada" else "#22C55E")
-        st.markdown(
-            f'<div style="background:{COR_CARD};border:1px solid {COR_BORDA};'
-            f'border-left:5px solid {cor_v};border-radius:10px;padding:14px;margin:8px 0;">'
-            f'<div style="font-size:0.78rem;opacity:0.7;text-transform:uppercase;letter-spacing:1px;">'
-            f'Maturidade da alta atual</div>'
-            f'<div style="font-size:1.3rem;font-weight:700;color:{cor_v};">{html.escape(p["veredito"])}</div>'
-            f'<div style="margin-top:8px;font-size:0.82rem;line-height:1.5;">'
-            f'<b>Upside:</b> {html.escape(p["upside_txt"])}</div>'
-            f'<div style="margin-top:4px;font-size:0.82rem;line-height:1.5;">'
-            f'<b>Tempo:</b> {html.escape(p["tempo_txt"])}</div></div>',
-            unsafe_allow_html=True,
-        )
-        st.caption("Upside e tempo = estimativa estatística das altas modernas (pós-2008), "
-                   "não previsão. Índice na máxima e esticado = risco de topo maior.")
-
     _grafico_ciclo(d)
+    _bloco_maturidade(d, mat)
 
-    maiores = [l for l in d["legs"] if abs(l["amp"]) >= 15]
-    if maiores:
-        st.markdown('<div class="ciano-label">Ciclos maiores (≥15%)</div>', unsafe_allow_html=True)
-        linhas = [
-            {" ": "⬆️" if l["tipo"] == "alta" else "⬇️",
-             "Trecho": f"{l['de']} → {l['ate']}",
-             "Duração": f"{l['meses']} m",
-             "Preço": f"{_fmt_pts(l['p0'])} → {_fmt_pts(l['p1'])}",
-             "Amplitude": f"{l['amp']:+.0f}%"}
-            for l in maiores
-        ]
-        # última(s) linha(s): projeção para fins de 2027 e 2028 pelo ritmo histórico
-        proj = d.get("projecao") or {}
-        for a in proj.get("anos", []):
-            linhas.append({
-                " ": "🔮",
-                "Trecho": f"Proj. dez/{a['ano']} (base → forte)",
-                "Duração": f"+{a['meses_frente']} m",
-                "Preço": f"{_fmt_pts(a['base'])} → {_fmt_pts(a['forte'])}",
-                "Amplitude": f"{a['up_base']:+.0f}% → {a['up_forte']:+.0f}%",
-            })
-        st.dataframe(pd.DataFrame(linhas), hide_index=True, use_container_width=True)
-        if proj.get("anos"):
-            st.caption(
-                f"🔮 Projeção estatística (não previsão): compõe o Ibov atual pelo crescimento "
-                f"anualizado das altas modernas — base ~{proj['g_anual_base']:.0f}%/ano "
-                f"(mediana), forte ~{proj['g_anual_forte']:.0f}%/ano (máx). "
-                "Ignora recessões/choques; quanto mais longe, mais frágil."
-            )
-    _bloco_maturidade(d)
-
-    st.caption("Leitura educacional de estrutura de mercado, não recomendação. "
-               "Pivôs = extremos numa janela de ~9 meses.")
+    st.caption("Leitura educacional de estrutura de mercado, não recomendação.")
 
 
-def _bloco_maturidade(d: dict) -> None:
-    """Medidor de maturidade da alta atual + anatomia dos topos passados."""
-    proj = d.get("projecao") or {}
-    est = d.get("esticamento") or {}
-    meses = proj.get("meses_atual")
-    dur_med = proj.get("dur_hist_med")
-    dur_max = proj.get("dur_hist_max")
-    if not (meses and dur_med and dur_max):
-        return
+def _barra_maturidade(grad: str, marcos: list, voce_frac: float, voce_label: str, voce_cor: str) -> str:
+    def _m(frac, label):
+        return (f'<div style="position:absolute;left:{frac * 100:.1f}%;top:26px;transform:translateX(-50%);'
+                f'text-align:center;font-size:0.62rem;color:#CBD5E1;white-space:nowrap;">'
+                f'<div style="width:2px;height:30px;background:#CBD5E1;margin:0 auto;"></div>{label}</div>')
+    barra = (f'<div style="position:relative;height:26px;border-radius:6px;overflow:hidden;'
+             f'background:linear-gradient(90deg,{grad});"></div>')
+    voce = (f'<div style="position:absolute;left:{min(voce_frac * 100, 99):.1f}%;top:-34px;'
+            f'transform:translateX(-50%);text-align:center;font-size:0.72rem;font-weight:800;'
+            f'color:{voce_cor};white-space:nowrap;">você está aqui ▾<br>{voce_label}</div>')
+    return (f'<div style="position:relative;margin:40px 0 56px;">{barra}'
+            + "".join(_m(f, lbl) for f, lbl in marcos) + voce + "</div>")
 
-    st.markdown('<div class="ciano-label" style="margin-top:18px;">⏳ Maturidade da alta atual</div>',
-                unsafe_allow_html=True)
-    total = max(meses * 1.12, dur_max * 1.15)
-    p_med = dur_med / total * 100
-    p_max = dur_max / total * 100
-    p_voce = min(meses / total * 100, 99.5)
-    # zonas: verde ate tipica, amarelo tipica->recorde, vermelho alem
-    barra = (
-        f'<div style="position:relative;height:26px;border-radius:6px;overflow:hidden;'
-        f'background:linear-gradient(90deg,#22C55E 0%,#22C55E {p_med:.1f}%,'
-        f'#EAB308 {p_med:.1f}%,#EAB308 {p_max:.1f}%,#EF4444 {p_max:.1f}%,#EF4444 100%);"></div>'
-    )
-    def _marca(pct, cor, label, top):
-        return (
-            f'<div style="position:absolute;left:{pct:.1f}%;top:{top}px;transform:translateX(-50%);'
-            f'text-align:center;font-size:0.62rem;color:{cor};white-space:nowrap;">'
-            f'<div style="width:2px;height:30px;background:{cor};margin:0 auto;"></div>{label}</div>'
+
+def _bloco_maturidade(d: dict, mat: dict) -> None:
+    """Maturidade por dois eixos (esticamento MM200 + tempo desde o fundo maior) + anatomia."""
+    if mat and not mat.get("erro") and mat.get("meses_desde_fundo"):
+        st.markdown('<div class="ciano-label" style="margin-top:14px;">⏳ Maturidade da alta atual</div>',
+                    unsafe_allow_html=True)
+
+        # Eixo 1 — esticamento (distância da MM200 semanal)
+        dist, p75 = mat["dist_atual"], mat["p75"]
+        lo, hi = -35.0, max(dist + 8, 85.0)
+        def fr(x):
+            return max(0.0, min(1.0, (x - lo) / (hi - lo)))
+        z0, z1 = fr(0) * 100, fr(p75) * 100
+        grad1 = (f"#22C55E 0%,#22C55E {z0:.1f}%,#EAB308 {z0:.1f}%,#EAB308 {z1:.1f}%,"
+                 f"#EF4444 {z1:.1f}%,#EF4444 100%")
+        marcos1 = [(fr(0), "MM200<br>(0%)"), (fr(p75), f"esticado<br>p75 +{p75:.0f}%")]
+        cor1 = "#F87171" if dist > p75 else "#EAB308" if dist > 0 else "#22C55E"
+        st.markdown('<div style="font-size:0.82rem;font-weight:700;margin-bottom:2px;">Esticamento — '
+                    'distância da média de 200 semanas</div>', unsafe_allow_html=True)
+        st.markdown(_barra_maturidade(grad1, marcos1, fr(dist), f"{dist:+.0f}%", cor1),
+                    unsafe_allow_html=True)
+
+        # Eixo 2 — tempo desde o último fundo maior
+        meses, im, ix = mat["meses_desde_fundo"], mat["inter_med"], mat["inter_max"]
+        hi2 = max(meses * 1.1, (ix or meses) * 1.15)
+        def fr2(x):
+            return max(0.0, min(1.0, x / hi2))
+        t0, t1 = fr2(im) * 100, fr2(ix) * 100
+        grad2 = (f"#22C55E 0%,#22C55E {t0:.1f}%,#EAB308 {t0:.1f}%,#EAB308 {t1:.1f}%,"
+                 f"#EF4444 {t1:.1f}%,#EF4444 100%")
+        marcos2 = [(fr2(im), f"típico<br>{im}m"), (fr2(ix), f"recorde<br>{ix}m")]
+        cor2 = "#F87171" if meses >= ix else "#EAB308" if meses > im else "#22C55E"
+        fd = mat["fundo_atual"]["data"]
+        st.markdown('<div style="font-size:0.82rem;font-weight:700;margin-bottom:2px;">Tempo — meses '
+                    f'desde o último fundo maior ({fd})</div>', unsafe_allow_html=True)
+        st.markdown(_barra_maturidade(grad2, marcos2, fr2(meses), f"{meses}m", cor2),
+                    unsafe_allow_html=True)
+
+        # Síntese
+        ze = "zona de topo" if dist > p75 else "neutro" if dist > 0 else "zona de fundo"
+        zt = "acima do típico" if meses > im else "dentro do típico"
+        st.markdown(
+            f"**Os dois eixos apontam na mesma direção:** preço **{dist:+.0f}%** da MM200 (**{ze}** — "
+            f"topos históricos passaram de +{p75:.0f}%) e **{meses} meses** desde o fundo de {fd} "
+            f"(**{zt}**; mediana entre fundos {im}m, recorde {ix}m). Quando os dois concordam, o sinal "
+            "de maturidade é robusto."
         )
-    marcas = (
-        _marca(p_med, "#CBD5E1", f"típica<br>{dur_med:.0f}m", 26)
-        + _marca(p_max, "#CBD5E1", f"recorde<br>{dur_max:.0f}m", 26)
-        + f'<div style="position:absolute;left:{p_voce:.1f}%;top:-34px;transform:translateX(-50%);'
-        f'text-align:center;font-size:0.72rem;font-weight:800;color:#F87171;white-space:nowrap;">'
-        f'você está aqui ▾<br>{meses}m</div>'
-    )
-    st.markdown(
-        f'<div style="position:relative;margin:44px 0 60px;">{barra}{marcas}</div>',
-        unsafe_allow_html=True,
-    )
-    razao = meses / dur_med
-    passou = meses >= dur_max
-    resumo = (
-        f"**{meses} meses** de alta — **{razao:.1f}× a duração típica** ({dur_med:.0f}m)"
-        + (f", e **já superou o recorde da era moderna** ({dur_max:.0f}m)." if passou
-           else f", ainda abaixo do recorde ({dur_max:.0f}m).")
-    )
-    if est.get("desvio_pct") is not None:
-        resumo += f" Esticamento vs média de 24m: **{est['desvio_pct']:+.0f}%** — {est.get('nota', '')}."
-    st.markdown(resumo)
+        st.caption("Fundo maior = queda ≥15% abaixo da MM200 semanal (filtra pausas rasas como 2011 e "
+                   "2022). Fundos detectados: " + ", ".join(f["data"] for f in mat["fundos"]) + ".")
 
     # --- Anatomia dos topos ---
     anat = d.get("anatomia_topos") or []
@@ -2134,6 +2085,22 @@ def _card_alavanca(nome: str, cor_chave: str, valor: str, desc: str) -> str:
     )
 
 
+def _caixa_insights(frases: list) -> None:
+    """Caixinha de 'insights da tela': 1-3 observações por regra sobre o que está nos dados."""
+    frases = [f for f in frases if f]
+    if not frases:
+        return
+    itens = "".join(f'<li style="margin-bottom:5px;">{html.escape(f)}</li>' for f in frases)
+    st.markdown(
+        '<div style="background:#16245E;border:1px solid #27366F;border-left:3px solid #4C8DFF;'
+        'border-radius:12px;padding:12px 16px;margin:4px 0 16px;">'
+        '<div style="font-size:0.7rem;letter-spacing:.12em;text-transform:uppercase;color:#8696CB;'
+        'margin-bottom:6px;">💡 Insights da tela</div>'
+        f'<ul style="margin:0;padding-left:18px;font-size:0.9rem;line-height:1.55;">{itens}</ul></div>',
+        unsafe_allow_html=True,
+    )
+
+
 def _aba_cenarios() -> None:
     st.markdown('<div class="ciano-label">Cenários — onde estamos no ciclo</div>', unsafe_allow_html=True)
     st.caption("As 4 alavancas que movem a bolsa (lucro, múltiplo, juro, fluxo), o estado de hoje "
@@ -2147,6 +2114,21 @@ def _aba_cenarios() -> None:
     viv = _cenarios_dados_vivos()
     hoje = next((e for e in base.get("episodios", []) if e["id"] == "2022-hoje"), {})
     alav = hoje.get("alavancas", {})
+
+    # --- insights da tela (nível regra, sem IA) ---
+    _ins = []
+    _mat = ibov_ciclo.buscar_maturidade()
+    if _mat and not _mat.get("erro") and _mat.get("meses_desde_fundo"):
+        _ins.append(f"Ciclo maduro por dois eixos: +{_mat['dist_atual']:.0f}% acima da MM200 (zona de topo) "
+                    f"e {_mat['meses_desde_fundo']} meses desde o fundo de {_mat['fundo_atual']['data']}.")
+    if viv.get("selic") is not None:
+        jr = f" (real ~{viv['juro_real']:.1f}%)" if viv.get("juro_real") is not None else ""
+        _ins.append(f"Juro é a alavanca-mãe: Selic {viv['selic']:.1f}%{jr} — a direção dela decide entre o "
+                    "caminho 2016-19 (alta) e o 2011-15 (travado).")
+    if viv.get("pl_small") and viv.get("pl_grande"):
+        _ins.append(f"O 'barato' está nas small caps: grandes ~{viv['pl_grande']:.1f}x vs "
+                    f"small ~{viv['pl_small']:.1f}x.")
+    _caixa_insights(_ins)
 
     # --- as 4 alavancas hoje ---
     st.markdown('<div class="ciano-label" style="margin-top:6px;">🎛️ As 4 alavancas hoje</div>',
@@ -2228,6 +2210,10 @@ def _aba_cenarios() -> None:
     st.caption("Leitura estruturada de tese, não recomendação de investimento. Dados de hoje: Fundamentus "
                "(P/L) e Banco Central (juro); histórico preenchido aos poucos.")
 
+    # Seção de ciclo (fundida aqui): onde estamos no ciclo por preço/tempo.
+    st.markdown("<hr style='border-color:#27366F;margin:22px 0 6px;'>", unsafe_allow_html=True)
+    _aba_ciclo()
+
 
 # Episódios históricos para ancorar a leitura dos gráficos de câmbio.
 _EVENTOS_CAMBIO = [
@@ -2268,6 +2254,24 @@ def _aba_cambio() -> None:
         return
 
     a = dados["atual"]
+
+    # --- insights da tela (nível regra, sem IA) ---
+    _ins = []
+    if a.get("cds") is not None and a.get("cds_min") is not None:
+        if a["cds"] <= a["cds_min"] * 1.3:
+            _ins.append(f"Risco-país (CDS) em {a['cds']:.0f} bps — perto da mínima histórica "
+                        f"(faixa {a['cds_min']:.0f}–{a['cds_max']:.0f}): mercado precifica pouco risco fiscal.")
+        elif a["cds"] >= a["cds_max"] * 0.8:
+            _ins.append(f"Risco-país (CDS) em {a['cds']:.0f} bps — ELEVADO (perto do topo da faixa "
+                        f"{a['cds_min']:.0f}–{a['cds_max']:.0f}): sinal de estresse fiscal.")
+    if a.get("dolar_var_ano") is not None:
+        v = a["dolar_var_ano"]
+        _ins.append(f"Dólar {v:+.0f}% no ano (R$ {a['dolar']:.2f}) — real {'forte' if v < 0 else 'fraco'}.")
+    if a.get("carry") is not None and a["carry"] >= 4:
+        _ins.append(f"Carry alto: +{a['carry']:.1f} pp de juro real BR−EUA — atrai capital, mas só vira "
+                    "real forte se o risco seguir baixo.")
+    _caixa_insights(_ins)
+
     # --- leitura de hoje: 3 cartões ---
     risco_cor = "verde" if (a.get("cds") and a.get("cds_min") and a["cds"] <= a["cds_min"] * 1.4) else "amarelo"
     cds_txt = f"{a['cds']:.0f} bps" if a.get("cds") is not None else "—"
@@ -2355,7 +2359,7 @@ def main() -> None:
 
     # --- Navegação por páginas na sidebar (agrupada) ---
     paginas_analise = ["🔎 Empresa", "📊 Screener", "⭐ Carteira", "🏅 Ranking"]
-    paginas_mercado = ["🔀 Cenários", "🔄 Ciclo", "📉 Macro", "💵 Câmbio"]
+    paginas_mercado = ["🔀 Cenários", "📉 Macro", "💵 Câmbio"]
     paginas_acomp = ["📰 Notícias", "🔔 Gatilhos"]
     ordem = paginas_analise + paginas_mercado + paginas_acomp
 
@@ -2407,7 +2411,7 @@ def main() -> None:
             _aba_ranking(*prem)
     else:
         paginas_mercado_fn = {
-            "🔀 Cenários": _aba_cenarios, "🔄 Ciclo": _aba_ciclo,
+            "🔀 Cenários": _aba_cenarios,
             "📉 Macro": _aba_macro, "💵 Câmbio": _aba_cambio,
             "📰 Notícias": _aba_noticias, "🔔 Gatilhos": _aba_gatilhos,
         }
