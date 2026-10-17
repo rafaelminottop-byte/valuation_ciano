@@ -260,6 +260,106 @@ def buscar_ciclo_ibov(usar_cache: bool = True) -> dict:
     return dados
 
 
+# ------------------------------------------------------------------------------
+# Maturidade do mercado por DOIS eixos objetivos, via MM200 semanal:
+#  - ESTICAMENTO: distância do preço à média de 200 semanas (fundos ficam
+#    abaixo da linha; topos, bem acima).
+#  - TEMPO: meses desde o último FUNDO MAIOR — definido como a queda a >=15%
+#    abaixo da MM200 (filtra pausas rasas/laterais tipo 2011 e 2022).
+# ------------------------------------------------------------------------------
+CACHE_MATUR = CACHE_DIR / "ibov_maturidade_v1.json"
+FUNDO_MAIOR_LIMITE = -15.0  # % abaixo da MM200 para contar como virada de ciclo
+
+
+def _coletar_maturidade() -> dict:
+    try:
+        h = yf.Ticker("^BVSP").history(period="max", interval="1wk")["Close"].dropna()
+        if h is None or h.empty or len(h) < 220:
+            return {"erro": "Série semanal do Ibov insuficiente."}
+        h.index = pd.to_datetime([d.date() for d in h.index])
+        ma = h.rolling(200).mean()
+        dist = ((h / ma) - 1) * 100
+        d = dist.dropna()
+
+        # FUNDOS MAIORES: cada episódio em que a distância ficou <= -15%; o fundo é
+        # o ponto mais profundo. Um novo episódio só começa depois que o preço VOLTA
+        # acima da MM200 (dist >= 0) — senão um bear longo e oscilante viraria vários
+        # fundos. Assim cada bear conta como um fundo só (o mais profundo).
+        fundos = []
+        ativo, prof, data_prof = False, None, None
+        for dt, v in d.items():
+            if v <= FUNDO_MAIOR_LIMITE:
+                if not ativo or v < prof:
+                    ativo, prof, data_prof = True, float(v), dt
+            elif ativo and v >= 0:
+                fundos.append({"data": data_prof.strftime("%Y-%m"), "prof": round(prof, 1)})
+                ativo = False
+        if ativo:
+            fundos.append({"data": data_prof.strftime("%Y-%m"), "prof": round(prof, 1)})
+
+        # Agrupa fundos a menos de 24 meses (mesmo bear) e fica com o mais profundo,
+        # para não contar repiques do meio de um bear longo como fundos distintos.
+        def _mm(a, b):
+            pa, pb = pd.Period(a, "M"), pd.Period(b, "M")
+            return (pb.year - pa.year) * 12 + (pb.month - pa.month)
+        grupos = []
+        for f in fundos:
+            if grupos and _mm(grupos[-1][-1]["data"], f["data"]) < 24:
+                grupos[-1].append(f)
+            else:
+                grupos.append([f])
+        fundos = [min(g, key=lambda x: x["prof"]) for g in grupos]
+
+        hoje = d.index[-1]
+        meses = None
+        if fundos:
+            uf = pd.Period(fundos[-1]["data"], "M")
+            meses = (hoje.year - uf.year) * 12 + (hoje.month - uf.month)
+
+        # intervalos (meses) entre fundos maiores -> noção de "idade típica" do ciclo
+        def _m(a, b):
+            pa, pb = pd.Period(a, "M"), pd.Period(b, "M")
+            return (pb.year - pa.year) * 12 + (pb.month - pa.month)
+        inter = [_m(fundos[k - 1]["data"], fundos[k]["data"]) for k in range(1, len(fundos))]
+        import statistics as _st
+        inter_med = int(_st.median(inter)) if inter else None
+        inter_max = int(max(inter)) if inter else None
+
+        # percentis da distância (desde 2003, sem o lixo hiperinflacionário dos 90s)
+        dd = d[d.index >= pd.Timestamp("2003-01-01")]
+        p25, med, p75 = (float(dd.quantile(q)) for q in (0.25, 0.5, 0.75))
+
+        return {
+            "dist_atual": round(float(d.iloc[-1]), 1),
+            "ibov": round(float(h.iloc[-1])), "ma200": round(float(ma.iloc[-1])),
+            "meses_desde_fundo": meses,
+            "fundo_atual": fundos[-1] if fundos else None,
+            "fundos": fundos,
+            "inter_med": inter_med, "inter_max": inter_max,
+            "p25": round(p25, 0), "med": round(med, 0), "p75": round(p75, 0),
+            "erro": None,
+        }
+    except Exception as e:  # noqa: BLE001
+        return {"erro": f"Falha ao calcular maturidade (MM200): {e}"}
+
+
+def buscar_maturidade(usar_cache: bool = True) -> dict:
+    if usar_cache and CACHE_MATUR.exists():
+        try:
+            if time.time() - CACHE_MATUR.stat().st_mtime < CACHE_TTL_SEGUNDOS:
+                return json.loads(CACHE_MATUR.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            pass
+    dados = _coletar_maturidade()
+    if not dados.get("erro"):
+        try:
+            CACHE_DIR.mkdir(exist_ok=True)
+            CACHE_MATUR.write_text(json.dumps(dados, ensure_ascii=False), encoding="utf-8")
+        except Exception:  # noqa: BLE001
+            pass
+    return dados
+
+
 if __name__ == "__main__":
     d = buscar_ciclo_ibov(usar_cache=False)
     if d.get("erro"):
