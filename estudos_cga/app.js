@@ -3,6 +3,7 @@
 // ============================================================
 const FORMULAS = window.FORMULAS || [];
 const QUESTOES = window.QUESTOES || [];
+const CONCEITOS = window.CONCEITOS || [];
 const conteudo = document.getElementById("conteudo");
 
 // tópicos únicos (ordenados)
@@ -82,6 +83,7 @@ function opcoesTopico(sel){
 function render(modo){
   clearInterval(simTimer); // para o cronômetro do simulado ao trocar de tela (a sessão fica salva)
   if(modo === "formulas") return renderFormulas();
+  if(modo === "conceitos") return renderConceitos();
   if(modo === "quiz") return renderQuiz();
   if(modo === "simulado") return renderSimulado();
   if(modo === "progresso") return renderProgresso();
@@ -121,6 +123,54 @@ function cardFormula(f){
     <div class="formula">${f.formula}</div>
     <p class="desc">${f.descricao}</p>
     <div class="tags">${(f.tags||[]).map(t=>`<span>${t}</span>`).join("")}</div>
+  </div>`;
+}
+
+// ---------------- CONCEITOS (destrinchados) ----------------
+function renderConceitos(){
+  const topsC = [...new Set(CONCEITOS.map(c => c.topico))].sort();
+  conteudo.innerHTML = `
+    <div class="controles">
+      <input class="busca" id="buscaC" placeholder="🔎 Buscar conceito, tema ou palavra-chave...">
+      <select id="filtroC">
+        <option value="">Todos os tópicos</option>
+        ${topsC.map(t => `<option value="${t}">${t}</option>`).join("")}
+      </select>
+    </div>
+    <div class="grid" id="listaC"></div>`;
+  const busca = document.getElementById("buscaC");
+  const filtro = document.getElementById("filtroC");
+  function atualizar(){
+    const q = busca.value.toLowerCase().trim();
+    const t = filtro.value;
+    const res = CONCEITOS.filter(c => {
+      const okT = !t || c.topico === t;
+      const texto = (c.titulo+" "+(c.resumo||"")+" "+(c.tags||[]).join(" ")).toLowerCase();
+      const okQ = !q || texto.includes(q);
+      return okT && okQ;
+    });
+    document.getElementById("listaC").innerHTML = res.length ? res.map(cardConceito).join("") :
+      `<div class="vazio">Nenhum conceito. Adicione mais em <code>dados/conceitos.js</code>.</div>`;
+    document.querySelectorAll(".conc-card .conc-topo").forEach(h => {
+      h.addEventListener("click", () => h.parentElement.classList.toggle("aberto"));
+    });
+  }
+  busca.addEventListener("input", atualizar);
+  filtro.addEventListener("change", atualizar);
+  atualizar();
+  busca.focus();
+}
+function cardConceito(c){
+  return `<div class="conc-card aberto">
+    <div class="conc-topo">
+      <div>
+        <span class="tag-topico">${c.topico}</span>
+        <h3>${c.titulo}</h3>
+        <p class="desc">${c.resumo||""}</p>
+      </div>
+      <span class="conc-seta">▾</span>
+    </div>
+    <div class="conc-corpo">${c.html||""}</div>
   </div>`;
 }
 

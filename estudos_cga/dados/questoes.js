@@ -109,7 +109,7 @@ window.QUESTOES = [
   // ---------- DERIVATIVOS ----------
   {
     topico: "Derivativos",
-    enunciado: "Pela paridade put-call (mesmo strike e vencimento), a relação correta é:",
+    enunciado: "Considere, para uma call e uma put europeias de mesmo strike e vencimento: C = prêmio da call, P = prêmio da put, S = preço do ativo à vista, K = preço de exercício (strike) e VP(K) = valor presente do strike. Pela paridade put-call, a relação correta é:",
     alternativas: ["C − P = S − VP(K)", "C + P = S + K", "C − P = K − S", "C + S = P + VP(K)"],
     correta: 0,
     explicacao: "Da paridade C + VP(K) = P + S, isolando: C − P = S − VP(K). Relação de não arbitragem entre call, put, ativo à vista e VP do strike.",
@@ -150,5 +150,20 @@ window.QUESTOES = [
     correta: 1,
     explicacao: "(1+i_ano) = (1,01)^12 = 1,1268 → 12,68% a.a. A taxa proporcional (12%) subestima o efeito dos juros compostos.",
     macete: "Equivalência composta é potência: (1+i)^n. A resposta 'redonda' (12%) é a proporcional — quase sempre a errada."
+  },
+
+  // ---------- REGULAÇÃO E FUNDOS ----------
+  {
+    topico: "Regulação e Fundos",
+    enunciado: "Em uma revisão da prateleira de produtos incentivados, a instituição analisa uma classe a ser tipificada como Renda Fixa, com política voltada a debêntures incentivadas, CRI e cotas de FIDC ligados a projetos de infraestrutura. A carteira projetada superaria 50% do patrimônio em ativos de responsabilidade de emissores privados, e a denominação preliminar já continha a expressão \"Investimento em Infraestrutura\". O material de apoio destacava a isenção para pessoas físicas, sem detalhar condições de manutenção do benefício nem riscos de concentração e iliquidez. A providência compatível com a tipificação e a divulgação consiste em:",
+    alternativas: [
+      "acrescentar o sufixo \"Crédito Privado\" à denominação, preservar a expressão \"Investimento em Infraestrutura\" e manter o destaque tributário já previsto no material.",
+      "manter a denominação vinculada à infraestrutura, dispensar o sufixo \"Crédito Privado\" e revisar o material de divulgação do produto.",
+      "tratar a classe como Renda Fixa – Crédito Privado, evidenciar os riscos de concentração e iliquidez e dispensar o regime de infraestrutura na denominação.",
+      "manter a denominação de infraestrutura e revisar o material de divulgação do produto, reservando ao regulamento os riscos de concentração e iliquidez."
+    ],
+    correta: 1,
+    explicacao: "O FI-Infra (Lei 12.431) tem regime próprio: a denominação vinculada à infraestrutura DISPENSA o sufixo \"Crédito Privado\" (o regime especial desloca a regra geral dos +50% em emissor privado). Mas dispensar o sufixo não elimina o risco de crédito nem a obrigação de transparência — o material de divulgação precisa ser revisado para EVIDENCIAR os riscos de concentração e iliquidez e condicionar o destaque da isenção às regras de manutenção do benefício. (A) aplica a regra geral a um fundo com regime especial; (C) joga fora o regime de infraestrutura que define a classe; (D) é a 'quase certa': acerta o enquadramento mas ESCONDE no regulamento riscos que precisam ser evidenciados ao investidor.",
+    macete: "Regime de infraestrutura vence o sufixo 'Crédito Privado' na denominação — mas nenhum regime te dispensa de EVIDENCIAR risco (concentração/iliquidez) e as condições do benefício fiscal no material. 'Reservar ao regulamento' = esconder = errado."
   }
 ];

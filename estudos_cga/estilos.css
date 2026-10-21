@@ -92,3 +92,27 @@ select{padding:12px 14px;border:1px solid var(--borda);border-radius:10px;font-s
 .tabela-topicos th{background:var(--marinho);color:#fff;font-size:13px}
 .mini-barra{height:6px;background:#e3ebf4;border-radius:20px;overflow:hidden;width:120px}
 .mini-barra i{display:block;height:100%;background:var(--verde)}
+
+/* ---------------- Conceitos (destrinchados) ---------------- */
+.conc-card{background:var(--card);border:1px solid var(--borda);border-radius:14px;box-shadow:var(--sombra);overflow:hidden;margin-bottom:14px}
+.conc-topo{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 18px;cursor:pointer;user-select:none}
+.conc-topo:hover{background:#f7fafd}
+.conc-topo h3{margin:8px 0 4px;color:var(--marinho);font-size:17px}
+.conc-topo .desc{color:var(--texto2);font-size:13.5px}
+.conc-seta{color:var(--ciano);font-size:18px;transition:.2s;flex:none;margin-top:4px}
+.conc-card.aberto .conc-seta{transform:rotate(180deg)}
+.conc-corpo{display:none;padding:4px 20px 22px;border-top:1px solid var(--borda)}
+.conc-card.aberto .conc-corpo{display:block}
+.conc-corpo h4{color:var(--ciano);margin:20px 0 8px;font-size:15px;border-left:3px solid var(--ciano);padding-left:10px}
+.conc-corpo p{margin:10px 0;font-size:14.5px;color:var(--texto)}
+.conc-corpo ul{margin:8px 0 8px 22px}
+.conc-corpo li{margin:6px 0;font-size:14.5px}
+.conc-corpo b{color:var(--marinho)}
+.destaque-conc{background:#eef9fc;border:1px solid var(--ciano-claro);border-radius:10px;padding:12px 14px}
+.chave-conc{background:var(--verde-bg);border:1px solid #bfe6cd;border-radius:10px;padding:12px 14px;margin-top:16px}
+.tab-conc{width:100%;border-collapse:collapse;margin:12px 0;background:var(--card);border-radius:10px;overflow:hidden;border:1px solid var(--borda)}
+.tab-conc th,.tab-conc td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--borda);font-size:13.5px;vertical-align:top}
+.tab-conc th{background:var(--marinho);color:#fff;font-size:12.5px}
+.tab-conc td.v{color:var(--verde);font-weight:800;text-align:center;font-size:16px}
+.tab-conc td.x{color:var(--vermelho);font-weight:800;text-align:center;font-size:16px}
+.tab-conc tr:last-child td{border-bottom:none}
