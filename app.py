@@ -129,9 +129,14 @@ def _injetar_css() -> None:
         html {font-size: 18px;}
         body, .stMarkdown, .stMarkdown p, .stMarkdown li {color: #132244;}
         .stMarkdown p, .stMarkdown li, label, .stRadio label, .stCheckbox label {font-size: 1.02rem;}
-        [data-testid="stCaptionContainer"] p {font-size: 0.94rem; line-height: 1.6; color: #44536B;}
+        [data-testid="stCaptionContainer"] p {font-size: 0.94rem; line-height: 1.6; color: #1E2B49; font-weight: 500;}
+        /* Rótulos de campos (number/text/select/radio/checkbox) bem escuros p/ leitura */
+        label p, [data-testid="stWidgetLabel"] p, .stNumberInput label, .stTextInput label,
+        .stSelectbox label, .stRadio label, .stCheckbox label, .stTextArea label {
+            color: #1B2A47; font-weight: 600;
+        }
         [data-testid="stMetricValue"] {font-size: 2rem; font-weight: 800; color: #132244;}
-        [data-testid="stMetricLabel"] p {font-size: 0.9rem; letter-spacing: 0.02em; color: #4A5B76;}
+        [data-testid="stMetricLabel"] p {font-size: 0.9rem; letter-spacing: 0.02em; color: #33415C;}
         div[data-testid="stDataFrame"] {font-size: 1rem;}
         /* Campos e botões com mais respiro */
         .stTextInput input, .stNumberInput input, .stTextArea textarea,
