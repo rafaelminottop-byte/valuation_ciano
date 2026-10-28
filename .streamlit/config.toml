@@ -1,8 +1,8 @@
-# Tema base do app, alinhado ao design system da Ciano Investimentos.
+# Tema base do app — claro ("cinza neutro" estilo Oceans14).
 [theme]
-base = "dark"
-primaryColor = "#3B82F6"
-backgroundColor = "#0E2266"
-secondaryBackgroundColor = "#132876"
-textColor = "#FFFFFF"
+base = "light"
+primaryColor = "#2563EB"
+backgroundColor = "#F3F6F8"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#132244"
 font = "sans serif"

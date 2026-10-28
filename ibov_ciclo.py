@@ -267,7 +267,7 @@ def buscar_ciclo_ibov(usar_cache: bool = True) -> dict:
 #  - TEMPO: meses desde o último FUNDO MAIOR — definido como a queda a >=15%
 #    abaixo da MM200 (filtra pausas rasas/laterais tipo 2011 e 2022).
 # ------------------------------------------------------------------------------
-CACHE_MATUR = CACHE_DIR / "ibov_maturidade_v1.json"
+CACHE_MATUR = CACHE_DIR / "ibov_maturidade_v2.json"
 FUNDO_MAIOR_LIMITE = -15.0  # % abaixo da MM200 para contar como virada de ciclo
 
 
@@ -310,6 +310,12 @@ def _coletar_maturidade() -> dict:
                 grupos.append([f])
         fundos = [min(g, key=lambda x: x["prof"]) for g in grupos]
 
+        # Queda desde o topo dos últimos 12 meses (52 semanas) — mostra quanto o
+        # mercado já corrigiu, para o esticamento não dar impressão de "caríssimo"
+        # quando a bolsa já caiu bastante do pico.
+        pico52 = float(h.tail(52).max())
+        queda_desde_topo = round((float(h.iloc[-1]) / pico52 - 1) * 100, 1)
+
         hoje = d.index[-1]
         meses = None
         if fundos:
@@ -331,6 +337,7 @@ def _coletar_maturidade() -> dict:
 
         return {
             "dist_atual": round(float(d.iloc[-1]), 1),
+            "queda_desde_topo": queda_desde_topo,
             "ibov": round(float(h.iloc[-1])), "ma200": round(float(ma.iloc[-1])),
             "meses_desde_fundo": meses,
             "fundo_atual": fundos[-1] if fundos else None,

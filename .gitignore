@@ -20,3 +20,8 @@ node_modules/
 .next/
 .vercel/
 .claude/settings.local.json
+
+# Carteiras de clientes (dado pessoal)
+data/clientes/
+data/alia_contas.json
+data/alia_mapa.json

@@ -46,11 +46,18 @@ _SETORES_PT = {
     "Utilities": "Utilidades (energia/água)",
 }
 
-COR_BG = "#0E2266"
-COR_ACCENT = "#3B82F6"
-COR_LIGHT = "#CBD5E1"
-COR_CARD = "#1A2F72"
-COR_BORDA = "#2A3F8A"
+# Tema claro ("cinza neutro" estilo Oceans14): marinho + cinza + branco dominam,
+# dourado só em detalhe, verde/vermelho só para alta/baixa.
+COR_BG = "#EEF1F7"       # fundo da página (cinza neutro)
+COR_ACCENT = "#2563EB"   # azul de link/hover
+COR_LIGHT = "#475569"    # texto/labels de eixo em gráficos claros (escuro p/ contraste)
+COR_CARD = "#FFFFFF"     # card branco
+COR_BORDA = "#E2E8F2"    # borda clara
+COR_INK = "#132244"      # texto principal (marinho escuro)
+COR_INK2 = "#33415C"     # texto secundário
+COR_MUT = "#6B7A99"      # muted
+COR_NAVY = "#13224A"     # marca marinho
+COR_GOLD = "#C69A2E"     # dourado (detalhe)
 
 LOGO_PATH = Path(__file__).resolve().parent / "assets" / "ciano_logo_branco.png"
 
@@ -97,11 +104,20 @@ def _injetar_css() -> None:
     st.markdown(
         """
         <style>
-        .stApp {
-            background:
-                radial-gradient(1400px 520px at 50% -20%, #13265F 0%, rgba(19,38,95,0) 70%),
-                #0C1A48;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        html, body, [class*="st-"], [class*="css-"], .stMarkdown, .stButton button,
+        input, textarea, select, button, [data-testid] {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif !important;
         }
+        /* Restaura a fonte de ÍCONES (senão a ligadura vira texto 'arrow' sobre o título) */
+        [data-testid="stIconMaterial"], span[data-testid="stIconMaterial"],
+        .material-icons, .material-icons-outlined, .material-icons-round,
+        .material-symbols-outlined, .material-symbols-rounded,
+        [class*="material-symbols"], [class*="material-icons"], .stExpander summary svg + span {
+            font-family: 'Material Symbols Rounded', 'Material Symbols Outlined',
+                         'Material Icons', 'Material Icons Outlined' !important;
+        }
+        .stApp {background: #F3F6F8;}
         #MainMenu, footer, header {visibility: hidden;}
         .block-container {
             padding-top: 2.2rem; padding-bottom: 3.5rem; max-width: 1120px;
@@ -111,10 +127,11 @@ def _injetar_css() -> None:
         /* Base tipográfica: quase tudo abaixo está em rem, então a raiz escala
            o app inteiro. 18px dá leitura confortável com mais respiro/organização. */
         html {font-size: 18px;}
+        body, .stMarkdown, .stMarkdown p, .stMarkdown li {color: #132244;}
         .stMarkdown p, .stMarkdown li, label, .stRadio label, .stCheckbox label {font-size: 1.02rem;}
-        [data-testid="stCaptionContainer"] p {font-size: 0.92rem; line-height: 1.6; color: #AEBCE6;}
-        [data-testid="stMetricValue"] {font-size: 2rem; font-weight: 800;}
-        [data-testid="stMetricLabel"] p {font-size: 0.9rem; letter-spacing: 0.02em;}
+        [data-testid="stCaptionContainer"] p {font-size: 0.94rem; line-height: 1.6; color: #44536B;}
+        [data-testid="stMetricValue"] {font-size: 2rem; font-weight: 800; color: #132244;}
+        [data-testid="stMetricLabel"] p {font-size: 0.9rem; letter-spacing: 0.02em; color: #4A5B76;}
         div[data-testid="stDataFrame"] {font-size: 1rem;}
         /* Campos e botões com mais respiro */
         .stTextInput input, .stNumberInput input, .stTextArea textarea,
@@ -128,81 +145,85 @@ def _injetar_css() -> None:
         .stExpander summary p {font-size: 0.98rem; font-weight: 600;}
 
         h1 {font-size: 2.4rem; margin-bottom: 0.2rem;}
-        h1, h2, h3, h4 {color: #FFFFFF; font-weight: 800; letter-spacing: -0.015em;}
+        h1, h2, h3, h4 {color: #132244; font-weight: 800; letter-spacing: -0.015em;}
 
         /* Caixa única do resultado: cenários (colunas) x métodos (linhas) */
         .ciano-matriz {
             width: 100%; border-collapse: separate; border-spacing: 0;
-            background: #1A2F72; border: 1.5px solid #2A3F8A;
-            border-radius: 18px; overflow: hidden; margin: 8px 0 6px 0;
+            background: #FFFFFF; border: 1px solid #E2E8F2;
+            border-radius: 16px; overflow: hidden; margin: 8px 0 6px 0;
+            box-shadow: 0 1px 2px rgba(19,34,74,.06), 0 2px 8px rgba(19,34,74,.05);
         }
         .ciano-matriz th, .ciano-matriz td {padding: 16px 18px; text-align: center;}
         .ciano-matriz thead th {
-            background: #132876; color: #CBD5E1; font-size: 0.86rem; font-weight: 800;
+            background: #F4F6FB; color: #6B7A99; font-size: 0.86rem; font-weight: 800;
             letter-spacing: 0.10em; text-transform: uppercase;
-            border-bottom: 1.5px solid #2A3F8A;
+            border-bottom: 1px solid #E2E8F2;
         }
         .ciano-matriz tbody th {
-            background: #132876; color: #FFFFFF; text-align: left;
-            font-weight: 800; font-size: 1.02rem; border-right: 1.5px solid #2A3F8A;
+            background: #F4F6FB; color: #132244; text-align: left;
+            font-weight: 800; font-size: 1.02rem; border-right: 1px solid #E2E8F2;
         }
         .ciano-matriz tbody th small {
-            display: block; color: #9DB2E8; font-weight: 600;
+            display: block; color: #6B7A99; font-weight: 600;
             font-size: 0.80rem; margin-top: 3px; text-transform: none; letter-spacing: 0;
         }
         .ciano-matriz tbody tr + tr th, .ciano-matriz tbody tr + tr td {
-            border-top: 1.5px solid #2A3F8A;
+            border-top: 1px solid #E2E8F2;
         }
-        .ciano-matriz td .v {color: #FFFFFF; font-size: 1.75rem; font-weight: 800; line-height: 1.15;}
+        .ciano-matriz td .v {color: #132244; font-size: 1.75rem; font-weight: 800; line-height: 1.15;}
         .ciano-matriz td .u {font-size: 0.98rem; font-weight: 700; margin-top: 4px;}
-        .ciano-matriz td .na {color: #7C8DB5; font-size: 1.2rem; font-weight: 700;}
+        .ciano-matriz td .na {color: #AAB4CB; font-size: 1.2rem; font-weight: 700;}
         .ciano-preco {
-            color: #CBD5E1; font-size: 1.05rem; font-weight: 600; margin: 2px 0 2px 0;
+            color: #33415C; font-size: 1.05rem; font-weight: 600; margin: 2px 0 2px 0;
         }
-        .ciano-preco b {color: #FFFFFF; font-size: 1.25rem;}
+        .ciano-preco b {color: #132244; font-size: 1.25rem;}
 
         /* Tese no formato "card" (análise própria) */
         .tese-cab {display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px;}
         .tese-tag {
-            background: #1E3A8A; color: #93C5FD; border: 1px solid #3B82F6;
+            background: #E8F0FE; color: #1D4ED8; border: 1px solid #C7DBFB;
             font-size: 0.86rem; font-weight: 700; padding: 3px 12px; border-radius: 8px;
         }
         .tese-sub {
-            color: #93C5FD; font-size: 0.86rem; font-weight: 800; letter-spacing: 0.10em;
+            color: #13224A; font-size: 0.86rem; font-weight: 800; letter-spacing: 0.10em;
             text-transform: uppercase; margin: 18px 0 6px 0;
         }
         .tese-data {
-            color: #A9BBE0; font-size: 0.86rem; font-weight: 600;
-            border: 1px solid #2A3F8A; border-radius: 8px; padding: 3px 10px;
+            color: #6B7A99; font-size: 0.86rem; font-weight: 600;
+            border: 1px solid #E2E8F2; border-radius: 8px; padding: 3px 10px;
         }
         .tese-resumo {
-            color: #CBD5E1; font-size: 0.96rem; line-height: 1.6; margin: 8px 0 2px 0;
+            color: #33415C; font-size: 0.96rem; line-height: 1.6; margin: 8px 0 2px 0;
         }
         .noti {
-            background: #16276E; border: 1px solid #2A3F8A; border-radius: 12px;
+            background: #FFFFFF; border: 1px solid #E2E8F2; border-radius: 12px;
             padding: 12px 16px; margin-bottom: 9px;
+            box-shadow: 0 1px 2px rgba(19,34,74,.06);
         }
-        .noti.hit {border-left: 4px solid #22C55E;}
-        .noti a {color: #FFFFFF; font-weight: 600; font-size: 1rem; text-decoration: none; line-height: 1.4;}
-        .noti a:hover {text-decoration: underline; color: #93C5FD;}
-        .noti-meta {display: block; color: #9DB2E8; font-size: 0.82rem; margin-top: 5px;}
+        .noti.hit {border-left: 4px solid #16A34A;}
+        .noti a {color: #132244; font-weight: 600; font-size: 1rem; text-decoration: none; line-height: 1.4;}
+        .noti a:hover {text-decoration: underline; color: #2563EB;}
+        .noti-meta {display: block; color: #6B7A99; font-size: 0.82rem; margin-top: 5px;}
         .noti-gat {
-            display: inline-block; background: #14532D; color: #4ADE80; font-size: 0.74rem;
+            display: inline-block; background: #DCFCE7; color: #15803D; font-size: 0.74rem;
             font-weight: 700; padding: 1px 8px; border-radius: 20px; margin: 0 5px 5px 0;
         }
-        .tese-tag.gat-chip {background:#132876; color:#93C5FD; border-color:#2A3F8A; font-weight:600;}
+        .tese-tag.gat-chip {background:#F1F4FA; color:#33415C; border-color:#E2E8F2; font-weight:600;}
 
-        .ciano-brand {display: inline-block; margin-bottom: 4px;}
-        .ciano-brand img {height: 104px; width: auto; display: block;}
+        .ciano-brand {display: inline-block; margin-bottom: 4px; background: #13224A;
+            padding: 14px 22px 10px; border-radius: 14px;}
+        .ciano-brand img {height: 88px; width: auto; display: block;}
         .ciano-invest {
-            color: #4B8DEF; font-size: 0.92rem; font-weight: 500;
+            color: #C69A2E; font-size: 0.92rem; font-weight: 600;
             letter-spacing: 0.30em; text-align: right; margin-top: -10px; padding-right: 3px;
         }
-        .ciano-sub {color: #CBD5E1; font-size: 1.02rem; margin: 0 0 4px 0;}
+        .ciano-sub {color: #33415C; font-size: 1.02rem; margin: 0 0 4px 0;}
 
         .ciano-label {
-            color: #3B82F6; font-size: 0.80rem; font-weight: 800;
+            color: #13224A; font-size: 0.80rem; font-weight: 800;
             letter-spacing: 0.14em; text-transform: uppercase; margin: 26px 0 10px 0;
+            padding-bottom: 6px; border-bottom: 2px solid #E2E8F2;
         }
 
         .ciano-verdict {
@@ -210,71 +231,75 @@ def _injetar_css() -> None:
             padding: 14px 26px; border-radius: 16px; font-weight: 800;
             font-size: 1.35rem; color: #fff; margin: 2px 0 6px 0;
         }
-        .ciano-verdict small {font-weight: 500; font-size: 0.82rem; color: #E2E8F0; opacity: .9;}
+        .ciano-verdict small {font-weight: 500; font-size: 0.82rem; color: #F1F5FF; opacity: .95;}
 
         .ciano-cards {display: flex; gap: 20px; margin: 6px 0 8px 0; flex-wrap: wrap;}
         .ciano-card {
-            flex: 1; min-width: 190px; background: #1A2F72;
-            border: 1.5px solid #2A3F8A; border-radius: 18px; padding: 22px 24px;
+            flex: 1; min-width: 190px; background: #FFFFFF;
+            border: 1px solid #E2E8F2; border-radius: 16px; padding: 22px 24px;
+            box-shadow: 0 1px 2px rgba(19,34,74,.06), 0 2px 8px rgba(19,34,74,.05);
+            transition: border-color .15s, box-shadow .15s, transform .15s;
         }
+        .ciano-card:hover {border-color: #2563EB; box-shadow: 0 2px 10px rgba(37,99,235,.14); transform: translateY(-1px);}
         .ciano-card .lbl {
-            color: #CBD5E1; font-size: 0.78rem; font-weight: 700;
+            color: #566279; font-size: 0.78rem; font-weight: 700;
             letter-spacing: 0.10em; text-transform: uppercase;
         }
-        .ciano-card .val {color: #FFFFFF; font-size: 2.1rem; font-weight: 800; margin: 8px 0 2px 0;}
-        .ciano-card .sub {font-size: 0.95rem; font-weight: 700;}
+        .ciano-card .val {color: #132244; font-size: 2.1rem; font-weight: 800; margin: 8px 0 2px 0;}
+        .ciano-card .sub {font-size: 0.95rem; font-weight: 700; color: #33415C;}
 
         /* Botão primário estilo CTA da marca */
         .stButton > button {
-            background: #3B82F6; color: #fff; border: none; border-radius: 30px;
+            background: #2563EB; color: #fff; border: none; border-radius: 30px;
             padding: 0.55rem 1.6rem; font-weight: 700; transition: filter .15s;
         }
-        .stButton > button:hover {filter: brightness(1.1); color: #fff;}
+        .stButton > button:hover {filter: brightness(1.08); color: #fff;}
 
-        section[data-testid="stSidebar"] {background: #0B1B52; border-right: 1px solid #22336f;}
-        section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {color: #fff;}
+        section[data-testid="stSidebar"] {background: #FFFFFF; border-right: 1px solid #E2E8F2;}
+        section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {color: #132244;}
 
-        div[data-testid="stDataFrame"] {border: 1px solid #2A3F8A; border-radius: 14px;}
+        div[data-testid="stDataFrame"] {border: 1px solid #E2E8F2; border-radius: 14px;}
 
-        .tese-setor {color: #CBD5E1; margin: -2px 0 8px 0; font-size: 0.95rem;}
-        .tese-texto {color: #E2E8F0; line-height: 1.55; margin-bottom: 14px;}
+        .tese-setor {color: #33415C; margin: -2px 0 8px 0; font-size: 0.95rem;}
+        .tese-texto {color: #33415C; line-height: 1.55; margin-bottom: 14px;}
         .tese-box {
-            background: #1A2F72; border: 1.5px solid #2A3F8A; border-radius: 16px;
+            background: #FFFFFF; border: 1px solid #E2E8F2; border-radius: 16px;
             padding: 16px 20px; height: 100%;
+            box-shadow: 0 1px 2px rgba(19,34,74,.06), 0 2px 8px rgba(19,34,74,.05);
         }
         .tese-box .tese-h {
             font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
             font-size: 0.80rem; margin-bottom: 8px;
         }
         .tese-box ul {margin: 0; padding-left: 20px;}
-        .tese-box li {color: #E2E8F0; font-size: 0.96rem; margin-bottom: 10px; line-height: 1.55;}
-        .tese-fortes {border-left: 4px solid #22C55E;}
-        .tese-fortes .tese-h {color: #22C55E;}
-        .tese-fracos {border-left: 4px solid #EF4444;}
-        .tese-fracos .tese-h {color: #EF4444;}
+        .tese-box li {color: #33415C; font-size: 0.96rem; margin-bottom: 10px; line-height: 1.55;}
+        .tese-fortes {border-left: 4px solid #16A34A;}
+        .tese-fortes .tese-h {color: #15803D;}
+        .tese-fracos {border-left: 4px solid #DC2626;}
+        .tese-fracos .tese-h {color: #B91C1C;}
 
         /* ---- Navegação por páginas na sidebar (radio estilizado como menu) ---- */
         section[data-testid="stSidebar"] {padding-top: 6px;}
         .nav-grupo {
-            color: #8696CB; font-size: 0.70rem; font-weight: 800; letter-spacing: 0.16em;
+            color: #6B7A99; font-size: 0.70rem; font-weight: 800; letter-spacing: 0.16em;
             text-transform: uppercase; margin: 16px 10px 6px;
         }
         .nav-grupo:first-of-type {margin-top: 4px;}
         section[data-testid="stSidebar"] div[role="radiogroup"] {gap: 3px;}
         section[data-testid="stSidebar"] div[role="radiogroup"] > label {
             width: 100%; margin: 0; padding: 9px 14px; border-radius: 10px; cursor: pointer;
-            color: #C3CEF0; font-weight: 600; transition: background .12s, color .12s;
+            color: #33415C; font-weight: 600; transition: background .12s, color .12s;
         }
-        section[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {background: #15245C;}
+        section[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {background: #F1F4FA;}
         section[data-testid="stSidebar"] div[role="radiogroup"] > label > div:first-child {display: none;}
         section[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {
-            background: #1B2E74; color: #FFFFFF; box-shadow: inset 3px 0 0 #4C8DFF;
+            background: #EEF2FC; color: #13224A; box-shadow: inset 3px 0 0 #2563EB;
         }
         section[data-testid="stSidebar"] div[role="radiogroup"] label p {font-size: 1rem; font-weight: 600;}
         /* separador acima do bloco de premissas, que aparece só nas páginas de análise */
         section[data-testid="stSidebar"] [data-testid="stHeading"] h2 {
             font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
-            color: #8696CB; margin-top: 10px;
+            color: #6B7A99; margin-top: 10px;
         }
 
         /* Tabela de resultado rola na horizontal em telas estreitas, sem estourar a página */
@@ -344,7 +369,7 @@ def _celula(r, preco_atual: float, moeda: str) -> str:
     if r is None:
         return '<td><span class="na">—</span></td>'
     up = r.upside_percentual
-    cor = "#22C55E" if up >= 0 else "#EF4444"
+    cor = "#16A34A" if up >= 0 else "#DC2626"
     sinal = "+" if up >= 0 else ""
     return (
         f'<td><div class="v">{moeda} {_fmt_brl(r.valuation_final_por_acao)}</div>'
@@ -357,8 +382,9 @@ def _celula_tma(tma) -> str:
     if tma is None:
         return '<td><span class="na">&gt;600%</span></td>'
     # Uma TIR implícita muito alta não é o mercado sendo irracional: é sinal de que
-    # o fluxo usado não pertence ao acionista (dívida). Destacamos em vermelho.
-    cor = "#EF4444" if tma > 0.40 else "#FFFFFF"
+    # o fluxo usado não pertence ao acionista (dívida). Destacamos em ÂMBAR (atenção:
+    # número possivelmente irreal) — não em vermelho, que aqui significaria "baixa".
+    cor = "#B45309" if tma > 0.40 else "#132244"
     return f'<td><div class="v" style="color:{cor};">{tma*100:.1f}%</div></td>'
 
 
@@ -1930,6 +1956,7 @@ def _aba_ciclo() -> None:
 
     _grafico_ciclo(d)
     _bloco_maturidade(d, mat)
+    _bloco_gatilhos(mat)
 
     st.caption("Leitura educacional de estrutura de mercado, não recomendação.")
 
@@ -1937,8 +1964,8 @@ def _aba_ciclo() -> None:
 def _barra_maturidade(grad: str, marcos: list, voce_frac: float, voce_label: str, voce_cor: str) -> str:
     def _m(frac, label):
         return (f'<div style="position:absolute;left:{frac * 100:.1f}%;top:26px;transform:translateX(-50%);'
-                f'text-align:center;font-size:0.62rem;color:#CBD5E1;white-space:nowrap;">'
-                f'<div style="width:2px;height:30px;background:#CBD5E1;margin:0 auto;"></div>{label}</div>')
+                f'text-align:center;font-size:0.62rem;color:#6B7A99;white-space:nowrap;">'
+                f'<div style="width:2px;height:30px;background:#AAB4CB;margin:0 auto;"></div>{label}</div>')
     barra = (f'<div style="position:relative;height:26px;border-radius:6px;overflow:hidden;'
              f'background:linear-gradient(90deg,{grad});"></div>')
     voce = (f'<div style="position:absolute;left:{min(voce_frac * 100, 99):.1f}%;top:-34px;'
@@ -1963,9 +1990,11 @@ def _bloco_maturidade(d: dict, mat: dict) -> None:
         grad1 = (f"#22C55E 0%,#22C55E {z0:.1f}%,#EAB308 {z0:.1f}%,#EAB308 {z1:.1f}%,"
                  f"#EF4444 {z1:.1f}%,#EF4444 100%")
         marcos1 = [(fr(0), "MM200<br>(0%)"), (fr(p75), f"esticado<br>p75 +{p75:.0f}%")]
-        cor1 = "#F87171" if dist > p75 else "#EAB308" if dist > 0 else "#22C55E"
+        cor1 = "#DC2626" if dist > p75 else "#B45309" if dist > 0 else "#15803D"
+        qd = mat.get("queda_desde_topo")
+        qd_txt = f' · já {qd:+.0f}% do topo de 12m' if qd is not None and qd < 0 else ''
         st.markdown('<div style="font-size:0.82rem;font-weight:700;margin-bottom:2px;">Esticamento — '
-                    'distância da média de 200 semanas</div>', unsafe_allow_html=True)
+                    f'distância da média de 200 semanas{qd_txt}</div>', unsafe_allow_html=True)
         st.markdown(_barra_maturidade(grad1, marcos1, fr(dist), f"{dist:+.0f}%", cor1),
                     unsafe_allow_html=True)
 
@@ -1978,7 +2007,7 @@ def _bloco_maturidade(d: dict, mat: dict) -> None:
         grad2 = (f"#22C55E 0%,#22C55E {t0:.1f}%,#EAB308 {t0:.1f}%,#EAB308 {t1:.1f}%,"
                  f"#EF4444 {t1:.1f}%,#EF4444 100%")
         marcos2 = [(fr2(im), f"típico<br>{im}m"), (fr2(ix), f"recorde<br>{ix}m")]
-        cor2 = "#F87171" if meses >= ix else "#EAB308" if meses > im else "#22C55E"
+        cor2 = "#DC2626" if meses >= ix else "#B45309" if meses > im else "#15803D"
         fd = mat["fundo_atual"]["data"]
         st.markdown('<div style="font-size:0.82rem;font-weight:700;margin-bottom:2px;">Tempo — meses '
                     f'desde o último fundo maior ({fd})</div>', unsafe_allow_html=True)
@@ -2025,6 +2054,64 @@ def _bloco_maturidade(d: dict, mat: dict) -> None:
         st.caption("Depois de um topo, a bolsa caiu na mediana ~−17% em 6m, com queda máxima de ~−41% e "
                    "**~36 meses para recuperar** o nível (2008 levou 112m). O topo de fev/2026 até agora caiu "
                    "bem menos que a mediana — comporta-se mais como pausa que como rollover, mas é cedo.")
+
+
+def _bloco_gatilhos(mat: dict) -> None:
+    """⚠️ O que derruba daqui — gatilhos de queda monitoráveis, com número ao vivo
+    e limiar de alerta. Canal fiscal → juro (NTN-B) → risco (CDS) → câmbio."""
+    import cambio as cmb
+    import macro as mac
+
+    cds = dol_var = ntnb = None
+    try:
+        a = (cmb.buscar_cambio() or {}).get("atual", {})
+        cds, dol_var = a.get("cds"), a.get("dolar_var_ano")
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        b = (mac.buscar_macro() or {}).get("brasil", {})
+        ntnb = (b.get("ntnb_10a") or {}).get("valor")
+    except Exception:  # noqa: BLE001
+        pass
+
+    st.markdown('<div class="ciano-label" style="margin-top:16px;">⚠️ O que derruba daqui</div>',
+                unsafe_allow_html=True)
+    st.caption("Gatilhos monitoráveis do canal fiscal → juro → risco → câmbio. Cada um tem um número "
+               "de hoje e um limiar de alerta. Não é previsão — é um painel de vigilância.")
+
+    cards = ""
+    if cds is not None:
+        cor = "vermelho" if cds > 160 else "amarelo" if cds > 130 else "verde"
+        cards += _card_alavanca(
+            "Prêmio de risco · CDS 5a", cor, f"{cds:.0f} bps",
+            "Dispara se sair de <130 para >160 bps. O CDS é o driver dominante do dólar (corr ~0,80).")
+    if ntnb is not None:
+        cor = "vermelho" if ntnb > 8 else "amarelo" if ntnb > 7 else "verde"
+        cards += _card_alavanca(
+            "Custo de oportunidade · NTN-B 10a", cor, f"{ntnb:.2f}%",
+            "Dispara se a real longa passar de 8%. É o custo de oportunidade do valuation: sobe, o P/L justo cai.")
+    if dol_var is not None:
+        cor = "vermelho" if dol_var > 8 else "amarelo" if dol_var > 0 else "verde"
+        cards += _card_alavanca(
+            "Câmbio · USD/BRL no ano", cor, f"{dol_var:+.0f}%",
+            "Real fraco com o CDS abrindo junto = fuga de capital. Estrangeiro saindo derruba o Ibov rápido.")
+    if mat and mat.get("dist_atual") is not None:
+        dist, p75 = mat["dist_atual"], mat.get("p75") or 40
+        cor = "vermelho" if dist > p75 else "amarelo" if dist > 0 else "verde"
+        qd = mat.get("queda_desde_topo")
+        extra = f" · já {qd:+.0f}% do topo" if qd is not None and qd < 0 else ""
+        cards += _card_alavanca(
+            "Maturidade · esticamento MM200", cor, f"{dist:+.0f}%{extra}",
+            f"Choque fiscal pega a bolsa cara e madura (topos passaram de +{p75:.0f}%). Margem de ciclo menor.")
+
+    if cards:
+        st.markdown(f'<div style="display:flex;flex-wrap:wrap;gap:12px;">{cards}</div>',
+                    unsafe_allow_html=True)
+    else:
+        st.info("Gatilhos indisponíveis (abra as abas Câmbio/Macro uma vez para carregar CDS e NTN-B).")
+    st.caption("🟢 tranquilo · 🟡 atenção · 🔴 gatilho ativo. A cadeia: fiscal sem âncora → juro (NTN-B) "
+               "sobe e CDS abre → dólar dispara → BC aperta → múltiplo comprime. Fontes: "
+               "worldgovernmentbonds (CDS), BCB (NTN-B), Yahoo (USD/BRL).")
 
 
 DATA_CICLOS = Path(__file__).resolve().parent / "data" / "ciclos_historicos.json"
@@ -2074,14 +2161,24 @@ def _cenarios_dados_vivos() -> dict:
     return out
 
 
+# Cor da BARRA (viva) vs. cor do TEXTO do valor (escura, p/ contraste no branco).
+_COR_ALAVANCA_TXT = {"verde": "#15803D", "amarelo": "#B45309", "vermelho": "#B91C1C"}
+
+
+def _cor_alavanca_txt(chave: str) -> str:
+    return _COR_ALAVANCA_TXT.get((chave or "").split("-")[0], "#33415C")
+
+
 def _card_alavanca(nome: str, cor_chave: str, valor: str, desc: str) -> str:
     cor = _cor_alavanca(cor_chave)
+    cor_txt = _cor_alavanca_txt(cor_chave)
     return (
         f'<div style="flex:1 1 210px;min-width:190px;background:{COR_CARD};'
-        f'border:1px solid {COR_BORDA};border-left:4px solid {cor};border-radius:10px;padding:12px 14px;">'
-        f'<div style="font-size:0.7rem;letter-spacing:.05em;text-transform:uppercase;opacity:.65;">{html.escape(nome)}</div>'
-        f'<div style="font-size:1.15rem;font-weight:800;color:{cor};margin:2px 0 4px;">{html.escape(valor)}</div>'
-        f'<div style="font-size:0.72rem;opacity:0.85;line-height:1.4;">{html.escape(desc)}</div></div>'
+        f'border:1px solid {COR_BORDA};border-left:4px solid {cor};border-radius:10px;padding:12px 14px;'
+        f'box-shadow:0 1px 2px rgba(19,34,74,.06);">'
+        f'<div style="font-size:0.7rem;letter-spacing:.05em;text-transform:uppercase;color:#566279;font-weight:700;">{html.escape(nome)}</div>'
+        f'<div style="font-size:1.15rem;font-weight:800;color:{cor_txt};margin:2px 0 4px;">{html.escape(valor)}</div>'
+        f'<div style="font-size:0.72rem;color:#33415C;line-height:1.4;">{html.escape(desc)}</div></div>'
     )
 
 
@@ -2090,12 +2187,12 @@ def _caixa_insights(frases: list) -> None:
     frases = [f for f in frases if f]
     if not frases:
         return
-    itens = "".join(f'<li style="margin-bottom:5px;">{html.escape(f)}</li>' for f in frases)
+    itens = "".join(f'<li style="margin-bottom:5px;color:#33415C;">{html.escape(f)}</li>' for f in frases)
     st.markdown(
-        '<div style="background:#16245E;border:1px solid #27366F;border-left:3px solid #4C8DFF;'
+        '<div style="background:#F4F7FE;border:1px solid #DBE6FB;border-left:3px solid #2563EB;'
         'border-radius:12px;padding:12px 16px;margin:4px 0 16px;">'
-        '<div style="font-size:0.7rem;letter-spacing:.12em;text-transform:uppercase;color:#8696CB;'
-        'margin-bottom:6px;">💡 Insights da tela</div>'
+        '<div style="font-size:0.7rem;letter-spacing:.12em;text-transform:uppercase;color:#2A5BB0;'
+        'margin-bottom:6px;font-weight:700;">💡 Insights da tela</div>'
         f'<ul style="margin:0;padding-left:18px;font-size:0.9rem;line-height:1.55;">{itens}</ul></div>',
         unsafe_allow_html=True,
     )
@@ -2211,7 +2308,7 @@ def _aba_cenarios() -> None:
                "(P/L) e Banco Central (juro); histórico preenchido aos poucos.")
 
     # Seção de ciclo (fundida aqui): onde estamos no ciclo por preço/tempo.
-    st.markdown("<hr style='border-color:#27366F;margin:22px 0 6px;'>", unsafe_allow_html=True)
+    st.markdown("<hr style='border:none;border-top:1px solid #E2E8F2;margin:22px 0 6px;'>", unsafe_allow_html=True)
     _aba_ciclo()
 
 
@@ -2225,12 +2322,12 @@ _EVENTOS_CAMBIO = [
 ]
 
 
-def _anota_eventos(dfbase, campo: str, cor: str = "#8696CB"):
+def _anota_eventos(dfbase, campo: str, cor: str = "#94A3B8"):
     ev = pd.DataFrame([{"data": pd.to_datetime(d + "-01"), "label": t} for d, t in _EVENTOS_CAMBIO])
     ev = ev[ev["data"] >= dfbase["data"].min()]
-    regua = alt.Chart(ev).mark_rule(color=cor, strokeDash=[3, 3], opacity=0.55).encode(x="data:T")
+    regua = alt.Chart(ev).mark_rule(color=cor, strokeDash=[3, 3], opacity=0.6).encode(x="data:T")
     txt = alt.Chart(ev).mark_text(
-        angle=270, align="left", baseline="middle", dx=5, fontSize=9, color="#AEBCE6",
+        angle=270, align="left", baseline="middle", dx=5, fontSize=9, color="#64748B",
     ).encode(x="data:T", y=alt.value(10), text="label:N")
     return regua + txt
 
@@ -2254,6 +2351,8 @@ def _aba_cambio() -> None:
         return
 
     a = dados["atual"]
+    if dados.get("aviso"):
+        st.warning(f"⚠️ {dados['aviso']}")
 
     # --- insights da tela (nível regra, sem IA) ---
     _ins = []
@@ -2291,17 +2390,65 @@ def _aba_cambio() -> None:
     st.markdown(f'<div style="display:flex;flex-wrap:wrap;gap:12px;">{cards}</div>', unsafe_allow_html=True)
 
     corr = a.get("corr_risco_dolar")
+    _cds_v, _cds_mn = a.get("cds"), a.get("cds_min")
+    _risco_baixo = bool(_cds_v and _cds_mn and _cds_v <= _cds_mn * 1.4)
+    if _risco_baixo:
+        _frase, _corl, _bg, _bd = (
+            "risco baixo + carry alto → ambiente favorável ao real.", "#15803D", "#ECFDF3", "#BBF7D0")
+        _resto = ("O mercado precifica pouco risco fiscal, e por isso o real se fortaleceu. "
+                  "É a evidência da alavanca risco/fluxo da tese (aba Cenários).")
+    else:
+        _frase, _corl, _bg, _bd = (
+            "risco subindo → o real perde o escudo do risco baixo.", "#B45309", "#FFF7ED", "#FED7AA")
+        _resto = ("O CDS saiu da mínima — se continuar abrindo, puxa o dólar e aperta o juro "
+                  "(a cadeia dos gatilhos na aba Cenários).")
     st.markdown(
-        '<div style="background:#16245E;border:1px solid #27366F;border-left:3px solid #22C55E;'
-        'border-radius:12px;padding:13px 16px;margin:14px 0 6px;font-size:0.95rem;">'
-        'Leitura de hoje: <b style="color:#22C55E;">risco baixo + carry alto → ambiente favorável ao real.</b> '
-        'O mercado precifica pouco risco fiscal agora, e por isso o real se fortaleceu no ano. '
-        'É a evidência da alavanca risco/fluxo da tese (aba Cenários).</div>',
+        f'<div style="background:{_bg};border:1px solid {_bd};border-left:3px solid {_corl};'
+        'border-radius:12px;padding:13px 16px;margin:14px 0 6px;font-size:0.95rem;color:#33415C;">'
+        f'Leitura de hoje: <b style="color:{_corl};">{_frase}</b> {_resto}</div>',
         unsafe_allow_html=True,
+    )
+    _cds_dt = a.get("cds_data")
+    _stale = " (último fechamento disponível)" if a.get("cds_stale") else ""
+    st.caption(
+        f"Fontes: BCB (Selic/IPCA), Yahoo (USD/BRL, Treasury), BLS (CPI), Ipeadata (EMBI), "
+        f"worldgovernmentbonds (CDS{f', {_cds_dt}' if _cds_dt else ''}{_stale}). "
+        f"Painel montado em {dados.get('atualizado_em', '—')} · cache 12h."
     )
 
     df = pd.DataFrame(dados["serie"])
     df["data"] = pd.to_datetime(df["data"] + "-01")
+
+    # --- Gráfico do CDS 5 anos: histórico + onde estamos ---
+    st.markdown('<div class="ciano-label" style="margin-top:14px;">📊 CDS 5 anos do Brasil — onde estamos</div>',
+                unsafe_allow_html=True)
+    dfcds = df.dropna(subset=["cds"])
+    if dfcds.empty:
+        st.caption("Série do CDS indisponível no momento (fonte worldgovernmentbonds instável).")
+    else:
+        cds_now = float(dfcds["cds"].iloc[-1])
+        cds_lo, cds_hi = float(dfcds["cds"].min()), float(dfcds["cds"].max())
+        pct = float((dfcds["cds"] <= cds_now).mean() * 100)
+        eixo_xc = alt.X("data:T", title=None, axis=alt.Axis(labelColor=COR_LIGHT, grid=False))
+        linha = alt.Chart(dfcds).mark_line(color="#DC2626", strokeWidth=1.8).encode(
+            x=eixo_xc,
+            y=alt.Y("cds:Q", title="CDS 5 anos (bps)", scale=alt.Scale(zero=False),
+                    axis=alt.Axis(labelColor=COR_LIGHT, gridOpacity=0.12)),
+            tooltip=[alt.Tooltip("data:T", title="Mês"), alt.Tooltip("cds:Q", title="CDS (bps)", format=".0f")],
+        )
+        regra_now = alt.Chart(pd.DataFrame({"y": [cds_now]})).mark_rule(
+            color="#DC2626", strokeDash=[4, 3], opacity=.45).encode(y="y:Q")
+        ponto = alt.Chart(dfcds.iloc[[-1]]).mark_point(
+            color="#DC2626", size=80, filled=True).encode(x="data:T", y="cds:Q")
+        chc = alt.layer(linha, regra_now, ponto, _anota_eventos(dfcds, "cds")).properties(height=280)
+        chc = chc.configure_view(strokeWidth=0).configure(background="rgba(0,0,0,0)")
+        st.altair_chart(chc, use_container_width=True)
+        zona = ("perto da MÍNIMA" if pct <= 25 else "perto da MÁXIMA" if pct >= 75 else "no meio da faixa")
+        st.caption(
+            f"Hoje ~{cds_now:.0f} bps · faixa histórica {cds_lo:.0f}–{cds_hi:.0f} bps desde 2017 · "
+            f"percentil {pct:.0f}% ({zona}). Quanto maior, mais caro o mercado cobra pra 'segurar' risco Brasil. "
+            "Fonte: worldgovernmentbonds (CDS 5a) — fechamento diário, pode ficar ~15-20 bps abaixo do "
+            "intradiário em dias de estresse.")
 
     # --- Gráfico 1: risco x dólar (eixos independentes) ---
     st.markdown('<div class="ciano-label" style="margin-top:14px;">📈 Risco e dólar, lado a lado</div>',
@@ -2349,6 +2496,131 @@ def _aba_cambio() -> None:
     st.caption("Leitura educacional da relação juro-risco-câmbio, não recomendação de investimento.")
 
 
+DATA_FLUXO = Path(__file__).resolve().parent / "data" / "fluxo_estrangeiro.json"
+
+
+def _carregar_fluxo() -> list:
+    try:
+        return json.loads(DATA_FLUXO.read_text(encoding="utf-8")) or []
+    except Exception:  # noqa: BLE001
+        return []
+
+
+def _salvar_fluxo(registros: list) -> None:
+    DATA_FLUXO.parent.mkdir(exist_ok=True)
+    DATA_FLUXO.write_text(json.dumps(registros, ensure_ascii=False, indent=0), encoding="utf-8")
+
+
+def _fmt_mi(v: float) -> str:
+    """R$ em milhões, com sinal e separador de milhar brasileiro."""
+    s = f"{v:,.0f}".replace(",", ".")
+    return f"R$ {s} mi"
+
+
+def _aba_estrangeiro() -> None:
+    st.markdown('<div class="ciano-label">Fluxo do estrangeiro — B3, mercado à vista</div>',
+                unsafe_allow_html=True)
+    st.caption("Saldo diário do investidor estrangeiro no mercado à vista de ações. O número OFICIAL sai em "
+               "D+2 (a B3 divulga dois pregões depois, normalmente entre 8h e 10h). Registre aqui conforme os "
+               "portais publicam — o app acumula e plota. Convenção: positivo = entrada, negativo = saída (R$ mi).")
+
+    df = pd.DataFrame(_carregar_fluxo(), columns=["data", "saldo"])
+    if not df.empty:
+        df["data"] = pd.to_datetime(df["data"])
+
+    st.markdown('<div class="ciano-label" style="margin-top:6px;">📋 Controle dia a dia</div>',
+                unsafe_allow_html=True)
+    edit = st.data_editor(
+        df, num_rows="dynamic", use_container_width=True, hide_index=True, key="fluxo_editor",
+        column_config={
+            "data": st.column_config.DateColumn("Data", format="DD/MM/YYYY"),
+            "saldo": st.column_config.NumberColumn(
+                "Saldo estrangeiro (R$ mi)", format="%.0f",
+                help="Positivo = entrada; negativo = saída. Fonte oficial: B3 (D+2)."),
+        },
+    )
+    if st.button("💾 Salvar", type="primary"):
+        out = edit.dropna(subset=["data"]).copy()
+        out["data"] = pd.to_datetime(out["data"]).dt.strftime("%Y-%m-%d")
+        out["saldo"] = pd.to_numeric(out["saldo"], errors="coerce").fillna(0.0)
+        _salvar_fluxo(out.sort_values("data").to_dict("records"))
+        st.success("Saldo salvo.")
+        st.rerun()
+
+    base = edit.dropna(subset=["data"]).copy()
+    if base.empty:
+        st.info("Registre o primeiro saldo diário acima e clique em **Salvar** para ver os gráficos.")
+        _fluxo_explicacao()
+        return
+
+    base["data"] = pd.to_datetime(base["data"])
+    base["saldo"] = pd.to_numeric(base["saldo"], errors="coerce").fillna(0.0)
+    base = base.sort_values("data").reset_index(drop=True)
+    base["acum"] = base["saldo"].cumsum()
+    base["tipo"] = base["saldo"].apply(lambda x: "Entrada" if x >= 0 else "Saída")
+
+    ano_max = int(base["data"].dt.year.max())
+    mes_max = int(base[base["data"].dt.year == ano_max]["data"].dt.month.max())
+    no_mes = base[(base["data"].dt.year == ano_max) & (base["data"].dt.month == mes_max)]["saldo"].sum()
+    no_ano = base[base["data"].dt.year == ano_max]["saldo"].sum()
+
+    c = st.columns(4)
+    c[0].metric("Último dia", _fmt_mi(base["saldo"].iloc[-1]))
+    c[1].metric("No mês", _fmt_mi(no_mes))
+    c[2].metric(f"No ano ({ano_max})", _fmt_mi(no_ano))
+    c[3].metric("Acumulado", _fmt_mi(base["saldo"].sum()))
+
+    _ins = []
+    ult = base["saldo"].iloc[-1]
+    _ins.append(f"Último registro ({base['data'].iloc[-1]:%d/%m}): {'entrada' if ult>=0 else 'saída'} de "
+                f"{_fmt_mi(abs(ult))}.")
+    if no_ano < 0:
+        _ins.append(f"No ano o estrangeiro está VENDEDOR líquido ({_fmt_mi(no_ano)}) — pressão sobre a bolsa e o real.")
+    elif no_ano > 0:
+        _ins.append(f"No ano o estrangeiro está COMPRADOR líquido ({_fmt_mi(no_ano)}) — fluxo a favor da bolsa.")
+    _caixa_insights(_ins)
+
+    st.markdown('<div class="ciano-label" style="margin-top:10px;">📊 Saldo diário (entrada × saída)</div>',
+                unsafe_allow_html=True)
+    eixo_x = alt.X("data:T", title=None, axis=alt.Axis(labelColor=COR_LIGHT, grid=False))
+    bars = alt.Chart(base).mark_bar().encode(
+        x=eixo_x,
+        y=alt.Y("saldo:Q", title="Saldo diário (R$ mi)", axis=alt.Axis(labelColor=COR_LIGHT, gridOpacity=0.12)),
+        color=alt.Color("tipo:N", scale=alt.Scale(domain=["Entrada", "Saída"], range=["#16A34A", "#DC2626"]),
+                        legend=alt.Legend(title=None, orient="top-right")),
+        tooltip=[alt.Tooltip("data:T", title="Data"), alt.Tooltip("saldo:Q", title="Saldo (R$ mi)", format=",.0f")],
+    ).properties(height=240).configure_view(strokeWidth=0).configure(background="rgba(0,0,0,0)")
+    st.altair_chart(bars, use_container_width=True)
+
+    st.markdown('<div class="ciano-label" style="margin-top:6px;">📈 Acumulado</div>', unsafe_allow_html=True)
+    area = alt.Chart(base).mark_area(
+        line={"color": "#2563EB", "strokeWidth": 2}, color="rgba(37,99,235,0.10)",
+    ).encode(
+        x=eixo_x,
+        y=alt.Y("acum:Q", title="Acumulado (R$ mi)", axis=alt.Axis(labelColor=COR_LIGHT, gridOpacity=0.12)),
+        tooltip=[alt.Tooltip("data:T", title="Data"), alt.Tooltip("acum:Q", title="Acumulado (R$ mi)", format=",.0f")],
+    ).properties(height=220).configure_view(strokeWidth=0).configure(background="rgba(0,0,0,0)")
+    st.altair_chart(area, use_container_width=True)
+
+    _fluxo_explicacao()
+
+
+def _fluxo_explicacao() -> None:
+    with st.expander("ℹ️ Como acompanhar o estrangeiro (oficial D+2 + proxies mais rápidos)"):
+        st.markdown(
+            "- **À vista oficial (D+2):** a B3 divulga o saldo do estrangeiro no mercado à vista **dois "
+            "pregões depois**; os portais publicam entre ~8h e 10h do D+2. É o número que fecha a conta.\n"
+            "- **Intraday (tempo real):** agressão por corretora no fluxo do mini e do cheio (Profit, Tryd). "
+            "Olhe as casas estrangeiras (Morgan Stanley, Goldman, JP Morgan, UBS, BofA, Citi). É ruidoso "
+            "(elas também executam ordens de locais e HFT), mas dá a direção do próprio dia.\n"
+            "- **D+1 (confirmação):** posições em aberto por tipo de investidor nos derivativos (dólar futuro, "
+            "índice futuro, cupom cambial), publicadas pela B3 no dia seguinte — melhor sinal de hedge/posicionamento.\n"
+            "- **Mensal (lento):** fluxo cambial do Banco Central (conta financeira) — não serve para leitura tática.\n\n"
+            "**Combo prático:** agressão das corretoras estrangeiras no intraday → derivativos em D+1 para "
+            "confirmar → à vista oficial em D+2 para fechar.")
+    st.caption("Controle manual (você registra o saldo oficial conforme sai). Leitura de fluxo, não recomendação.")
+
+
 def main() -> None:
     st.set_page_config(
         page_title="Valuation Ciano", page_icon="📈", layout="wide",
@@ -2359,7 +2631,7 @@ def main() -> None:
 
     # --- Navegação por páginas na sidebar (agrupada) ---
     paginas_analise = ["🔎 Empresa", "📊 Screener", "⭐ Carteira", "🏅 Ranking"]
-    paginas_mercado = ["🔀 Cenários", "📉 Macro", "💵 Câmbio"]
+    paginas_mercado = ["🔀 Cenários", "📉 Macro", "💵 Câmbio", "🌎 Estrangeiro"]
     paginas_acomp = ["📰 Notícias", "🔔 Gatilhos"]
     ordem = paginas_analise + paginas_mercado + paginas_acomp
 
@@ -2413,6 +2685,7 @@ def main() -> None:
         paginas_mercado_fn = {
             "🔀 Cenários": _aba_cenarios,
             "📉 Macro": _aba_macro, "💵 Câmbio": _aba_cambio,
+            "🌎 Estrangeiro": _aba_estrangeiro,
             "📰 Notícias": _aba_noticias, "🔔 Gatilhos": _aba_gatilhos,
         }
         paginas_mercado_fn[pagina]()

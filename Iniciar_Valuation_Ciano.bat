@@ -1,7 +1,7 @@
 @echo off
 chcp 65001 >nul
 title Valuation Ciano - Inicializador
-cd /d "C:\Users\Micro\Desktop\valuation_ciano"
+cd /d "%~dp0"
 
 echo ============================================================
 echo   VALUATION CIANO - subindo o app e o link publico...
