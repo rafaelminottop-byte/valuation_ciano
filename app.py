@@ -1845,54 +1845,59 @@ def _aba_noticias() -> None:
 
 
 def _aba_gatilhos() -> None:
-    import carteira as cart
-    import listas as lst
+    import indices_b3
     from gatilhos import PERIODOS_PADRAO, TOLERANCIA_PADRAO, avaliar_gatilhos
 
     st.caption(
-        "Avisa quando o preço chega perto da média móvel (padrão: 200 semanas — "
-        "MM200 no gráfico semanal). Histórico de preços via Yahoo Finance."
+        "Varre um universo inteiro da B3 e avisa quem está perto da média móvel longa "
+        "(padrão: 200 semanas — a MM200 do semanal, referência de fundo de ciclo). "
+        "Carteira dos índices via B3 (oficial); preços via Yahoo Finance."
     )
-    fonte = st.radio(
-        "Empresas a monitorar", ["Minha carteira", "Lista salva", "Digitar lista"],
-        horizontal=True, label_visibility="collapsed",
-    )
-    if fonte == "Minha carteira":
-        tickers = cart.carregar_carteira()
-        if not tickers:
-            st.info("Sua carteira está vazia — adicione tickers na aba Carteira, ou use 'Digitar lista'.")
-            return
-        st.caption("Monitorando: " + ", ".join(tickers))
-    elif fonte == "Lista salva":
-        nomes = lst.nomes_listas()
-        if not nomes:
-            st.info("Nenhuma lista salva ainda — rode o Screener e clique em 'Salvar lista'.")
-            return
-        nome = st.selectbox("Lista", nomes)
-        tickers = lst.carregar_listas().get(nome, [])
-        st.caption(f"Monitorando ({len(tickers)}): " + ", ".join(tickers))
-    else:
-        txt = st.text_input("Tickers separados por espaço ou vírgula", value="WEGE3 PRIO3 VALE3")
-        tickers = [t for t in txt.replace(",", " ").split() if t]
+    rotulos = {"Ibovespa (large caps)": "IBOV", "Small Caps (SMLL)": "SMLL",
+               "Fundos imobiliários (IFIX)": "IFIX"}
+    escolha = st.radio("Universo", list(rotulos), horizontal=True, label_visibility="collapsed")
+    idx = rotulos[escolha]
+    comp = indices_b3.componentes(idx)
+    if comp.get("erro"):
+        st.error(comp["erro"])
+        return
+    if comp.get("aviso"):
+        st.warning(f"⚠️ {comp['aviso']}")
+    tickers = comp["tickers"]
+    st.caption(f"{len(tickers)} ativos no {escolha} — fonte: {comp['fonte']}.")
 
-    c1, c2 = st.columns(2)
+    c1, c2, c3 = st.columns(3)
     periodos = int(c1.number_input("Média (candles semanais)", value=PERIODOS_PADRAO, min_value=10, step=10))
     tol = c2.number_input("Proximidade que dispara (±%)", value=TOLERANCIA_PADRAO, min_value=0.5, step=0.5)
+    so_perto = c3.checkbox("Mostrar só quem está perto", value=True)
 
-    if st.button("Verificar gatilhos", type="primary") and tickers:
-        with st.spinner("Baixando histórico e calculando as médias..."):
-            st.session_state.gatilhos = avaliar_gatilhos(tickers, periodos=periodos, tolerancia_pct=float(tol))
+    if st.button(f"Varrer {escolha}", type="primary") and tickers:
+        with st.spinner(f"Baixando histórico de {len(tickers)} ativos e calculando as médias "
+                        "(pode levar 1–3 min)…"):
+            res = avaliar_gatilhos(tickers, periodos=periodos, tolerancia_pct=float(tol))
+        st.session_state.gatilhos = res
+        st.session_state.gatilhos_meta = (escolha, float(tol))
 
     res = st.session_state.get("gatilhos")
     if res is None or res.empty:
         return
+    universo, tol_run = st.session_state.get("gatilhos_meta", (escolha, float(tol)))
 
+    res = res.copy()
+    res["distancia_abs"] = pd.to_numeric(res["distancia_pct"], errors="coerce").abs()
+    res = res.sort_values("distancia_abs", na_position="last")
     disparados = int((res["alerta"] == "🎯 na média").sum())
     st.markdown(
-        f'<div class="ciano-label">Gatilhos — {disparados} na média (±{tol:.0f}%)</div>',
+        f'<div class="ciano-label">{universo} — {disparados} na média (±{tol_run:.0f}%), '
+        f'de {len(res)} ativos</div>',
         unsafe_allow_html=True,
     )
-    exibir = res.rename(
+    mostra = res[res["alerta"] == "🎯 na média"] if so_perto else res
+    if mostra.empty:
+        st.info("Ninguém dentro da faixa agora. Desmarque 'Mostrar só quem está perto' para ver a lista toda "
+                "ordenada por distância.")
+        return
+    exibir = mostra.drop(columns=["distancia_abs"]).rename(
         columns={
             "ticker": "Ticker",
             "preco": "Preço (R$)",
