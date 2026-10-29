@@ -50,11 +50,11 @@ _SETORES_PT = {
 # dourado só em detalhe, verde/vermelho só para alta/baixa.
 COR_BG = "#EEF1F7"       # fundo da página (cinza neutro)
 COR_ACCENT = "#2563EB"   # azul de link/hover
-COR_LIGHT = "#475569"    # texto/labels de eixo em gráficos claros (escuro p/ contraste)
+COR_LIGHT = "#334155"    # texto/labels de eixo em gráficos claros (escuro p/ contraste)
 COR_CARD = "#FFFFFF"     # card branco
 COR_BORDA = "#E2E8F2"    # borda clara
 COR_INK = "#132244"      # texto principal (marinho escuro)
-COR_INK2 = "#33415C"     # texto secundário
+COR_INK2 = "#132244"     # texto secundário
 COR_MUT = "#6B7A99"      # muted
 COR_NAVY = "#13224A"     # marca marinho
 COR_GOLD = "#C69A2E"     # dourado (detalhe)
@@ -131,15 +131,15 @@ def _injetar_css() -> None:
         .stMarkdown p, .stMarkdown li, label, .stRadio label, .stCheckbox label {font-size: 1.02rem;}
         [data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p,
         [data-testid="stCaptionContainer"] span, [data-testid="stCaptionContainer"] li {
-            font-size: 0.94rem; line-height: 1.6; color: #1E2B49 !important; font-weight: 500;
+            font-size: 0.94rem; line-height: 1.6; color: #132244 !important; font-weight: 500;
         }
         /* Rótulos de campos (number/text/select/radio/checkbox) bem escuros p/ leitura */
         label p, [data-testid="stWidgetLabel"] p, .stNumberInput label, .stTextInput label,
         .stSelectbox label, .stRadio label, .stCheckbox label, .stTextArea label {
-            color: #1B2A47; font-weight: 600;
+            color: #132244; font-weight: 600;
         }
         [data-testid="stMetricValue"] {font-size: 2rem; font-weight: 800; color: #132244;}
-        [data-testid="stMetricLabel"] p {font-size: 0.9rem; letter-spacing: 0.02em; color: #33415C;}
+        [data-testid="stMetricLabel"] p {font-size: 0.9rem; letter-spacing: 0.02em; color: #132244;}
         div[data-testid="stDataFrame"] {font-size: 1rem;}
         /* Campos e botões com mais respiro */
         .stTextInput input, .stNumberInput input, .stTextArea textarea,
@@ -164,7 +164,7 @@ def _injetar_css() -> None:
         }
         .ciano-matriz th, .ciano-matriz td {padding: 16px 18px; text-align: center;}
         .ciano-matriz thead th {
-            background: #F4F6FB; color: #33415C; font-size: 0.86rem; font-weight: 800;
+            background: #F4F6FB; color: #132244; font-size: 0.86rem; font-weight: 800;
             letter-spacing: 0.10em; text-transform: uppercase;
             border-bottom: 1px solid #E2E8F2;
         }
@@ -173,7 +173,7 @@ def _injetar_css() -> None:
             font-weight: 800; font-size: 1.02rem; border-right: 1px solid #E2E8F2;
         }
         .ciano-matriz tbody th small {
-            display: block; color: #33415C; font-weight: 600;
+            display: block; color: #132244; font-weight: 600;
             font-size: 0.80rem; margin-top: 3px; text-transform: none; letter-spacing: 0;
         }
         .ciano-matriz tbody tr + tr th, .ciano-matriz tbody tr + tr td {
@@ -183,7 +183,7 @@ def _injetar_css() -> None:
         .ciano-matriz td .u {font-size: 0.98rem; font-weight: 700; margin-top: 4px;}
         .ciano-matriz td .na {color: #AAB4CB; font-size: 1.2rem; font-weight: 700;}
         .ciano-preco {
-            color: #33415C; font-size: 1.05rem; font-weight: 600; margin: 2px 0 2px 0;
+            color: #132244; font-size: 1.05rem; font-weight: 600; margin: 2px 0 2px 0;
         }
         .ciano-preco b {color: #132244; font-size: 1.25rem;}
 
@@ -198,11 +198,11 @@ def _injetar_css() -> None:
             text-transform: uppercase; margin: 18px 0 6px 0;
         }
         .tese-data {
-            color: #33415C; font-size: 0.86rem; font-weight: 600;
+            color: #132244; font-size: 0.86rem; font-weight: 600;
             border: 1px solid #E2E8F2; border-radius: 8px; padding: 3px 10px;
         }
         .tese-resumo {
-            color: #33415C; font-size: 0.96rem; line-height: 1.6; margin: 8px 0 2px 0;
+            color: #132244; font-size: 0.96rem; line-height: 1.6; margin: 8px 0 2px 0;
         }
         .noti {
             background: #FFFFFF; border: 1px solid #E2E8F2; border-radius: 12px;
@@ -212,12 +212,12 @@ def _injetar_css() -> None:
         .noti.hit {border-left: 4px solid #16A34A;}
         .noti a {color: #132244; font-weight: 600; font-size: 1rem; text-decoration: none; line-height: 1.4;}
         .noti a:hover {text-decoration: underline; color: #2563EB;}
-        .noti-meta {display: block; color: #33415C; font-size: 0.82rem; margin-top: 5px;}
+        .noti-meta {display: block; color: #132244; font-size: 0.82rem; margin-top: 5px;}
         .noti-gat {
             display: inline-block; background: #DCFCE7; color: #15803D; font-size: 0.74rem;
             font-weight: 700; padding: 1px 8px; border-radius: 20px; margin: 0 5px 5px 0;
         }
-        .tese-tag.gat-chip {background:#F1F4FA; color:#33415C; border-color:#E2E8F2; font-weight:600;}
+        .tese-tag.gat-chip {background:#F1F4FA; color:#132244; border-color:#E2E8F2; font-weight:600;}
 
         .ciano-brand {display: inline-block; margin-bottom: 4px; background: #13224A;
             padding: 14px 22px 10px; border-radius: 14px;}
@@ -226,7 +226,7 @@ def _injetar_css() -> None:
             color: #C69A2E; font-size: 0.92rem; font-weight: 600;
             letter-spacing: 0.30em; text-align: right; margin-top: -10px; padding-right: 3px;
         }
-        .ciano-sub {color: #33415C; font-size: 1.02rem; margin: 0 0 4px 0;}
+        .ciano-sub {color: #132244; font-size: 1.02rem; margin: 0 0 4px 0;}
 
         .ciano-label {
             color: #13224A; font-size: 0.80rem; font-weight: 800;
@@ -250,11 +250,11 @@ def _injetar_css() -> None:
         }
         .ciano-card:hover {border-color: #2563EB; box-shadow: 0 2px 10px rgba(37,99,235,.14); transform: translateY(-1px);}
         .ciano-card .lbl {
-            color: #33415C; font-size: 0.78rem; font-weight: 700;
+            color: #132244; font-size: 0.78rem; font-weight: 700;
             letter-spacing: 0.10em; text-transform: uppercase;
         }
         .ciano-card .val {color: #132244; font-size: 2.1rem; font-weight: 800; margin: 8px 0 2px 0;}
-        .ciano-card .sub {font-size: 0.95rem; font-weight: 700; color: #33415C;}
+        .ciano-card .sub {font-size: 0.95rem; font-weight: 700; color: #132244;}
 
         /* Botão primário estilo CTA da marca */
         .stButton > button {
@@ -268,8 +268,8 @@ def _injetar_css() -> None:
 
         div[data-testid="stDataFrame"] {border: 1px solid #E2E8F2; border-radius: 14px;}
 
-        .tese-setor {color: #33415C; margin: -2px 0 8px 0; font-size: 0.95rem;}
-        .tese-texto {color: #33415C; line-height: 1.55; margin-bottom: 14px;}
+        .tese-setor {color: #132244; margin: -2px 0 8px 0; font-size: 0.95rem;}
+        .tese-texto {color: #132244; line-height: 1.55; margin-bottom: 14px;}
         .tese-box {
             background: #FFFFFF; border: 1px solid #E2E8F2; border-radius: 16px;
             padding: 16px 20px; height: 100%;
@@ -280,7 +280,7 @@ def _injetar_css() -> None:
             font-size: 0.80rem; margin-bottom: 8px;
         }
         .tese-box ul {margin: 0; padding-left: 20px;}
-        .tese-box li {color: #33415C; font-size: 0.96rem; margin-bottom: 10px; line-height: 1.55;}
+        .tese-box li {color: #132244; font-size: 0.96rem; margin-bottom: 10px; line-height: 1.55;}
         .tese-fortes {border-left: 4px solid #16A34A;}
         .tese-fortes .tese-h {color: #15803D;}
         .tese-fracos {border-left: 4px solid #DC2626;}
@@ -289,14 +289,14 @@ def _injetar_css() -> None:
         /* ---- Navegação por páginas na sidebar (radio estilizado como menu) ---- */
         section[data-testid="stSidebar"] {padding-top: 6px;}
         .nav-grupo {
-            color: #33415C; font-size: 0.70rem; font-weight: 800; letter-spacing: 0.16em;
+            color: #132244; font-size: 0.70rem; font-weight: 800; letter-spacing: 0.16em;
             text-transform: uppercase; margin: 16px 10px 6px;
         }
         .nav-grupo:first-of-type {margin-top: 4px;}
         section[data-testid="stSidebar"] div[role="radiogroup"] {gap: 3px;}
         section[data-testid="stSidebar"] div[role="radiogroup"] > label {
             width: 100%; margin: 0; padding: 9px 14px; border-radius: 10px; cursor: pointer;
-            color: #33415C; font-weight: 600; transition: background .12s, color .12s;
+            color: #132244; font-weight: 600; transition: background .12s, color .12s;
         }
         section[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {background: #F1F4FA;}
         section[data-testid="stSidebar"] div[role="radiogroup"] > label > div:first-child {display: none;}
@@ -307,7 +307,7 @@ def _injetar_css() -> None:
         /* separador acima do bloco de premissas, que aparece só nas páginas de análise */
         section[data-testid="stSidebar"] [data-testid="stHeading"] h2 {
             font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
-            color: #33415C; margin-top: 10px;
+            color: #132244; margin-top: 10px;
         }
 
         /* Tabela de resultado rola na horizontal em telas estreitas, sem estourar a página */
@@ -2034,7 +2034,7 @@ def _aba_ciclo() -> None:
 def _barra_maturidade(grad: str, marcos: list, voce_frac: float, voce_label: str, voce_cor: str) -> str:
     def _m(frac, label):
         return (f'<div style="position:absolute;left:{frac * 100:.1f}%;top:26px;transform:translateX(-50%);'
-                f'text-align:center;font-size:0.62rem;color:#33415C;white-space:nowrap;">'
+                f'text-align:center;font-size:0.62rem;color:#132244;white-space:nowrap;">'
                 f'<div style="width:2px;height:30px;background:#AAB4CB;margin:0 auto;"></div>{label}</div>')
     barra = (f'<div style="position:relative;height:26px;border-radius:6px;overflow:hidden;'
              f'background:linear-gradient(90deg,{grad});"></div>')
@@ -2267,7 +2267,7 @@ _COR_ALAVANCA_TXT = {"verde": "#15803D", "amarelo": "#B45309", "vermelho": "#B91
 
 
 def _cor_alavanca_txt(chave: str) -> str:
-    return _COR_ALAVANCA_TXT.get((chave or "").split("-")[0], "#33415C")
+    return _COR_ALAVANCA_TXT.get((chave or "").split("-")[0], "#132244")
 
 
 def _card_alavanca(nome: str, cor_chave: str, valor: str, desc: str) -> str:
@@ -2277,9 +2277,9 @@ def _card_alavanca(nome: str, cor_chave: str, valor: str, desc: str) -> str:
         f'<div style="flex:1 1 210px;min-width:190px;background:{COR_CARD};'
         f'border:1px solid {COR_BORDA};border-left:4px solid {cor};border-radius:10px;padding:12px 14px;'
         f'box-shadow:0 1px 2px rgba(19,34,74,.06);">'
-        f'<div style="font-size:0.7rem;letter-spacing:.05em;text-transform:uppercase;color:#33415C;font-weight:700;">{html.escape(nome)}</div>'
+        f'<div style="font-size:0.7rem;letter-spacing:.05em;text-transform:uppercase;color:#132244;font-weight:700;">{html.escape(nome)}</div>'
         f'<div style="font-size:1.15rem;font-weight:800;color:{cor_txt};margin:2px 0 4px;">{html.escape(valor)}</div>'
-        f'<div style="font-size:0.72rem;color:#33415C;line-height:1.4;">{html.escape(desc)}</div></div>'
+        f'<div style="font-size:0.72rem;color:#132244;line-height:1.4;">{html.escape(desc)}</div></div>'
     )
 
 
@@ -2288,7 +2288,7 @@ def _caixa_insights(frases: list) -> None:
     frases = [f for f in frases if f]
     if not frases:
         return
-    itens = "".join(f'<li style="margin-bottom:5px;color:#33415C;">{html.escape(f)}</li>' for f in frases)
+    itens = "".join(f'<li style="margin-bottom:5px;color:#132244;">{html.escape(f)}</li>' for f in frases)
     st.markdown(
         '<div style="background:#F4F7FE;border:1px solid #DBE6FB;border-left:3px solid #2563EB;'
         'border-radius:12px;padding:12px 16px;margin:4px 0 16px;">'
@@ -2506,7 +2506,7 @@ def _aba_cambio() -> None:
                   "(a cadeia dos gatilhos na aba Cenários).")
     st.markdown(
         f'<div style="background:{_bg};border:1px solid {_bd};border-left:3px solid {_corl};'
-        'border-radius:12px;padding:13px 16px;margin:14px 0 6px;font-size:0.95rem;color:#33415C;">'
+        'border-radius:12px;padding:13px 16px;margin:14px 0 6px;font-size:0.95rem;color:#132244;">'
         f'Leitura de hoje: <b style="color:{_corl};">{_frase}</b> {_resto}</div>',
         unsafe_allow_html=True,
     )
