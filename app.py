@@ -881,10 +881,67 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
             _render_tese(emp["ticker"])
 
 
+def _screener_crescimento() -> None:
+    """Ranking pela média do crescimento (CAGR 5a) de EBIT, lucro e LPA."""
+    import crescimento
+    import indices_b3
+
+    st.caption(
+        "Ranqueia pela MÉDIA do crescimento (CAGR 5 anos) de EBIT, lucro líquido e LPA — "
+        "quem mais engordou o resultado. Universo: carteiras oficiais da B3; balanços via Yahoo. "
+        "Bancos entram pelo lucro/LPA (não têm EBIT)."
+    )
+    universos = {"Ibovespa": ["IBOV"], "Small Caps": ["SMLL"], "Ibov + Small Caps": ["IBOV", "SMLL"]}
+    c1, c2 = st.columns([2, 1])
+    esc = c1.radio("Universo", list(universos), index=2, horizontal=True, label_visibility="collapsed")
+    topn = int(c2.number_input("Top N", value=20, min_value=10, max_value=60, step=5))
+
+    if st.button("Rodar ranking de crescimento", type="primary"):
+        tickers = []
+        for idx in universos[esc]:
+            tickers += indices_b3.componentes(idx).get("tickers", [])
+        tickers = sorted(set(tickers))
+        barra = st.progress(0.0, text=f"Lendo balanços de {len(tickers)} empresas (1ª vez é mais lento)…")
+        df = crescimento.crescimento_lote(
+            tickers, progresso=lambda f: barra.progress(min(f, 1.0), text=f"Balanços… {int(f * len(tickers))}/{len(tickers)}"))
+        barra.empty()
+        st.session_state.scr_cresc = (df, esc)
+
+    dados = st.session_state.get("scr_cresc")
+    if not dados:
+        return
+    df, universo = dados
+    val = df[df["lucro_cagr"].notna() & df["lpa_cagr"].notna()].copy()
+    if val.empty:
+        st.info("Não consegui crescimento suficiente nesse universo agora.")
+        return
+    top = val.sort_values("media_cagr", ascending=False).head(topn)
+
+    st.markdown(f'<div class="ciano-label">Top {len(top)} em crescimento 5a — {universo}</div>',
+                unsafe_allow_html=True)
+    exibir = top.copy()
+    exibir["Lucro caindo?"] = exibir["lucro_cai"].map({True: "⚠️ sim", False: ""})
+    exibir = exibir.rename(columns={
+        "ticker": "Ticker", "media_cagr": "Média CAGR (%)", "ebit_cagr": "EBIT (%)",
+        "lucro_cagr": "Lucro (%)", "lpa_cagr": "LPA (%)", "anos": "Anos",
+    })[["Ticker", "Média CAGR (%)", "EBIT (%)", "Lucro (%)", "LPA (%)", "Anos", "Lucro caindo?"]]
+    st.dataframe(exibir.set_index("Ticker"), use_container_width=True)
+    st.caption("CAGR = crescimento anual composto do começo ao fim da série (≈5 anos). "
+               "⚠️ CAGR muito alto (>100%) costuma ser efeito-base — empresa saindo de lucro perto de zero "
+               "infla o número; confira as colunas EBIT/Lucro/LPA. "
+               "Fonte: demonstrativos anuais do Yahoo. Crescimento passado não garante futuro.")
+
+
 def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) -> None:
     mercado = st.radio("Mercado", ["🇧🇷 B3", "🌎 EUA"], horizontal=True, key="scr_mercado")
     if mercado.startswith("🌎"):
         _aba_eua()
+        return
+
+    modo = st.radio("Ordenar por", ["Upside (valuation)", "Crescimento 5a (lucro/LPA)"],
+                    horizontal=True, key="scr_modo")
+    if modo.startswith("Crescimento"):
+        _screener_crescimento()
         return
 
     from fundamentus_scraper import baixar_tabela_fundamentus
