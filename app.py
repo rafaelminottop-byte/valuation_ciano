@@ -307,7 +307,7 @@ def _injetar_css() -> None:
         /* separador acima do bloco de premissas, que aparece só nas páginas de análise */
         section[data-testid="stSidebar"] [data-testid="stHeading"] h2 {
             font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase;
-            color: #6B7A99; margin-top: 10px;
+            color: #33415C; margin-top: 10px;
         }
 
         /* Tabela de resultado rola na horizontal em telas estreitas, sem estourar a página */
@@ -1972,7 +1972,7 @@ def _aba_ciclo() -> None:
 def _barra_maturidade(grad: str, marcos: list, voce_frac: float, voce_label: str, voce_cor: str) -> str:
     def _m(frac, label):
         return (f'<div style="position:absolute;left:{frac * 100:.1f}%;top:26px;transform:translateX(-50%);'
-                f'text-align:center;font-size:0.62rem;color:#6B7A99;white-space:nowrap;">'
+                f'text-align:center;font-size:0.62rem;color:#33415C;white-space:nowrap;">'
                 f'<div style="width:2px;height:30px;background:#AAB4CB;margin:0 auto;"></div>{label}</div>')
     barra = (f'<div style="position:relative;height:26px;border-radius:6px;overflow:hidden;'
              f'background:linear-gradient(90deg,{grad});"></div>')
@@ -2184,7 +2184,7 @@ def _card_alavanca(nome: str, cor_chave: str, valor: str, desc: str) -> str:
         f'<div style="flex:1 1 210px;min-width:190px;background:{COR_CARD};'
         f'border:1px solid {COR_BORDA};border-left:4px solid {cor};border-radius:10px;padding:12px 14px;'
         f'box-shadow:0 1px 2px rgba(19,34,74,.06);">'
-        f'<div style="font-size:0.7rem;letter-spacing:.05em;text-transform:uppercase;color:#566279;font-weight:700;">{html.escape(nome)}</div>'
+        f'<div style="font-size:0.7rem;letter-spacing:.05em;text-transform:uppercase;color:#33415C;font-weight:700;">{html.escape(nome)}</div>'
         f'<div style="font-size:1.15rem;font-weight:800;color:{cor_txt};margin:2px 0 4px;">{html.escape(valor)}</div>'
         f'<div style="font-size:0.72rem;color:#33415C;line-height:1.4;">{html.escape(desc)}</div></div>'
     )
@@ -2335,7 +2335,7 @@ def _anota_eventos(dfbase, campo: str, cor: str = "#94A3B8"):
     ev = ev[ev["data"] >= dfbase["data"].min()]
     regua = alt.Chart(ev).mark_rule(color=cor, strokeDash=[3, 3], opacity=0.6).encode(x="data:T")
     txt = alt.Chart(ev).mark_text(
-        angle=270, align="left", baseline="middle", dx=5, fontSize=9, color="#64748B",
+        angle=270, align="left", baseline="middle", dx=5, fontSize=9, color="#334155",
     ).encode(x="data:T", y=alt.value(10), text="label:N")
     return regua + txt
 
