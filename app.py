@@ -2505,7 +2505,9 @@ def _aba_cambio() -> None:
 
 
 def _fmt_mi(v: float) -> str:
-    """R$ em milhões, com sinal e separador de milhar brasileiro."""
+    """R$ compacto: bilhões (1 casa) quando grande, senão milhões. Formato BR."""
+    if abs(v) >= 1000:
+        return f"R$ {v / 1000:.1f}".replace(".", ",") + " bi"
     s = f"{v:,.0f}".replace(",", ".")
     return f"R$ {s} mi"
 
