@@ -2174,6 +2174,37 @@ def _cenarios_dados_vivos() -> dict:
     return out
 
 
+@st.cache_data(ttl=3600, show_spinner=False)
+def _lucro_ibov_agregado() -> dict:
+    """Crescimento de lucro do Ibov (5a), para a alavanca Lucro virar data-driven."""
+    try:
+        import crescimento
+        import indices_b3
+        ibov = indices_b3.componentes("IBOV").get("tickers", [])
+        return crescimento.crescimento_agregado(ibov) if ibov else {}
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def _alavanca_lucro(ag: dict):
+    """(cor, valor, descrição) da alavanca Lucro a partir do crescimento agregado."""
+    cagr = (ag or {}).get("lucro_cagr_mediano")
+    caindo = (ag or {}).get("pct_caindo")
+    if cagr is None:
+        return "amarelo", "s/ dado", "Crescimento de lucro indisponível agora (Yahoo)."
+    if cagr >= 5 and (caindo or 0) < 45:
+        cor = "verde"
+    elif cagr < 0 or (caindo or 0) >= 60:
+        cor = "vermelho"
+    else:
+        cor = "amarelo"
+    val = f"{cagr:+.0f}%/a" + (f" · {caindo:.0f}% caindo" if caindo is not None else "")
+    desc = (f"Lucro mediano do Ibov cresce {cagr:+.0f}%/a em 5 anos (LPA "
+            f"{ag.get('lpa_cagr_mediano'):+.0f}%/a). {caindo:.0f}% das empresas com lucro menor que há 5 anos "
+            "— a queda se concentra nos pesos-pesados de commodities.")
+    return cor, val, desc
+
+
 # Cor da BARRA (viva) vs. cor do TEXTO do valor (escura, p/ contraste no branco).
 _COR_ALAVANCA_TXT = {"verde": "#15803D", "amarelo": "#B45309", "vermelho": "#B91C1C"}
 
@@ -2253,8 +2284,9 @@ def _aba_cenarios() -> None:
     juro_txt = f"Selic {viv['selic']:.1f}%" if viv.get("selic") else "Selic —"
     juro_desc = (f"Juro real ~{viv['juro_real']:.1f}%. " if viv.get("juro_real") else "") + \
         "A alavanca-mãe: sem ela ceder, as outras não ignitam."
+    lucro_cor, lucro_val, lucro_desc = _alavanca_lucro(_lucro_ibov_agregado())
     cards = (
-        _card_alavanca("Lucro / EBIT", alav.get("lucro", ""), "Forte", "Combustível real da alta; verificável nos balanços.")
+        _card_alavanca("Lucro (crescimento 5a)", lucro_cor, lucro_val, lucro_desc)
         + _card_alavanca("Múltiplo", alav.get("multiplo", ""), pl_txt + ey_txt.strip(), mult_desc)
         + _card_alavanca("Juro", alav.get("juro", ""), juro_txt, juro_desc)
         + _card_alavanca("Fluxo / alocação", alav.get("fluxo", ""), "Sub-alocado", "Local pouco em bolsa; energia potencial que espera o juro cair.")
