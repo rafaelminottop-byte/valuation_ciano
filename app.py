@@ -129,7 +129,10 @@ def _injetar_css() -> None:
         html {font-size: 18px;}
         body, .stMarkdown, .stMarkdown p, .stMarkdown li {color: #132244;}
         .stMarkdown p, .stMarkdown li, label, .stRadio label, .stCheckbox label {font-size: 1.02rem;}
-        [data-testid="stCaptionContainer"] p {font-size: 0.94rem; line-height: 1.6; color: #1E2B49; font-weight: 500;}
+        [data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p,
+        [data-testid="stCaptionContainer"] span, [data-testid="stCaptionContainer"] li {
+            font-size: 0.94rem; line-height: 1.6; color: #1E2B49 !important; font-weight: 500;
+        }
         /* Rótulos de campos (number/text/select/radio/checkbox) bem escuros p/ leitura */
         label p, [data-testid="stWidgetLabel"] p, .stNumberInput label, .stTextInput label,
         .stSelectbox label, .stRadio label, .stCheckbox label, .stTextArea label {
@@ -161,7 +164,7 @@ def _injetar_css() -> None:
         }
         .ciano-matriz th, .ciano-matriz td {padding: 16px 18px; text-align: center;}
         .ciano-matriz thead th {
-            background: #F4F6FB; color: #6B7A99; font-size: 0.86rem; font-weight: 800;
+            background: #F4F6FB; color: #33415C; font-size: 0.86rem; font-weight: 800;
             letter-spacing: 0.10em; text-transform: uppercase;
             border-bottom: 1px solid #E2E8F2;
         }
@@ -170,7 +173,7 @@ def _injetar_css() -> None:
             font-weight: 800; font-size: 1.02rem; border-right: 1px solid #E2E8F2;
         }
         .ciano-matriz tbody th small {
-            display: block; color: #6B7A99; font-weight: 600;
+            display: block; color: #33415C; font-weight: 600;
             font-size: 0.80rem; margin-top: 3px; text-transform: none; letter-spacing: 0;
         }
         .ciano-matriz tbody tr + tr th, .ciano-matriz tbody tr + tr td {
@@ -195,7 +198,7 @@ def _injetar_css() -> None:
             text-transform: uppercase; margin: 18px 0 6px 0;
         }
         .tese-data {
-            color: #6B7A99; font-size: 0.86rem; font-weight: 600;
+            color: #33415C; font-size: 0.86rem; font-weight: 600;
             border: 1px solid #E2E8F2; border-radius: 8px; padding: 3px 10px;
         }
         .tese-resumo {
@@ -209,7 +212,7 @@ def _injetar_css() -> None:
         .noti.hit {border-left: 4px solid #16A34A;}
         .noti a {color: #132244; font-weight: 600; font-size: 1rem; text-decoration: none; line-height: 1.4;}
         .noti a:hover {text-decoration: underline; color: #2563EB;}
-        .noti-meta {display: block; color: #6B7A99; font-size: 0.82rem; margin-top: 5px;}
+        .noti-meta {display: block; color: #33415C; font-size: 0.82rem; margin-top: 5px;}
         .noti-gat {
             display: inline-block; background: #DCFCE7; color: #15803D; font-size: 0.74rem;
             font-weight: 700; padding: 1px 8px; border-radius: 20px; margin: 0 5px 5px 0;
@@ -247,7 +250,7 @@ def _injetar_css() -> None:
         }
         .ciano-card:hover {border-color: #2563EB; box-shadow: 0 2px 10px rgba(37,99,235,.14); transform: translateY(-1px);}
         .ciano-card .lbl {
-            color: #566279; font-size: 0.78rem; font-weight: 700;
+            color: #33415C; font-size: 0.78rem; font-weight: 700;
             letter-spacing: 0.10em; text-transform: uppercase;
         }
         .ciano-card .val {color: #132244; font-size: 2.1rem; font-weight: 800; margin: 8px 0 2px 0;}
@@ -286,7 +289,7 @@ def _injetar_css() -> None:
         /* ---- Navegação por páginas na sidebar (radio estilizado como menu) ---- */
         section[data-testid="stSidebar"] {padding-top: 6px;}
         .nav-grupo {
-            color: #6B7A99; font-size: 0.70rem; font-weight: 800; letter-spacing: 0.16em;
+            color: #33415C; font-size: 0.70rem; font-weight: 800; letter-spacing: 0.16em;
             text-transform: uppercase; margin: 16px 10px 6px;
         }
         .nav-grupo:first-of-type {margin-top: 4px;}
@@ -2501,21 +2504,6 @@ def _aba_cambio() -> None:
     st.caption("Leitura educacional da relação juro-risco-câmbio, não recomendação de investimento.")
 
 
-DATA_FLUXO = Path(__file__).resolve().parent / "data" / "fluxo_estrangeiro.json"
-
-
-def _carregar_fluxo() -> list:
-    try:
-        return json.loads(DATA_FLUXO.read_text(encoding="utf-8")) or []
-    except Exception:  # noqa: BLE001
-        return []
-
-
-def _salvar_fluxo(registros: list) -> None:
-    DATA_FLUXO.parent.mkdir(exist_ok=True)
-    DATA_FLUXO.write_text(json.dumps(registros, ensure_ascii=False, indent=0), encoding="utf-8")
-
-
 def _fmt_mi(v: float) -> str:
     """R$ em milhões, com sinal e separador de milhar brasileiro."""
     s = f"{v:,.0f}".replace(",", ".")
@@ -2523,66 +2511,59 @@ def _fmt_mi(v: float) -> str:
 
 
 def _aba_estrangeiro() -> None:
+    import fluxo_b3
+
     st.markdown('<div class="ciano-label">Fluxo do estrangeiro — B3, mercado à vista</div>',
                 unsafe_allow_html=True)
-    st.caption("Saldo diário do investidor estrangeiro no mercado à vista de ações. O número OFICIAL sai em "
-               "D+2 (a B3 divulga dois pregões depois, normalmente entre 8h e 10h). Registre aqui conforme os "
-               "portais publicam — o app acumula e plota. Convenção: positivo = entrada, negativo = saída (R$ mi).")
+    st.caption("Saldo diário do investidor estrangeiro no mercado à vista de ações — número OFICIAL da B3 "
+               "(sai em D+2), buscado automaticamente. Positivo = entrada, negativo = saída (R$ mi).")
 
-    df = pd.DataFrame(_carregar_fluxo(), columns=["data", "saldo"])
-    if not df.empty:
-        df["data"] = pd.to_datetime(df["data"])
-
-    st.markdown('<div class="ciano-label" style="margin-top:6px;">📋 Controle dia a dia</div>',
-                unsafe_allow_html=True)
-    edit = st.data_editor(
-        df, num_rows="dynamic", use_container_width=True, hide_index=True, key="fluxo_editor",
-        column_config={
-            "data": st.column_config.DateColumn("Data", format="DD/MM/YYYY"),
-            "saldo": st.column_config.NumberColumn(
-                "Saldo estrangeiro (R$ mi)", format="%.0f",
-                help="Positivo = entrada; negativo = saída. Fonte oficial: B3 (D+2)."),
-        },
-    )
-    if st.button("💾 Salvar", type="primary"):
-        out = edit.dropna(subset=["data"]).copy()
-        out["data"] = pd.to_datetime(out["data"]).dt.strftime("%Y-%m-%d")
-        out["saldo"] = pd.to_numeric(out["saldo"], errors="coerce").fillna(0.0)
-        _salvar_fluxo(out.sort_values("data").to_dict("records"))
-        st.success("Saldo salvo.")
-        st.rerun()
-
-    base = edit.dropna(subset=["data"]).copy()
-    if base.empty:
-        st.info("Registre o primeiro saldo diário acima e clique em **Salvar** para ver os gráficos.")
+    if st.button("Atualizar fluxo", type="primary", key="fluxo_upd"):
+        with st.spinner("Buscando o fluxo da B3…"):
+            st.session_state.fluxo = fluxo_b3.buscar_fluxo(usar_cache=False)
+    dados = st.session_state.get("fluxo")
+    if dados is None:
+        with st.spinner("Buscando o fluxo da B3…"):
+            dados = fluxo_b3.buscar_fluxo()
+            st.session_state.fluxo = dados
+    if dados.get("erro"):
+        st.error(dados["erro"])
         _fluxo_explicacao()
         return
+    if dados.get("aviso"):
+        st.warning(f"⚠️ {dados['aviso']}")
 
+    base = pd.DataFrame(dados["serie"])
     base["data"] = pd.to_datetime(base["data"])
-    base["saldo"] = pd.to_numeric(base["saldo"], errors="coerce").fillna(0.0)
-    base = base.sort_values("data").reset_index(drop=True)
+    base["saldo"] = pd.to_numeric(base["estrangeiro"], errors="coerce")
+    base = base.dropna(subset=["saldo"]).sort_values("data").reset_index(drop=True)
     base["acum"] = base["saldo"].cumsum()
     base["tipo"] = base["saldo"].apply(lambda x: "Entrada" if x >= 0 else "Saída")
 
-    ano_max = int(base["data"].dt.year.max())
-    mes_max = int(base[base["data"].dt.year == ano_max]["data"].dt.month.max())
-    no_mes = base[(base["data"].dt.year == ano_max) & (base["data"].dt.month == mes_max)]["saldo"].sum()
-    no_ano = base[base["data"].dt.year == ano_max]["saldo"].sum()
-
+    a = dados["atual"]
     c = st.columns(4)
-    c[0].metric("Último dia", _fmt_mi(base["saldo"].iloc[-1]))
-    c[1].metric("No mês", _fmt_mi(no_mes))
-    c[2].metric(f"No ano ({ano_max})", _fmt_mi(no_ano))
-    c[3].metric("Acumulado", _fmt_mi(base["saldo"].sum()))
+    c[0].metric("Último dia", _fmt_mi(a["ultimo_dia"]))
+    c[1].metric("No mês", _fmt_mi(a["no_mes"]))
+    c[2].metric(f"No ano ({a['ano']})", _fmt_mi(a["no_ano"]))
+    c[3].metric("Média 21 pregões", _fmt_mi(a["mm21"]) if a.get("mm21") is not None else "—")
 
-    _ins = []
-    ult = base["saldo"].iloc[-1]
-    _ins.append(f"Último registro ({base['data'].iloc[-1]:%d/%m}): {'entrada' if ult>=0 else 'saída'} de "
-                f"{_fmt_mi(abs(ult))}.")
-    if no_ano < 0:
-        _ins.append(f"No ano o estrangeiro está VENDEDOR líquido ({_fmt_mi(no_ano)}) — pressão sobre a bolsa e o real.")
-    elif no_ano > 0:
-        _ins.append(f"No ano o estrangeiro está COMPRADOR líquido ({_fmt_mi(no_ano)}) — fluxo a favor da bolsa.")
+    # quem comprou mais no último pregão (a contraparte do estrangeiro)
+    ult = base.iloc[-1]
+    locais = {"Institucional": ult.get("institucional"), "Pessoa física": ult.get("pessoa_fisica"),
+              "Inst. Financeira": ult.get("inst_financeira"), "Outros": ult.get("outros")}
+    comprador = max((k for k in locais if locais[k] is not None),
+                    key=lambda k: locais[k], default=None)
+
+    _ins = [f"Último pregão ({a['ultima_data']}): estrangeiro "
+            f"{'comprou' if a['ultimo_dia'] >= 0 else 'vendeu'} {_fmt_mi(abs(a['ultimo_dia']))}."]
+    if comprador and locais[comprador] is not None and locais[comprador] > 0:
+        _ins.append(f"Do outro lado, quem mais comprou foi {comprador} ({_fmt_mi(locais[comprador])}).")
+    if a["no_ano"] < 0:
+        _ins.append(f"No ano o estrangeiro está VENDEDOR líquido ({_fmt_mi(a['no_ano'])}) — "
+                    "pressão sobre a bolsa e o real.")
+    else:
+        _ins.append(f"No ano o estrangeiro está COMPRADOR líquido ({_fmt_mi(a['no_ano'])}) — "
+                    "fluxo a favor da bolsa.")
     _caixa_insights(_ins)
 
     st.markdown('<div class="ciano-label" style="margin-top:10px;">📊 Saldo diário (entrada × saída)</div>',
@@ -2597,7 +2578,8 @@ def _aba_estrangeiro() -> None:
     ).properties(height=240).configure_view(strokeWidth=0).configure(background="rgba(0,0,0,0)")
     st.altair_chart(bars, use_container_width=True)
 
-    st.markdown('<div class="ciano-label" style="margin-top:6px;">📈 Acumulado</div>', unsafe_allow_html=True)
+    st.markdown('<div class="ciano-label" style="margin-top:6px;">📈 Acumulado na janela</div>',
+                unsafe_allow_html=True)
     area = alt.Chart(base).mark_area(
         line={"color": "#2563EB", "strokeWidth": 2}, color="rgba(37,99,235,0.10)",
     ).encode(
@@ -2606,6 +2588,9 @@ def _aba_estrangeiro() -> None:
         tooltip=[alt.Tooltip("data:T", title="Data"), alt.Tooltip("acum:Q", title="Acumulado (R$ mi)", format=",.0f")],
     ).properties(height=220).configure_view(strokeWidth=0).configure(background="rgba(0,0,0,0)")
     st.altair_chart(area, use_container_width=True)
+    st.caption(f"Janela: {base['data'].min():%d/%m/%Y}–{base['data'].max():%d/%m/%Y} ({len(base)} pregões). "
+               f"Fonte: {dados.get('fonte', 'B3 via Dados de Mercado')}. "
+               f"Buscado em {dados.get('atualizado_em', '—')} · cache 6h.")
 
     _fluxo_explicacao()
 
@@ -2614,7 +2599,8 @@ def _fluxo_explicacao() -> None:
     with st.expander("ℹ️ Como acompanhar o estrangeiro (oficial D+2 + proxies mais rápidos)"):
         st.markdown(
             "- **À vista oficial (D+2):** a B3 divulga o saldo do estrangeiro no mercado à vista **dois "
-            "pregões depois**; os portais publicam entre ~8h e 10h do D+2. É o número que fecha a conta.\n"
+            "pregões depois**; os portais publicam entre ~8h e 10h do D+2. É o número que fecha a conta — "
+            "e é esse que o app busca sozinho aqui.\n"
             "- **Intraday (tempo real):** agressão por corretora no fluxo do mini e do cheio (Profit, Tryd). "
             "Olhe as casas estrangeiras (Morgan Stanley, Goldman, JP Morgan, UBS, BofA, Citi). É ruidoso "
             "(elas também executam ordens de locais e HFT), mas dá a direção do próprio dia.\n"
@@ -2623,7 +2609,7 @@ def _fluxo_explicacao() -> None:
             "- **Mensal (lento):** fluxo cambial do Banco Central (conta financeira) — não serve para leitura tática.\n\n"
             "**Combo prático:** agressão das corretoras estrangeiras no intraday → derivativos em D+1 para "
             "confirmar → à vista oficial em D+2 para fechar.")
-    st.caption("Controle manual (você registra o saldo oficial conforme sai). Leitura de fluxo, não recomendação.")
+    st.caption("Saldo oficial da B3 buscado automaticamente (D+2). Leitura de fluxo, não recomendação.")
 
 
 def main() -> None:
