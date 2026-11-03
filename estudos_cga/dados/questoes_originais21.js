@@ -29,7 +29,7 @@ window.QUESTOES.push(
 
   // ===== EXPECTED LOSS: FÓRMULA E COMPONENTES =====
   { topico:"Risco de Crédito",
-    enunciado:"A Perda Esperada (Expected Loss - EL) de uma exposição de crédito é calculada, na abordagem padrão de risco de crédito, pela fórmula:",
+    enunciado:"A Perda Esperada (Expected Loss - EL) de uma exposição de crédito — onde PD = probabilidade de default, LGD = perda dado o default (severidade) e EAD = exposição no momento do default — é calculada, na abordagem padrão de risco de crédito, pela fórmula:",
     alternativas:[
       "EL = PD × EAD (Exposure at Default), sem considerar a severidade da perda.",
       "EL = LGD × EAD, sem considerar a probabilidade de inadimplência.",

@@ -17,7 +17,7 @@ window.QUESTOES.push(
     macete:"O que importa é a CORRELAÇÃO, não o risco isolado do ativo. Baixa correlação → menos dispersão na carteira." },
 
   { topico:"Estatística e Risco",
-    enunciado:"No cálculo da variância de uma carteira de dois ativos, o termo que captura o benefício da diversificação e depende da correlação (ρ) é:",
+    enunciado:"No cálculo da variância de uma carteira de dois ativos (w = peso de cada ativo, σ = desvio-padrão de cada ativo, ρ = correlação entre eles), o termo que captura o benefício da diversificação e depende da correlação (ρ) é:",
     alternativas:[
       "w1²σ1²",
       "2·w1·w2·ρ·σ1·σ2",

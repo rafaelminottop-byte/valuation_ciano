@@ -113,7 +113,7 @@ window.QUESTOES.push(
     macete:"Opção embutida (call/pré-pagamento) → effective duration. Fluxo fixo → modificada." },
 
   { topico:"Performance e Risco",
-    enunciado:"A Perda Esperada de uma exposição de crédito é dada pela fórmula:",
+    enunciado:"A Perda Esperada (EL) de uma exposição de crédito — onde PD = probabilidade de default, LGD = perda dado o default (severidade) e EAD = exposição no momento do default — é dada pela fórmula:",
     alternativas:["PD + LGD + EAD","PD × LGD × EAD","LGD ÷ EAD","1 − PD"],
     correta:1,
     explicacao:"Perda Esperada = PD (probabilidade de default) × LGD (perda dado o default) × EAD (exposição no default). Note que LGD = 1 − taxa de recuperação.",
