@@ -427,7 +427,7 @@ _HERO = {
                    "Avalia todas as empresas da sua carteira de uma vez e mostra onde está o maior potencial."),
     "🏅 Ranking": ("Comparativo", "Ranking de oportunidades",
                   "As teses próprias da Ciano ordenadas por upside, lado a lado."),
-    "🔀 Cenários": ("Leitura de ciclo", "Cenários de mercado",
+    "🔀 Cenários": ("Leitura de ciclo", "Ciclos de mercado",
                    "Onde o Ibovespa está no ciclo e quais alavancas sustentam (ou derrubam) a alta."),
     "📉 Macro": ("Panorama macro", "Indicadores econômicos",
                 "Selic, IPCA, juro real e câmbio — o pano de fundo que move os preços."),
@@ -442,20 +442,20 @@ _HERO = {
 }
 
 
-# Ícones de linha (Material Symbols, monocromáticos, herdam a cor do texto) no
-# lugar dos emojis. As CHAVES continuam sendo os identificadores internos das
-# páginas (com emoji) — só a exibição muda, via format_func.
-_ICONE_NAV = {
-    "🔎 Empresa": ":material/apartment: Empresa",
-    "📊 Screener": ":material/filter_alt: Screener",
-    "⭐ Carteira": ":material/account_balance_wallet: Carteira",
-    "🏅 Ranking": ":material/leaderboard: Ranking",
-    "🔀 Cenários": ":material/alt_route: Cenários",
-    "📉 Macro": ":material/monitoring: Macro",
-    "💵 Câmbio": ":material/currency_exchange: Câmbio",
-    "🌎 Estrangeiro": ":material/public: Estrangeiro",
-    "📰 Notícias": ":material/newspaper: Notícias",
-    "🔔 Gatilhos": ":material/notifications: Gatilhos",
+# Rótulos exibidos no menu (só texto, sem ícone — estilo minimalista). As CHAVES
+# continuam sendo os identificadores internos das páginas (com emoji) — só a
+# exibição muda, via format_func.
+_ROTULO_NAV = {
+    "🔎 Empresa": "Valuation",
+    "📊 Screener": "Screener",
+    "⭐ Carteira": "Carteira",
+    "🏅 Ranking": "Ranking",
+    "🔀 Cenários": "Ciclos",
+    "📉 Macro": "Macro",
+    "💵 Câmbio": "Câmbio",
+    "🌎 Estrangeiro": "Estrangeiro",
+    "📰 Notícias": "Notícias",
+    "🔔 Gatilhos": "Gatilhos",
 }
 
 
@@ -471,7 +471,7 @@ def _topbar(ordem: list) -> str:
     with col_nav:
         pagina = st.radio("Navegacao principal", ordem, horizontal=True,
                           label_visibility="collapsed",
-                          format_func=lambda p: _ICONE_NAV.get(p, p))
+                          format_func=lambda p: _ROTULO_NAV.get(p, p))
     st.markdown('<div style="border-bottom:1px solid #E2E8F2;margin:-4px 0 6px;"></div>',
                 unsafe_allow_html=True)
     return pagina
