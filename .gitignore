@@ -11,6 +11,9 @@ data/listas.json
 data/lucro_esperado_hist.json
 cloudflared.exe
 
+# Segredos do Streamlit (senha de acesso) — NUNCA versionar
+.streamlit/secrets.toml
+
 # Icone gerado a partir da logo (assets/gerar_icone.py)
 assets/ciano.ico
 .env

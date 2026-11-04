@@ -1,8 +1,8 @@
-# Tema base do app — claro ("cinza neutro" estilo Oceans14).
+# Tema base do app — claro, padrão do site Ciano (marfim + ciano + marinho-teal).
 [theme]
 base = "light"
-primaryColor = "#2563EB"
-backgroundColor = "#F3F6F8"
+primaryColor = "#0FA3B8"
+backgroundColor = "#F4F7F8"
 secondaryBackgroundColor = "#FFFFFF"
-textColor = "#132244"
+textColor = "#0B1F2A"
 font = "sans serif"

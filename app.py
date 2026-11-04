@@ -48,16 +48,18 @@ _SETORES_PT = {
 
 # Tema claro ("cinza neutro" estilo Oceans14): marinho + cinza + branco dominam,
 # dourado só em detalhe, verde/vermelho só para alta/baixa.
-COR_BG = "#EEF1F7"       # fundo da página (cinza neutro)
-COR_ACCENT = "#2563EB"   # azul de link/hover
+COR_BG = "#F4F7F8"       # fundo da página (quase branco, como o site)
+COR_ACCENT = "#0FA3B8"   # ciano legível (linhas de gráfico, links/hover)
+COR_CIANO = "#3FD0E0"    # ciano vivo da marca (SÓ preenchimento/destaque, nunca texto)
 COR_LIGHT = "#334155"    # texto/labels de eixo em gráficos claros (escuro p/ contraste)
 COR_CARD = "#FFFFFF"     # card branco
 COR_BORDA = "#E2E8F2"    # borda clara
-COR_INK = "#132244"      # texto principal (marinho escuro)
-COR_INK2 = "#132244"     # texto secundário
-COR_MUT = "#6B7A99"      # muted
-COR_NAVY = "#13224A"     # marca marinho
-COR_GOLD = "#C69A2E"     # dourado (detalhe)
+COR_INK = "#0B1F2A"      # texto principal (marinho-teal escuro, como o site)
+COR_INK2 = "#0B1F2A"     # texto secundário
+COR_MUT = "#4F6470"      # muted (ainda bem legível)
+COR_NAVY = "#0B1F2A"     # marca marinho-teal
+COR_GOLD = "#C69A2E"     # dourado para TEXTO (contraste ok)
+COR_GOLD_HI = "#FFD666"  # dourado claro (SÓ preenchimento/destaque em fundo escuro)
 
 LOGO_PATH = Path(__file__).resolve().parent / "assets" / "ciano_logo_branco.png"
 
@@ -104,7 +106,7 @@ def _injetar_css() -> None:
     st.markdown(
         """
         <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap');
         html, body, [class*="st-"], [class*="css-"], .stMarkdown, .stButton button,
         input, textarea, select, button, [data-testid] {
             font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif !important;
@@ -117,12 +119,16 @@ def _injetar_css() -> None:
             font-family: 'Material Symbols Rounded', 'Material Symbols Outlined',
                          'Material Icons', 'Material Icons Outlined' !important;
         }
-        .stApp {background: #F3F6F8;}
+        .stApp {background: #F4F7F8;}
         #MainMenu, footer, header {visibility: hidden;}
         .block-container {
-            padding-top: 2.2rem; padding-bottom: 3.5rem; max-width: 1120px;
-            margin-left: 2.2rem; margin-right: auto;
+            padding-top: 1.2rem; padding-bottom: 4rem; max-width: 1160px;
+            margin-left: auto; margin-right: auto;
         }
+        /* Navegação foi pro topo: a barra lateral some por completo */
+        section[data-testid="stSidebar"] {display: none !important;}
+        [data-testid="stSidebarCollapseButton"], [data-testid="collapsedControl"],
+        [data-testid="stSidebarCollapsedControl"] {display: none !important;}
 
         /* Base tipográfica: quase tudo abaixo está em rem, então a raiz escala
            o app inteiro. 18px dá leitura confortável com mais respiro/organização. */
@@ -150,10 +156,15 @@ def _injetar_css() -> None:
         .stTabs [data-baseweb="tab"] {
             font-size: 1rem; font-weight: 700; padding: 10px 18px; border-radius: 10px 10px 0 0;
         }
+        .stTabs [aria-selected="true"] {color: #0B1F2A !important;}
+        .stTabs [data-baseweb="tab-highlight"] {background: #3FD0E0 !important;}
         .stExpander summary p {font-size: 0.98rem; font-weight: 600;}
 
-        h1 {font-size: 2.4rem; margin-bottom: 0.2rem;}
-        h1, h2, h3, h4 {color: #132244; font-weight: 800; letter-spacing: -0.015em;}
+        h1 {font-size: 2.6rem; margin-bottom: 0.2rem;}
+        h1, h2, h3, h4 {
+            color: #0B1F2A; font-weight: 700; letter-spacing: -0.02em;
+            font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif !important;
+        }
 
         /* Caixa única do resultado: cenários (colunas) x métodos (linhas) */
         .ciano-matriz {
@@ -190,8 +201,8 @@ def _injetar_css() -> None:
         /* Tese no formato "card" (análise própria) */
         .tese-cab {display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px;}
         .tese-tag {
-            background: #E8F0FE; color: #1D4ED8; border: 1px solid #C7DBFB;
-            font-size: 0.86rem; font-weight: 700; padding: 3px 12px; border-radius: 8px;
+            background: #E3F1F3; color: #00586A; border: 1px solid #BFE6EC;
+            font-size: 0.86rem; font-weight: 700; padding: 3px 12px; border-radius: 20px;
         }
         .tese-sub {
             color: #13224A; font-size: 0.86rem; font-weight: 800; letter-spacing: 0.10em;
@@ -211,7 +222,7 @@ def _injetar_css() -> None:
         }
         .noti.hit {border-left: 4px solid #16A34A;}
         .noti a {color: #132244; font-weight: 600; font-size: 1rem; text-decoration: none; line-height: 1.4;}
-        .noti a:hover {text-decoration: underline; color: #2563EB;}
+        .noti a:hover {text-decoration: underline; color: #0FA3B8;}
         .noti-meta {display: block; color: #132244; font-size: 0.82rem; margin-top: 5px;}
         .noti-gat {
             display: inline-block; background: #DCFCE7; color: #15803D; font-size: 0.74rem;
@@ -219,11 +230,11 @@ def _injetar_css() -> None:
         }
         .tese-tag.gat-chip {background:#F1F4FA; color:#132244; border-color:#E2E8F2; font-weight:600;}
 
-        .ciano-brand {display: inline-block; margin-bottom: 4px; background: #13224A;
+        .ciano-brand {display: inline-block; margin-bottom: 4px; background: #0B1F2A;
             padding: 14px 22px 10px; border-radius: 14px;}
         .ciano-brand img {height: 88px; width: auto; display: block;}
         .ciano-invest {
-            color: #C69A2E; font-size: 0.92rem; font-weight: 600;
+            color: #FFD666; font-size: 0.92rem; font-weight: 600;
             letter-spacing: 0.30em; text-align: right; margin-top: -10px; padding-right: 3px;
         }
         .ciano-sub {color: #132244; font-size: 1.02rem; margin: 0 0 4px 0;}
@@ -248,7 +259,7 @@ def _injetar_css() -> None:
             box-shadow: 0 1px 2px rgba(19,34,74,.06), 0 2px 8px rgba(19,34,74,.05);
             transition: border-color .15s, box-shadow .15s, transform .15s;
         }
-        .ciano-card:hover {border-color: #2563EB; box-shadow: 0 2px 10px rgba(37,99,235,.14); transform: translateY(-1px);}
+        .ciano-card:hover {border-color: #3FD0E0; box-shadow: 0 2px 12px rgba(63,208,224,.22); transform: translateY(-1px);}
         .ciano-card .lbl {
             color: #132244; font-size: 0.78rem; font-weight: 700;
             letter-spacing: 0.10em; text-transform: uppercase;
@@ -258,10 +269,11 @@ def _injetar_css() -> None:
 
         /* Botão primário estilo CTA da marca */
         .stButton > button {
-            background: #2563EB; color: #fff; border: none; border-radius: 30px;
-            padding: 0.55rem 1.6rem; font-weight: 700; transition: filter .15s;
+            background: #3FD0E0; color: #0B1F2A; border: none; border-radius: 30px;
+            padding: 0.55rem 1.6rem; font-weight: 800; transition: filter .15s, box-shadow .15s;
+            box-shadow: 0 1px 2px rgba(11,31,42,.10);
         }
-        .stButton > button:hover {filter: brightness(1.08); color: #fff;}
+        .stButton > button:hover {filter: brightness(1.05); color: #0B1F2A; box-shadow: 0 3px 10px rgba(63,208,224,.35);}
 
         section[data-testid="stSidebar"] {background: #FFFFFF; border-right: 1px solid #E2E8F2;}
         section[data-testid="stSidebar"] h2, section[data-testid="stSidebar"] h3 {color: #132244;}
@@ -301,7 +313,7 @@ def _injetar_css() -> None:
         section[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {background: #F1F4FA;}
         section[data-testid="stSidebar"] div[role="radiogroup"] > label > div:first-child {display: none;}
         section[data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {
-            background: #EEF2FC; color: #13224A; box-shadow: inset 3px 0 0 #2563EB;
+            background: #E7F7FA; color: #0B1F2A; box-shadow: inset 3px 0 0 #3FD0E0;
         }
         section[data-testid="stSidebar"] div[role="radiogroup"] label p {font-size: 1rem; font-weight: 600;}
         /* separador acima do bloco de premissas, que aparece só nas páginas de análise */
@@ -314,15 +326,52 @@ def _injetar_css() -> None:
         .ciano-matriz-wrap {width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;}
         .ciano-matriz {min-width: 520px;}
 
-        /* No desktop a barra de navegação fica SEMPRE visível (não some ao recolher) */
-        @media (min-width: 901px) {
-            section[data-testid="stSidebar"] {
-                transform: none !important; visibility: visible !important;
-                width: 300px !important; min-width: 300px !important;
-            }
-            section[data-testid="stSidebar"][aria-expanded="false"] {margin-left: 0 !important;}
-            [data-testid="stSidebarCollapseButton"] {display: none !important;}
+        /* ---- Barra de navegação no TOPO (estilo institucional) ---- */
+        .topbar {
+            display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+            padding: 10px 0 14px 0; margin-bottom: 8px;
+            border-bottom: 1px solid #E2E8F2;
         }
+        .topbar-brand {display: flex; align-items: center; gap: 10px;}
+        .topbar-brand .mark {
+            width: 34px; height: 34px; border-radius: 9px; background: #0B1F2A;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .topbar-brand .mark img {height: 22px; width: auto; display: block;}
+        .topbar-brand .wm {
+            font-family: 'Space Grotesk','Inter',sans-serif; font-weight: 700;
+            font-size: 1.25rem; color: #0B1F2A; letter-spacing: -0.01em;
+        }
+        /* o radio horizontal da navegação vira uma fileira de pills */
+        div[role="radiogroup"][aria-label="Navegacao principal"] {
+            display: flex; flex-wrap: wrap; gap: 4px; align-items: center;
+        }
+        div[role="radiogroup"][aria-label="Navegacao principal"] > label {
+            margin: 0; padding: 8px 15px; border-radius: 22px; cursor: pointer;
+            color: #0B1F2A; font-weight: 600; transition: background .12s, color .12s;
+        }
+        div[role="radiogroup"][aria-label="Navegacao principal"] > label:hover {background: #E7F7FA;}
+        div[role="radiogroup"][aria-label="Navegacao principal"] > label > div:first-child {display: none;}
+        div[role="radiogroup"][aria-label="Navegacao principal"] > label p {font-size: 0.98rem; font-weight: 600;}
+        div[role="radiogroup"][aria-label="Navegacao principal"] > label:has(input:checked) {background: #0B1F2A;}
+        div[role="radiogroup"][aria-label="Navegacao principal"] > label:has(input:checked) p {color: #fff;}
+
+        /* ---- Hero institucional (olho + título + subtítulo) ---- */
+        .hero {margin: 18px 0 30px 0;}
+        .hero .eyebrow {
+            color: #0FA3B8; font-size: 0.80rem; font-weight: 700;
+            letter-spacing: 0.22em; text-transform: uppercase; margin-bottom: 14px;
+        }
+        .hero h1.htitle {
+            font-family: 'Space Grotesk','Inter',sans-serif; font-weight: 600;
+            font-size: 3.1rem; line-height: 1.04; letter-spacing: -0.03em;
+            color: #0B1F2A; margin: 0 0 14px 0; max-width: 18ch;
+        }
+        .hero .hsub {color: #3A4D57; font-size: 1.12rem; line-height: 1.5; max-width: 60ch; margin: 0;}
+
+        /* Tabela de resultado rola na horizontal em telas estreitas, sem estourar a página */
+        .ciano-matriz-wrap {width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;}
+        .ciano-matriz {min-width: 520px;}
 
         /* ---- Responsivo: tablet ---- */
         @media (max-width: 900px) {
@@ -352,22 +401,64 @@ def _injetar_css() -> None:
     )
 
 
-def _cabecalho() -> None:
-    uri = _logo_data_uri()
-    if uri:
-        marca = (
-            f'<div class="ciano-brand">'
-            f'<img src="{uri}" alt="Ciano"/>'
-            f'<div class="ciano-invest">Investimentos</div>'
-            f"</div>"
+# Glyph "atividade/gráfico" em ciano — a marca do topo (como o ícone do site).
+_MARCA_SVG = (
+    '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3FD0E0" '
+    'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'
+    '<path d="M3 12h3l2.5 6 4-13 2.5 7h4"/></svg>'
+)
+
+# Olho (eyebrow) + título + subtítulo de cada página — dá o ar institucional do site.
+_HERO = {
+    "🔎 Empresa": ("Análise fundamentalista", "Quanto vale a empresa?",
+                   "Preço justo por DCF e múltiplos, com cenários de crescimento e a TIR que o mercado está exigindo hoje."),
+    "📊 Screener": ("Varredura do mercado", "Screener",
+                    "Filtra a bolsa inteira por desconto no valuation ou por crescimento de lucro — e entrega os nomes que merecem um olhar."),
+    "⭐ Carteira": ("Suas posições", "Carteira",
+                   "Avalia todas as empresas da sua carteira de uma vez e mostra onde está o maior potencial."),
+    "🏅 Ranking": ("Comparativo", "Ranking de oportunidades",
+                  "As teses próprias da Ciano ordenadas por upside, lado a lado."),
+    "🔀 Cenários": ("Leitura de ciclo", "Cenários de mercado",
+                   "Onde o Ibovespa está no ciclo e quais alavancas sustentam (ou derrubam) a alta."),
+    "📉 Macro": ("Panorama macro", "Indicadores econômicos",
+                "Selic, IPCA, juro real e câmbio — o pano de fundo que move os preços."),
+    "💵 Câmbio": ("Dólar e risco-país", "Câmbio",
+                 "O real justo pelo diferencial de juros e pelo risco-Brasil, atualizado ao vivo."),
+    "🌎 Estrangeiro": ("Fluxo de investidores", "Capital estrangeiro",
+                      "Entrada e saída do investidor estrangeiro na B3, saldo oficial em D+2."),
+    "📰 Notícias": ("Acompanhamento", "Notícias do dia",
+                   "O noticiário que mexe com as suas teses, reunido num lugar só."),
+    "🔔 Gatilhos": ("Monitor técnico", "Gatilhos",
+                   "Quem está perto de um ponto de decisão técnico no Ibovespa, Small Caps e IFIX."),
+}
+
+
+def _topbar(ordem: list) -> str:
+    """Barra de navegação no topo (marca à esquerda, páginas em pills). Devolve a página."""
+    col_marca, col_nav = st.columns([1.2, 6])
+    with col_marca:
+        st.markdown(
+            f'<div class="topbar-brand"><span class="mark">{_MARCA_SVG}</span>'
+            f'<span class="wm">Ciano</span></div>',
+            unsafe_allow_html=True,
         )
-    else:
-        marca = '<div class="ciano-brand"><span style="color:#fff;font-weight:800;font-size:1.6rem">CIANO</span></div>'
+    with col_nav:
+        pagina = st.radio("Navegacao principal", ordem, horizontal=True,
+                          label_visibility="collapsed")
+    st.markdown('<div style="border-bottom:1px solid #E2E8F2;margin:-4px 0 6px;"></div>',
+                unsafe_allow_html=True)
+    return pagina
+
+
+def _hero(pagina: str) -> None:
+    dados = _HERO.get(pagina)
+    if not dados:
+        return
+    olho, titulo, sub = dados
     st.markdown(
-        f"""
-        {marca}
-        <h1 style="margin:40px 0 4px 0;">Valuation</h1>
-        """,
+        f'<div class="hero"><div class="eyebrow">{html.escape(olho)}</div>'
+        f'<h1 class="htitle">{html.escape(titulo)}</h1>'
+        f'<p class="hsub">{html.escape(sub)}</p></div>',
         unsafe_allow_html=True,
     )
 
@@ -2290,9 +2381,9 @@ def _caixa_insights(frases: list) -> None:
         return
     itens = "".join(f'<li style="margin-bottom:5px;color:#132244;">{html.escape(f)}</li>' for f in frases)
     st.markdown(
-        '<div style="background:#F4F7FE;border:1px solid #DBE6FB;border-left:3px solid #2563EB;'
+        '<div style="background:#ECF8FA;border:1px solid #CDEBF0;border-left:3px solid #3FD0E0;'
         'border-radius:12px;padding:12px 16px;margin:4px 0 16px;">'
-        '<div style="font-size:0.7rem;letter-spacing:.12em;text-transform:uppercase;color:#2A5BB0;'
+        '<div style="font-size:0.7rem;letter-spacing:.12em;text-transform:uppercase;color:#00586A;'
         'margin-bottom:6px;font-weight:700;">💡 Insights da tela</div>'
         f'<ul style="margin:0;padding-left:18px;font-size:0.9rem;line-height:1.55;">{itens}</ul></div>',
         unsafe_allow_html=True,
@@ -2677,7 +2768,7 @@ def _aba_estrangeiro() -> None:
     st.markdown('<div class="ciano-label" style="margin-top:6px;">📈 Acumulado na janela</div>',
                 unsafe_allow_html=True)
     area = alt.Chart(base).mark_area(
-        line={"color": "#2563EB", "strokeWidth": 2}, color="rgba(37,99,235,0.10)",
+        line={"color": "#0FA3B8", "strokeWidth": 2}, color="rgba(63,208,224,0.14)",
     ).encode(
         x=eixo_x,
         y=alt.Y("acum:Q", title="Acumulado (R$ mi)", axis=alt.Axis(labelColor=COR_LIGHT, gridOpacity=0.12)),
@@ -2708,56 +2799,95 @@ def _fluxo_explicacao() -> None:
     st.caption("Saldo oficial da B3 buscado automaticamente (D+2). Leitura de fluxo, não recomendação.")
 
 
+def _checar_senha() -> bool:
+    """Tela de login com senha única (guardada em st.secrets['app_password']).
+
+    Se nenhuma senha estiver configurada (ex.: rodando local sem secrets), libera
+    o acesso — assim o desenvolvimento não trava. No Streamlit Cloud, basta
+    definir o segredo 'app_password' que a tela de login passa a valer.
+    """
+    try:
+        senha_certa = str(st.secrets.get("app_password", "") or "")
+    except Exception:  # noqa: BLE001 — sem arquivo de secrets
+        senha_certa = ""
+    if not senha_certa or st.session_state.get("_auth_ok"):
+        return True
+
+    def _validar():
+        st.session_state["_auth_ok"] = (st.session_state.get("_senha", "") == senha_certa)
+        st.session_state["_senha"] = ""
+
+    st.markdown(
+        '<div style="max-width:420px;margin:12vh auto 0;text-align:center;">'
+        '<div class="topbar-brand" style="justify-content:center;margin-bottom:22px;">'
+        f'<span class="mark">{_MARCA_SVG}</span><span class="wm" style="font-size:1.5rem;">Ciano</span></div>'
+        '<div class="eyebrow" style="color:#0FA3B8;font-size:0.78rem;font-weight:700;'
+        'letter-spacing:0.22em;text-transform:uppercase;margin-bottom:10px;">Acesso restrito</div>'
+        '<h1 class="htitle" style="font-family:\'Space Grotesk\',sans-serif;font-weight:600;'
+        'font-size:2rem;color:#0B1F2A;margin:0 0 6px;">Valuation Ciano</h1>'
+        '<p style="color:#3A4D57;margin:0 0 18px;">Digite a senha de acesso para continuar.</p>'
+        '</div>',
+        unsafe_allow_html=True,
+    )
+    col = st.columns([1, 1.4, 1])[1]
+    with col:
+        st.text_input("Senha", type="password", key="_senha",
+                      on_change=_validar, label_visibility="collapsed",
+                      placeholder="Senha de acesso")
+        if st.session_state.get("_auth_ok") is False:
+            st.error("Senha incorreta. Tente novamente.")
+    return False
+
+
 def main() -> None:
     st.set_page_config(
         page_title="Valuation Ciano", page_icon="📈", layout="wide",
-        initial_sidebar_state="expanded",
+        initial_sidebar_state="collapsed",
     )
     _injetar_css()
-    _cabecalho()
+    if not _checar_senha():
+        st.stop()
 
-    # --- Navegação por páginas na sidebar (agrupada) ---
+    # --- Navegação no TOPO (pills) ---
     paginas_analise = ["🔎 Empresa", "📊 Screener", "⭐ Carteira", "🏅 Ranking"]
     paginas_mercado = ["🔀 Cenários", "📉 Macro", "💵 Câmbio", "🌎 Estrangeiro"]
     paginas_acomp = ["📰 Notícias", "🔔 Gatilhos"]
     ordem = paginas_analise + paginas_mercado + paginas_acomp
 
-    st.sidebar.markdown('<div class="nav-grupo">Navegação</div>', unsafe_allow_html=True)
-    pagina = st.sidebar.radio("Navegação", ordem, label_visibility="collapsed")
+    pagina = _topbar(ordem)
+    _hero(pagina)
 
-    # Premissas aparecem só nas páginas de análise (onde de fato são usadas)
+    # Premissas aparecem só nas páginas de análise (num expander, não mais na lateral)
     if pagina in paginas_analise:
-        st.sidebar.markdown("---")
-        st.sidebar.header("Premissas")
-        tma = _pct_para_fracao(
-            st.sidebar.number_input("TMA (%)", value=PREMISSAS_PADRAO["tma"] * 100, step=0.5)
-        )
-        retorno_alvo = _pct_para_fracao(
-            st.sidebar.number_input(
-                "Retorno alvo P/L (%)", value=PREMISSAS_PADRAO["retorno_alvo_pl"] * 100, step=0.5
+        with st.expander("⚙️ Premissas e cenários", expanded=False):
+            c1, c2, c3, c4 = st.columns(4)
+            tma = _pct_para_fracao(
+                c1.number_input("TMA (%)", value=PREMISSAS_PADRAO["tma"] * 100, step=0.5)
             )
-        )
-        anos_fase_1 = int(
-            st.sidebar.number_input("Anos fase 1", value=PREMISSAS_PADRAO["anos_fase_1"], step=1, min_value=1)
-        )
-        anos_fase_2 = int(
-            st.sidebar.number_input("Anos fase 2", value=PREMISSAS_PADRAO["anos_fase_2"], step=1, min_value=1)
-        )
-        st.sidebar.header("Cenários (crescimento do EBIT)")
-        valores_cenarios = {}
-        for nome, params in CENARIOS_PADRAO.items():
-            st.sidebar.subheader(nome.capitalize())
-            g1 = _pct_para_fracao(
-                st.sidebar.number_input(
-                    f"{nome} — fase 1 (%)", value=params["crescimento_fase_1"] * 100, step=0.5, key=f"{nome}_g1"
+            retorno_alvo = _pct_para_fracao(
+                c2.number_input("Retorno alvo P/L (%)", value=PREMISSAS_PADRAO["retorno_alvo_pl"] * 100, step=0.5)
+            )
+            anos_fase_1 = int(
+                c3.number_input("Anos fase 1", value=PREMISSAS_PADRAO["anos_fase_1"], step=1, min_value=1)
+            )
+            anos_fase_2 = int(
+                c4.number_input("Anos fase 2", value=PREMISSAS_PADRAO["anos_fase_2"], step=1, min_value=1)
+            )
+            st.markdown('<div class="ciano-label" style="margin:10px 0 6px;">Cenários — crescimento do EBIT</div>',
+                        unsafe_allow_html=True)
+            cols = st.columns(len(CENARIOS_PADRAO))
+            valores_cenarios = {}
+            for col, (nome, params) in zip(cols, CENARIOS_PADRAO.items()):
+                col.markdown(f"**{nome.capitalize()}**")
+                g1 = _pct_para_fracao(
+                    col.number_input(f"{nome} — fase 1 (%)", value=params["crescimento_fase_1"] * 100,
+                                     step=0.5, key=f"{nome}_g1")
                 )
-            )
-            g2 = _pct_para_fracao(
-                st.sidebar.number_input(
-                    f"{nome} — fase 2 (%)", value=params["crescimento_fase_2"] * 100, step=0.5, key=f"{nome}_g2"
+                g2 = _pct_para_fracao(
+                    col.number_input(f"{nome} — fase 2 (%)", value=params["crescimento_fase_2"] * 100,
+                                     step=0.5, key=f"{nome}_g2")
                 )
-            )
-            valores_cenarios[nome] = {"g1": g1, "g2": g2}
+                valores_cenarios[nome] = {"g1": g1, "g2": g2}
 
         prem = (tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
         if pagina == "🔎 Empresa":
