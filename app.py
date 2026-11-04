@@ -1692,6 +1692,9 @@ def _aba_macro() -> None:
 
     _bloco_expectativa_lucro()
 
+    # "O que derruba daqui" — painel de vigilância (movido da aba Ciclos p/ cá).
+    _bloco_gatilhos(None)
+
 
 def _bloco_expectativa_lucro() -> None:
     """Índice de revisão do lucro esperado das maiores empresas da B3."""
@@ -2144,7 +2147,6 @@ def _aba_ciclo() -> None:
 
     _grafico_ciclo(d)
     _bloco_maturidade(d, mat)
-    _bloco_gatilhos(mat)
 
     st.caption("Leitura educacional de estrutura de mercado, não recomendação.")
 
