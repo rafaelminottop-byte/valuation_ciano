@@ -346,15 +346,19 @@ def _injetar_css() -> None:
         div[role="radiogroup"][aria-label="Navegacao principal"] {
             display: flex; flex-wrap: wrap; gap: 4px; align-items: center;
         }
-        div[role="radiogroup"][aria-label="Navegacao principal"] > label {
+        div[role="radiogroup"][aria-label="Navegacao principal"] label {
             margin: 0; padding: 8px 15px; border-radius: 22px; cursor: pointer;
             color: #0B1F2A; font-weight: 600; transition: background .12s, color .12s;
         }
-        div[role="radiogroup"][aria-label="Navegacao principal"] > label:hover {background: #E7F7FA;}
-        div[role="radiogroup"][aria-label="Navegacao principal"] > label > div:first-child {display: none;}
-        div[role="radiogroup"][aria-label="Navegacao principal"] > label p {font-size: 0.98rem; font-weight: 600;}
-        div[role="radiogroup"][aria-label="Navegacao principal"] > label:has(input:checked) {background: #0B1F2A;}
-        div[role="radiogroup"][aria-label="Navegacao principal"] > label:has(input:checked) p {color: #fff;}
+        div[role="radiogroup"][aria-label="Navegacao principal"] label:hover {background: #E7F7FA;}
+        /* esconde a bolinha do radio — cobre as duas estruturas de versão do Streamlit:
+           (local antigo) a bolinha é o 1º filho <div> do label;
+           (nuvem novo) é o 1º item dentro do container de conteúdo do label. */
+        div[role="radiogroup"][aria-label="Navegacao principal"] label > div:first-child,
+        div[role="radiogroup"][aria-label="Navegacao principal"] label[data-testid="stRadioOption"] > div:last-child > :first-child {display: none;}
+        div[role="radiogroup"][aria-label="Navegacao principal"] label p {font-size: 0.98rem; font-weight: 600; color: #0B1F2A;}
+        div[role="radiogroup"][aria-label="Navegacao principal"] label:has(input:checked) {background: #0B1F2A;}
+        div[role="radiogroup"][aria-label="Navegacao principal"] label:has(input:checked) p {color: #fff;}
 
         /* ---- Hero institucional (olho + título + subtítulo) ---- */
         .hero {margin: 18px 0 30px 0;}
