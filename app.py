@@ -2468,25 +2468,6 @@ def _aba_cenarios() -> None:
     )
     st.markdown(f'<div style="display:flex;flex-wrap:wrap;gap:12px;">{cards}</div>', unsafe_allow_html=True)
 
-    # --- os dois cenários condicionais ---
-    st.markdown('<div class="ciano-label" style="margin-top:16px;">🔀 Os dois caminhos (o juro decide)</div>',
-                unsafe_allow_html=True)
-    dois = (
-        _card_ciclo(
-            "🟢 Se a Selic ceder → análogo 2016-19",
-            "Múltiplo expande + local roda pra bolsa + small caps lideram. Você tem uma alavanca A MAIS que 2016 "
-            "(o lucro já forte), então seria um 2016-19 turbinado. Foi quando o Ibov fez +186%.",
-            "#22C55E")
-        + _card_ciclo(
-            "🔴 Se travar em ~14% → análogo 2011-15",
-            "CDI paga demais, o local não sai da renda fixa, o múltiplo não expande. Nem lucro forte nem bolsa "
-            "'vazia' seguram — foi a 'década perdida' 2011-2016. Barato pode ficar barato por anos.",
-            "#EF4444")
-    )
-    st.markdown(f'<div style="display:flex;flex-wrap:wrap;gap:12px;">{dois}</div>', unsafe_allow_html=True)
-    st.caption("Fiel da balança = regime fiscal do próximo governo (eleição out/2026). Não é 'risco lateral' — "
-               "é a variável dominante da tese.")
-
     # --- case base histórico ---
     st.markdown('<div class="ciano-label" style="margin-top:16px;">📚 Case base — ciclos desde 1994</div>',
                 unsafe_allow_html=True)
