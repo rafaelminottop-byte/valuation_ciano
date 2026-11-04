@@ -2151,15 +2151,19 @@ def _aba_ciclo() -> None:
 
 def _barra_maturidade(grad: str, marcos: list, voce_frac: float, voce_label: str, voce_cor: str) -> str:
     def _m(frac, label):
-        return (f'<div style="position:absolute;left:{frac * 100:.1f}%;top:26px;transform:translateX(-50%);'
-                f'text-align:center;font-size:0.62rem;color:#132244;white-space:nowrap;">'
-                f'<div style="width:2px;height:30px;background:#AAB4CB;margin:0 auto;"></div>{label}</div>')
-    barra = (f'<div style="position:relative;height:26px;border-radius:6px;overflow:hidden;'
-             f'background:linear-gradient(90deg,{grad});"></div>')
-    voce = (f'<div style="position:absolute;left:{min(voce_frac * 100, 99):.1f}%;top:-34px;'
-            f'transform:translateX(-50%);text-align:center;font-size:0.72rem;font-weight:800;'
-            f'color:{voce_cor};white-space:nowrap;">você está aqui ▾<br>{voce_label}</div>')
-    return (f'<div style="position:relative;margin:40px 0 56px;">{barra}'
+        return (f'<div style="position:absolute;left:{frac * 100:.1f}%;top:20px;transform:translateX(-50%);'
+                f'text-align:center;font-size:0.70rem;line-height:1.4;color:#64748B;'
+                f'font-weight:500;white-space:nowrap;">'
+                f'<div style="width:1px;height:12px;background:#CBD5E1;margin:0 auto 5px;"></div>{label}</div>')
+    barra = (f'<div style="position:relative;height:14px;border-radius:999px;overflow:hidden;'
+             f'background:linear-gradient(90deg,{grad});box-shadow:inset 0 0 0 1px rgba(11,31,42,.05);"></div>')
+    voce = (f'<div style="position:absolute;left:{min(max(voce_frac * 100, 2), 98):.1f}%;top:-40px;'
+            f'transform:translateX(-50%);text-align:center;white-space:nowrap;">'
+            f'<div style="font-size:0.60rem;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;'
+            f'color:{voce_cor};opacity:.72;">você está aqui</div>'
+            f'<div style="font-size:0.98rem;font-weight:800;color:{voce_cor};line-height:1.15;">{voce_label}</div>'
+            f'<div style="color:{voce_cor};font-size:0.72rem;line-height:1;margin-top:1px;">▾</div></div>')
+    return (f'<div style="position:relative;margin:54px 0 70px;">{barra}'
             + "".join(_m(f, lbl) for f, lbl in marcos) + voce + "</div>")
 
 
@@ -2483,30 +2487,6 @@ def _aba_cenarios() -> None:
     st.dataframe(dfh, hide_index=True, use_container_width=True)
     st.caption("🟢 a favor · 🟡 neutro · 🔴 contra. Padrão histórico: **nenhum bull secular com juro subindo** — "
                "a ignição foi sempre a Selic cedendo.")
-
-    with st.expander("💡 Lições de cada episódio (o que decidiu)"):
-        for e in base.get("episodios", []):
-            st.markdown(f"**{e['periodo']} — {e['governo']}**  \n{e.get('licao', '')}")
-
-    # --- vetores vivos ---
-    vet = base.get("vetores_em_observacao_2026", {})
-    if vet:
-        st.markdown('<div class="ciano-label" style="margin-top:10px;">🛰️ Vetores em observação (2026)</div>',
-                    unsafe_allow_html=True)
-        for chave, titulo in [("dispersao_small_vs_large", "Small caps ainda baratas"),
-                              ("ia_disrupcao", "IA — choque exógeno de dois gumes"),
-                              ("eleicao_fiscal_2026", "Eleição / fiscal 2026")]:
-            v = vet.get(chave)
-            if not v:
-                continue
-            with st.expander(f"🔹 {titulo}"):
-                for k, val in v.items():
-                    if k == "nota":
-                        continue
-                    st.markdown(f"- **{k.replace('_', ' ').capitalize()}:** {val}")
-
-    st.caption("Leitura estruturada de tese, não recomendação de investimento. Dados de hoje: Fundamentus "
-               "(P/L) e Banco Central (juro); histórico preenchido aos poucos.")
 
     # Seção de ciclo (fundida aqui): onde estamos no ciclo por preço/tempo.
     st.markdown("<hr style='border:none;border-top:1px solid #E2E8F2;margin:22px 0 6px;'>", unsafe_allow_html=True)
