@@ -2148,8 +2148,8 @@ def _grafico_ciclo_interativo(d: dict, periodo: str = "Tudo"):
 
     serie_val = df.set_index("dt")["valor"]
     dmin, dmax = df["dt"].min(), df["dt"].max()
-    # eventos válidos (dentro da série), com índice global para o clique-fixar
-    ev_validos, por_cat = [], {}
+    # eventos válidos (dentro da série), agrupados por direção (verde subiu / vermelho caiu)
+    ev_validos, por_dir = [], {"alta": [], "baixa": []}
     for e in eventos:
         try:
             dt = pd.to_datetime(e["data"])
@@ -2161,8 +2161,8 @@ def _grafico_ciclo_interativo(d: dict, periodo: str = "Tudo"):
         val = float(serie_val.iloc[pos])
         gidx = len(ev_validos)
         ev_validos.append(e)
-        por_cat.setdefault(e.get("categoria", "crise"), []).append(
-            (dt, val, e.get("titulo", ""), e.get("desc", ""), gidx))
+        direc = "alta" if e.get("dir") == "alta" else "baixa"
+        por_dir[direc].append((dt, val, e.get("titulo", ""), e.get("desc", ""), gidx))
 
     alto = 1.26  # quanto o marcador sobe acima da linha (offset multiplicativo no eixo log)
     fig = go.Figure()
@@ -2179,14 +2179,15 @@ def _grafico_ciclo_interativo(d: dict, periodo: str = "Tudo"):
         alta = lg.get("tipo") == "alta"
         fig.add_vrect(x0=x0, x1=x1, fillcolor=_VERDE if alta else _VERM,
                       opacity=1, layer="below", line_width=0)
-        if abs(lg.get("amp", 0)) < 12 or lg.get("meses", 0) < 4:
-            continue  # pernas curtas não recebem rótulo, para não poluir
+        # rótulo só nas pernas relevantes, DENTRO da faixa (base do gráfico), sem empilhar
+        if abs(lg.get("amp", 0)) < 20 or lg.get("meses", 0) < 6:
+            continue
         meio = x0 + (x1 - x0) / 2
         cor_txt = "#15803D" if alta else "#B91C1C"
-        txt = f"{'+' if lg.get('amp', 0) >= 0 else '−'}{abs(lg.get('amp', 0)):.0f}% · {lg.get('meses', 0)}m"
-        fig.add_annotation(x=meio, y=0.99 if k % 2 == 0 else 0.90, yref="paper",
-                           text=txt, showarrow=False, font=dict(size=10.5, color=cor_txt),
-                           bgcolor="rgba(255,255,255,0.72)", borderpad=1)
+        txt = f"{'+' if lg.get('amp', 0) >= 0 else '−'}{abs(lg.get('amp', 0)):.0f}%<br>{lg.get('meses', 0)}m"
+        fig.add_annotation(x=meio, y=0.02, yref="paper", text=txt, showarrow=False,
+                           font=dict(size=10, color=cor_txt), align="center",
+                           bgcolor="rgba(255,255,255,0.55)", borderpad=1)
 
     fig.add_trace(go.Scatter(
         x=df["dt"], y=df["valor"], mode="lines", name="Ibovespa",
@@ -2194,15 +2195,17 @@ def _grafico_ciclo_interativo(d: dict, periodo: str = "Tudo"):
         hovertemplate="%{x|%b/%Y} · Ibov %{y:,.0f}<extra></extra>"))
     # hastes finas ligando cada evento ao ponto na linha (atrás dos marcadores)
     hx, hy = [], []
-    for pts in por_cat.values():
+    for pts in por_dir.values():
         for p in pts:
             hx += [p[0], p[0], None]
             hy += [p[1], p[1] * alto, None]
     if hx:
         fig.add_trace(go.Scatter(x=hx, y=hy, mode="lines", hoverinfo="skip",
                                  line=dict(color="#C7D0DE", width=1), showlegend=False))
-    for cat, (rotulo, cor) in _CAT_EVENTO.items():
-        pts = por_cat.get(cat, [])
+    # marcadores: verde = bolsa subiu, vermelho = bolsa caiu
+    for direc, rotulo, cor in (("alta", "Bolsa subiu", "#16A34A"),
+                               ("baixa", "Bolsa caiu", "#DC2626")):
+        pts = por_dir.get(direc, [])
         if not pts:
             continue
         textos = [f"<b style='font-size:13px'>{p[2]}</b><br>"
@@ -2210,7 +2213,7 @@ def _grafico_ciclo_interativo(d: dict, periodo: str = "Tudo"):
                   "<br><span style='font-size:11px;color:#64748B'>clique p/ fixar</span>" for p in pts]
         fig.add_trace(go.Scatter(
             x=[p[0] for p in pts], y=[p[1] * alto for p in pts], mode="markers", name=rotulo,
-            marker=dict(size=12, color=cor, line=dict(color="#FFFFFF", width=1.6)),
+            marker=dict(size=11, color=cor, line=dict(color="#FFFFFF", width=1.6)),
             customdata=[[t, p[4]] for t, p in zip(textos, pts)],
             hovertemplate="%{customdata[0]}<extra></extra>"))
 
