@@ -2204,15 +2204,15 @@ def _bloco_maturidade(d: dict, mat: dict) -> None:
 
         # Síntese
         ze = "zona de topo" if dist > p75 else "neutro" if dist > 0 else "zona de fundo"
-        zt = "acima do típico" if meses > im else "dentro do típico"
+        lt = ("no recorde do ciclo" if meses >= ix
+              else "perto do fim do ciclo" if meses > im
+              else "ainda longe do fim")
         st.markdown(
-            f"**Os dois eixos apontam na mesma direção:** preço **{dist:+.0f}%** da MM200 (**{ze}** — "
-            f"topos históricos passaram de +{p75:.0f}%) e **{meses} meses** desde o fundo de {fd} "
-            f"(**{zt}**; mediana entre fundos {im}m, recorde {ix}m). Quando os dois concordam, o sinal "
-            "de maturidade é robusto."
+            f"**Preço:** Ibov **{dist:+.0f}%** da MM200 — {ze}.  \n"
+            f"**Tempo:** **{meses}m** desde o fundo — {lt} (típico {im}m, recorde {ix}m)."
         )
-        st.caption("Fundo maior = queda ≥15% abaixo da MM200 semanal (filtra pausas rasas como 2011 e "
-                   "2022). Fundos detectados: " + ", ".join(f["data"] for f in mat["fundos"]) + ".")
+        st.caption("Fundos maiores (queda ≥15% da MM200 semanal): "
+                   + ", ".join(f["data"] for f in mat["fundos"]) + ".")
 
     # --- Anatomia dos topos ---
     anat = d.get("anatomia_topos") or []
