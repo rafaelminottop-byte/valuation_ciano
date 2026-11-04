@@ -2100,6 +2100,98 @@ def _card_ciclo(titulo: str, texto: str, cor: str) -> str:
     )
 
 
+_EVENTOS_FILE = Path(__file__).resolve().parent / "data" / "eventos_mercado.json"
+# categoria -> (rótulo na legenda, cor)
+_CAT_EVENTO = {
+    "crise": ("Crise", "#DC2626"),
+    "juros": ("Juros", "#EA580C"),
+    "inflacao": ("Inflação", "#7C3AED"),
+    "guerra": ("Guerra / choque", "#334155"),
+    "erro": ("Erro econômico", "#CA8A04"),
+}
+
+
+def _wrap_html(texto: str, largura: int = 54) -> str:
+    import textwrap
+    return "<br>".join(textwrap.wrap(texto, largura))
+
+
+def _grafico_ciclo_interativo(d: dict) -> bool:
+    """Ibov interativo com eventos históricos: passe o mouse num ponto e veja o
+    que aconteceu (juros, guerras, inflação, erros, crises). Devolve False se o
+    Plotly não estiver disponível (aí cai no gráfico Altair antigo)."""
+    try:
+        import plotly.graph_objects as go
+    except Exception:  # noqa: BLE001
+        return False
+    serie = d.get("serie") or []
+    if not serie:
+        return False
+    df = pd.DataFrame(serie)
+    df["dt"] = pd.to_datetime(df["data"])
+    df = df.sort_values("dt").reset_index(drop=True)
+    try:
+        eventos = json.loads(_EVENTOS_FILE.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        eventos = []
+
+    serie_val = df.set_index("dt")["valor"]
+    dmin, dmax = df["dt"].min(), df["dt"].max()
+    por_cat = {}
+    for e in eventos:
+        try:
+            dt = pd.to_datetime(e["data"])
+        except Exception:  # noqa: BLE001
+            continue
+        if dt < dmin or dt > dmax:
+            continue
+        pos = serie_val.index.get_indexer([dt], method="nearest")[0]
+        val = float(serie_val.iloc[pos])
+        por_cat.setdefault(e.get("categoria", "crise"), []).append(
+            (dt, val, e.get("titulo", ""), e.get("desc", "")))
+
+    alto = 1.26  # quanto o marcador sobe acima da linha (offset multiplicativo no eixo log)
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=df["dt"], y=df["valor"], mode="lines", name="Ibovespa",
+        line=dict(color="#0FA3B8", width=1.7),
+        hovertemplate="%{x|%b/%Y} · Ibov %{y:,.0f}<extra></extra>"))
+    # hastes finas ligando cada evento ao ponto na linha (atrás dos marcadores)
+    hx, hy = [], []
+    for pts in por_cat.values():
+        for p in pts:
+            hx += [p[0], p[0], None]
+            hy += [p[1], p[1] * alto, None]
+    if hx:
+        fig.add_trace(go.Scatter(x=hx, y=hy, mode="lines", hoverinfo="skip",
+                                 line=dict(color="#C7D0DE", width=1), showlegend=False))
+    for cat, (rotulo, cor) in _CAT_EVENTO.items():
+        pts = por_cat.get(cat, [])
+        if not pts:
+            continue
+        textos = [f"<b style='font-size:13px'>{p[2]}</b><br>"
+                  f"<span style='font-size:12px'>{_wrap_html(p[3])}</span>" for p in pts]
+        fig.add_trace(go.Scatter(
+            x=[p[0] for p in pts], y=[p[1] * alto for p in pts], mode="markers", name=rotulo,
+            marker=dict(size=12, color=cor, line=dict(color="#FFFFFF", width=1.6)),
+            customdata=textos, hovertemplate="%{customdata}<extra></extra>"))
+
+    fig.update_yaxes(type="log", showgrid=True, gridcolor="rgba(11,31,42,0.07)",
+                     tickfont=dict(color="#334155"), title=None)
+    fig.update_xaxes(showgrid=False, tickfont=dict(color="#334155"), title=None)
+    fig.update_layout(
+        height=440, margin=dict(l=8, r=8, t=8, b=8),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(family="Inter, sans-serif", color="#0B1F2A"),
+        legend=dict(orientation="h", yanchor="bottom", y=1.01, x=0, title=None,
+                    font=dict(size=12.5)),
+        hoverlabel=dict(bgcolor="#FFFFFF", bordercolor="#E2E8F2",
+                        font=dict(color="#0B1F2A", size=13), align="left"),
+        hovermode="closest")
+    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    return True
+
+
 def _grafico_ciclo(d: dict) -> None:
     serie = d["serie"]
     dfg = pd.DataFrame(serie)
@@ -2135,9 +2227,9 @@ def _grafico_ciclo(d: dict) -> None:
 
 def _aba_ciclo() -> None:
     st.markdown('<div class="ciano-label">Ciclo do Ibovespa</div>', unsafe_allow_html=True)
-    st.caption("Onde o mercado está no ciclo, por dois eixos objetivos: quão ESTICADO o preço está "
-               "(distância da média de 200 semanas) e há quanto TEMPO a alta dura (meses desde o "
-               "último fundo maior). Série do ^BVSP (Yahoo).")
+    st.caption("A história do Ibovespa com os fatos que a moveram. **Passe o mouse** nos pontos "
+               "coloridos para ver o que aconteceu em cada juro, guerra, inflação, erro econômico "
+               "ou crise. Série do ^BVSP (Yahoo), escala log.")
     with st.spinner("Carregando o histórico do Ibovespa…"):
         d = ibov_ciclo.buscar_ciclo_ibov()
         mat = ibov_ciclo.buscar_maturidade()
@@ -2145,7 +2237,8 @@ def _aba_ciclo() -> None:
         st.warning(d["erro"])
         return
 
-    _grafico_ciclo(d)
+    if not _grafico_ciclo_interativo(d):
+        _grafico_ciclo(d)
     _bloco_maturidade(d, mat)
 
     st.caption("Leitura educacional de estrutura de mercado, não recomendação.")
