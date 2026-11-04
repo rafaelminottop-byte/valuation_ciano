@@ -2116,17 +2116,28 @@ def _wrap_html(texto: str, largura: int = 54) -> str:
     return "<br>".join(textwrap.wrap(texto, largura))
 
 
-def _grafico_ciclo_interativo(d: dict) -> bool:
-    """Ibov interativo com eventos históricos: passe o mouse num ponto e veja o
-    que aconteceu (juros, guerras, inflação, erros, crises). Devolve False se o
-    Plotly não estiver disponível (aí cai no gráfico Altair antigo)."""
+# janelas de zoom por período (rótulo -> anos para trás a partir de hoje, ou faixa fixa)
+_PERIODOS_CICLO = {
+    "Tudo": None,
+    "10 anos": ("anos", 10),
+    "5 anos": ("anos", 5),
+    "Pandemia (2020→)": ("faixa", "2020-01-01", None),
+    "Crise 2008": ("faixa", "2007-01-01", "2010-12-31"),
+}
+
+
+def _grafico_ciclo_interativo(d: dict, periodo: str = "Tudo"):
+    """Ibov interativo com eventos históricos e faixas de alta/baixa. Passe o
+    mouse para ver o que aconteceu; clique num ponto para fixar o detalhe.
+    Devolve (ok, evento_fixado): ok=False se o Plotly não estiver disponível
+    (aí cai no gráfico Altair antigo); evento_fixado é o dict do ponto clicado."""
     try:
         import plotly.graph_objects as go
     except Exception:  # noqa: BLE001
-        return False
+        return False, None
     serie = d.get("serie") or []
     if not serie:
-        return False
+        return False, None
     df = pd.DataFrame(serie)
     df["dt"] = pd.to_datetime(df["data"])
     df = df.sort_values("dt").reset_index(drop=True)
@@ -2137,7 +2148,8 @@ def _grafico_ciclo_interativo(d: dict) -> bool:
 
     serie_val = df.set_index("dt")["valor"]
     dmin, dmax = df["dt"].min(), df["dt"].max()
-    por_cat = {}
+    # eventos válidos (dentro da série), com índice global para o clique-fixar
+    ev_validos, por_cat = [], {}
     for e in eventos:
         try:
             dt = pd.to_datetime(e["data"])
@@ -2147,11 +2159,35 @@ def _grafico_ciclo_interativo(d: dict) -> bool:
             continue
         pos = serie_val.index.get_indexer([dt], method="nearest")[0]
         val = float(serie_val.iloc[pos])
+        gidx = len(ev_validos)
+        ev_validos.append(e)
         por_cat.setdefault(e.get("categoria", "crise"), []).append(
-            (dt, val, e.get("titulo", ""), e.get("desc", "")))
+            (dt, val, e.get("titulo", ""), e.get("desc", ""), gidx))
 
     alto = 1.26  # quanto o marcador sobe acima da linha (offset multiplicativo no eixo log)
     fig = go.Figure()
+
+    # --- faixas de alta (verde) e baixa (vermelho) com aviso de duração/variação ---
+    _VERDE, _VERM = "rgba(34,197,94,0.07)", "rgba(239,68,68,0.07)"
+    legs = d.get("legs") or []
+    for k, lg in enumerate(legs):
+        try:
+            x0 = pd.to_datetime(lg["de"] + "-01")
+            x1 = pd.to_datetime(lg["ate"] + "-01")
+        except Exception:  # noqa: BLE001
+            continue
+        alta = lg.get("tipo") == "alta"
+        fig.add_vrect(x0=x0, x1=x1, fillcolor=_VERDE if alta else _VERM,
+                      opacity=1, layer="below", line_width=0)
+        if abs(lg.get("amp", 0)) < 12 or lg.get("meses", 0) < 4:
+            continue  # pernas curtas não recebem rótulo, para não poluir
+        meio = x0 + (x1 - x0) / 2
+        cor_txt = "#15803D" if alta else "#B91C1C"
+        txt = f"{'+' if lg.get('amp', 0) >= 0 else '−'}{abs(lg.get('amp', 0)):.0f}% · {lg.get('meses', 0)}m"
+        fig.add_annotation(x=meio, y=0.99 if k % 2 == 0 else 0.90, yref="paper",
+                           text=txt, showarrow=False, font=dict(size=10.5, color=cor_txt),
+                           bgcolor="rgba(255,255,255,0.72)", borderpad=1)
+
     fig.add_trace(go.Scatter(
         x=df["dt"], y=df["valor"], mode="lines", name="Ibovespa",
         line=dict(color="#0FA3B8", width=1.7),
@@ -2170,26 +2206,78 @@ def _grafico_ciclo_interativo(d: dict) -> bool:
         if not pts:
             continue
         textos = [f"<b style='font-size:13px'>{p[2]}</b><br>"
-                  f"<span style='font-size:12px'>{_wrap_html(p[3])}</span>" for p in pts]
+                  f"<span style='font-size:12px'>{_wrap_html(p[3])}</span>"
+                  "<br><span style='font-size:11px;color:#64748B'>clique p/ fixar</span>" for p in pts]
         fig.add_trace(go.Scatter(
             x=[p[0] for p in pts], y=[p[1] * alto for p in pts], mode="markers", name=rotulo,
             marker=dict(size=12, color=cor, line=dict(color="#FFFFFF", width=1.6)),
-            customdata=textos, hovertemplate="%{customdata}<extra></extra>"))
+            customdata=[[t, p[4]] for t, p in zip(textos, pts)],
+            hovertemplate="%{customdata[0]}<extra></extra>"))
 
-    fig.update_yaxes(type="log", showgrid=True, gridcolor="rgba(11,31,42,0.07)",
-                     tickfont=dict(color="#334155"), title=None)
-    fig.update_xaxes(showgrid=False, tickfont=dict(color="#334155"), title=None)
+    # zoom por período
+    cfg = _PERIODOS_CICLO.get(periodo)
+    if cfg:
+        if cfg[0] == "anos":
+            x_ini, x_fim = dmax - pd.DateOffset(years=cfg[1]), dmax
+        else:
+            x_ini = pd.to_datetime(cfg[1])
+            x_fim = pd.to_datetime(cfg[2]) if cfg[2] else dmax
+        fig.update_xaxes(range=[x_ini, x_fim])
+        vis = df[(df["dt"] >= x_ini) & (df["dt"] <= x_fim)]["valor"]
+        if len(vis):
+            import math
+            fig.update_yaxes(range=[math.log10(vis.min() * 0.9), math.log10(vis.max() * 1.35)])
+
+    # eixo de preço à direita (padrão de plataforma), grade horizontal sutil
+    fig.update_yaxes(type="log", side="right", showgrid=True, gridcolor="rgba(11,31,42,0.06)",
+                     tickfont=dict(color="#64748B", size=11), title=None,
+                     tickformat=",.0f", ticksuffix="  ", zeroline=False)
+    # linha-guia vertical no hover (crosshair), ticks por ano
+    fig.update_xaxes(showgrid=False, tickfont=dict(color="#64748B", size=11), title=None,
+                     dtick="M24", tickformat="%Y", ticks="outside", ticklen=4,
+                     tickcolor="rgba(11,31,42,0.15)", showspikes=True, spikemode="across",
+                     spikethickness=1, spikedash="solid", spikecolor="rgba(11,31,42,0.22)")
     fig.update_layout(
-        height=440, margin=dict(l=8, r=8, t=8, b=8),
+        height=520, margin=dict(l=4, r=52, t=8, b=4),
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
         font=dict(family="Inter, sans-serif", color="#0B1F2A"),
-        legend=dict(orientation="h", yanchor="bottom", y=1.01, x=0, title=None,
-                    font=dict(size=12.5)),
+        legend=dict(orientation="h", yanchor="bottom", y=1.015, x=0, title=None,
+                    font=dict(size=12), bgcolor="rgba(0,0,0,0)"),
         hoverlabel=dict(bgcolor="#FFFFFF", bordercolor="#E2E8F2",
                         font=dict(color="#0B1F2A", size=13), align="left"),
-        hovermode="closest")
-    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
-    return True
+        hovermode="closest", dragmode=False)
+
+    evento_fixado = None
+    try:
+        ev = st.plotly_chart(fig, use_container_width=True, key="ciclo_chart",
+                             on_select="rerun", selection_mode="points",
+                             config={"displayModeBar": False})
+        pts_sel = (ev.get("selection", {}) or {}).get("points", []) if ev else []
+        for p in pts_sel:
+            cd = p.get("customdata")
+            if cd and len(cd) > 1 and 0 <= int(cd[1]) < len(ev_validos):
+                evento_fixado = ev_validos[int(cd[1])]
+                break
+    except TypeError:
+        # Streamlit antigo sem on_select: renderiza sem clique-fixar
+        st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    return True, evento_fixado
+
+
+def _card_evento_fixado(e: dict) -> None:
+    rotulo, cor = _CAT_EVENTO.get(e.get("categoria", "crise"), ("Evento", "#334155"))
+    data = e.get("data", "")
+    ano = data[:4] if data else ""
+    st.markdown(
+        f'<div style="background:{COR_CARD};border:1px solid {COR_BORDA};'
+        f'border-left:4px solid {cor};border-radius:10px;padding:14px 16px;margin:4px 0 2px;">'
+        f'<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">'
+        f'<span style="font-size:0.7rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;'
+        f'color:{cor};">{html.escape(rotulo)}</span>'
+        f'<span style="font-size:0.72rem;color:#64748B;">{html.escape(ano)}</span></div>'
+        f'<div style="font-size:1rem;font-weight:700;margin-bottom:5px;">{html.escape(e.get("titulo", ""))}</div>'
+        f'<div style="font-size:0.88rem;line-height:1.55;opacity:0.92;">{html.escape(e.get("desc", ""))}</div>'
+        f'</div>', unsafe_allow_html=True)
 
 
 def _grafico_ciclo(d: dict) -> None:
@@ -2228,8 +2316,9 @@ def _grafico_ciclo(d: dict) -> None:
 def _aba_ciclo() -> None:
     st.markdown('<div class="ciano-label">Ciclo do Ibovespa</div>', unsafe_allow_html=True)
     st.caption("A história do Ibovespa com os fatos que a moveram. **Passe o mouse** nos pontos "
-               "coloridos para ver o que aconteceu em cada juro, guerra, inflação, erro econômico "
-               "ou crise. Série do ^BVSP (Yahoo), escala log.")
+               "coloridos para ver o que aconteceu (juros, guerras, inflação, erros, crises) e "
+               "**clique** para fixar o detalhe. Faixas verdes = altas, vermelhas = baixas, com a "
+               "duração e a variação de cada ciclo. Série do ^BVSP (Yahoo), escala log.")
     with st.spinner("Carregando o histórico do Ibovespa…"):
         d = ibov_ciclo.buscar_ciclo_ibov()
         mat = ibov_ciclo.buscar_maturidade()
@@ -2237,8 +2326,19 @@ def _aba_ciclo() -> None:
         st.warning(d["erro"])
         return
 
-    if not _grafico_ciclo_interativo(d):
+    try:
+        periodo = st.segmented_control("Período", list(_PERIODOS_CICLO.keys()),
+                                       default="Tudo", label_visibility="collapsed")
+    except Exception:  # noqa: BLE001  (Streamlit antigo sem segmented_control)
+        periodo = st.radio("Período", list(_PERIODOS_CICLO.keys()), horizontal=True,
+                           label_visibility="collapsed")
+    periodo = periodo or "Tudo"
+
+    ok, evento = _grafico_ciclo_interativo(d, periodo)
+    if not ok:
         _grafico_ciclo(d)
+    elif evento:
+        _card_evento_fixado(evento)
     _bloco_maturidade(d, mat)
 
     st.caption("Leitura educacional de estrutura de mercado, não recomendação.")
@@ -2312,35 +2412,6 @@ def _bloco_maturidade(d: dict, mat: dict) -> None:
         )
         st.caption("Fundos maiores (queda ≥15% da MM200 semanal): "
                    + ", ".join(f["data"] for f in mat["fundos"]) + ".")
-
-    # --- Anatomia dos topos ---
-    anat = d.get("anatomia_topos") or []
-    med = d.get("anatomia_medianas") or {}
-    if anat:
-        st.markdown('<div class="ciano-label" style="margin-top:10px;">🔬 Anatomia dos topos — o que veio depois</div>',
-                    unsafe_allow_html=True)
-
-        def _p(x):
-            return f"{x:+.0f}%" if x is not None else "—"
-        linhas = [
-            {"Topo": a["topo"], "Nível": _fmt_pts(a["nivel"]),
-             "+3m": _p(a["r3"]), "+6m": _p(a["r6"]), "+12m": _p(a["r12"]),
-             "Queda máx": _p(a["queda_max"]),
-             "Recuperar": (f"{a['recup_meses']}m" if a["recup_meses"] else "não recup."),
-             "": "◀ atual" if a["atual"] else ""}
-            for a in anat
-        ]
-        if med.get("r3") is not None:
-            linhas.append({
-                "Topo": "MEDIANA", "Nível": "—",
-                "+3m": _p(med["r3"]), "+6m": _p(med["r6"]), "+12m": _p(med["r12"]),
-                "Queda máx": _p(med["queda_max"]),
-                "Recuperar": (f"{med['recup_meses']:.0f}m" if med.get("recup_meses") else "—"),
-                "": ""})
-        st.dataframe(pd.DataFrame(linhas), hide_index=True, use_container_width=True)
-        st.caption("Depois de um topo, a bolsa caiu na mediana ~−17% em 6m, com queda máxima de ~−41% e "
-                   "**~36 meses para recuperar** o nível (2008 levou 112m). O topo de fev/2026 até agora caiu "
-                   "bem menos que a mediana — comporta-se mais como pausa que como rollover, mas é cedo.")
 
 
 def _bloco_gatilhos(mat: dict) -> None:
@@ -2472,31 +2543,45 @@ def _alavanca_lucro(ag: dict):
         cor = "vermelho"
     else:
         cor = "amarelo"
-    val = f"{cagr:+.0f}%/a" + (f" · {caindo:.0f}% caindo" if caindo is not None else "")
+    val = f"{cagr:+.0f}%/a"
+    cai_txt = (f" {caindo:.0f}% das empresas têm lucro menor que há 5 anos — a queda se concentra nos "
+               "pesos-pesados de commodities." if caindo is not None else "")
     desc = (f"Lucro mediano do Ibov cresce {cagr:+.0f}%/a em 5 anos (LPA "
-            f"{ag.get('lpa_cagr_mediano'):+.0f}%/a). {caindo:.0f}% das empresas com lucro menor que há 5 anos "
-            "— a queda se concentra nos pesos-pesados de commodities.")
+            f"{ag.get('lpa_cagr_mediano'):+.0f}%/a).{cai_txt}")
     return cor, val, desc
 
 
-# Cor da BARRA (viva) vs. cor do TEXTO do valor (escura, p/ contraste no branco).
-_COR_ALAVANCA_TXT = {"verde": "#15803D", "amarelo": "#B45309", "vermelho": "#B91C1C"}
+# Status discreto (bolinha + rótulo) por sinal — mantém os cards visualmente uniformes.
+_STATUS_ALAVANCA = {
+    "verde": ("Favorável", "#16A34A"),
+    "amarelo": ("Neutro", "#D97706"),
+    "vermelho": ("Pressão", "#DC2626"),
+}
 
 
-def _cor_alavanca_txt(chave: str) -> str:
-    return _COR_ALAVANCA_TXT.get((chave or "").split("-")[0], "#132244")
+def _status_alavanca(chave: str):
+    return _STATUS_ALAVANCA.get((chave or "").split("-")[0])
 
 
 def _card_alavanca(nome: str, cor_chave: str, valor: str, desc: str) -> str:
-    cor = _cor_alavanca(cor_chave)
-    cor_txt = _cor_alavanca_txt(cor_chave)
+    status = _status_alavanca(cor_chave)
+    if status:
+        rot, cor_dot = status
+        chip = (f'<span style="display:inline-flex;align-items:center;gap:5px;font-size:0.64rem;'
+                f'font-weight:600;color:#64748B;letter-spacing:.02em;">'
+                f'<span style="width:7px;height:7px;border-radius:50%;background:{cor_dot};"></span>'
+                f'{html.escape(rot)}</span>')
+    else:
+        chip = ""
     return (
         f'<div style="flex:1 1 210px;min-width:190px;background:{COR_CARD};'
-        f'border:1px solid {COR_BORDA};border-left:4px solid {cor};border-radius:10px;padding:12px 14px;'
-        f'box-shadow:0 1px 2px rgba(19,34,74,.06);">'
-        f'<div style="font-size:0.7rem;letter-spacing:.05em;text-transform:uppercase;color:#132244;font-weight:700;">{html.escape(nome)}</div>'
-        f'<div style="font-size:1.15rem;font-weight:800;color:{cor_txt};margin:2px 0 4px;">{html.escape(valor)}</div>'
-        f'<div style="font-size:0.72rem;color:#132244;line-height:1.4;">{html.escape(desc)}</div></div>'
+        f'border:1px solid {COR_BORDA};border-top:3px solid {COR_NAVY};border-radius:10px;padding:13px 15px;'
+        f'box-shadow:0 1px 2px rgba(19,34,74,.05);">'
+        f'<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:3px;">'
+        f'<span style="font-size:0.68rem;letter-spacing:.05em;text-transform:uppercase;color:#64748B;font-weight:700;">{html.escape(nome)}</span>'
+        f'{chip}</div>'
+        f'<div style="font-size:1.2rem;font-weight:800;color:{COR_INK};margin:2px 0 5px;letter-spacing:-.01em;">{html.escape(valor)}</div>'
+        f'<div style="font-size:0.72rem;color:#475569;line-height:1.45;">{html.escape(desc)}</div></div>'
     )
 
 
@@ -2576,7 +2661,7 @@ def _aba_cenarios() -> None:
          "Múlt.": _emoji_alavanca(e["alavancas"].get("multiplo", "")),
          "Juro": _emoji_alavanca(e["alavancas"].get("juro", "")),
          "Fluxo": _emoji_alavanca(e["alavancas"].get("fluxo", "")),
-         "O que o Ibov fez depois": e.get("ibov_desfecho", "")}
+         "O que o Ibov fez depois": e.get("ibov_resumo") or e.get("ibov_desfecho", "")}
         for e in base.get("episodios", [])
     ])
     st.dataframe(dfh, hide_index=True, use_container_width=True)
