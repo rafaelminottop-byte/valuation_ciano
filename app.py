@@ -359,6 +359,11 @@ def _injetar_css() -> None:
         div[role="radiogroup"][aria-label="Navegacao principal"] label p {font-size: 0.98rem; font-weight: 600; color: #0B1F2A;}
         div[role="radiogroup"][aria-label="Navegacao principal"] label:has(input:checked) {background: #0B1F2A;}
         div[role="radiogroup"][aria-label="Navegacao principal"] label:has(input:checked) p {color: #fff;}
+        /* ícones de linha (Material) no menu: alinhados, na cor do texto */
+        div[role="radiogroup"][aria-label="Navegacao principal"] [data-testid="stIconMaterial"] {
+            font-size: 18px; color: #334155; vertical-align: -4px; margin-right: 1px;
+        }
+        div[role="radiogroup"][aria-label="Navegacao principal"] label:has(input:checked) [data-testid="stIconMaterial"] {color: #fff;}
 
         /* ---- Hero institucional (olho + título + subtítulo) ---- */
         .hero {margin: 18px 0 30px 0;}
@@ -437,6 +442,23 @@ _HERO = {
 }
 
 
+# Ícones de linha (Material Symbols, monocromáticos, herdam a cor do texto) no
+# lugar dos emojis. As CHAVES continuam sendo os identificadores internos das
+# páginas (com emoji) — só a exibição muda, via format_func.
+_ICONE_NAV = {
+    "🔎 Empresa": ":material/apartment: Empresa",
+    "📊 Screener": ":material/filter_alt: Screener",
+    "⭐ Carteira": ":material/account_balance_wallet: Carteira",
+    "🏅 Ranking": ":material/leaderboard: Ranking",
+    "🔀 Cenários": ":material/alt_route: Cenários",
+    "📉 Macro": ":material/monitoring: Macro",
+    "💵 Câmbio": ":material/currency_exchange: Câmbio",
+    "🌎 Estrangeiro": ":material/public: Estrangeiro",
+    "📰 Notícias": ":material/newspaper: Notícias",
+    "🔔 Gatilhos": ":material/notifications: Gatilhos",
+}
+
+
 def _topbar(ordem: list) -> str:
     """Barra de navegação no topo (marca à esquerda, páginas em pills). Devolve a página."""
     col_marca, col_nav = st.columns([1.2, 6])
@@ -448,7 +470,8 @@ def _topbar(ordem: list) -> str:
         )
     with col_nav:
         pagina = st.radio("Navegacao principal", ordem, horizontal=True,
-                          label_visibility="collapsed")
+                          label_visibility="collapsed",
+                          format_func=lambda p: _ICONE_NAV.get(p, p))
     st.markdown('<div style="border-bottom:1px solid #E2E8F2;margin:-4px 0 6px;"></div>',
                 unsafe_allow_html=True)
     return pagina
