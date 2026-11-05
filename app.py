@@ -2778,9 +2778,9 @@ def _aba_lucros() -> None:
         linhas.append({
             "Setor": setor, "Empresas": s["n"],
             "Lucro último ano": _fmt_bi(s["lucro"][-1]),
-            "Lucro YoY": _seta(s["lucro"]),
+            "Lucro vs ano anterior": _seta(s["lucro"]),
             "EBIT último ano": _fmt_bi(s["ebit"][-1]),
-            "EBIT YoY": _seta(s["ebit"]),
+            "EBIT vs ano anterior": _seta(s["ebit"]),
             "_ord": s["lucro"][-1],
         })
     linhas.sort(key=lambda r: r["_ord"], reverse=True)
