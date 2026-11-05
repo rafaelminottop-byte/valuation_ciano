@@ -2604,7 +2604,7 @@ def _alavanca_lucro(ag: dict):
     medio = (ag or {}).get("lucro_cagr_medio")
     partes = [f"Mediana {cagr:+.0f}%/a"]
     if caindo is not None:
-        partes.append(f"{caindo:.0f}% em queda")
+        partes.append(f"{caindo:.0f}% em baixa")
     if medio is not None:
         partes.append(f"média {medio:+.0f}%/a")
     desc = " · ".join(partes) + "."
