@@ -2604,7 +2604,7 @@ def _alavanca_lucro(ag: dict):
     medio = (ag or {}).get("lucro_cagr_medio")
     partes = [f"Mediana {cagr:+.0f}%/a"]
     if caindo is not None:
-        partes.append(f"{caindo:.0f}% em baixa")
+        partes.append(f"{caindo:.0f}% com lucro menor")
     if medio is not None:
         partes.append(f"média {medio:+.0f}%/a")
     desc = " · ".join(partes) + "."
@@ -2871,7 +2871,7 @@ _EVENTOS_CAMBIO = [
     ("2020-03", "Covid 2020"),
     ("2022-10", "Eleição 2022"),
     ("2024-12", "Susto fiscal 2024"),
-    ("2026-10", "Pós-eleição 2026"),
+    ("2026-10", "Choque eleição 2026"),
 ]
 
 

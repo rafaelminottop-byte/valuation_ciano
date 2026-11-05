@@ -195,23 +195,23 @@
     },
     {
       "id": "2022-hoje",
-      "periodo": "jun/2022 - hoje (set/2026)",
-      "governo": "Lula 3",
-      "regime": "Lula 3 ate out/2026 (fiscal frouxo, Selic a ~15%, lucro forte, bolsa barata, local sub-alocado). INFLEXAO em out/2026: eleicao resolvida pro-mercado (conforme informado) -> inicio de ciclo de corte da Selic e expectativa de volta do estrangeiro.",
+      "periodo": "jun/2022 - hoje (nov/2026)",
+      "governo": "Lula 3 / reeleito",
+      "regime": "Lula reeleito em out/2026 (~51,8% vs ~48,2%) CONTRA o posicionamento do mercado. Resultado reprecifica o risco fiscal/politico: choque de -13,9% em 26/10, dolar disparando. Fiscal frouxo e Selic ainda a ~15% seguem como pano de fundo; o catalisador pro-mercado que se esperava NAO veio.",
       "alavancas": {
         "lucro": "verde",
         "multiplo": "amarelo",
         "juro": "amarelo",
-        "fluxo": "amarelo"
+        "fluxo": "vermelho"
       },
-      "selic_direcao": "caindo (ciclo de corte iniciado: 15% -> 13,75%, Focus 13,5%)",
+      "selic_direcao": "corte interrompido/sob duvida apos o choque cambial (real mais fraco pressiona inflacao)",
       "juro_real": "~8% ex-ante (ainda restritivo, mas caindo)",
       "pl_ibov": "10.9x (fundamentus ponderado, set/2026; validado vs Oceans14)",
       "earnings_yield": "9.2%",
-      "fluxo_estrangeiro": "expectativa pos-eleicao, a confirmar em dado",
-      "ibov_desfecho": "Alta +92% ate topo fev/2026 (188.787). Madura em TEMPO, mas correcao pos-topo rasa (-9%) = mais pausa que rollover; agora com catalisador pro-mercado pode engatar nova perna.",
-      "licao": "O fiel da balanca (regime/eleicao) pendeu PRO LADO DA TESE: juro passou de 'contra' a 'neutralizando' (corte iniciado) e o caminho 2016-19 ativou. MAS juro real ainda ~8% e fluxo nao confirmado: a disciplina manda so marcar juro/fluxo verde quando o DADO confirmar (Selic caindo consistente + estrangeiro positivo). Expectativa e combustivel; ignicao realizada e Selic de fato no chao.",
-      "ibov_resumo": "Alta +92% (44m)"
+      "fluxo_estrangeiro": "reacao negativa ao 2o turno; dolar +8% no dia do resultado",
+      "ibov_desfecho": "Alta +92% ate o topo de fev/2026 (188.787). Correcao e, em 26/10/2026, CHOQUE eleitoral: Ibov -13,9% num dia (circuit breaker, 5a maior queda da historia), dolar +8%, semana -18% - o mercado estava posicionado para Flavio Bolsonaro e Lula foi reeleito.",
+      "licao": "O fiel da balanca (eleicao) pendeu CONTRA a tese de reprecificacao: o mercado apostou na alternancia e levou um choque com a reeleicao. Licao dura de disciplina - preco ja embutia um resultado (Flavio) e virou risco quando o DADO (voto) frustrou a aposta. Juro e fluxo seguem \"contra/neutro\" ate a Selic de fato ceder e o estrangeiro voltar com o quadro fiscal.",
+      "ibov_resumo": "Alta +92% ate fev/2026, depois choque eleitoral"
     }
   ]
 }

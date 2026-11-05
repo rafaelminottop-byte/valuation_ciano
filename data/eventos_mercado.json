@@ -229,5 +229,12 @@
     "titulo": "Novo ciclo de juros",
     "desc": "Depois de cortar a Selic em 2023, o BC volta a subir diante de dúvidas fiscais e inflação resistente — mostrando como o juro no Brasil raramente fica baixo por muito tempo.",
     "dir": "baixa"
+  },
+  {
+    "data": "2026-10-26",
+    "categoria": "crise",
+    "titulo": "Choque da eleição de 2026",
+    "desc": "No 1º pregão após o 2º turno, o Ibov desaba −13,88% com circuit breaker — a 5ª maior queda diária da história e a 1ª desde a Covid. O dólar salta ~8% e a semana cai ~18%. O mercado estava posicionado para a vitória de Flávio Bolsonaro, e a reeleição de Lula (~51,8%) pegou os preços na contramão, reprecificando o risco fiscal.",
+    "dir": "baixa"
   }
 ]
