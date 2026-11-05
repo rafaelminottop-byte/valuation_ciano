@@ -2570,7 +2570,7 @@ def _alavanca_fluxo(a: dict):
     mm21 = a.get("mm21")       # média dos últimos ~21 pregões
     ano = a.get("ano")
     if no_ano is None:
-        return "amarelo", "Estrangeiro s/ dado", "Fluxo estrangeiro indisponível agora (B3)."
+        return "amarelo", "Estrangeiro s/ dado", ["Fluxo estrangeiro indisponível (B3)."]
     bi = no_ano / 1000
     entrando_ano = no_ano >= 0
     entrando_rec = (mm21 or 0) >= 0
@@ -2582,9 +2582,7 @@ def _alavanca_fluxo(a: dict):
         cor = "amarelo"
     sinal = "+" if bi >= 0 else "−"
     val = f"{sinal}R$ {abs(bi):.0f} bi no ano"
-    rec = "entrando" if entrando_rec else "saindo"
-    desc = (f"Estrangeiro na B3 (à vista, D+2): saldo de {sinal}R$ {abs(bi):.0f} bi em {ano}; "
-            f"nas últimas semanas {rec}. O fluxo interno é função do juro (ver alavanca Juro).")
+    desc = [f"Estrangeiro na B3 · até {a.get('ultima_data', '—')}"]
     return cor, val, desc
 
 
@@ -2601,13 +2599,9 @@ def _alavanca_lucro(ag: dict):
     else:
         cor = "amarelo"
     val = f"{cagr:+.0f}%/a"
-    medio = (ag or {}).get("lucro_cagr_medio")
-    partes = [f"Mediana {cagr:+.0f}%/a"]
+    desc = ["Crescimento da empresa típica (5 anos)"]
     if caindo is not None:
-        partes.append(f"{caindo:.0f}% com lucro menor")
-    if medio is not None:
-        partes.append(f"média {medio:+.0f}%/a")
-    desc = " · ".join(partes) + "."
+        desc.append(f"{caindo:.0f}% encolheram (Vale, Petrobras)")
     return cor, val, desc
 
 
@@ -2633,6 +2627,11 @@ def _card_alavanca(nome: str, cor_chave: str, valor: str, desc: str) -> str:
                 f'{html.escape(rot)}</span>')
     else:
         chip = ""
+    # desc pode ser uma string ou uma lista de linhas (uma informação por linha)
+    linhas = desc if isinstance(desc, (list, tuple)) else [desc]
+    desc_html = "".join(
+        f'<div style="font-size:0.72rem;color:#475569;line-height:1.5;">{html.escape(str(l))}</div>'
+        for l in linhas if l)
     return (
         f'<div style="flex:1 1 210px;min-width:190px;background:{COR_CARD};'
         f'border:1px solid {COR_BORDA};border-top:3px solid {COR_NAVY};border-radius:10px;padding:13px 15px;'
@@ -2641,7 +2640,7 @@ def _card_alavanca(nome: str, cor_chave: str, valor: str, desc: str) -> str:
         f'<span style="font-size:0.68rem;letter-spacing:.05em;text-transform:uppercase;color:#64748B;font-weight:700;">{html.escape(nome)}</span>'
         f'{chip}</div>'
         f'<div style="font-size:1.2rem;font-weight:800;color:{COR_INK};margin:2px 0 5px;letter-spacing:-.01em;">{html.escape(valor)}</div>'
-        f'<div style="font-size:0.72rem;color:#475569;line-height:1.45;">{html.escape(desc)}</div></div>'
+        f'{desc_html}</div>'
     )
 
 
@@ -2827,13 +2826,13 @@ def _aba_cenarios() -> None:
     pl_txt = f"P/L {viv['pl']:.1f}x" if viv.get("pl") else "P/L —"
     ey_txt = f" · EY {viv['ey']:.1f}%" if viv.get("ey") else ""
     if viv.get("pl_small") and viv.get("pl_grande"):
-        mult_desc = (f"Grandes ~{viv['pl_grande']:.1f}x (no justo) vs small ~{viv['pl_small']:.1f}x "
-                     "(baratas). O 'barato' está nas small caps.")
+        mult_desc = [f"Grandes ~{viv['pl_grande']:.1f}x (no justo)",
+                     f"Small ~{viv['pl_small']:.1f}x (baratas)"]
     else:
-        mult_desc = "P/L do mercado ponderado por liquidez (Fundamentus)."
+        mult_desc = ["P/L ponderado por liquidez (Fundamentus)"]
     juro_txt = f"Selic {viv['selic']:.1f}%" if viv.get("selic") else "Selic —"
-    juro_desc = (f"Juro real ~{viv['juro_real']:.1f}%. " if viv.get("juro_real") else "") + \
-        "A alavanca-mãe: comanda o múltiplo e o fluxo interno — Selic caindo migra renda fixa → bolsa."
+    juro_desc = ([f"Juro real ~{viv['juro_real']:.1f}%"] if viv.get("juro_real") else []) + \
+        ["Alavanca-mãe: puxa múltiplo e fluxo interno"]
     lucro_cor, lucro_val, lucro_desc = _alavanca_lucro(_lucro_ibov_agregado())
     fluxo_cor, fluxo_val, fluxo_desc = _alavanca_fluxo(_fluxo_estrangeiro_atual())
     cards = (
