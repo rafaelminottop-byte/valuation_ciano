@@ -23,7 +23,7 @@ import yfinance as yf
 
 CACHE_DIR = Path(__file__).resolve().parent / ".cache"
 CACHE_FILE = CACHE_DIR / "cambio_v2.json"
-CACHE_TTL = 12 * 60 * 60  # 12h
+CACHE_TTL = 24 * 60 * 60  # 24h
 HEADERS = {"User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                           "(KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36")}
 INICIO = "2013-01-01"

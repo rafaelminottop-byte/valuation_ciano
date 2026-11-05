@@ -31,7 +31,7 @@ from valuation_engine import PREMISSAS_EUA, calcular_valuation_completo
 UNIVERSO_PATH = Path(__file__).resolve().parent / "data" / "tickers_eua.json"
 CACHE_DIR = Path(__file__).resolve().parent / ".cache"
 CACHE_FILE = CACHE_DIR / "mercado_eua.json"
-CACHE_TTL_SEGUNDOS = 12 * 60 * 60  # 12 horas
+CACHE_TTL_SEGUNDOS = 24 * 60 * 60  # 24 horas
 
 # Filtros padrão de qualidade (o valuation por EBIT distorce nesses casos):
 #  - alavancagem: EBIT pertence a credores + acionistas; com muita dívida, o

@@ -36,7 +36,7 @@ CACHE_DIR = Path(__file__).resolve().parent / ".cache"
 # serve um cache velho, sem os campos novos (foi exatamente o que aconteceu).
 CACHE_VERSAO = 5
 CACHE_FILE = CACHE_DIR / f"macro_v{CACHE_VERSAO}.json"
-CACHE_TTL_SEGUNDOS = 3 * 60 * 60  # 3 horas
+CACHE_TTL_SEGUNDOS = 24 * 60 * 60  # 24 horas
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
 # Séries do SGS/BC: código -> nº de pontos do histórico (432/4389 são diárias; as outras, mensais)
@@ -247,7 +247,7 @@ URL_TESOURO_TAXAS = (
 # mais longo (o yield da NTN-B muda pouco de um dia para o outro) para não
 # baixar isso a cada ciclo de 3h do resto do painel macro.
 CACHE_NTNB = CACHE_DIR / "ntnb_v1.json"
-CACHE_TTL_NTNB = 20 * 60 * 60  # 20h
+CACHE_TTL_NTNB = 24 * 60 * 60  # 24h
 
 
 def _ntnb_10a() -> dict:

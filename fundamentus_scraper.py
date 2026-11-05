@@ -34,7 +34,7 @@ HEADERS = {
 CACHE_DIR = Path(__file__).resolve().parent / ".cache"
 CACHE_VERSAO = 5
 CACHE_FILE = CACHE_DIR / f"fundamentus_v{CACHE_VERSAO}.pkl"
-CACHE_TTL_SEGUNDOS = 6 * 60 * 60  # 6 horas
+CACHE_TTL_SEGUNDOS = 24 * 60 * 60  # 24 horas
 
 
 def _cache_valido(caminho: Path, ttl_segundos: float) -> bool:

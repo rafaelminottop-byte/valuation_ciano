@@ -21,7 +21,7 @@ CACHE_FILE = CACHE_DIR / "ibov_ciclo_v5.json"
 # Antes do Plano Real (jul/1994) o Ibov estava em outra moeda (hiperinflação),
 # com valores minúsculos que distorcem a análise. Começamos em 1995.
 DATA_INICIAL = "1995-01-01"
-CACHE_TTL_SEGUNDOS = 6 * 3600  # 6h
+CACHE_TTL_SEGUNDOS = 24 * 3600  # 24h
 
 
 def _pivos(vals: list[float], N: int = 9) -> list[tuple[int, str]]:

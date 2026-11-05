@@ -2508,7 +2508,7 @@ def _emoji_alavanca(chave: str) -> str:
     return _EMOJI_ALAVANCA.get((chave or "").split("-")[0], "⚪")
 
 
-@st.cache_data(ttl=6 * 3600, show_spinner=False)
+@st.cache_data(ttl=24 * 3600, show_spinner=False)
 def _cenarios_dados_vivos() -> dict:
     """Puxa os números de HOJE das 4 alavancas: P/L, dispersão small×large, juro."""
     out = {"pl": None, "ey": None, "pl_grande": None, "pl_small": None,
@@ -2542,7 +2542,7 @@ def _cenarios_dados_vivos() -> dict:
     return out
 
 
-@st.cache_data(ttl=3600, show_spinner=False)
+@st.cache_data(ttl=24 * 3600, show_spinner=False)
 def _lucro_ibov_agregado() -> dict:
     """Crescimento de lucro do Ibov (5a), para a alavanca Lucro virar data-driven."""
     try:
