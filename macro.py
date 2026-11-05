@@ -64,6 +64,36 @@ def _para_float(txt) -> float | None:
         return None
 
 
+def _sgs_media_longa(codigo: int, anos: int) -> float | None:
+    """Média de uma série do SGS nos últimos ``anos``, buscando em blocos de 9
+    anos (o SGS limita a janela por requisição) e juntando os pontos."""
+    try:
+        fim = date.today()
+        ini_total = fim - timedelta(days=365 * anos)
+        vals, cur_fim = [], fim
+        while cur_fim > ini_total:
+            cur_ini = max(ini_total, cur_fim - timedelta(days=365 * 9))
+            url = (f"https://api.bcb.gov.br/dados/serie/bcdata.sgs.{codigo}/dados?formato=json"
+                   f"&dataInicial={cur_ini.strftime('%d/%m/%Y')}&dataFinal={cur_fim.strftime('%d/%m/%Y')}")
+            dados = _json_bc(url)
+            if isinstance(dados, list):
+                vals += [v for v in (_para_float(d["valor"]) for d in dados) if v is not None]
+            cur_fim = cur_ini - timedelta(days=1)
+        return round(sum(vals) / len(vals), 1) if vals else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def selic_media(anos: int = 20) -> float | None:
+    """Média da meta Selic (SGS 432) nos últimos ``anos`` — nível normal de longo prazo."""
+    return _sgs_media_longa(SGS_SELIC, anos)
+
+
+def ipca_media(anos: int = 20) -> float | None:
+    """Média do IPCA acumulado 12m (SGS 13522) nos últimos ``anos`` — inflação típica."""
+    return _sgs_media_longa(SGS_IPCA12M, anos)
+
+
 def juro_real_ex_ante(selic_pct: float, ipca_esperado_pct: float) -> float | None:
     """Juro real ex-ante (%) = ((1+Selic)/(1+IPCA esperado) − 1)·100 (Fisher)."""
     if selic_pct is None or ipca_esperado_pct is None:

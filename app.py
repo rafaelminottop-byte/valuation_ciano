@@ -2543,6 +2543,16 @@ def _cenarios_dados_vivos() -> dict:
 
 
 @st.cache_data(ttl=24 * 3600, show_spinner=False)
+def _referencias_longas() -> dict:
+    """Médias de 20 anos (Selic e IPCA) para servir de régua nos cards."""
+    try:
+        import macro
+        return {"selic_20a": macro.selic_media(20), "ipca_20a": macro.ipca_media(20)}
+    except Exception:  # noqa: BLE001
+        return {"selic_20a": None, "ipca_20a": None}
+
+
+@st.cache_data(ttl=24 * 3600, show_spinner=False)
 def _lucro_ibov_agregado() -> dict:
     """Crescimento de lucro do Ibov (5a), para a alavanca Lucro virar data-driven."""
     try:
@@ -2823,21 +2833,25 @@ def _aba_cenarios() -> None:
     # --- as 4 alavancas hoje ---
     st.markdown('<div class="ciano-label" style="margin-top:6px;">🎛️ As 4 alavancas hoje</div>',
                 unsafe_allow_html=True)
+    ref = _referencias_longas()
     pl_txt = f"P/L {viv['pl']:.1f}x" if viv.get("pl") else "P/L —"
-    ey_txt = f" · EY {viv['ey']:.1f}%" if viv.get("ey") else ""
     if viv.get("pl_small") and viv.get("pl_grande"):
-        mult_desc = [f"Grandes ~{viv['pl_grande']:.1f}x (no justo)",
-                     f"Small ~{viv['pl_small']:.1f}x (baratas)"]
+        mult_desc = [f"Grandes: P/L médio {viv['pl_grande']:.1f}x hoje",
+                     f"Small: P/L médio {viv['pl_small']:.1f}x hoje"]
     else:
         mult_desc = ["P/L ponderado por liquidez (Fundamentus)"]
     juro_txt = f"Selic {viv['selic']:.1f}%" if viv.get("selic") else "Selic —"
-    juro_desc = ([f"Juro real ~{viv['juro_real']:.1f}%"] if viv.get("juro_real") else []) + \
-        ["Alavanca-mãe: puxa múltiplo e fluxo interno"]
-    lucro_cor, lucro_val, lucro_desc = _alavanca_lucro(_lucro_ibov_agregado())
+    juro_desc = [f"Juro real ~{viv['juro_real']:.1f}%"] if viv.get("juro_real") else []
+    if ref.get("selic_20a") is not None:
+        juro_desc.append(f"Média 20 anos: {ref['selic_20a']:.1f}%")
+    lucro_cor, lucro_val, _ = _alavanca_lucro(_lucro_ibov_agregado())
+    lucro_desc = ["Crescimento ao ano (empresa típica)"]
+    if ref.get("ipca_20a") is not None:
+        lucro_desc.append(f"Inflação média 20a: {ref['ipca_20a']:.1f}%")
     fluxo_cor, fluxo_val, fluxo_desc = _alavanca_fluxo(_fluxo_estrangeiro_atual())
     cards = (
         _card_alavanca("Lucro (crescimento 5a)", lucro_cor, lucro_val, lucro_desc)
-        + _card_alavanca("Múltiplo", alav.get("multiplo", ""), pl_txt + ey_txt.strip(), mult_desc)
+        + _card_alavanca("Múltiplo", alav.get("multiplo", ""), pl_txt, mult_desc)
         + _card_alavanca("Juro", alav.get("juro", ""), juro_txt, juro_desc)
         + _card_alavanca("Fluxo estrangeiro", fluxo_cor, fluxo_val, fluxo_desc)
     )
@@ -2862,6 +2876,31 @@ def _aba_cenarios() -> None:
     # Seção de ciclo (fundida aqui): onde estamos no ciclo por preço/tempo.
     st.markdown("<hr style='border:none;border-top:1px solid #E2E8F2;margin:22px 0 6px;'>", unsafe_allow_html=True)
     _aba_ciclo()
+
+    # --- nota explicativa (todas as definições num lugar só) ---
+    st.markdown("<hr style='border:none;border-top:1px solid #E2E8F2;margin:22px 0 6px;'>", unsafe_allow_html=True)
+    with st.expander("ℹ️ Como ler esta aba (definições)"):
+        s20 = ref.get("selic_20a")
+        i20 = ref.get("ipca_20a")
+        s20_txt = f"{s20:.1f}%" if s20 is not None else "~10%"
+        i20_txt = f"{i20:.1f}%" if i20 is not None else "~6%"
+        st.markdown(
+            "**As 4 alavancas** são as forças que movem a bolsa. Cada card traz o número de hoje e uma "
+            "régua para julgá-lo.\n\n"
+            "- **Lucro** — crescimento do lucro da *empresa típica* do Ibov nos últimos 5 anos (mediana, "
+            f"fonte Yahoo). A régua é a **inflação média de 20 anos** ({i20_txt} ao ano): crescer acima "
+            "dela é ganho real. Hoje ~1/3 das empresas encolheu — concentrado nas commodities (Vale, Petrobras).\n"
+            "- **Múltiplo** — P/L = preço dividido pelo lucro (quantos anos de lucro você paga). Mostramos "
+            "a **mediana** de cada grupo: *grandes* = as 40 mais líquidas; *small* = as demais com liquidez. "
+            "Filtramos P/L entre 0 e 30 (tira prejuízo e outliers). **Pode divergir do Oceans14**, que usa "
+            "média ponderada por valor de mercado e um universo diferente — por isso os números não batem.\n"
+            f"- **Juro** — Selic de hoje vs a **média de 20 anos** ({s20_txt}). *Juro real* = Selic descontada "
+            "a inflação esperada. É a alavanca-mãe: puxa o múltiplo e o fluxo interno (Selic caindo migra "
+            "renda fixa → bolsa).\n"
+            "- **Fluxo estrangeiro** — saldo do investidor estrangeiro na B3 (mercado à vista, oficial D+2). "
+            "O fluxo interno não entra aqui — ele é função do juro (alavanca Juro).\n\n"
+            "**Case base** — cada ciclo da bolsa desde 1994, a leitura das 4 alavancas na época e o que o Ibov "
+            "fez depois. Serve para decidir *por analogia*: a qual período passado o momento atual se parece.")
 
 
 # Episódios históricos para ancorar a leitura dos gráficos de câmbio.
