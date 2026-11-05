@@ -2554,6 +2554,40 @@ def _lucro_ibov_agregado() -> dict:
         return {}
 
 
+@st.cache_data(ttl=3600, show_spinner=False)
+def _fluxo_estrangeiro_atual() -> dict:
+    try:
+        import fluxo_b3
+        return (fluxo_b3.buscar_fluxo() or {}).get("atual") or {}
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def _alavanca_fluxo(a: dict):
+    """(cor, valor, descrição) da alavanca Fluxo = fluxo ESTRANGEIRO ao vivo (B3,
+    à vista D+2). O fluxo interno não entra aqui: ele é função do juro (alavanca Juro)."""
+    no_ano = a.get("no_ano")   # R$ milhões, positivo = entrada
+    mm21 = a.get("mm21")       # média dos últimos ~21 pregões
+    ano = a.get("ano")
+    if no_ano is None:
+        return "amarelo", "Estrangeiro s/ dado", "Fluxo estrangeiro indisponível agora (B3)."
+    bi = no_ano / 1000
+    entrando_ano = no_ano >= 0
+    entrando_rec = (mm21 or 0) >= 0
+    if entrando_ano and entrando_rec:
+        cor = "verde"
+    elif not entrando_ano and not entrando_rec:
+        cor = "vermelho"
+    else:
+        cor = "amarelo"
+    sinal = "+" if bi >= 0 else "−"
+    val = f"{sinal}R$ {abs(bi):.0f} bi no ano"
+    rec = "entrando" if entrando_rec else "saindo"
+    desc = (f"Estrangeiro na B3 (à vista, D+2): saldo de {sinal}R$ {abs(bi):.0f} bi em {ano}; "
+            f"nas últimas semanas {rec}. O fluxo interno é função do juro (ver alavanca Juro).")
+    return cor, val, desc
+
+
 def _alavanca_lucro(ag: dict):
     """(cor, valor, descrição) da alavanca Lucro a partir do crescimento agregado."""
     cagr = (ag or {}).get("lucro_cagr_mediano")
@@ -2775,7 +2809,7 @@ def _aba_cenarios() -> None:
     _ins = []
     _mat = ibov_ciclo.buscar_maturidade()
     if _mat and not _mat.get("erro") and _mat.get("meses_desde_fundo"):
-        _ins.append(f"Esticamento: Ibov **{_mat['dist_atual']:+.0f}%** da média de 200 semanas "
+        _ins.append(f"Esticamento: Ibov {_mat['dist_atual']:+.0f}% da média de 200 semanas "
                     f"({'zona de topo' if _mat['dist_atual'] > _mat.get('p75', 999) else 'ainda não esticado'}). "
                     "O tempo desde o fundo recente está detalhado abaixo.")
     if viv.get("selic") is not None:
@@ -2799,13 +2833,14 @@ def _aba_cenarios() -> None:
         mult_desc = "P/L do mercado ponderado por liquidez (Fundamentus)."
     juro_txt = f"Selic {viv['selic']:.1f}%" if viv.get("selic") else "Selic —"
     juro_desc = (f"Juro real ~{viv['juro_real']:.1f}%. " if viv.get("juro_real") else "") + \
-        "A alavanca-mãe: sem ela ceder, as outras não ignitam."
+        "A alavanca-mãe: comanda o múltiplo e o fluxo interno — Selic caindo migra renda fixa → bolsa."
     lucro_cor, lucro_val, lucro_desc = _alavanca_lucro(_lucro_ibov_agregado())
+    fluxo_cor, fluxo_val, fluxo_desc = _alavanca_fluxo(_fluxo_estrangeiro_atual())
     cards = (
         _card_alavanca("Lucro (crescimento 5a)", lucro_cor, lucro_val, lucro_desc)
         + _card_alavanca("Múltiplo", alav.get("multiplo", ""), pl_txt + ey_txt.strip(), mult_desc)
         + _card_alavanca("Juro", alav.get("juro", ""), juro_txt, juro_desc)
-        + _card_alavanca("Fluxo / alocação", alav.get("fluxo", ""), "Sub-alocado", "Local pouco em bolsa; energia potencial que espera o juro cair.")
+        + _card_alavanca("Fluxo estrangeiro", fluxo_cor, fluxo_val, fluxo_desc)
     )
     st.markdown(f'<div style="display:flex;flex-wrap:wrap;gap:12px;">{cards}</div>', unsafe_allow_html=True)
 

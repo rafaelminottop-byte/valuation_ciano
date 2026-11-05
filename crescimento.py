@@ -114,9 +114,15 @@ def crescimento_agregado(tickers, usar_cache: bool = True) -> dict:
     if val.empty:
         return {"lucro_cagr_mediano": None, "lpa_cagr_mediano": None,
                 "pct_caindo": None, "n": 0}
+    # média APARADA (10% em cada ponta): a média crua é inflada por empresas que
+    # saíram de base ~zero (+400% de CAGR); aparar dá uma média honesta.
+    vv = sorted(float(x) for x in val["lucro_cagr"].tolist())
+    k = max(1, int(len(vv) * 0.1)) if len(vv) >= 5 else 0
+    apar = vv[k:len(vv) - k] if k else vv
+    medio_apar = round(sum(apar) / len(apar), 1) if apar else None
     return {
         "lucro_cagr_mediano": round(float(val["lucro_cagr"].median()), 1),
-        "lucro_cagr_medio": round(float(val["lucro_cagr"].mean()), 1),
+        "lucro_cagr_medio": medio_apar,
         "lpa_cagr_mediano": round(float(df["lpa_cagr"].median()), 1) if df["lpa_cagr"].notna().any() else None,
         "pct_caindo": round(float(df["lucro_cai"].mean()) * 100, 0),
         "n": int(len(val)),
