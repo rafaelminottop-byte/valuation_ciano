@@ -116,6 +116,7 @@ def crescimento_agregado(tickers, usar_cache: bool = True) -> dict:
                 "pct_caindo": None, "n": 0}
     return {
         "lucro_cagr_mediano": round(float(val["lucro_cagr"].median()), 1),
+        "lucro_cagr_medio": round(float(val["lucro_cagr"].mean()), 1),
         "lpa_cagr_mediano": round(float(df["lpa_cagr"].median()), 1) if df["lpa_cagr"].notna().any() else None,
         "pct_caindo": round(float(df["lucro_cai"].mean()) * 100, 0),
         "n": int(len(val)),

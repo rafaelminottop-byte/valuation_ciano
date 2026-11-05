@@ -429,6 +429,8 @@ _HERO = {
                   "As teses próprias da Ciano ordenadas por upside, lado a lado."),
     "🔀 Cenários": ("Leitura de ciclo", "Ciclos de mercado",
                    "Onde o Ibovespa está no ciclo e quais alavancas sustentam (ou derrubam) a alta."),
+    "📈 Lucros": ("Resultados agregados", "Lucros & EBIT",
+                 "Os lucros e o EBIT do Ibovespa e das Small Caps, somados ano a ano — subindo ou caindo, e por setor."),
     "📉 Macro": ("Panorama macro", "Indicadores econômicos",
                 "Selic, IPCA, juro real e câmbio — o pano de fundo que move os preços."),
     "💵 Câmbio": ("Dólar e risco-país", "Câmbio",
@@ -451,6 +453,7 @@ _ROTULO_NAV = {
     "⭐ Carteira": "Carteira",
     "🏅 Ranking": "Ranking",
     "🔀 Cenários": "Ciclos",
+    "📈 Lucros": "Lucros",
     "📉 Macro": "Macro",
     "💵 Câmbio": "Câmbio",
     "🌎 Estrangeiro": "Estrangeiro",
@@ -2388,33 +2391,50 @@ def _bloco_maturidade(d: dict, mat: dict) -> None:
         st.markdown(_barra_maturidade(grad1, marcos1, fr(dist), f"{dist:+.0f}%", cor1),
                     unsafe_allow_html=True)
 
-        # Eixo 2 — tempo desde o último fundo maior
-        meses, im, ix = mat["meses_desde_fundo"], mat["inter_med"], mat["inter_max"]
+        # Eixo 2 — tempo desde o FUNDO MENOR recente (último pivô de baixa mensal),
+        # comparado à duração TÍPICA de uma alta (mais fácil de acompanhar que o
+        # fundo secular da Covid). Cai no fundo maior se não houver pivôs.
+        import statistics as _st
+        serie = d.get("serie") or []
+        legs = d.get("legs") or []
+        altas_legs = [lg for lg in legs if lg.get("tipo") == "alta" and lg.get("meses")]
+        altas = [lg["meses"] for lg in altas_legs]
+
+        def _meses_iso(a, b):  # a,b = "YYYY-MM..."
+            return (int(b[:4]) - int(a[:4])) * 12 + (int(b[5:7]) - int(a[5:7]))
+
+        # Fundo recente = início da ÚLTIMA perna de alta (pivô confirmado, sem efeito
+        # de borda), coerente com o "+92% desde jun/2022" do gráfico.
+        if altas_legs and serie:
+            fd = altas_legs[-1]["de"][:7]
+            meses = _meses_iso(altas_legs[-1]["de"], serie[-1]["data"])
+            im, ix = int(_st.median(altas)), int(max(altas))
+            rot_fundo = f"fundo recente ({fd})"
+        else:  # fallback: fundo maior
+            meses, im, ix = mat["meses_desde_fundo"], mat["inter_med"], mat["inter_max"]
+            rot_fundo = f"último fundo maior ({mat['fundo_atual']['data']})"
         hi2 = max(meses * 1.1, (ix or meses) * 1.15)
         def fr2(x):
-            return max(0.0, min(1.0, x / hi2))
+            return max(0.0, min(1.0, x / hi2)) if hi2 else 0.0
         t0, t1 = fr2(im) * 100, fr2(ix) * 100
         grad2 = (f"#22C55E 0%,#22C55E {t0:.1f}%,#EAB308 {t0:.1f}%,#EAB308 {t1:.1f}%,"
                  f"#EF4444 {t1:.1f}%,#EF4444 100%")
-        marcos2 = [(fr2(im), f"típico<br>{im}m"), (fr2(ix), f"recorde<br>{ix}m")]
+        marcos2 = [(fr2(im), f"alta típica<br>{im}m"), (fr2(ix), f"alta recorde<br>{ix}m")]
         cor2 = "#DC2626" if meses >= ix else "#B45309" if meses > im else "#15803D"
-        fd = mat["fundo_atual"]["data"]
         st.markdown('<div style="font-size:0.82rem;font-weight:700;margin-bottom:2px;">Tempo — meses '
-                    f'desde o último fundo maior ({fd})</div>', unsafe_allow_html=True)
+                    f'desde o {rot_fundo}</div>', unsafe_allow_html=True)
         st.markdown(_barra_maturidade(grad2, marcos2, fr2(meses), f"{meses}m", cor2),
                     unsafe_allow_html=True)
 
         # Síntese
         ze = "zona de topo" if dist > p75 else "neutro" if dist > 0 else "zona de fundo"
-        lt = ("no recorde do ciclo" if meses >= ix
-              else "perto do fim do ciclo" if meses > im
-              else "ainda longe do fim")
+        lt = ("acima do recorde de uma alta" if meses >= ix
+              else "perto da duração recorde" if meses > im
+              else "dentro do tempo típico de uma alta")
         st.markdown(
             f"**Preço:** Ibov **{dist:+.0f}%** da MM200 — {ze}.  \n"
-            f"**Tempo:** **{meses}m** desde o fundo — {lt} (típico {im}m, recorde {ix}m)."
+            f"**Tempo:** **{meses}m** desde o fundo recente — {lt} (alta típica {im}m, recorde {ix}m)."
         )
-        st.caption("Fundos maiores (queda ≥15% da MM200 semanal): "
-                   + ", ".join(f["data"] for f in mat["fundos"]) + ".")
 
 
 def _bloco_gatilhos(mat: dict) -> None:
@@ -2547,10 +2567,13 @@ def _alavanca_lucro(ag: dict):
     else:
         cor = "amarelo"
     val = f"{cagr:+.0f}%/a"
-    cai_txt = (f" {caindo:.0f}% das empresas têm lucro menor que há 5 anos — a queda se concentra nos "
-               "pesos-pesados de commodities." if caindo is not None else "")
-    desc = (f"Lucro mediano do Ibov cresce {cagr:+.0f}%/a em 5 anos (LPA "
-            f"{ag.get('lpa_cagr_mediano'):+.0f}%/a).{cai_txt}")
+    medio = (ag or {}).get("lucro_cagr_medio")
+    partes = [f"Mediana {cagr:+.0f}%/a"]
+    if caindo is not None:
+        partes.append(f"{caindo:.0f}% em queda")
+    if medio is not None:
+        partes.append(f"média {medio:+.0f}%/a")
+    desc = " · ".join(partes) + "."
     return cor, val, desc
 
 
@@ -2604,6 +2627,136 @@ def _caixa_insights(frases: list) -> None:
     )
 
 
+_UNIVERSOS_LUCRO = {"Ibovespa": "IBOV", "Small Caps": "SMLL"}
+
+
+def _fmt_bi(v: float) -> str:
+    return f"R$ {v / 1e9:,.1f} bi".replace(",", "@").replace(".", ",").replace("@", ".")
+
+
+def _card_veredito_lucro(titulo: str, serie: list, anos: list) -> str:
+    atual = serie[-1] if serie else 0.0
+    var = None if len(serie) < 2 or serie[-2] == 0 else (serie[-1] / serie[-2] - 1) * 100
+    if var is None:
+        cor, seta, rot = "#64748B", "", "s/ base"
+    elif var >= 0:
+        cor, seta, rot = "#16A34A", "▲", f"+{var:.0f}% vs {anos[-2]}"
+    else:
+        cor, seta, rot = "#DC2626", "▼", f"{var:.0f}% vs {anos[-2]}"
+    return (
+        f'<div style="flex:1 1 220px;min-width:200px;background:{COR_CARD};'
+        f'border:1px solid {COR_BORDA};border-top:3px solid {COR_NAVY};border-radius:10px;padding:14px 16px;">'
+        f'<div style="font-size:0.68rem;letter-spacing:.05em;text-transform:uppercase;color:#64748B;font-weight:700;">{html.escape(titulo)} ({anos[-1]})</div>'
+        f'<div style="font-size:1.35rem;font-weight:800;color:{COR_INK};margin:3px 0 2px;">{_fmt_bi(atual)}</div>'
+        f'<div style="font-size:0.82rem;font-weight:700;color:{cor};">{seta} {rot}</div></div>'
+    )
+
+
+def _grafico_lucros(res: dict, universo: str) -> bool:
+    try:
+        import plotly.graph_objects as go
+    except Exception:  # noqa: BLE001
+        return False
+    anos = [str(a) for a in res["anos"]]
+    ebit = [v / 1e9 for v in res["ebit"]]
+    lucro = [v / 1e9 for v in res["lucro"]]
+    fig = go.Figure()
+    fig.add_trace(go.Bar(x=anos, y=ebit, name="EBIT", marker_color="#0FA3B8",
+                         hovertemplate="EBIT %{x}: R$ %{y:.1f} bi<extra></extra>"))
+    fig.add_trace(go.Bar(x=anos, y=lucro, name="Lucro líquido", marker_color="#0B1F2A",
+                         hovertemplate="Lucro %{x}: R$ %{y:.1f} bi<extra></extra>"))
+    fig.update_layout(
+        barmode="group", height=340, margin=dict(l=4, r=4, t=8, b=4),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+        font=dict(family="Inter, sans-serif", color="#0B1F2A"),
+        legend=dict(orientation="h", yanchor="bottom", y=1.0, x=0, title=None, font=dict(size=12)),
+        hoverlabel=dict(bgcolor="#FFFFFF", bordercolor="#E2E8F2", font=dict(color="#0B1F2A", size=13)))
+    fig.update_yaxes(showgrid=True, gridcolor="rgba(11,31,42,0.07)", ticksuffix=" bi",
+                     tickfont=dict(color="#64748B", size=11), title=None, zeroline=False)
+    fig.update_xaxes(tickfont=dict(color="#334155", size=12), title=None)
+    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    return True
+
+
+def _aba_lucros() -> None:
+    st.markdown('<div class="ciano-label">Resultados agregados da bolsa</div>', unsafe_allow_html=True)
+    st.caption("Os lucros e o EBIT das empresas da bolsa, somados ano a ano, estão subindo ou caindo? "
+               "Soma em R$ de uma **cesta fixa** (só empresas com série completa no período) — imune à "
+               "distorção de base baixa. Fonte: balanços anuais (Yahoo Finance).")
+
+    try:
+        universo = st.segmented_control("Universo", list(_UNIVERSOS_LUCRO.keys()),
+                                        default="Ibovespa", label_visibility="collapsed")
+    except Exception:  # noqa: BLE001
+        universo = st.radio("Universo", list(_UNIVERSOS_LUCRO.keys()), horizontal=True,
+                            label_visibility="collapsed")
+    universo = universo or "Ibovespa"
+    idx = _UNIVERSOS_LUCRO[universo]
+
+    import indices_b3
+    import agregado_lucros as al
+    tickers = indices_b3.componentes(idx).get("tickers", [])
+    with st.spinner(f"Somando EBIT e lucro de {universo}…"):
+        res = al.agregar(tickers)
+    if res.get("erro") or not res.get("anos"):
+        st.warning("Sem dados suficientes para montar o agregado agora.")
+        return
+
+    anos = res["anos"]
+    cards = (_card_veredito_lucro("Lucro líquido", res["lucro"], anos)
+             + _card_veredito_lucro("EBIT", res["ebit"], anos))
+    st.markdown(f'<div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:10px;">{cards}</div>',
+                unsafe_allow_html=True)
+
+    _grafico_lucros(res, universo)
+    st.caption(f"Cesta fixa de **{res['n_cesta']} de {res['n_total']}** empresas do {universo} "
+               f"com série completa de {anos[0]} a {anos[-1]}.")
+
+    # leitura automática
+    ve, vl = res.get("var_ebit"), res.get("var_lucro")
+    if ve is not None and vl is not None:
+        pico = max(range(len(anos)), key=lambda i: res["lucro"][i])
+        txt_pico = (f" O lucro ainda está {(res['lucro'][-1]/res['lucro'][pico]-1)*100:+.0f}% "
+                    f"em relação ao pico de {anos[pico]}." if pico != len(anos) - 1 else "")
+        _caixa_insights([
+            f"No último ano, o lucro do {universo} {'subiu' if vl>=0 else 'caiu'} "
+            f"{vl:+.0f}% e o EBIT {'subiu' if ve>=0 else 'caiu'} {ve:+.0f}%.{txt_pico}",
+            "EBIT acima do lucro indica que o resultado operacional é mais forte que o fundo "
+            "(o que sobra é comido por juros/impostos/itens não-operacionais).",
+        ])
+
+    # --- por setor ---
+    st.markdown('<div class="ciano-label" style="margin-top:14px;">Por setor — lucro no último ano e direção</div>',
+                unsafe_allow_html=True)
+    por = res.get("por_setor", {})
+
+    def _seta(serie):
+        if len(serie) < 2:
+            return "—"
+        a, b = serie[-2], serie[-1]
+        emoji = "🟢" if b >= a else "🔴"
+        # base positiva e variação "normal" -> mostra %. Base negativa/zero ou %
+        # explosivo (distorção) -> mostra a variação em R$ (direção honesta).
+        if a > 0 and abs(b / a - 1) < 1.5:
+            return f"{emoji} {(b / a - 1) * 100:+.0f}%"
+        return f"{emoji} {'+' if b >= a else '−'}R$ {abs(b - a) / 1e9:.0f} bi"
+    linhas = []
+    for setor, s in por.items():
+        linhas.append({
+            "Setor": setor, "Empresas": s["n"],
+            "Lucro último ano": _fmt_bi(s["lucro"][-1]),
+            "Lucro YoY": _seta(s["lucro"]),
+            "EBIT último ano": _fmt_bi(s["ebit"][-1]),
+            "EBIT YoY": _seta(s["ebit"]),
+            "_ord": s["lucro"][-1],
+        })
+    linhas.sort(key=lambda r: r["_ord"], reverse=True)
+    df = pd.DataFrame([{k: v for k, v in r.items() if k != "_ord"} for r in linhas])
+    st.dataframe(df, hide_index=True, use_container_width=True)
+    st.caption("Soma de cada setor (cesta fixa própria). Lucro líquido pode ser volátil por itens "
+               "extraordinários; o EBIT mostra melhor a tendência operacional.")
+
+
 def _aba_cenarios() -> None:
     st.markdown('<div class="ciano-label">Cenários — onde estamos no ciclo</div>', unsafe_allow_html=True)
     st.caption("As 4 alavancas que movem a bolsa (lucro, múltiplo, juro, fluxo), o estado de hoje "
@@ -2622,8 +2775,9 @@ def _aba_cenarios() -> None:
     _ins = []
     _mat = ibov_ciclo.buscar_maturidade()
     if _mat and not _mat.get("erro") and _mat.get("meses_desde_fundo"):
-        _ins.append(f"Ciclo maduro por dois eixos: +{_mat['dist_atual']:.0f}% acima da MM200 (zona de topo) "
-                    f"e {_mat['meses_desde_fundo']} meses desde o fundo de {_mat['fundo_atual']['data']}.")
+        _ins.append(f"Esticamento: Ibov **{_mat['dist_atual']:+.0f}%** da média de 200 semanas "
+                    f"({'zona de topo' if _mat['dist_atual'] > _mat.get('p75', 999) else 'ainda não esticado'}). "
+                    "O tempo desde o fundo recente está detalhado abaixo.")
     if viv.get("selic") is not None:
         jr = f" (real ~{viv['juro_real']:.1f}%)" if viv.get("juro_real") is not None else ""
         _ins.append(f"Juro é a alavanca-mãe: Selic {viv['selic']:.1f}%{jr} — a direção dela decide entre o "
@@ -3021,7 +3175,7 @@ def main() -> None:
 
     # --- Navegação no TOPO (pills) ---
     paginas_analise = ["🔎 Empresa", "📊 Screener", "⭐ Carteira", "🏅 Ranking"]
-    paginas_mercado = ["🔀 Cenários", "📉 Macro", "💵 Câmbio", "🌎 Estrangeiro"]
+    paginas_mercado = ["🔀 Cenários", "📈 Lucros", "📉 Macro", "💵 Câmbio", "🌎 Estrangeiro"]
     paginas_acomp = ["📰 Notícias", "🔔 Gatilhos"]
     ordem = paginas_analise + paginas_mercado + paginas_acomp
 
@@ -3071,7 +3225,7 @@ def main() -> None:
             _aba_ranking(*prem)
     else:
         paginas_mercado_fn = {
-            "🔀 Cenários": _aba_cenarios,
+            "🔀 Cenários": _aba_cenarios, "📈 Lucros": _aba_lucros,
             "📉 Macro": _aba_macro, "💵 Câmbio": _aba_cambio,
             "🌎 Estrangeiro": _aba_estrangeiro,
             "📰 Notícias": _aba_noticias, "🔔 Gatilhos": _aba_gatilhos,
