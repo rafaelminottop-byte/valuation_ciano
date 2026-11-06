@@ -1570,9 +1570,31 @@ def _grafico_trajetoria(serie: list, rotulo: str, sufixo: str = "") -> None:
     )
 
 
+_SINAL_MACRO = {
+    "alivia": ("alivia a bolsa", "#16A34A"),
+    "aperta": ("aperta a bolsa", "#DC2626"),
+    "neutro": ("neutro", "#D97706"),
+}
+
+
+def _chip_sinal(estado: str) -> str:
+    """Chip 'alivia/aperta a bolsa' pelo SENTIDO econômico do indicador."""
+    cfg = _SINAL_MACRO.get(estado)
+    if not cfg:
+        return ""
+    rot, cor = cfg
+    return (
+        f'<span style="display:inline-flex;align-items:center;gap:5px;font-size:0.64rem;'
+        f'font-weight:600;color:#64748B;letter-spacing:.02em;">'
+        f'<span style="width:7px;height:7px;border-radius:50%;background:{cor};"></span>'
+        f'{rot}</span>'
+    )
+
+
 def _indicador_macro(col, rotulo: str, no: dict, fmt, sufixo: str = "",
-                     delta_key: str = None, ajuda: str = None) -> None:
-    """Métrica + expander com a trajetória histórica."""
+                     delta_key: str = None, ajuda: str = None,
+                     sinal: str = None, trajetoria: bool = True) -> None:
+    """Métrica + (opcional) chip de sentido e expander com a trajetória histórica."""
     d = no or {}
     val = d.get("valor")
     with col:
@@ -1581,19 +1603,183 @@ def _indicador_macro(col, rotulo: str, no: dict, fmt, sufixo: str = "",
             delta = f"{d[delta_key]:+.1f}% no ano"
         st.metric(rotulo, fmt(val) if val is not None else "—", delta=delta,
                   help=ajuda or d.get("erro"))
-        with st.expander("📈 trajetória"):
-            _grafico_trajetoria(d.get("serie") or [], rotulo, sufixo)
+        if sinal:
+            st.markdown(_chip_sinal(sinal), unsafe_allow_html=True)
+        if trajetoria:
+            with st.expander("📈 trajetória"):
+                _grafico_trajetoria(d.get("serie") or [], rotulo, sufixo)
+
+
+_VEREDITO_MACRO = {
+    "favoravel": ("Vento a favor", "#16A34A", "O conjunto macro está ajudando a bolsa agora."),
+    "misto": ("Equilibrado", "#D97706", "Forças nos dois sentidos — macro sem viés claro."),
+    "contra": ("Vento contra", "#DC2626", "O conjunto macro está pesando sobre a bolsa agora."),
+}
+
+
+def _estados_macro(g: dict, b: dict) -> dict:
+    """Classifica cada driver em alivia/aperta/neutro pelo SENTIDO para a bolsa."""
+    def v(node):
+        return (node or {}).get("valor")
+
+    def faixa(x, lo, hi, bom_alto=False):
+        if x is None:
+            return None
+        if x <= lo:
+            return "aperta" if bom_alto else "alivia"
+        if x >= hi:
+            return "alivia" if bom_alto else "aperta"
+        return "neutro"
+
+    e = {}
+    e["dolar"] = faixa((g.get("dolar_real") or {}).get("var_ano"), -3, 3)   # real forte alivia
+    e["dxy"] = faixa((g.get("dxy") or {}).get("var_ano"), -3, 3)
+    e["treasury"] = faixa((g.get("treasury10a") or {}).get("var_ano"), -5, 5)
+    e["carry"] = faixa(v(g.get("carry_real")), 1, 3, bom_alto=True)         # carry alto alivia
+    e["juro_real"] = faixa(v(b.get("juro_real_ex_ante")), 5, 7)             # juro real alto aperta
+    e["ipca"] = faixa(v(b.get("ipca12m")), 4, 5)
+    e["divida"] = faixa(v(b.get("divida_pib")), 72, 78)                     # dívida alta aperta
+    e["spread"] = faixa(v(b.get("spread_ey_ntnb")), -0.5, 0.5, bom_alto=True)  # prêmio alto alivia
+    selic, fsel = v(b.get("selic")), v(b.get("focus_selic"))
+    if selic is None or fsel is None:
+        e["selic_dir"] = None
+    else:
+        e["selic_dir"] = ("alivia" if fsel < selic - 0.25
+                          else "aperta" if fsel > selic + 0.25 else "neutro")
+    return e
+
+
+def _reads_macro(g: dict, b: dict, e: dict) -> list:
+    """Frases em português — 'o que isso quer dizer pra bolsa' — só do que não é neutro."""
+    def v(node):
+        return (node or {}).get("valor")
+
+    reads = []
+    jr = v(b.get("juro_real_ex_ante"))
+    if e.get("juro_real") == "aperta":
+        reads.append(f"Juro real alto (~{jr:.1f}%) segura a economia e comprime o valuation.")
+    elif e.get("juro_real") == "alivia":
+        reads.append(f"Juro real mais baixo (~{jr:.1f}%) tende a destravar o valuation.")
+    if e.get("selic_dir") == "alivia":
+        reads.append("Mercado (Focus) vê a Selic caindo à frente — vento a favor de ações.")
+    elif e.get("selic_dir") == "aperta":
+        reads.append("Mercado (Focus) vê a Selic subindo à frente — pressão sobre ações.")
+    sp = v(b.get("spread_ey_ntnb"))
+    if e.get("spread") == "alivia":
+        reads.append(f"Bolsa paga prêmio sobre a NTN-B (spread {sp:+.1f} p.p.) — barata no relativo.")
+    elif e.get("spread") == "aperta":
+        reads.append(f"Bolsa sem prêmio sobre a renda fixa real (spread {sp:+.1f} p.p.) — cara no relativo.")
+    cy = v(g.get("carry_real"))
+    if e.get("carry") == "alivia":
+        reads.append(f"Carry real alto ({cy:+.1f} pp vs EUA) atrai capital — se o risco-país ajudar.")
+    elif e.get("carry") == "aperta":
+        reads.append(f"Carry real baixo ({cy:+.1f} pp vs EUA) dá pouco incentivo ao estrangeiro.")
+    dp = v(b.get("divida_pib"))
+    if e.get("divida") == "aperta":
+        reads.append(f"Dívida/PIB elevada ({dp:.0f}%) mantém o risco fiscal no radar.")
+    if e.get("dolar") == "aperta":
+        reads.append("Real se enfraquecendo no ano — sinal de saída de fluxo.")
+    elif e.get("dolar") == "alivia":
+        reads.append("Real se fortalecendo no ano — sinal de entrada de fluxo.")
+    return reads
+
+
+def _banner_veredito(chave: str, reads: list) -> str:
+    rot, cor, sub = _VEREDITO_MACRO[chave]
+    itens = "".join(f'<li style="margin-bottom:4px;">{html.escape(r)}</li>' for r in reads if r)
+    if not itens:
+        itens = '<li>Dados insuficientes para uma leitura confiável agora.</li>'
+    return (
+        f'<div style="background:{COR_CARD};border:1px solid {COR_BORDA};'
+        f'border-left:5px solid {cor};border-radius:12px;padding:16px 20px;margin:2px 0 6px;'
+        f'box-shadow:0 1px 3px rgba(19,34,74,.06);">'
+        f'<div style="font-size:0.7rem;letter-spacing:.12em;text-transform:uppercase;color:#64748B;'
+        f'font-weight:700;margin-bottom:2px;">Leitura do macro hoje</div>'
+        f'<div style="font-size:1.4rem;font-weight:800;color:{cor};margin-bottom:1px;">{rot}</div>'
+        f'<div style="font-size:0.9rem;color:{COR_MUT};margin-bottom:9px;">{html.escape(sub)}</div>'
+        f'<ul style="margin:0;padding-left:18px;font-size:0.92rem;line-height:1.55;color:#132244;">{itens}</ul>'
+        f'</div>'
+    )
+
+
+def _mural_macro(dados: dict, est: dict) -> None:
+    """Todos os indicadores crus (o app usa, mas só mostra sob demanda)."""
+    g = dados.get("global", {})
+    b = dados.get("brasil", {})
+
+    st.markdown('<div class="ciano-label">🌎 Global / Fluxo</div>', unsafe_allow_html=True)
+    c1, c2, c3, c4 = st.columns(4)
+    _indicador_macro(c1, "Dólar (R$)", g.get("dolar_real"), lambda v: f"R$ {v:.2f}".replace(".", ","),
+                     delta_key="var_ano", sinal=est.get("dolar"),
+                     ajuda="USD/BRL — quanto vale 1 dólar em reais (Yahoo). Sobe = real mais fraco.")
+    _indicador_macro(c2, "DXY (índice dólar)", g.get("dxy"), lambda v: f"{v:.2f}",
+                     delta_key="var_ano", sinal=est.get("dxy"),
+                     ajuda="Dólar contra uma cesta de moedas fortes.")
+    _indicador_macro(c3, "Ouro (US$/oz)", g.get("ouro"),
+                     lambda v: f"US$ {v:,.0f}".replace(",", "."), delta_key="var_ano")
+    _indicador_macro(c4, "Treasury 10 anos", g.get("treasury10a"), lambda v: f"{v:.2f}%",
+                     sufixo="%", delta_key="var_ano", sinal=est.get("treasury"),
+                     ajuda="Juro longo dos EUA — o 'sem risco' em dólar.")
+    e1, e2 = st.columns(2)
+    _indicador_macro(e1, "Inflação EUA (CPI 12m)", g.get("cpi_eua"), lambda v: f"{v:.2f}%",
+                     sufixo="%", ajuda="CPI cheio em 12 meses (fonte: BLS).")
+    carry = g.get("carry_real") or {}
+    brr, usr = carry.get("br_real"), carry.get("us_real")
+    _indicador_macro(e2, "Carry: juro real BR − EUA", carry, lambda v: f"{v:+.1f} pp",
+                     sinal=est.get("carry"),
+                     ajuda=(f"Diferencial de juro REAL (BR {brr:.1f}% − EUA {usr:.1f}%). "
+                            if (brr is not None and usr is not None) else "")
+                     + "O prêmio de juro real por ficar no real em vez do dólar. Quanto maior, "
+                     "mais atrai capital — MAS só se o risco fiscal/país estiver contido.")
+
+    st.markdown('<div class="ciano-label">🇧🇷 Brasil — Macro</div>', unsafe_allow_html=True)
+    d1, d2, d3, d4 = st.columns(4)
+    _indicador_macro(d1, "Selic meta", b.get("selic"), lambda v: f"{v:.2f}%", sufixo="%",
+                     ajuda="Taxa básica de juros (meta, a.a.).")
+    _indicador_macro(d2, "IPCA (12 meses)", b.get("ipca12m"), lambda v: f"{v:.2f}%", sufixo="%",
+                     sinal=est.get("ipca"), ajuda="Inflação acumulada em 12 meses.")
+    _indicador_macro(d3, "CDI (12 meses)", b.get("cdi12m"), lambda v: f"{v:.2f}%", sufixo="%",
+                     ajuda="CDI acumulado nos últimos 252 pregões (SGS 4389).")
+    _indicador_macro(d4, "Dívida Bruta / PIB", b.get("divida_pib"), lambda v: f"{v:.1f}%", sufixo="%",
+                     sinal=est.get("divida"), ajuda="Dívida bruta do governo geral sobre o PIB.")
+    ref = (b.get("focus_ipca") or {}).get("ref")
+    ano = f"para o fim de {ref}" if ref else "para o ano de referência"
+    ano_cheio = f"para o ano cheio de {ref}" if ref else "para o ano cheio"
+    f1, f2, f3, f4 = st.columns(4)
+    _indicador_macro(f1, "Juro real ex-ante", b.get("juro_real_ex_ante"), lambda v: f"{v:.1f}%",
+                     sufixo="%", sinal=est.get("juro_real"),
+                     ajuda="((1+Selic Focus)/(1+IPCA Focus) − 1). Juro real alto pressiona o valuation.")
+    _indicador_macro(f2, "Focus — IPCA", b.get("focus_ipca"), lambda v: f"{v:.2f}%", sufixo="%",
+                     ajuda=f"Mediana das expectativas (Focus/BC) para o IPCA {ano_cheio}.")
+    _indicador_macro(f3, "Focus — Selic", b.get("focus_selic"), lambda v: f"{v:.2f}%", sufixo="%",
+                     sinal=est.get("selic_dir"),
+                     ajuda=f"Mediana das expectativas (Focus/BC) para a Selic {ano}.")
+    _indicador_macro(f4, "Focus — PIB", b.get("focus_pib"), lambda v: f"{v:.2f}%", sufixo="%",
+                     ajuda=f"Mediana das expectativas (Focus/BC) para o PIB {ano_cheio}.")
+
+    st.markdown('<div class="ciano-label">📊 Valuation do mercado (earnings yield × NTN-B)</div>',
+                unsafe_allow_html=True)
+    pl_m = b.get("pl_mercado", {})
+    ntnb = b.get("ntnb_10a", {})
+    spread = b.get("spread_ey_ntnb", {})
+    v1, v2, v3, v4 = st.columns(4)
+    _indicador_macro(v1, "P/L mercado (pond. liquidez)", pl_m, lambda v: f"{v:.2f}x",
+                     ajuda=f"{pl_m.get('n_papeis', '—')} papéis líquidos, P/L positivo e não-outlier (<30x).")
+    _indicador_macro(v2, "Earnings yield", {"valor": pl_m.get("earnings_yield")}, lambda v: f"{v:.2f}%",
+                     sufixo="%", ajuda="1 / P/L do mercado.")
+    _indicador_macro(v3, "NTN-B 10 anos", ntnb, lambda v: f"{v:.2f}%", sufixo="%",
+                     ajuda=f"Vencimento: {ntnb.get('vencimento', '—')}. Data-base: {ntnb.get('data', '—')}.")
+    _indicador_macro(v4, "Spread (p.p.)", spread, lambda v: f"{v:+.2f}", sinal=est.get("spread"),
+                     ajuda="Earnings yield − NTN-B 10a. Positivo = bolsa paga prêmio sobre a renda fixa real.")
+    if pl_m.get("erro"):
+        st.warning(f"P/L do mercado indisponível: {pl_m['erro']}")
+    if ntnb.get("erro"):
+        st.warning(f"NTN-B indisponível: {ntnb['erro']}")
 
 
 def _aba_macro() -> None:
     import macro as mac
 
-    st.caption(
-        "Indicadores macro de fontes públicas gratuitas — **Global** via Yahoo Finance, "
-        "**EUA (inflação)** via BLS, **Brasil** via API do Banco Central (SGS e Focus). "
-        "Clique em **📈 trajetória** sob cada indicador para ver a série histórica. "
-        "Cache de 3h (as séries mudam devagar)."
-    )
     if st.button("Atualizar dados macro", type="primary", key="macro_upd"):
         with st.spinner("Buscando indicadores (Yahoo + BLS + Banco Central)..."):
             st.session_state.macro = mac.buscar_macro(usar_cache=False)
@@ -1604,99 +1790,39 @@ def _aba_macro() -> None:
             dados = mac.buscar_macro()
             st.session_state.macro = dados
 
-    st.markdown('<div class="ciano-label">🌎 Global / Fluxo</div>', unsafe_allow_html=True)
     g = dados.get("global", {})
-    c1, c2, c3, c4 = st.columns(4)
-    _indicador_macro(c1, "Dólar (R$)", g.get("dolar_real"), lambda v: f"R$ {v:.2f}".replace(".", ","),
-                     delta_key="var_ano", ajuda="USD/BRL — quanto vale 1 dólar em reais (Yahoo). "
-                     "Sobe = real mais fraco.")
-    _indicador_macro(c2, "DXY (índice dólar)", g.get("dxy"), lambda v: f"{v:.2f}",
-                     delta_key="var_ano", ajuda="Dólar contra uma cesta de moedas fortes.")
-    _indicador_macro(c3, "Ouro (US$/oz)", g.get("ouro"),
-                     lambda v: f"US$ {v:,.0f}".replace(",", "."), delta_key="var_ano")
-    _indicador_macro(c4, "Treasury 10 anos", g.get("treasury10a"), lambda v: f"{v:.2f}%",
-                     sufixo="%", delta_key="var_ano", ajuda="Juro longo dos EUA — o 'sem risco' em dólar.")
-    e1, e2 = st.columns(2)
-    _indicador_macro(e1, "Inflação EUA (CPI 12m)", g.get("cpi_eua"), lambda v: f"{v:.2f}%",
-                     sufixo="%", ajuda="CPI cheio em 12 meses (fonte: BLS).")
-    carry = g.get("carry_real") or {}
-    cr, brr, usr = carry.get("valor"), carry.get("br_real"), carry.get("us_real")
-    _indicador_macro(e2, "Carry: juro real BR − EUA", carry, lambda v: f"{v:+.1f} pp",
-                     ajuda=(f"Diferencial de juro REAL (BR {brr:.1f}% − EUA {usr:.1f}%). "
-                            if (brr is not None and usr is not None) else "")
-                     + "O prêmio de juro real por ficar no real em vez do dólar — o principal "
-                     "motor da relação câmbio/juros. Quanto maior, mais atrai capital — MAS só "
-                     "se o risco fiscal/país estiver contido.")
-
-    st.markdown('<div class="ciano-label">🇧🇷 Brasil — Macro</div>', unsafe_allow_html=True)
     b = dados.get("brasil", {})
-    d1, d2, d3, d4 = st.columns(4)
-    _indicador_macro(d1, "Selic meta", b.get("selic"), lambda v: f"{v:.2f}%", sufixo="%",
-                     ajuda="Taxa básica de juros (meta, a.a.).")
-    _indicador_macro(d2, "IPCA (12 meses)", b.get("ipca12m"), lambda v: f"{v:.2f}%", sufixo="%",
-                     ajuda="Inflação acumulada em 12 meses.")
-    _indicador_macro(d3, "CDI (12 meses)", b.get("cdi12m"), lambda v: f"{v:.2f}%", sufixo="%",
-                     ajuda="CDI acumulado nos últimos 252 pregões, composto a partir da taxa diária anualizada (SGS 4389).")
-    _indicador_macro(d4, "Dívida Bruta / PIB", b.get("divida_pib"), lambda v: f"{v:.1f}%", sufixo="%",
-                     ajuda="Dívida bruta do governo geral sobre o PIB.")
-    ref = (b.get("focus_ipca") or {}).get("ref")
-    ano = f"para o fim de {ref}" if ref else "para o ano de referência"
-    ano_cheio = f"para o ano cheio de {ref}" if ref else "para o ano cheio"
-    e1, e2, e3, e4 = st.columns(4)
-    _indicador_macro(e1, "Juro real ex-ante", b.get("juro_real_ex_ante"), lambda v: f"{v:.1f}%",
-                     sufixo="%",
-                     ajuda="((1+Selic Focus)/(1+IPCA Focus) − 1). Juro real alto pressiona a economia e o valuation.")
-    _indicador_macro(e2, "Focus — IPCA", b.get("focus_ipca"), lambda v: f"{v:.2f}%", sufixo="%",
-                     ajuda=f"Mediana das expectativas de mercado (Focus/BC) para o IPCA acumulado {ano_cheio} "
-                     "(inflação do ano inteiro, não mensal). A trajetória mostra se estão ancorando.")
-    _indicador_macro(e3, "Focus — Selic", b.get("focus_selic"), lambda v: f"{v:.2f}%", sufixo="%",
-                     ajuda=f"Mediana das expectativas (Focus/BC) para a taxa Selic {ano} (onde o mercado "
-                     "acha que o juro vai estar no fim do ano).")
-    _indicador_macro(e4, "Focus — PIB", b.get("focus_pib"), lambda v: f"{v:.2f}%", sufixo="%",
-                     ajuda=f"Mediana das expectativas (Focus/BC) para o crescimento do PIB {ano_cheio} "
-                     "(ano inteiro vs. o anterior — não é trimestre).")
+    est = _estados_macro(g, b)
+    reads = _reads_macro(g, b, est)
 
-    if ref:
-        st.caption(
-            f"Focus com ano de referência {ref}. Fontes: Yahoo Finance, "
-            "BLS (EUA) e Banco Central do Brasil (SGS/Olinda)."
-        )
+    # Veredito = soma dos drivers mais robustos.
+    drivers = ["juro_real", "selic_dir", "spread", "carry", "divida"]
+    score = sum({"alivia": 1, "aperta": -1}.get(est.get(k), 0) for k in drivers)
+    chave = "favoravel" if score >= 2 else "contra" if score <= -2 else "misto"
 
-    st.markdown('<div class="ciano-label">📊 Valuation do mercado (earnings yield × NTN-B)</div>',
-                unsafe_allow_html=True)
+    # 1) A LEITURA vem primeiro — é o que o app entrega de diferente.
+    st.markdown(_banner_veredito(chave, reads), unsafe_allow_html=True)
     st.caption(
-        "P/L agregado do mercado (Fundamentus, ponderado por liquidez — outliers de lucro "
-        "quase zero são descartados; validado contra o P/L Ibovespa do Oceans14). "
-        "Earnings yield = 1/P/L. Spread contra a NTN-B de 10 anos (Tesouro Transparente) "
-        "é o prêmio de risco de equity: quanto mais comprimido, menos a bolsa compensa o "
-        "risco extra frente à renda fixa real — mas cruze sempre com a trajetória de lucro "
-        "(bloco abaixo): spread baixo + lucro expandindo é sinal diferente de spread baixo "
-        "+ lucro contraindo."
+        "Leitura automática a partir de juro real, direção da Selic (Focus), prêmio da bolsa "
+        "vs. NTN-B, carry e risco fiscal. Não é recomendação — é um resumo do cenário."
     )
-    pl_m = b.get("pl_mercado", {})
-    ntnb = b.get("ntnb_10a", {})
-    spread = b.get("spread_ey_ntnb", {})
-    f1, f2, f3, f4 = st.columns(4)
-    _indicador_macro(f1, "P/L mercado (pond. liquidez)", pl_m, lambda v: f"{v:.2f}x",
-                     ajuda=f"{pl_m.get('n_papeis', '—')} papéis líquidos com P/L positivo e "
-                           "não-outlier (P/L < 30x) usados na ponderação.")
-    _indicador_macro(f2, "Earnings yield", {"valor": pl_m.get("earnings_yield")}, lambda v: f"{v:.2f}%",
-                     sufixo="%", ajuda="1 / P/L do mercado.")
-    _indicador_macro(f3, "NTN-B 10 anos", ntnb, lambda v: f"{v:.2f}%", sufixo="%",
-                     ajuda=f"Vencimento usado: {ntnb.get('vencimento', '—')}. "
-                           f"Data-base: {ntnb.get('data', '—')}.")
-    _indicador_macro(f4, "Spread (p.p.)", spread, lambda v: f"{v:+.2f}",
-                     ajuda="Earnings yield − NTN-B 10a. Positivo = bolsa paga prêmio sobre a "
-                           "renda fixa real; negativo = bolsa cara frente à NTN-B.")
-    if pl_m.get("erro"):
-        st.warning(f"P/L do mercado indisponível: {pl_m['erro']}")
-    if ntnb.get("erro"):
-        st.warning(f"NTN-B indisponível: {ntnb['erro']}")
 
+    # 2) Olhando pra frente (lucro esperado) e o que pode quebrar.
     _bloco_expectativa_lucro()
+    _bloco_gatilhos(None)  # "O que derruba daqui" (movido da aba Ciclos p/ cá)
 
-    # "O que derruba daqui" — painel de vigilância (movido da aba Ciclos p/ cá).
-    _bloco_gatilhos(None)
+    # 3) Os números crus existem, mas ficam escondidos — qualquer site mostra dólar/IPCA.
+    st.divider()
+    if st.toggle("Mostrar os números por trás (dólar, juros, inflação, valuation)",
+                 value=False, key="macro_raw",
+                 help="O app usa todos esses dados na leitura acima. Abra só se quiser conferir."):
+        _mural_macro(dados, est)
+        ref = (b.get("focus_ipca") or {}).get("ref")
+        if ref:
+            st.caption(
+                f"Focus com ano de referência {ref}. Fontes: Yahoo Finance, BLS (EUA) e "
+                "Banco Central do Brasil (SGS/Olinda). Cache de 24h."
+            )
 
 
 def _bloco_expectativa_lucro() -> None:
