@@ -2445,6 +2445,108 @@ def _grafico_ciclo(d: dict) -> None:
     st.altair_chart(chart, use_container_width=True)
 
 
+_BANDA_COR = {"forte": "#16A34A", "neutro": "#D97706", "fraco": "#DC2626"}
+
+
+def _rotulo_faixa(pct: float, baixo: str, medio: str, alto: str) -> str:
+    if pct is None or pd.isna(pct):
+        return medio
+    return baixo if pct < 34 else alto if pct > 66 else medio
+
+
+def _bloco_preditor() -> None:
+    """Termômetro de continuidade + distribuição condicional (preditor.py)."""
+    try:
+        import preditor
+        with st.spinner("Lendo a assimetria do ciclo…"):
+            p = preditor.prever()
+    except Exception as e:  # noqa: BLE001
+        p = {"erro": str(e)}
+    if p.get("erro"):
+        st.caption(f"Leitura preditiva indisponível agora: {p['erro']}")
+        return
+
+    est = p["estado"]
+    comp = p.get("componentes", {})
+    dist = p.get("distribuicao") or {}
+    cor = _BANDA_COR.get(p["banda"], "#64748B")
+    score = float(p["score"])
+    pos = min(max(score, 2), 98)
+
+    fase_rot = {"cortando": "Selic cortando", "parada": "Selic parada",
+                "subindo": "Selic subindo"}.get(est.get("ciclo_selic"), "Selic —")
+    risco_rot = _rotulo_faixa(comp.get("risco"), "Risco-país baixo", "Risco-país médio",
+                              "Risco-país alto")
+    estic_rot = _rotulo_faixa(est.get("esticamento_pct"), "Bolsa comprimida", "Esticamento neutro",
+                              "Bolsa esticada")
+
+    def _chip(txt):
+        return (f'<span style="display:inline-block;background:#F1F5F9;border:1px solid #E2E8F2;'
+                f'border-radius:999px;padding:3px 11px;font-size:0.74rem;color:#334155;'
+                f'font-weight:600;margin:0 6px 6px 0;">{html.escape(txt)}</span>')
+
+    termometro = (
+        f'<div style="position:relative;height:12px;border-radius:999px;margin:8px 0 4px;'
+        f'background:linear-gradient(90deg,#DC2626 0%,#E8A33D 45%,#16A34A 72%,#16A34A 100%);'
+        f'box-shadow:inset 0 0 0 1px rgba(11,31,42,.06);"></div>'
+        f'<div style="position:relative;height:0;">'
+        f'<div style="position:absolute;left:{pos:.1f}%;top:-20px;transform:translateX(-50%);'
+        f'color:{cor};font-size:0.8rem;">▾</div></div>'
+        f'<div style="display:flex;justify-content:space-between;font-size:0.64rem;color:#94A3B8;'
+        f'margin-top:2px;"><span>0 · colchão fino</span><span>continuidade · 100</span></div>'
+    )
+
+    st.markdown(
+        f'<div style="background:{COR_CARD};border:1px solid {COR_BORDA};'
+        f'border-top:4px solid {cor};border-radius:12px;padding:16px 20px 14px;margin:2px 0 10px;'
+        f'box-shadow:0 1px 3px rgba(19,34,74,.06);">'
+        f'<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;">'
+        f'<span style="font-size:0.68rem;letter-spacing:.11em;text-transform:uppercase;color:#64748B;'
+        f'font-weight:700;">Score de continuidade</span>'
+        f'<span style="font-size:1.7rem;font-weight:800;color:{cor};line-height:1;">'
+        f'{score:.0f}<span style="font-size:0.9rem;color:#94A3B8;font-weight:600;">/100</span></span></div>'
+        f'<div style="font-size:0.9rem;color:{COR_MUT};margin:1px 0 6px;">{html.escape(p["banda_texto"])}</div>'
+        f'{termometro}'
+        f'<div style="margin-top:12px;">{_chip(fase_rot)}{_chip(risco_rot)}{_chip(estic_rot)}</div>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+
+    # Cartão da distribuição condicional — com o N bem à mostra.
+    if dist.get("n_meses"):
+        gp = dist.get("ganho_perda")
+        gp_txt = f' · ganho/perda {gp:.2f}' if gp is not None else ""
+        st.markdown(
+            f'<div style="background:#F8FAFC;border:1px solid {COR_BORDA};border-radius:12px;'
+            f'padding:13px 18px;margin:0 0 10px;">'
+            f'<div style="font-size:0.68rem;letter-spacing:.06em;text-transform:uppercase;color:#64748B;'
+            f'font-weight:700;margin-bottom:4px;">O que veio depois, em meses parecidos</div>'
+            f'<div style="font-size:0.93rem;color:#132244;line-height:1.55;">'
+            f'Em <b>{dist["n_meses"]} meses</b> históricos parecidos com hoje '
+            f'(<b>{dist["n_episodios"]} episódios</b> distintos), o Ibovespa rendeu mediana '
+            f'<b style="color:{cor};">{dist["mediana"]:+.0f}%</b> nos 12 meses seguintes — '
+            f'positivo em <b>{dist["pct_positivo"]:.0f}%</b> deles{gp_txt}.<br>'
+            f'<span style="color:#64748B;">Faixa típica {dist["p25"]:+.0f}% a {dist["p75"]:+.0f}% · '
+            f'pior caso {dist["pior"]:+.0f}% · melhor {dist["melhor"]:+.0f}%.</span></div></div>',
+            unsafe_allow_html=True,
+        )
+
+    if p.get("exaustao"):
+        st.markdown(
+            f'<div style="background:#FEF2F2;border:1px solid #FCA5A5;border-left:4px solid #DC2626;'
+            f'border-radius:10px;padding:11px 16px;margin:0 0 10px;font-size:0.9rem;color:#7F1D1D;">'
+            f'⚠️ <b>Alerta de exaustão</b> — bolsa esticada e macro apertando ao mesmo tempo. '
+            f'Historicamente a assimetria piora nesses pontos. É um aviso de <b>risco</b>, não um sinal de venda.'
+            f'</div>', unsafe_allow_html=True,
+        )
+
+    st.caption(
+        f"Leitura probabilística a partir de ciclo da Selic, risco-país, carry e esticamento "
+        f"(base mensal desde 1999). Não é recomendação. Amostras com janelas de 12m se "
+        f"sobrepõem — por isso mostramos o nº de episódios. Fonte: {p.get('fonte', '—')}."
+    )
+
+
 def _aba_ciclo() -> None:
     st.markdown('<div class="ciano-label">Ciclo do Ibovespa</div>', unsafe_allow_html=True)
     st.caption("A história do Ibovespa com os fatos que a moveram. **Passe o mouse** nos pontos "
@@ -2927,6 +3029,7 @@ def _aba_lucros() -> None:
 
 
 def _aba_cenarios() -> None:
+    _bloco_preditor()
     st.markdown('<div class="ciano-label">Cenários — onde estamos no ciclo</div>', unsafe_allow_html=True)
     st.caption("As 4 alavancas que movem a bolsa (lucro, múltiplo, juro, fluxo), o estado de hoje "
                "e o case base histórico desde 1994. Decidir por analogia, não por previsão.")
