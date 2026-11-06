@@ -42,6 +42,59 @@ function marcarErro(q, errou){
 function poolErros(){ const m = lerErros(); return QUESTOES.filter(q => m[chaveQ(q)]); }
 function contarErros(){ return Object.keys(lerErros()).length; }
 
+// ============================================================
+//  BLOCOS OFICIAIS DA PROVA CGA (espelho da prova real)
+//  Mapeia os tópicos internos para os 5 blocos oficiais e seus
+//  pesos reais (nº de questões na prova de 45).
+// ============================================================
+const BLOCOS = {
+  "Gestão de Investimentos e de Risco": ["Estatística e Risco", "Risco de Crédito", "Derivativos", "Finanças", "Economia"],
+  "Avaliação de Desempenho":            ["Performance e Risco"],
+  "Gestão de Carteiras - Renda Fixa":   ["Renda Fixa"],
+  "Gestão de Carteiras - Renda Variável":["Renda Variável"],
+  "Investimentos no Exterior, Legislação e Tributação": ["Regulação e Fundos", "Ética e Regulação", "ESG", "Tributação", "Investimentos no Exterior"],
+};
+const PESO_BLOCO = { // nº de questões de cada bloco na prova real (total 45)
+  "Gestão de Investimentos e de Risco": 6,
+  "Avaliação de Desempenho": 6,
+  "Gestão de Carteiras - Renda Fixa": 10,
+  "Gestão de Carteiras - Renda Variável": 8,
+  "Investimentos no Exterior, Legislação e Tributação": 15,
+};
+const ORDEM_BLOCO = Object.keys(PESO_BLOCO);
+function blocoDe(topico){
+  for(const [b, ts] of Object.entries(BLOCOS)) if(ts.includes(topico)) return b;
+  return "Outros";
+}
+// desempenho acumulado por bloco (a partir do progresso por tópico)
+function progressoPorBloco(){
+  const p = lerProg();
+  const porBloco = {};
+  ORDEM_BLOCO.forEach(b => porBloco[b] = { total:0, acertos:0 });
+  Object.entries(p).forEach(([t, d]) => {
+    const b = blocoDe(t);
+    if(!porBloco[b]) porBloco[b] = { total:0, acertos:0 };
+    porBloco[b].total += d.total; porBloco[b].acertos += d.acertos;
+  });
+  return porBloco;
+}
+// blocos onde o aproveitamento está abaixo da meta (default 70%); sem histórico = considerado fraco
+function blocosFracos(meta=70){
+  const pb = progressoPorBloco();
+  return ORDEM_BLOCO.filter(b => {
+    const d = pb[b]; if(!d || d.total < 3) return true; // pouco dado = ainda precisa treinar
+    return (d.acertos/d.total*100) < meta;
+  });
+}
+
+// histórico de simulados concluídos (para evolução e ritmo)
+const HIST_KEY = "cga_simulados_v1";
+function lerHist(){ try{ return JSON.parse(localStorage.getItem(HIST_KEY)) || []; }catch(e){ return []; } }
+function salvarSimuladoHist(reg){
+  const h = lerHist(); h.push(reg);
+  try{ localStorage.setItem(HIST_KEY, JSON.stringify(h.slice(-100))); }catch(e){}
+}
+
 // sessão em andamento (retomar de onde parou)
 const SESS_KEY = "cga_sessao_v1"; // { tipo:'quiz'|'sim', estado:{...} }
 function salvarSessao(tipo, estado){
@@ -338,13 +391,15 @@ function htmlMacete(q){
 // ---------------- SIMULADO ----------------
 let simEstado = null, simTimer = null;
 function renderSimulado(){
+  const nFracos = poolFracos().length;
   conteudo.innerHTML = `
     <div class="card">
       <h3>⏱ Simulado cronometrado</h3>
-      <p class="desc" style="margin:8px 0 16px">Questões embaralhadas de todos os tópicos, com tempo. Ao final, veja o desempenho por tópico.</p>
+      <p class="desc" style="margin:8px 0 16px">Monte o simulado do jeito que quiser. O <b>Espelho da prova</b> reproduz os 5 blocos oficiais nos pesos reais (6/6/10/8/15).</p>
       <div class="controles">
         <label>Nº de questões:
           <select id="numQ">
+            <option value="45" selected>45 (prova cheia)</option>
             <option value="10">10</option>
             <option value="20">20</option>
             <option value="30">30</option>
@@ -352,13 +407,23 @@ function renderSimulado(){
           </select>
         </label>
         <label>Minutos:
-          <select id="min"><option>15</option><option>30</option><option>45</option><option>60</option></select>
+          <select id="min"><option>15</option><option>30</option><option selected>45</option><option>60</option><option>90</option></select>
         </label>
         <label>Sorteio:
           <select id="modoSorteio">
-            <option value="peso">Proporcional à prova</option>
+            <option value="espelho" selected>🎯 Espelho da prova (pesos reais)</option>
+            <option value="adaptativo">🧠 Adaptativo (foca onde erro)</option>
+            <option value="peso">Proporcional (tópicos)</option>
             <option value="uniforme">Uniforme</option>
           </select>
+        </label>
+      </div>
+      <div class="controles" style="margin-top:4px">
+        <label class="check-erros" title="${nFracos ? "Sorteia apenas dos blocos em que você está abaixo de 70%." : "Sem dados suficientes ainda — faça alguns simulados."}">
+          <input type="checkbox" id="soFracos"> <span>🎯 Só blocos fracos (&lt;70%) — ${nFracos} questões</span>
+        </label>
+        <label class="check-erros" title="Marque se consultou material. Fica separado no histórico para não inflar sua média real.">
+          <input type="checkbox" id="comConsulta"> <span>📖 Fiz com consulta</span>
         </label>
         <button class="btn ciano" id="iniciarSim">Começar ▶</button>
       </div>
@@ -368,9 +433,17 @@ function renderSimulado(){
     let n = parseInt(document.getElementById("numQ").value);
     const min = parseInt(document.getElementById("min").value);
     const modo = document.getElementById("modoSorteio").value;
-    let pool = (modo === "peso" && n > 0) ? amostrarPonderado(QUESTOES, n) : embaralhar(QUESTOES);
-    if(n > 0) pool = pool.slice(0, n);
-    simEstado = { pool, i:0, respostas:new Array(pool.length).fill(null), restante:min*60 };
+    const soFracos = document.getElementById("soFracos").checked;
+    const consulta = document.getElementById("comConsulta").checked;
+    const base = soFracos ? poolFracos() : QUESTOES;
+    if(!base.length){ alert("Sem questões para esse filtro ainda."); return; }
+    const alvo = n > 0 ? n : base.length;
+    let pool;
+    if(modo === "espelho") pool = amostrarEspelho(base, alvo);
+    else if(modo === "adaptativo") pool = amostrarAdaptativo(base, alvo);
+    else if(modo === "peso") pool = amostrarPonderado(base, alvo);
+    else pool = embaralhar(base).slice(0, alvo);
+    simEstado = { pool, i:0, respostas:new Array(pool.length).fill(null), restante:min*60, totalSeg:min*60, consulta };
     limparSessao();
     iniciarCronometro();
     mostrarSim();
@@ -431,71 +504,163 @@ function finalizarSim(){
   clearInterval(simTimer);
   limparSessao();
   const e = simEstado;
-  let acertos = 0;
-  const porTopico = {};
+  let acertos = 0, respondidas = 0;
+  const porBloco = {};
   e.pool.forEach((q,idx) => {
     const acertou = e.respostas[idx] === q.correta;
     if(acertou) acertos++;
-    porTopico[q.topico] = porTopico[q.topico] || {total:0,acertos:0};
-    porTopico[q.topico].total++;
-    if(acertou) porTopico[q.topico].acertos++;
+    const b = blocoDe(q.topico);
+    porBloco[b] = porBloco[b] || {total:0,acertos:0};
+    porBloco[b].total++;
+    if(acertou) porBloco[b].acertos++;
     registrar(q.topico, acertou);
     const respondeu = e.respostas[idx] !== null && e.respostas[idx] !== undefined;
-    if(respondeu) marcarErro(q, !acertou); // só conta erro em questão de fato respondida
+    if(respondeu){ respondidas++; marcarErro(q, !acertou); }
   });
   const pct = Math.round((acertos/e.pool.length)*100);
   const aprovado = pct >= 70;
-  const linhas = Object.entries(porTopico).sort().map(([t,d]) => {
-    const p = Math.round((d.acertos/d.total)*100);
-    return `<tr><td>${t}</td><td>${d.acertos}/${d.total}</td>
+  const segUsados = (e.totalSeg || 0) - Math.max(0, e.restante);
+  const ritmo = respondidas ? Math.round(segUsados/respondidas) : 0;
+
+  // salva no histórico (para evolução e ritmo)
+  salvarSimuladoHist({
+    ts: Date.now(), pct, acertos, total:e.pool.length,
+    segundos: segUsados, ritmo, consulta: !!e.consulta,
+    porBloco: Object.fromEntries(ORDEM_BLOCO.filter(b=>porBloco[b]).map(b=>[b,[porBloco[b].acertos,porBloco[b].total]]))
+  });
+
+  const linhas = ORDEM_BLOCO.filter(b=>porBloco[b]).map(b => {
+    const d = porBloco[b]; const p = Math.round((d.acertos/d.total)*100);
+    return `<tr><td>${b}</td><td>${d.acertos}/${d.total}</td>
       <td><div class="mini-barra"><i style="width:${p}%;background:${p>=70?'var(--verde)':p>=50?'#e0a300':'var(--vermelho)'}"></i></div></td>
       <td>${p}%</td></tr>`;
   }).join("");
   conteudo.innerHTML = `
     <div class="stat-grid">
-      <div class="stat"><b>${pct}%</b><span>Nota final</span></div>
+      <div class="stat"><b>${pct}%</b><span>Nota final${e.consulta?' 📖':''}</span></div>
       <div class="stat verde"><b>${acertos}</b><span>Acertos</span></div>
       <div class="stat vermelho"><b>${e.pool.length-acertos}</b><span>Erros</span></div>
       <div class="stat ${aprovado?'verde':'vermelho'}"><b>${aprovado?'✓':'✗'}</b><span>${aprovado?'Aprovado (≥70%)':'Abaixo de 70%'}</span></div>
     </div>
-    <h3 style="margin:6px 0 12px">Desempenho por tópico</h3>
+    ${e.consulta?`<div class="macete" style="margin:0 0 12px">📖 <b>Com consulta:</b> esta nota fica separada no histórico e não entra na sua média "real" (sem consulta).</div>`:''}
+    <div class="stat-grid" style="margin-bottom:14px">
+      <div class="stat"><b>${fmtTempo(segUsados)}</b><span>Tempo usado</span></div>
+      <div class="stat"><b>${ritmo}s</b><span>Ritmo / questão</span></div>
+    </div>
+    <h3 style="margin:6px 0 12px">Desempenho por bloco oficial</h3>
     <table class="tabela-topicos">
-      <tr><th>Tópico</th><th>Acertos</th><th>Aproveitamento</th><th>%</th></tr>
+      <tr><th>Bloco</th><th>Acertos</th><th>Aproveitamento</th><th>%</th></tr>
       ${linhas}
     </table>
     <div class="centro" id="acoesResultado">
       <button class="btn" onclick="revisar(simEstado,'erros')">📝 Revisar erros</button>
       <button class="btn" onclick="revisar(simEstado,'todas')">Ver gabarito completo</button>
+      <button class="btn" onclick="render('progresso')">📊 Ver evolução</button>
       <button class="btn ciano" onclick="render('simulado')">Novo simulado ▶</button>
     </div>
     <div id="areaRevisao"></div>`;
 }
 
 // ---------------- PROGRESSO ----------------
+function corPct(p){ return p>=70?'var(--verde)':p>=50?'#e0a300':'var(--vermelho)'; }
+
 function renderProgresso(){
   const p = lerProg();
   const ent = Object.entries(p).sort();
   let totalT=0, totalA=0;
   ent.forEach(([_,d])=>{totalT+=d.total;totalA+=d.acertos;});
   const geral = totalT ? Math.round((totalA/totalT)*100) : 0;
-  const linhas = ent.length ? ent.map(([t,d])=>{
+
+  // --- desempenho por bloco oficial ---
+  const pb = progressoPorBloco();
+  const linhasBloco = ORDEM_BLOCO.map(b => {
+    const d = pb[b] || {total:0,acertos:0};
+    const pc = d.total ? Math.round((d.acertos/d.total)*100) : null;
+    const barra = pc===null ? `<span style="color:var(--texto2)">sem dados</span>`
+      : `<div class="mini-barra"><i style="width:${pc}%;background:${corPct(pc)}"></i></div>`;
+    return `<tr><td>${b} <small style="color:var(--texto2)">(${PESO_BLOCO[b]}q)</small></td>
+      <td>${d.total?d.acertos+'/'+d.total:'—'}</td><td>${barra}</td><td>${pc===null?'—':pc+'%'}</td></tr>`;
+  }).join("");
+
+  // --- diagnóstico: bloco mais fraco com dados ---
+  const comDados = ORDEM_BLOCO.map(b=>({b, d:pb[b]})).filter(x=>x.d && x.d.total>=3)
+    .map(x=>({b:x.b, pct:x.d.acertos/x.d.total*100}));
+  let diag;
+  if(!comDados.length){
+    diag = `Faça alguns simulados (de preferência <b>sem consulta</b>) para o diagnóstico aparecer.`;
+  } else {
+    comDados.sort((a,b)=>a.pct-b.pct);
+    const pior = comDados[0];
+    const pesoPior = PESO_BLOCO[pior.b];
+    diag = `Seu ponto mais fraco é <b>${pior.b}</b> (${pior.pct.toFixed(0)}%)` +
+      (pesoPior>=10?` — e vale <b>${pesoPior} questões</b> na prova, então é alta prioridade.`:`.`) +
+      ` Use o <b>Simulado → Só blocos fracos</b> ou o modo <b>Adaptativo</b> para treinar isso.`;
+  }
+
+  // --- evolução dos simulados ---
+  const hist = lerHist();
+  const semC = hist.filter(h=>!h.consulta);
+  const mediaSemC = semC.length ? Math.round(semC.reduce((s,h)=>s+h.pct,0)/semC.length) : null;
+  const ultimos = hist.slice(-16);
+  let grafico = `<div class="vazio">Sem simulados ainda. Faça um na aba Simulado!</div>`;
+  if(ultimos.length){
+    const barras = ultimos.map(h => {
+      const alt = Math.max(4, Math.round(h.pct*0.9));
+      const cor = h.consulta ? '#9bbccf' : corPct(h.pct);
+      const borda = h.consulta ? 'border:1px dashed #5c7a8c;' : '';
+      return `<div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex:1">
+        <div style="font-size:10px;color:var(--texto2)">${h.pct}</div>
+        <div title="${h.consulta?'com consulta ':''}${new Date(h.ts).toLocaleDateString('pt-BR')}" style="width:100%;max-width:26px;height:${alt}px;background:${cor};${borda}border-radius:4px 4px 0 0"></div>
+      </div>`;
+    }).join("");
+    grafico = `
+      <div style="display:flex;align-items:flex-end;gap:5px;height:110px;padding:8px 2px;border-bottom:2px solid var(--borda)">${barras}</div>
+      <div style="display:flex;gap:16px;margin-top:8px;font-size:12px;color:var(--texto2)">
+        <span><span style="display:inline-block;width:10px;height:10px;background:var(--verde);border-radius:2px"></span> sem consulta</span>
+        <span><span style="display:inline-block;width:10px;height:10px;background:#9bbccf;border:1px dashed #5c7a8c;border-radius:2px"></span> com consulta</span>
+        <span style="margin-left:auto">linha de corte: 70%</span>
+      </div>`;
+  }
+
+  const linhasTopico = ent.length ? ent.map(([t,d])=>{
     const pc = Math.round((d.acertos/d.total)*100);
     return `<tr><td>${t}</td><td>${d.acertos}/${d.total}</td>
-      <td><div class="mini-barra"><i style="width:${pc}%;background:${pc>=70?'var(--verde)':pc>=50?'#e0a300':'var(--vermelho)'}"></i></div></td>
+      <td><div class="mini-barra"><i style="width:${pc}%;background:${corPct(pc)}"></i></div></td>
       <td>${pc}%</td></tr>`;
-  }).join("") : `<tr><td colspan="4" style="text-align:center;color:var(--texto2)">Ainda sem histórico. Responda alguns quizzes!</td></tr>`;
+  }).join("") : `<tr><td colspan="4" style="text-align:center;color:var(--texto2)">Ainda sem histórico.</td></tr>`;
+
   conteudo.innerHTML = `
     <div class="stat-grid">
       <div class="stat"><b>${totalT}</b><span>Questões respondidas</span></div>
       <div class="stat verde"><b>${totalA}</b><span>Acertos totais</span></div>
       <div class="stat"><b>${geral}%</b><span>Aproveitamento geral</span></div>
+      <div class="stat ${mediaSemC===null?'':(mediaSemC>=70?'verde':'vermelho')}"><b>${mediaSemC===null?'—':mediaSemC+'%'}</b><span>Média simulados (sem consulta)</span></div>
     </div>
-    <h3 style="margin:6px 0 12px">Histórico por tópico</h3>
+
+    <div class="card" style="border-left:4px solid var(--ciano)">
+      <h3 style="margin:0 0 6px">🔎 Diagnóstico</h3>
+      <p class="desc" style="margin:0">${diag}</p>
+    </div>
+
+    <h3 style="margin:18px 0 12px">Desempenho por bloco oficial da prova</h3>
+    <table class="tabela-topicos">
+      <tr><th>Bloco</th><th>Acertos</th><th>Aproveitamento</th><th>%</th></tr>
+      ${linhasBloco}
+    </table>
+
+    <h3 style="margin:22px 0 10px">📈 Evolução dos simulados</h3>
+    ${grafico}
+
+    <h3 style="margin:22px 0 12px">Detalhe por tópico</h3>
     <table class="tabela-topicos">
       <tr><th>Tópico</th><th>Acertos</th><th>Aproveitamento</th><th>%</th></tr>
-      ${linhas}
+      ${linhasTopico}
     </table>
-    <div class="centro"><button class="btn" onclick="if(confirm('Apagar todo o histórico?')){localStorage.removeItem('${PROG_KEY}');render('progresso');}">Zerar histórico</button></div>`;
+
+    <div class="centro" style="gap:10px">
+      <button class="btn" onclick="if(confirm('Apagar o histórico de acertos por tópico/bloco?')){localStorage.removeItem('${PROG_KEY}');render('progresso');}">Zerar histórico de tópicos</button>
+      <button class="btn" onclick="if(confirm('Apagar o histórico de simulados (evolução)?')){localStorage.removeItem('${HIST_KEY}');render('progresso');}">Zerar evolução</button>
+    </div>`;
 }
 
 // ---------------- utils ----------------
@@ -527,6 +692,60 @@ function amostrarPonderado(todas, n){
     if(q){ usados.add(q); escolhidas.push(q); }
   }
   return escolhidas;
+}
+
+// sorteio ESPELHO DA PROVA: distribui n questões entre os 5 blocos oficiais
+// na proporção real (6/6/10/8/15). Para n=45 reproduz a prova exata.
+function amostrarEspelho(todas, n){
+  const porBloco = {};
+  todas.forEach(q => { const b = blocoDe(q.topico); (porBloco[b] = porBloco[b] || []).push(q); });
+  Object.values(porBloco).forEach(arr => arr.sort(() => Math.random()-0.5));
+  const totalPeso = ORDEM_BLOCO.reduce((s,b)=>s+PESO_BLOCO[b],0);
+  // cota ideal por bloco (arredondada), limitada ao que existe
+  let cotas = ORDEM_BLOCO.map(b => ({ b, alvo: Math.round(n * PESO_BLOCO[b] / totalPeso) }));
+  const escolhidas = [], usados = new Set();
+  cotas.forEach(({b, alvo}) => {
+    const disp = porBloco[b] || [];
+    for(let i=0; i<alvo && i<disp.length; i++){ usados.add(disp[i]); escolhidas.push(disp[i]); }
+  });
+  // completa/apara até n (caso arredondamento ou falta de questão em algum bloco)
+  if(escolhidas.length < n){
+    const resto = embaralhar(todas.filter(q => !usados.has(q)));
+    for(const q of resto){ if(escolhidas.length>=n) break; escolhidas.push(q); }
+  }
+  return embaralhar(escolhidas.slice(0, n));
+}
+
+// sorteio ADAPTATIVO: pondera cada tópico pela FRAQUEZA (1 - aproveitamento),
+// então temas onde você erra mais caem com mais frequência.
+function amostrarAdaptativo(todas, n){
+  const prog = lerProg();
+  const porTopico = {};
+  todas.forEach(q => { (porTopico[q.topico] = porTopico[q.topico] || []).push(q); });
+  Object.values(porTopico).forEach(arr => arr.sort(() => Math.random()-0.5));
+  const pesoTopico = t => {
+    const d = prog[t];
+    const aprov = (d && d.total>=3) ? d.acertos/d.total : 0.5; // sem dado = neutro
+    return 0.15 + (1 - aprov); // base 0,15 + fraqueza (0 a 1)
+  };
+  const escolhidas = [], usados = new Set();
+  while(escolhidas.length < n){
+    const disp = Object.keys(porTopico).filter(t => porTopico[t].some(q => !usados.has(q)));
+    if(!disp.length) break;
+    const pesos = disp.map(pesoTopico);
+    const total = pesos.reduce((a,b)=>a+b,0);
+    let r = Math.random()*total, t = disp[0];
+    for(let i=0;i<disp.length;i++){ r -= pesos[i]; if(r<=0){ t = disp[i]; break; } }
+    const q = porTopico[t].find(q => !usados.has(q));
+    if(q){ usados.add(q); escolhidas.push(q); }
+  }
+  return escolhidas;
+}
+
+// questões dos blocos em que você está abaixo da meta (para "focar nos fracos")
+function poolFracos(meta=70){
+  const fracos = new Set(blocosFracos(meta));
+  return QUESTOES.filter(q => fracos.has(blocoDe(q.topico)));
 }
 
 // inicial
