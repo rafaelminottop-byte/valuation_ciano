@@ -142,6 +142,11 @@ def _com_features(df: pd.DataFrame) -> pd.DataFrame:
     d["risco_d12"] = d["risco"].diff(12)
     d["mm12"] = d["ibov"].rolling(12).mean()
     d["estic"] = d["ibov"] / d["mm12"] - 1.0   # esticamento vs MM12
+    # z da banda (mesma definição validada no walk-forward): desvio do ln(preço)
+    # da MM24, padronizado por 36m. Mede quantos desvios o Ibov está da tendência.
+    lnp = np.log(d["ibov"])
+    estic_log = lnp - lnp.rolling(24).mean()
+    d["z"] = (estic_log - estic_log.rolling(36).mean()) / estic_log.rolling(36).std()
     return d
 
 
@@ -190,6 +195,43 @@ def _banda_score(score: float) -> tuple[str, str]:
     if score >= 45:
         return "neutro", "Terreno neutro — assimetria sem viés claro."
     return "fraco", "Colchão fino — a margem de segurança histórica sumiu."
+
+
+# ---------------------------------------------------------------------------
+# Banda de exposição (mean-reversion) — validada em teste fora da amostra:
+# reduzir quando o Ibov sai da banda (esticado) e estacionar no CDI, recomprando
+# na volta à média, bateu CDI e buy&hold em 2013–2026 (dados nunca vistos) e no
+# walk-forward 2009–2026 (CAGR ~12.8% vs CDI 9.9%, tombo −31% vs −43%).
+# ---------------------------------------------------------------------------
+_LIMIAR_ESTICADO = 1.0   # z acima disto = zona de alívio (robusto fora da amostra)
+
+
+def banda_exposicao(d: pd.DataFrame) -> dict:
+    """Zona de exposição de hoje + o que veio depois em zonas parecidas."""
+    z = d["z"].iloc[-1]
+    if z is None or pd.isna(z):
+        return {"zona": "indefinida", "z": None}
+
+    if z >= 1.5:
+        zona, acao = "muito esticada", "aliviar"
+    elif z >= _LIMIAR_ESTICADO:
+        zona, acao = "esticada", "aliviar"
+    elif z <= 0:
+        zona, acao = "comprimida", "recomprar"
+    else:
+        zona, acao = "neutra", "manter"
+
+    hi = d.loc[d["z"] >= _LIMIAR_ESTICADO, "fwd12"].dropna()
+    lo = d.loc[d["z"] <= 0, "fwd12"].dropna()
+    return {
+        "z": round(float(z), 2),
+        "zona": zona,
+        "acao": acao,
+        "med_esticado": round(float(hi.median()) * 100, 1) if len(hi) else None,
+        "med_comprimido": round(float(lo.median()) * 100, 1) if len(lo) else None,
+        "n_esticado": int(len(hi)),
+        "n_comprimido": int(len(lo)),
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -281,6 +323,7 @@ def prever(usar_cache: bool = True) -> dict:
         "banda_texto": banda_txt,
         "componentes": sc["componentes"],
         "distribuicao": _distribuicao(d),
+        "banda_exposicao": banda_exposicao(d),
         "exaustao": exaustao,
         "fonte": "Yahoo (^BVSP) · cambio.py (EMBI+CDS) · BCB SGS 432",
     }

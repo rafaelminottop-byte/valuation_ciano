@@ -2531,6 +2531,35 @@ def _bloco_preditor() -> None:
             unsafe_allow_html=True,
         )
 
+    # Banda de exposição (mean-reversion validada fora da amostra).
+    be = p.get("banda_exposicao") or {}
+    if be.get("z") is not None:
+        _ZONA = {
+            "comprimida": ("#16A34A", "Zona de recompra",
+                           "Ibov abaixo da própria tendência — historicamente ponto de manter ou retomar exposição."),
+            "neutra": ("#64748B", "Exposição neutra",
+                       "Nem esticado nem comprimido — seguir o plano, sem gatilho de banda."),
+            "esticada": ("#D97706", "Zona de alívio",
+                         "Ibov esticado acima da tendência — historicamente valeu aliviar um pouco e recomprar na volta à média."),
+            "muito esticada": ("#DC2626", "Zona de alívio forte",
+                               "Ibov bem acima da tendência — maior risco de devolver o ganho num evento."),
+        }
+        czona, titulo_z, desc_z = _ZONA.get(be["zona"], ("#64748B", "—", ""))
+        st.markdown(
+            f'<div style="background:#F8FAFC;border:1px solid {COR_BORDA};border-left:4px solid {czona};'
+            f'border-radius:12px;padding:13px 18px;margin:0 0 10px;">'
+            f'<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;">'
+            f'<span style="font-size:0.68rem;letter-spacing:.06em;text-transform:uppercase;color:#64748B;'
+            f'font-weight:700;">Banda de exposição · {html.escape(titulo_z)}</span>'
+            f'<span style="font-size:0.9rem;font-weight:800;color:{czona};">z {be["z"]:+.1f}</span></div>'
+            f'<div style="font-size:0.92rem;color:#132244;line-height:1.5;margin-top:3px;">{html.escape(desc_z)}</div>'
+            f'<div style="font-size:0.78rem;color:#64748B;margin-top:5px;">'
+            f'Teste fora da amostra (2013–26): aliviar nas zonas esticadas e recomprar na média '
+            f'rendeu ~12,6% a.a. vs CDI 9,9%, com tombo menor. Gira bastante — considere IR e custos. '
+            f'Sinal de apoio, não ordem.</div></div>',
+            unsafe_allow_html=True,
+        )
+
     if p.get("exaustao"):
         st.markdown(
             f'<div style="background:#FEF2F2;border:1px solid #FCA5A5;border-left:4px solid #DC2626;'
