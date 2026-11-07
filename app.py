@@ -2521,7 +2521,7 @@ def _bloco_preditor(p: dict = None) -> None:
     # Cartão da distribuição condicional — com o N bem à mostra.
     if dist.get("n_meses"):
         gp = dist.get("ganho_perda")
-        gp_txt = f' · ganho/perda {gp:.2f}' if gp is not None else ""
+        gp_txt = f' · ganho/perda {_n2(gp)}' if gp is not None else ""
         st.markdown(
             f'<div style="background:#F8FAFC;border:1px solid {COR_BORDA};border-radius:12px;'
             f'padding:13px 18px;margin:0 0 10px;">'
@@ -2554,9 +2554,8 @@ def _bloco_preditor(p: dict = None) -> None:
             niveis = (f'Recompra na volta à média: ~{media:,.0f} pts.'.replace(",", ".")
                       if media else "")
         else:
-            niveis = (f'Teto de atenção (z=1,5): ~{teto:,.0f} pts · '
-                      f'tendência: ~{media:,.0f} pts.'.replace(",", ".")
-                      if (teto and media) else "")
+            niveis = ("Teto de atenção (z=1,5): ~" + f"{teto:,.0f}".replace(",", ".") + " pts · tendência: ~"
+                      + f"{media:,.0f}".replace(",", ".") + " pts.") if (teto and media) else ""
         st.markdown(
             f'<div style="background:#F8FAFC;border:1px solid {COR_BORDA};border-left:4px solid {czona};'
             f'border-radius:12px;padding:13px 18px;margin:0 0 10px;">'
@@ -2567,9 +2566,10 @@ def _bloco_preditor(p: dict = None) -> None:
             f'<div style="font-size:0.92rem;color:#132244;line-height:1.5;margin-top:3px;">{html.escape(be.get("nota",""))}</div>'
             + (f'<div style="font-size:0.8rem;color:#475569;margin-top:4px;">{niveis}</div>' if niveis else "")
             + f'<div style="font-size:0.78rem;color:#64748B;margin-top:5px;">'
-            f'Validada fora da amostra (2013–26): aliviar parte nas zonas esticadas e recomprar na '
-            f'média bateu o CDI com tombo menor. O ganho vem muito do carrego do CDI — some com juro baixo. '
-            f'Gira: considere IR e custos. Sinal de apoio, nunca ordem.</div></div>',
+            f'Histórico desde 1999: a banda ficou acima de comprar e segurar o Ibov, mas perto do CDI, e não '
+            f'evitou as quedas de 2008 e 2020 (vieram de mercado não esticado). O ganho vem do carrego do CDI '
+            f'e some com juro baixo. Veja os números no laboratório abaixo. Gira: considere IR e custos. '
+            f'Sinal de apoio, nunca ordem.</div></div>',
             unsafe_allow_html=True,
         )
 
@@ -2584,56 +2584,255 @@ def _bloco_preditor(p: dict = None) -> None:
 
     st.caption(
         f"Leitura probabilística a partir de ciclo da Selic, risco-país, carry e esticamento "
-        f"(base mensal desde 1999). Não é recomendação. Amostras com janelas de 12m se "
+        f"(base mensal desde 1994). Não é recomendação. Amostras com janelas de 12m se "
         f"sobrepõem — por isso mostramos o nº de episódios. Fonte: {p.get('fonte', '—')}."
     )
 
 
-def _grafico_banda(serie: dict) -> bool:
-    """Ibov × tendência (z=0) × teto (z=1,5), com a banda sombreada e os disparos."""
+_LAB_MODOS = {"Reduzir 25%": "25", "Reduzir 50%": "50", "Reduzir 75%": "75",
+              "Reduzir 100% (tudo)": "100", "Deixar só o lucro": "lucro"}
+_LAB_TRAVAS = {"Nenhuma": "nenhuma", "Score forte (≥ 68)": "score",
+               "Selic cortando": "selic"}
+_LAB_CAMADAS = ["Ibovespa", "Nível de recompra", "Teto de alívio",
+                "Níveis de desconto (z −1,0 e −1,5)", "Sinais da simulação", "Score (painel abaixo)"]
+_LAB_CAMADAS_PADRAO = ["Ibovespa", "Nível de recompra", "Teto de alívio", "Sinais da simulação"]
+_LAB_PERIODOS = {"Tudo": None, "20 anos": 240, "10 anos": 120, "5 anos": 60}
+
+
+def _lab_restaurar() -> None:
+    st.session_state["lab_alivio"] = 1.5
+    st.session_state["lab_recompra"] = 0.0
+    st.session_state["lab_modo"] = "Reduzir 50%"
+    st.session_state["lab_trava"] = "Nenhuma"
+    st.session_state["lab_maxmeses"] = 0
+    st.session_state["lab_queda"] = 0
+    st.session_state["lab_camadas"] = list(_LAB_CAMADAS_PADRAO)
+
+
+def _laboratorio_banda(p: dict) -> None:
+    """Gráfico interativo: liga/desliga camadas e mexe nos parâmetros da banda."""
+    import math
+
+    import preditor
+
+    st.markdown('<div class="ciano-label" style="margin-top:18px;">Laboratório da banda de exposição</div>',
+                unsafe_allow_html=True)
+    lab = p.get("lab")
+    if not isinstance(lab, dict) or lab.get("erro") or not lab.get("datas"):
+        st.caption("Laboratório indisponível agora.")
+        return
     try:
         import plotly.graph_objects as go
     except Exception:  # noqa: BLE001
-        return False
-    x = serie.get("datas") or []
-    ib = serie.get("ibov") or []
-    pz0 = serie.get("pz0") or []
-    pz15 = serie.get("pz15") or []
-    if len(x) < 12:
-        return False
+        st.caption("Gráfico indisponível (Plotly ausente).")
+        return
 
-    # disparos: Ibov cruza ACIMA do teto (esticou)
-    dx, dy = [], []
-    for i in range(1, len(x)):
-        if ib[i] > pz15[i] and ib[i - 1] <= pz15[i - 1]:
-            dx.append(x[i]); dy.append(ib[i])
+    st.caption(
+        "Aqui você liga e desliga as camadas e muda os parâmetros para ver o que cada regra diz. "
+        "Atenção: ajustar até o resultado ficar bonito é overfitting. Este quadro serve para "
+        "entender, não para escolher a configuração campeã — por isso o padrão congelado fica sempre ao lado. "
+        "A simulação vai de 1999 (câmbio flutuante) até hoje; 1994–98 só servem para calcular o z e o score."
+    )
+    c1, c2 = st.columns(2)
+    alivio = c1.slider("Alívio quando o Ibov passa de z =", 0.5, 3.0, 1.5, 0.1, key="lab_alivio",
+                       help="z = quantos desvios o Ibov está acima da própria tendência de 24 meses. "
+                            "Mais alto = alivia só em esticamentos mais extremos (mais agressivo para cima).")
+    recompra = c2.slider("Recompra quando volta a z =", -1.0, 1.0, 0.0, 0.1, key="lab_recompra",
+                         help="0 = só volta quando o Ibov cai até a tendência. Comprar no teto seria comprar caro.")
+    c3, c4 = st.columns(2)
+    modo_rot = c3.selectbox("Quanto aliviar", list(_LAB_MODOS), index=1, key="lab_modo")
+    trava_rot = c4.selectbox("Trava: não alivia quando…", list(_LAB_TRAVAS), index=0, key="lab_trava")
+    c8, c9 = st.columns(2)
+    max_meses = c8.slider("Recompra também após N meses fora (0 = desligado)", 0, 36, 0, 3, key="lab_maxmeses",
+                          help="Evita ficar de fora para sempre quando a média sobe mais rápido que o preço "
+                               "(em 2016 foram 26 meses fora).")
+    queda = c9.slider("…ou se o Ibov cair X% abaixo do preço de venda (0 = desligado)", 0, 30, 0, 5,
+                      key="lab_queda", help="Recompra mais barato do que vendeu. Se o preço nunca cai, não dispara.")
+    c5, c6, c7 = st.columns([3, 1.3, 1.1])
+    camadas = c5.multiselect("Camadas no gráfico", _LAB_CAMADAS, default=_LAB_CAMADAS_PADRAO,
+                             key="lab_camadas")
+    periodo = c6.selectbox("Período", list(_LAB_PERIODOS), index=2, key="lab_periodo")
+    c7.markdown("<div style='height:1.7rem'></div>", unsafe_allow_html=True)
+    c7.button("Restaurar padrão", on_click=_lab_restaurar, key="lab_reset")
+
+    modo, trava = _LAB_MODOS[modo_rot], _LAB_TRAVAS[trava_rot]
+    inicio = preditor.LAB_INICIO_TRAVA if trava == "score" else None
+    cfg = {"alivio": float(alivio), "recompra": float(recompra), "modo": modo, "trava": trava,
+           "max_meses": int(max_meses), "queda_venda": float(queda)}
+    bt = preditor.backtest_banda(lab, inicio=inicio, **cfg)
+    bp = preditor.backtest_banda(lab, inicio=inicio, **preditor.LAB_PADRAO)
+    testadas = st.session_state.setdefault("lab_testadas", set())
+    testadas.add((round(float(alivio), 1), round(float(recompra), 1), modo, trava, int(max_meses), int(queda)))
+
+    # ---------------- gráfico ----------------
+    datas = lab["datas"]
+    n = len(datas)
+    k = _LAB_PERIODOS[periodo]
+    i0 = 0 if k is None else max(0, n - k)
+    xs = datas[i0:]
+
+    def nivel(zk):
+        return [None if (lm is None or s is None) else math.exp(lm + zk * s)
+                for lm, s in zip(lab["ln_media"][i0:], lab["sest"][i0:])]
+
+    def fz(v):
+        return f"{v:.1f}".replace(".", ",")
 
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=x, y=pz15, name="Teto z=1,5 (atenção)", mode="lines",
-                             line=dict(color="#EA8A3C", width=1.4, dash="dash"),
-                             hovertemplate="Teto: %{y:,.0f}<extra></extra>"))
-    fig.add_trace(go.Scatter(x=x, y=pz0, name="Tendência / recompra (z=0)", mode="lines",
-                             line=dict(color="#94A3B8", width=1.4, dash="dash"),
-                             fill="tonexty", fillcolor="rgba(234,138,60,0.08)",
-                             hovertemplate="Tendência: %{y:,.0f}<extra></extra>"))
-    fig.add_trace(go.Scatter(x=x, y=ib, name="Ibovespa", mode="lines",
-                             line=dict(color="#2a78d6", width=2.4),
-                             hovertemplate="Ibov: %{y:,.0f} pts<extra></extra>"))
-    if dx:
-        fig.add_trace(go.Scatter(x=dx, y=dy, name="Esticou (z>1,5)", mode="markers",
-                                 marker=dict(color="#DC2626", size=9, line=dict(color="#fff", width=1.5)),
-                                 hovertemplate="Esticou: %{x} · %{y:,.0f}<extra></extra>"))
-    fig.update_layout(
-        height=380, margin=dict(l=8, r=8, t=10, b=8),
-        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-        legend=dict(orientation="h", yanchor="bottom", y=1.0, x=0, font=dict(size=11)),
-        hovermode="x unified",
+    if "Teto de alívio" in camadas:
+        fig.add_trace(go.Scatter(x=xs, y=nivel(alivio), name="Teto de alívio (z=" + fz(alivio) + ")",
+                                 mode="lines", line=dict(color="#EA8A3C", width=1.5, dash="dash"),
+                                 hovertemplate="Teto: %{y:,.0f}<extra></extra>"))
+    if "Nível de recompra" in camadas:
+        fig.add_trace(go.Scatter(x=xs, y=nivel(recompra), name="Recompra (z=" + fz(recompra) + ")",
+                                 mode="lines", line=dict(color="#94A3B8", width=1.5, dash="dash"),
+                                 fill="tonexty" if "Teto de alívio" in camadas else "none",
+                                 fillcolor="rgba(234,138,60,0.08)",
+                                 hovertemplate="Recompra: %{y:,.0f}<extra></extra>"))
+    if "Níveis de desconto (z −1,0 e −1,5)" in camadas:
+        for zk, nome, cor in ((-1.0, "Desconto forte (z −1,0)", "#5DB37E"),
+                              (-1.5, "Desconto profundo (z −1,5)", "#16A34A")):
+            fig.add_trace(go.Scatter(x=xs, y=nivel(zk), name=nome, mode="lines",
+                                     line=dict(color=cor, width=1.3, dash="dot"),
+                                     hovertemplate=nome + ": %{y:,.0f}<extra></extra>"))
+    if "Ibovespa" in camadas:
+        fig.add_trace(go.Scatter(x=xs, y=lab["ibov"][i0:], name="Ibovespa", mode="lines",
+                                 line=dict(color="#2a78d6", width=2.4),
+                                 hovertemplate="Ibov: %{y:,.0f} pts<extra></extra>"))
+    if "Sinais da simulação" in camadas and not bt.get("erro"):
+        ib_por_data = dict(zip(datas, lab["ibov"]))
+        for tipo, cor, simb, nome in (("venda", "#DC2626", "triangle-down", "Aliviou"),
+                                      ("recompra", "#16A34A", "triangle-up", "Recomprou")):
+            pts = [s for s in bt["sinais"] if s["tipo"] == tipo and s["data"] >= xs[0]]
+            if pts:
+                fig.add_trace(go.Scatter(
+                    x=[s["data"] for s in pts], y=[ib_por_data.get(s["data"]) for s in pts],
+                    mode="markers", name=nome,
+                    marker=dict(color=cor, size=11, symbol=simb, line=dict(color="#fff", width=1)),
+                    hovertemplate=nome + ": %{x}<extra></extra>"))
+    if fig.data:
+        fig.update_layout(height=400, margin=dict(l=8, r=8, t=10, b=8), hovermode="x unified",
+                          paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+                          legend=dict(orientation="h", yanchor="bottom", y=1.0, x=0, font=dict(size=11)))
+        fig.update_yaxes(type="log", showgrid=True, gridcolor="rgba(148,163,184,0.18)",
+                         tickformat=",.0f", title=None)
+        fig.update_xaxes(showgrid=False, title=None)
+        st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    else:
+        st.info("Escolha ao menos uma camada para desenhar o gráfico.")
+
+    if "Score (painel abaixo)" in camadas:
+        sc = lab["score"][i0:]
+        if any(v is not None for v in sc):
+            f2 = go.Figure()
+            f2.add_trace(go.Scatter(x=xs, y=sc, name="Score", mode="lines", connectgaps=False,
+                                    line=dict(color="#0B1F2A", width=2),
+                                    hovertemplate="Score: %{y:.0f}<extra></extra>"))
+            f2.add_hline(y=68, line=dict(color="#16A34A", width=1, dash="dot"),
+                         annotation_text="forte (68)", annotation_position="top left")
+            f2.add_hline(y=45, line=dict(color="#D97706", width=1, dash="dot"),
+                         annotation_text="neutro (45)", annotation_position="bottom left")
+            f2.update_layout(height=200, margin=dict(l=8, r=8, t=10, b=8), showlegend=False,
+                             paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)")
+            f2.update_yaxes(range=[0, 100], showgrid=True, gridcolor="rgba(148,163,184,0.18)", title=None)
+            f2.update_xaxes(showgrid=False, title=None)
+            st.plotly_chart(f2, use_container_width=True, config={"displayModeBar": False})
+        else:
+            st.caption("Score histórico só existe de 2016 em diante (antes disso falta risco-país/carry).")
+
+    # ---------------- leitura de hoje com os SEUS parâmetros ----------------
+    z_now, lm, s_now = lab["z"][-1], lab["ln_media"][-1], lab["sest"][-1]
+    ibov_now = lab["ibov"][-1]
+    if None not in (z_now, lm, s_now) and ibov_now:
+        mil = lambda v: f"{v:,.0f}".replace(",", ".")  # noqa: E731
+        teto = math.exp(lm + alivio * s_now)
+        rec = math.exp(lm + recompra * s_now)
+        if z_now > alivio:
+            situ = "o Ibov está ACIMA do seu teto de alívio"
+        elif z_now < recompra:
+            situ = "o Ibov está abaixo do seu nível de recompra"
+        else:
+            situ = "o Ibov está entre a recompra e o teto (sem gatilho)"
+        st.markdown(
+            f'<div style="background:#F8FAFC;border:1px solid {COR_BORDA};border-radius:12px;'
+            f'padding:11px 16px;margin:4px 0 8px;font-size:0.9rem;color:#132244;line-height:1.5;">'
+            f'<b>Hoje com os seus parâmetros:</b> z {_n2(z_now, True)} — {situ}. '
+            f'O alívio começa em ~{mil(teto)} pts ({_fmt_pc((teto / ibov_now - 1) * 100)} a partir de hoje) '
+            f'e a recompra em ~{mil(rec)} pts.</div>', unsafe_allow_html=True)
+
+    # ---------------- simulação: sua configuração × padrão × referências ----------------
+    if bt.get("erro"):
+        st.caption(bt["erro"])
+        return
+    e, ep = bt["estrategia"], bp["estrategia"]
+
+    def lin(rot, m, extra_fora=None, extra_n=None):
+        return [rot, _fmt_pc(m["cagr"], sinal=False), f"{m['mult']:.1f}x".replace(".", ","),
+                _fmt_pc(m["dd"], sinal=False),
+                "—" if extra_fora is None else f"{extra_fora:.0f}%",
+                "—" if extra_n is None else str(extra_n)]
+
+    linhas = [
+        lin("<b>Sua configuração</b>", e, e["pct_fora"], e["vendas"]),
+        lin("Padrão congelado (z>1,5 · reduz 50% · recompra z<0)", ep, ep["pct_fora"], ep["vendas"]),
+        lin("Ibov comprar e segurar", bt["bh"]),
+        lin("CDI", bt["cdi"]),
+    ]
+    st.markdown(_tabela_html(["Simulação", "Ganho ao ano", "Multiplicou", "Pior queda",
+                              "Tempo aliviado", "Nº de alívios"], linhas, destaque=0),
+                unsafe_allow_html=True)
+    st.caption(f"Simulado de {bt['inicio']} a {bt['fim']} ({bt['n_meses']} meses), dados mensais. "
+               "A decisão de cada mês usa só o que se sabia no mês anterior. Não desconta IR nem custos "
+               "(girar tem custo). O último mês pode estar incompleto.")
+
+    # Cada alívio e a sua recompra — para julgar se a recompra foi boa.
+    cic = bt.get("ciclos") or []
+    if cic:
+        st.markdown('<div style="font-size:0.7rem;letter-spacing:.06em;text-transform:uppercase;color:#64748B;'
+                    'font-weight:700;margin:8px 0 0;">Cada alívio e a sua recompra</div>', unsafe_allow_html=True)
+        _MOT = {"z": "voltou à recompra", "tempo": "tempo máximo", "queda": "caiu abaixo da venda", None: "ainda aliviado"}
+        lin_c = []
+        for c in cic:
+            mais_caro = c["preco_recompra"] > c["preco_venda"]
+            lin_c.append([
+                f'<b>{html.escape(c["venda"])}</b>', f'{c["preco_venda"]:,.0f}'.replace(",", "."),
+                html.escape(c["recompra"] or "hoje"), f'{c["preco_recompra"]:,.0f}'.replace(",", "."),
+                f'<span style="color:{"#DC2626" if mais_caro else "#16A34A"};font-weight:700;">{_fmt_pc(c["var_ibov"])}</span>',
+                _fmt_pc(c["cdi"], sinal=False),
+                f'<span style="color:{"#16A34A" if c["vantagem"] > 0 else "#DC2626"};font-weight:700;">{_fmt_pc(c["vantagem"])}</span>',
+                html.escape(_MOT.get(c["motivo"], "—"))])
+        st.markdown(_tabela_html(["Aliviou em", "Ibov", "Recomprou em", "Ibov", "Ibov no meio", "CDI no meio",
+                                  "Sair rendeu (pp)", "Motivo"], lin_c), unsafe_allow_html=True)
+        caras = sum(1 for c in cic if c["recompra"] and c["preco_recompra"] > c["preco_venda"])
+        fech = sum(1 for c in cic if c["recompra"])
+        comp = sum(1 for c in cic if c["vantagem"] > 0)
+        st.caption(f"A recompra saiu mais cara que a venda em {caras} de {fech} ciclos fechados, e sair compensou "
+                   f"em {comp} de {len(cic)}. Vermelho em 'Ibov no meio' = recomprou mais caro. 'Sair rendeu' = CDI "
+                   "acumulado menos a variação do Ibov (em pontos percentuais, para 100% da posição).")
+
+    # O que a trava mudou, em datas concretas.
+    if trava != "nenhuma":
+        sem = preditor.backtest_banda(lab, inicio=inicio, **{**cfg, "trava": "nenhuma"})
+        v0 = sorted(s["data"] for s in sem["sinais"] if s["tipo"] == "venda")
+        v1 = sorted(s["data"] for s in bt["sinais"] if s["tipo"] == "venda")
+        evitados = [d for d in v0 if d not in v1]
+        if trava == "score":
+            sc_ok = [(v, zz) for v, zz in zip(lab["score"], lab["z"]) if v is not None and zz is not None]
+            n_forte = sum(1 for v, _ in sc_ok if v >= 68)
+            n_estic = sum(1 for v, zz in sc_ok if v >= 68 and zz > alivio)
+            st.caption(f"Trava por score: o score passou de 68 em {n_forte} de {len(sc_ok)} meses e em "
+                       f"{n_estic} deles o Ibov estava acima do seu teto de alívio, então ela quase não atua. "
+                       "O score mede mais o desconto da bolsa do que a continuidade da alta.")
+        txt = ", ".join(evitados) if evitados else "nenhum"
+        st.caption("Alívios que essa trava evitou: " + txt + ". Compare com o que o Ibov fez depois "
+                   "de cada um antes de concluir que a trava ajuda.")
+
+    n_test = len(testadas)
+    st.caption(
+        f"Você já testou {n_test} configuraç{'ão' if n_test == 1 else 'ões'} nesta sessão. Quanto mais "
+        "combinações se experimenta, mais o melhor resultado reflete sorte e não a regra (viés de seleção). "
+        "Só vale como evidência o que for definido antes de olhar e depois medido ao vivo."
     )
-    fig.update_yaxes(type="log", showgrid=True, gridcolor="rgba(148,163,184,0.18)",
-                     tickformat=",.0f", title=None)
-    fig.update_xaxes(showgrid=False, title=None)
-    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
-    return True
 
 
 @st.cache_data(ttl=24 * 3600, show_spinner=False)
@@ -2769,11 +2968,14 @@ def _secao_desconto(ds) -> None:
                     unsafe_allow_html=True)
         b12, t12 = ds["ep_bate12"]
         b24, t24 = ds["ep_bate24"]
+        melhores = sorted((e for e in eps if e["ibov12"] is not None), key=lambda e: -e["ibov12"])[:3]
+        anos = ", ".join(sorted({e["inicio"][:4] for e in melhores}))
         st.caption(
             f"Entrando no primeiro mês de cada episódio, o Ibov bateu o CDI em {b12} de {t12} casos em 12 meses e "
-            f"em apenas {b24} de {t24} em 24 meses. O ganho se concentra em poucos episódios (2016 e 2020): "
-            "a mediana das faixas acima é puxada por eles, e em 2008 o desconto ainda ficou mais profundo depois "
-            "da entrada. Verde = bateu o CDI. Comprar e segurar o Ibov no período inteiro perdeu do CDI."
+            f"em {b24} de {t24} em 24 meses. O ganho se concentra em poucos episódios ({anos}): a mediana das "
+            "faixas acima é puxada por eles. Episódios separados por poucos meses (como em 2002) podem ser a "
+            "mesma crise contada duas vezes, e em 2008 o desconto ainda ficou mais profundo depois da entrada. "
+            "Verde = bateu o CDI. Desde 1999, comprar e segurar o Ibov rendeu menos que o CDI."
         )
 
 
@@ -2842,13 +3044,19 @@ def _secao_validacao(v) -> None:
             f'{t["pct_bate"]:.0f}%'] for t in v["tercos"]]
     st.markdown(_tabela_html(["Terço do score", "Excesso sobre o CDI em 12m (mediana)", "Janelas que bateram o CDI"], lin),
                 unsafe_allow_html=True)
+    alto = next((t for t in v["tercos"] if t["nome"] == "alto"), None)
+    sinal = ("positiva em todas as defasagens testadas" if v["spearman_min"] > 0
+             else "de sinal diferente conforme o mês de partida")
     st.caption(
-        f"Teste de {v['inicio']} a {v['fim']}, com janelas de 12 meses que não se sobrepõem. "
-        f"O score alto de fato antecipou melhores 12 meses — mas são só ~{v['n_janelas']} janelas independentes e o "
-        f"resultado oscila muito conforme o mês de partida (correlação de postos entre {_n2(v['spearman_min'], True)} e "
-        f"{_n2(v['spearman_max'], True)}, média {_n2(v['spearman_medio'], True)}). Ou seja: é um indício real, porém frágil. "
-        "E o teste é otimista: a normalização usa só o passado, mas os pesos do score foram escolhidos olhando "
-        "as correlações da amostra inteira. Trate o score como um voto no comitê, nunca como o juiz."
+        f"Teste de {v['inicio']} a {v['fim']}, com ~{v['n_janelas']} janelas de 12 meses que não se sobrepõem. "
+        f"A correlação de postos entre score e retorno seguinte foi {sinal} (de {_n2(v['spearman_min'], True)} a "
+        f"{_n2(v['spearman_max'], True)}, média {_n2(v['spearman_medio'], True)}): há sinal, mas o efeito é "
+        + ("modesto — o terço alto bate o CDI em " + f"{alto['pct_bate']:.0f}% das janelas" if alto else "modesto")
+        + ", e o contraste mais claro está em evitar o terço baixo. Com só 2016–2025 (~9 janelas) o efeito parecia "
+        "bem maior: a amostra curta inflava o resultado. O score usa os drivers disponíveis em cada época "
+        "(risco-país desde 1994, NTN-B desde 2005, carry desde 2013). E o teste é otimista: a normalização usa "
+        "só o passado, mas os pesos foram escolhidos olhando a amostra inteira. Trate o score como um voto no "
+        "comitê, nunca como o juiz."
     )
 
 
@@ -2856,7 +3064,7 @@ def _aba_preditivo() -> None:
     st.markdown('<div class="ciano-label">Ibovespa — leitura preditiva</div>', unsafe_allow_html=True)
     st.caption(
         "Não prevê topo nem fundo (ninguém faz isso de forma confiável). Mede **assimetria** "
-        "com dados mensais desde 1999 e sempre mostra a amostra: o **score de continuidade** diz "
+        "com dados mensais desde o Plano Real (1994) e sempre mostra a amostra: o **score de continuidade** diz "
         "se o vento macro favorece seguir comprado, e a **banda de exposição** marca quando o "
         "Ibov está esticado demais frente à própria tendência. Tudo é sinal de apoio, não ordem."
     )
@@ -2869,15 +3077,7 @@ def _aba_preditivo() -> None:
 
     _bloco_preditor(p)
 
-    st.markdown('<div class="ciano-label" style="margin-top:18px;">Banda de exposição — Ibov × tendência × teto</div>',
-                unsafe_allow_html=True)
-    st.caption(
-        "Azul = Ibovespa. Cinza = tendência de 24 meses (nível de recompra, z=0). Laranja = teto "
-        "de atenção (z≈13–14% acima da tendência, z=1,5). Pontos vermelhos: quando o Ibov furou o "
-        "teto. A recompra é só na volta à média — nunca no teto (seria comprar caro)."
-    )
-    if not _grafico_banda(p.get("serie_banda") or {}):
-        st.caption("Gráfico indisponível (série curta ou Plotly ausente).")
+    _laboratorio_banda(p)
 
     _secao_desconto(p.get("desconto"))
     _secao_correlacoes(p.get("correlacoes"))

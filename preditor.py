@@ -39,10 +39,14 @@ import numpy as np
 import pandas as pd
 
 CACHE_DIR = Path(__file__).resolve().parent / ".cache"
-CACHE_PANEL = CACHE_DIR / "preditor_painel_v2.json"  # v2: + NTN-B 10a e CDI mensal
+CACHE_PANEL = CACHE_DIR / "preditor_painel_v3.json"  # v3: histórico desde o Plano Real (1994)
 CACHE_TTL_SEGUNDOS = 24 * 60 * 60  # 24h (padrão do projeto)
 
-INICIO = "1999-01"   # pós-câmbio flutuante
+# Plano Real (jul/1994): antes disso o Ibov está em moeda de hiperinflação, sem comparação.
+# Atenção ao regime: até jan/1999 o câmbio era administrado e os juros eram extremos
+# (Selic acima de 40%), então "bater o CDI" nos anos 1990 é uma barra altíssima.
+INICIO = "1994-07"
+VALID_INICIO = "1999-01"   # início da validação do score (já há >4 anos de histórico)
 JANELA_FWD = 12      # meses à frente que queremos descrever
 K_VIZINHOS = 36      # meses análogos usados na distribuição condicional
 
@@ -69,12 +73,12 @@ _CICLO_SCORE = {"cortando": 100.0, "parada": 50.0, "subindo": 18.0}
 # Painel histórico
 # ---------------------------------------------------------------------------
 def _sgs_historico(codigo: int) -> pd.Series:
-    """Série do BCB/SGS desde 1998, buscada em blocos de 9 anos (limite do SGS)."""
+    """Série do BCB/SGS desde o Plano Real, buscada em blocos de 9 anos (limite do SGS)."""
     import macro
 
     pts: dict[str, float] = {}
     fim = date.today()
-    ini_total = date(1998, 1, 1)
+    ini_total = date(1994, 7, 1)
     cur = fim
     while cur > ini_total:
         ci = max(ini_total, cur - timedelta(days=365 * 9))
@@ -96,12 +100,20 @@ def _sgs_historico(codigo: int) -> pd.Series:
 
 
 def _selic_mensal() -> pd.Series:
-    """Selic meta (SGS 432) no fim de cada mês."""
-    s = _sgs_historico(432)
-    if s.empty:
-        return s
-    s = s.resample("ME").last()
-    return pd.Series(s.values, index=pd.PeriodIndex(s.index, freq="M"))
+    """Selic no fim de cada mês: meta (SGS 432) desde mar/1999; antes disso a meta não
+    existia como série, então usa a Selic over anualizada (SGS 1178), que anda ~0,1 p.p.
+    abaixo da meta — diferença irrelevante frente aos juros de 25–45% da época."""
+    def mensal(cod):
+        x = _sgs_historico(cod)
+        if x.empty:
+            return x
+        x = x.resample("ME").last()
+        return pd.Series(x.values, index=pd.PeriodIndex(x.index, freq="M"))
+    meta = mensal(432)
+    over = mensal(1178)
+    if meta.empty:
+        return over
+    return meta.combine_first(over)
 
 
 def _cdi_mensal() -> pd.Series:
@@ -164,6 +176,18 @@ def _montar_painel() -> pd.DataFrame:
         dfc = dfc.set_index("per")[["risco", "carry"]]
     else:
         dfc = pd.DataFrame(columns=["risco", "carry"])
+
+    # O cambio.py corta tudo em 2013, mas o EMBI (Ipeadata) existe desde 1994. Onde há
+    # as duas séries vale a do cambio.py (EMBI + CDS recente, mesma escala).
+    try:
+        e = cambio._embi()
+        embi = pd.Series(e.values, index=pd.PeriodIndex(e.index, freq="M"))
+        embi = embi[~embi.index.duplicated(keep="last")]
+    except Exception:  # noqa: BLE001
+        embi = pd.Series(dtype=float)
+    risco = dfc["risco"].combine_first(embi) if not dfc.empty else embi
+    dfc = dfc.reindex(dfc.index.union(risco.index))
+    dfc["risco"] = risco
 
     h = yf.Ticker("^BVSP").history(period="max", interval="1mo")["Close"].dropna()
     ibov = pd.Series(h.values, index=pd.PeriodIndex(h.index, freq="M"), name="ibov")
@@ -263,14 +287,22 @@ def _pct(serie: pd.Series, valor: float) -> float:
 # ---------------------------------------------------------------------------
 # Score de continuidade (0–100)
 # ---------------------------------------------------------------------------
+def _pct_ou_nan(serie: pd.Series, valor: float) -> float:
+    """Como _pct, mas sem dado devolve NaN (o componente é IGNORADO no score) em vez de
+    50 'neutro' — um 50 fixo diluía o score nos meses em que o driver não existia."""
+    if pd.isna(valor) or serie.dropna().empty:
+        return float("nan")
+    return _pct(serie, valor)
+
+
 def _score(d: pd.DataFrame) -> dict:
     cur = d.iloc[-1]
     comp = {
-        "risco": _pct(d["risco"], cur["risco"]),
-        "selic": _pct(d["selic"], cur["selic"]),
-        "risco_d12": _pct(d["risco_d12"], cur["risco_d12"]),
-        "carry": _pct(d["carry"], cur["carry"]),
-        "estic_inv": 100.0 - _pct(d["estic"], cur["estic"]),
+        "risco": _pct_ou_nan(d["risco"], cur["risco"]),
+        "selic": _pct_ou_nan(d["selic"], cur["selic"]),
+        "risco_d12": _pct_ou_nan(d["risco_d12"], cur["risco_d12"]),
+        "carry": _pct_ou_nan(d["carry"], cur["carry"]),
+        "estic_inv": 100.0 - _pct_ou_nan(d["estic"], cur["estic"]),
         "selic_ciclo": _CICLO_SCORE[_fase_selic(cur["selic_d6"])],
         # NTN-B ausente/NaN -> NaN (componente é ignorado, pesos se renormalizam)
         "ntnb": (_pct(d["ntnb"], cur["ntnb"])
@@ -324,8 +356,9 @@ def banda_exposicao(d: pd.DataFrame, score: float = 50.0) -> dict:
         zona = "muito esticada" if z >= 1.5 else "esticada"
         if macro_forte:
             acao, ativa = "manter", False
-            nota = ("Esticado, mas o macro está em continuidade forte (Selic cedendo). "
-                    "Histórico (2016, 2026): não aliviar dentro de um bull.")
+            nota = ("Esticado, mas o score está forte. Hipótese: esticado com macro a favor "
+                    "tende a ser bull e não topo — NÃO comprovada: esse cenário quase nunca "
+                    "ocorreu (score ≥ 68 em 3 de 131 meses desde 2016).")
         else:
             acao, ativa = "aliviar parte", True
             nota = ("Esticado e macro sem apoio — considere aliviar PARTE (deixar só o lucro / "
@@ -484,14 +517,22 @@ def correlacoes_moveis(d: pd.DataFrame, janela: int = 36) -> list:
 # NORMALIZAÇÃO é fora da amostra, mas os PESOS foram escolhidos olhando as
 # correlações da amostra inteira — logo a validação é OTIMISTA, não 100% limpa.
 # ---------------------------------------------------------------------------
-def validar_score(d: pd.DataFrame, inicio: str = "2016-01") -> dict:
+def _scores_expansivos(d: pd.DataFrame, inicio: str = VALID_INICIO) -> pd.Series:
+    """Score de cada mês calculado SÓ com dados até aquele mês (percentis expansivos)."""
+    idx = [p for p in d.index if p >= pd.Period(inicio, "M")]
+    return pd.Series([_score(d.loc[:p])["score"] for p in idx],
+                     index=pd.PeriodIndex(idx, freq="M"), dtype=float)
+
+
+def validar_score(d: pd.DataFrame, inicio: str = VALID_INICIO, scores: pd.Series = None) -> dict:
     if "exc12" not in d:
         return {"erro": "CDI indisponível."}
     idx = [p for p in d.index if p >= pd.Period(inicio, "M")]
     if len(idx) < 60:
         return {"erro": "Histórico curto para validar."}
     E = d.loc[idx].copy()
-    E["score"] = [_score(d.loc[:p])["score"] for p in idx]
+    sc = scores if scores is not None else _scores_expansivos(d, inicio)
+    E["score"] = sc.reindex(E.index).values
     E = E.dropna(subset=["fwd12", "exc12"])
     if len(E) < 48:
         return {"erro": "Amostra curta para validar."}
@@ -521,6 +562,151 @@ def validar_score(d: pd.DataFrame, inicio: str = "2016-01") -> dict:
     }
 
 
+# ---------------------------------------------------------------------------
+# Laboratório da banda: simulação com parâmetros escolhidos na tela.
+# É ferramenta de EXPLORAÇÃO, não de validação: ajustar até o resultado ficar bonito
+# é overfitting. A tela sempre mostra o padrão congelado ao lado e conta as
+# configurações testadas.
+# ---------------------------------------------------------------------------
+LAB_PADRAO = {"alivio": 1.5, "recompra": 0.0, "modo": "50", "trava": "nenhuma",
+              "max_meses": 0, "queda_venda": 0.0}
+LAB_LIMIAR_TRAVA = 68.0   # score a partir do qual a trava do macro impede o alívio
+LAB_INICIO_TRAVA = VALID_INICIO  # o score histórico só é confiável a partir daqui
+
+
+def _serie_lab(d: pd.DataFrame, scores: pd.Series) -> dict:
+    """Série mensal completa (z, níveis, retornos, CDI, score) para o laboratório."""
+    r = d["ibov"].pct_change()
+    s = d.dropna(subset=["z", "ln_media", "sest", "cdi"]).copy()
+    s = s.loc[:s["cdi"].last_valid_index()]
+
+    def L(x, nd):
+        return [None if pd.isna(v) else round(float(v), nd) for v in x]
+
+    return {
+        "datas": [str(p) for p in s.index],
+        "ibov": L(s["ibov"], 0), "r": L(r.reindex(s.index), 6), "cdi": L(s["cdi"], 6),
+        "z": L(s["z"], 3), "ln_media": L(s["ln_media"], 5), "sest": L(s["sest"], 5),
+        "score": L(scores.reindex(s.index), 1) if scores is not None else [None] * len(s),
+        "ciclo": [_fase_selic(v) for v in s["selic_d6"]],
+    }
+
+
+def _metricas_ret(rets: list) -> dict:
+    a = np.asarray(rets, dtype=float)
+    w = np.cumprod(1 + a)
+    n = len(a)
+    return {
+        "mult": round(float(w[-1]), 2),
+        "cagr": round(float(w[-1] ** (12 / n) - 1) * 100, 1),
+        "vol": round(float(a.std(ddof=1) * np.sqrt(12)) * 100, 1),
+        "dd": round(float((w / np.maximum.accumulate(w) - 1).min()) * 100, 1),
+    }
+
+
+def _fechar_ciclo(aberto: dict, data_rec, preco_rec: float, motivo) -> dict:
+    """Um alívio e a sua recompra: o que o Ibov fez no meio e o que o CDI rendeu."""
+    var = preco_rec / aberto["preco"] - 1
+    cdi_acc = aberto["cdi"] - 1
+    return {"venda": aberto["data"], "preco_venda": aberto["preco"],
+            "recompra": data_rec, "preco_recompra": preco_rec, "motivo": motivo,
+            "var_ibov": _pc(var), "cdi": _pc(cdi_acc), "vantagem": _pc(cdi_acc - var)}
+
+
+def backtest_banda(lab: dict, alivio: float = 1.5, recompra: float = 0.0, modo: str = "50",
+                   trava: str = "nenhuma", inicio: str = None,
+                   max_meses: int = 0, queda_venda: float = 0.0) -> dict:
+    """Simula a banda: alivia quando z (do mês anterior) passa de ``alivio`` e recompra
+    quando volta abaixo de ``recompra``. ``modo``: '25'/'50'/'75'/'100' = % da posição
+    que vai pro CDI; 'lucro' = o principal vai pro CDI e só o lucro fica na bolsa.
+    ``trava``: 'nenhuma' | 'score' (não alivia com score ≥ 68; só de 2016, e quase nunca
+    atua) | 'selic' (não alivia com a Selic cortando).
+    Recompra extra (além de z < ``recompra``): ``max_meses`` (volta após N meses fora,
+    0 = desligado) e ``queda_venda`` (volta se o Ibov cair X% abaixo do preço de venda,
+    0 = desligado). Decisão do mês t usa dados de t-1 (sem olhar o futuro)."""
+    datas, r, cdi = lab["datas"], lab["r"], lab["cdi"]
+    z, sc, ibv = lab["z"], lab["score"], lab["ibov"]
+    ciclo = lab.get("ciclo") or [None] * len(datas)
+    n = len(datas)
+    i0 = 1
+    if inicio:
+        i0 = max(1, next((i for i, dt in enumerate(datas) if dt >= inicio), n))
+    if n - i0 < 24:
+        return {"erro": "Período curto demais para simular."}
+
+    fora = False
+    W = 1.0
+    ib_val, cd_val, principal = 1.0, 0.0, 1.0   # só usados no modo 'lucro'
+    rets, ref_ib, ref_cdi, sinais, ciclos = [], [], [], [], []
+    meses_fora = vendas = 0
+    aberto = None
+    for i in range(i0, n):
+        zp, sp = z[i - 1], sc[i - 1]
+        if trava == "score":
+            bloqueia = sp is not None and sp >= LAB_LIMIAR_TRAVA
+        elif trava == "selic":
+            bloqueia = ciclo[i - 1] == "cortando"
+        else:
+            bloqueia = False
+        if zp is not None:
+            if not fora and zp > alivio and not bloqueia:
+                fora = True
+                vendas += 1
+                aberto = {"data": datas[i], "preco": ibv[i - 1], "cdi": 1.0, "meses": 0}
+                sinais.append({"data": datas[i], "tipo": "venda", "ibov": ibv[i - 1]})
+                if modo == "lucro":
+                    mover = min(principal, ib_val)
+                    ib_val -= mover
+                    cd_val += mover
+            elif fora:
+                motivo = None
+                if zp < recompra:
+                    motivo = "z"
+                elif max_meses and aberto["meses"] >= max_meses:
+                    motivo = "tempo"
+                elif queda_venda and ibv[i - 1] <= aberto["preco"] * (1 - queda_venda / 100):
+                    motivo = "queda"
+                if motivo:
+                    fora = False
+                    sinais.append({"data": datas[i], "tipo": "recompra", "ibov": ibv[i - 1],
+                                   "motivo": motivo})
+                    ciclos.append(_fechar_ciclo(aberto, datas[i], ibv[i - 1], motivo))
+                    aberto = None
+                    if modo == "lucro":
+                        tot = ib_val + cd_val
+                        ib_val, cd_val, principal = tot, 0.0, tot
+        ri, ci = r[i], cdi[i]
+        if ri is None or ci is None:
+            continue
+        if modo == "lucro":
+            ib_val *= (1 + ri)
+            cd_val *= (1 + ci)
+            novo = ib_val + cd_val
+            ret = novo / W - 1
+            W = novo
+        else:
+            w = 1.0 - float(modo) / 100.0 if fora else 1.0
+            ret = w * ri + (1 - w) * ci
+            W *= (1 + ret)
+        rets.append(ret)
+        ref_ib.append(ri)
+        ref_cdi.append(ci)
+        if fora:
+            meses_fora += 1
+            aberto["cdi"] *= (1 + ci)
+            aberto["meses"] += 1
+
+    if aberto is not None:   # ainda aliviado: compara com o preço de hoje
+        ciclos.append(_fechar_ciclo(aberto, None, ibv[-1], None))
+
+    est = _metricas_ret(rets)
+    est["pct_fora"] = round(meses_fora / len(rets) * 100, 0)
+    est["vendas"] = vendas
+    return {"estrategia": est, "bh": _metricas_ret(ref_ib), "cdi": _metricas_ret(ref_cdi),
+            "sinais": sinais, "ciclos": ciclos, "inicio": datas[i0], "fim": datas[-1],
+            "n_meses": len(rets)}
+
+
 def _seguro(fn, *args):
     """Um estudo que falha não pode derrubar a leitura inteira."""
     try:
@@ -545,7 +731,9 @@ def _n_episodios(periodos: list[pd.Period]) -> int:
 
 
 def _distribuicao(d: pd.DataFrame, k: int = K_VIZINHOS) -> dict:
-    cols = ["risco", "selic", "selic_d6", "carry", "estic"]
+    # Sem o carry de propósito: ele só existe desde 2013 e amarrava os análogos a 4 episódios.
+    # Sem ele a busca usa o histórico desde 1995 (9 episódios) com leitura parecida.
+    cols = ["risco", "selic", "selic_d6", "estic"]
     base = d.dropna(subset=cols)
     if len(base) < k + 6:
         return {"erro": "Histórico insuficiente para análogos.", "n_meses": 0}
@@ -603,6 +791,11 @@ def prever(usar_cache: bool = True) -> dict:
     estic_pct = _pct(d["estic"], cur["estic"])
     exaustao = bool(estic_pct >= 75 and sc["score"] < 45)
 
+    # Score histórico (só dados do passado em cada mês): calculado uma vez e usado
+    # tanto na validação quanto no laboratório da banda.
+    sh = _seguro(_scores_expansivos, d)
+    sh = sh if isinstance(sh, pd.Series) else None
+
     return {
         "erro": None,
         "data_base": str(d.index[-1]),
@@ -623,7 +816,8 @@ def prever(usar_cache: bool = True) -> dict:
         "banda_exposicao": banda_exposicao(d, sc["score"]),
         "desconto": _seguro(zona_desconto, d),
         "correlacoes": _seguro(correlacoes_moveis, d),
-        "validacao": _seguro(validar_score, d),
+        "validacao": _seguro(validar_score, d, VALID_INICIO, sh),
+        "lab": _seguro(_serie_lab, d, sh),
         "exaustao": exaustao,
         "serie_banda": _serie_banda(d),
         "fonte": "Yahoo (^BVSP) · cambio.py (EMBI+CDS) · BCB SGS 432/4391 · Tesouro Transparente (NTN-B)",
