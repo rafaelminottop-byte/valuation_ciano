@@ -2483,6 +2483,8 @@ def _bloco_preditor(p: dict = None) -> None:
                               "Risco-país alto")
     estic_rot = _rotulo_faixa(est.get("esticamento_pct"), "Bolsa comprimida", "Esticamento neutro",
                               "Bolsa esticada")
+    ntnb_rot = _rotulo_faixa(comp.get("ntnb"), "Juro real longo baixo", "Juro real longo médio",
+                             "Juro real longo alto")
 
     def _chip(txt):
         return (f'<span style="display:inline-block;background:#F1F5F9;border:1px solid #E2E8F2;'
@@ -2511,7 +2513,7 @@ def _bloco_preditor(p: dict = None) -> None:
         f'{score:.0f}<span style="font-size:0.9rem;color:#94A3B8;font-weight:600;">/100</span></span></div>'
         f'<div style="font-size:0.9rem;color:{COR_MUT};margin:1px 0 6px;">{html.escape(p["banda_texto"])}</div>'
         f'{termometro}'
-        f'<div style="margin-top:12px;">{_chip(fase_rot)}{_chip(risco_rot)}{_chip(estic_rot)}</div>'
+        f'<div style="margin-top:12px;">{_chip(fase_rot)}{_chip(risco_rot)}{_chip(ntnb_rot)}{_chip(estic_rot)}</div>'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -2561,7 +2563,7 @@ def _bloco_preditor(p: dict = None) -> None:
             f'<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;">'
             f'<span style="font-size:0.68rem;letter-spacing:.06em;text-transform:uppercase;color:#64748B;'
             f'font-weight:700;">Banda de exposição · {html.escape(titulo_z)}</span>'
-            f'<span style="font-size:0.9rem;font-weight:800;color:{czona};">z {be["z"]:+.1f}</span></div>'
+            f'<span style="font-size:0.9rem;font-weight:800;color:{czona};">z {_n2(be["z"], True)}</span></div>'
             f'<div style="font-size:0.92rem;color:#132244;line-height:1.5;margin-top:3px;">{html.escape(be.get("nota",""))}</div>'
             + (f'<div style="font-size:0.8rem;color:#475569;margin-top:4px;">{niveis}</div>' if niveis else "")
             + f'<div style="font-size:0.78rem;color:#64748B;margin-top:5px;">'
@@ -2634,6 +2636,222 @@ def _grafico_banda(serie: dict) -> bool:
     return True
 
 
+@st.cache_data(ttl=24 * 3600, show_spinner=False)
+def _prever_cache() -> dict:
+    import preditor
+    p = preditor.prever()
+    if p.get("erro"):
+        # Levantar em vez de devolver: o Streamlit NÃO cacheia exceção, então um erro
+        # passageiro não fica preso por 24h (o "None preso" que já nos mordeu antes).
+        raise RuntimeError(p["erro"])
+    return p
+
+
+def _fmt_pc(v, sinal: bool = True) -> str:
+    if v is None:
+        return "—"
+    return (f"{v:+.1f}%" if sinal else f"{v:.1f}%").replace(".", ",")
+
+
+def _tabela_html(colunas: list, linhas: list, destaque: int = None) -> str:
+    """Tabela enxuta no estilo dos cards (células já vêm como HTML seguro)."""
+    th = "".join(
+        f'<th style="text-align:{"left" if i == 0 else "right"};padding:6px 10px;font-size:0.66rem;'
+        f'letter-spacing:.05em;text-transform:uppercase;color:#64748B;font-weight:700;'
+        f'border-bottom:1px solid {COR_BORDA};white-space:nowrap;">{html.escape(c)}</th>'
+        for i, c in enumerate(colunas))
+    trs = []
+    for j, lin in enumerate(linhas):
+        bg = "#EAF6F8" if j == destaque else "transparent"
+        tds = "".join(
+            f'<td style="text-align:{"left" if i == 0 else "right"};padding:7px 10px;font-size:0.84rem;'
+            f'color:#132244;border-bottom:1px solid #EEF2F6;white-space:nowrap;">{c}</td>'
+            for i, c in enumerate(lin))
+        trs.append(f'<tr style="background:{bg};">{tds}</tr>')
+    return (f'<div style="overflow-x:auto;background:{COR_CARD};border:1px solid {COR_BORDA};'
+            f'border-radius:12px;padding:4px 6px;margin:6px 0 10px;"><table style="width:100%;'
+            f'border-collapse:collapse;"><thead><tr>{th}</tr></thead><tbody>{"".join(trs)}</tbody></table></div>')
+
+
+def _n2(v, sinal: bool = False) -> str:
+    """Número com 2 casas e vírgula decimal (padrão brasileiro)."""
+    return (f"{v:+.2f}" if sinal else f"{v:.2f}").replace(".", ",")
+
+
+def _cor_vs(v, ref) -> str:
+    """Verde se bateu o CDI, vermelho se não."""
+    if v is None or ref is None:
+        return "#64748B"
+    return "#16A34A" if v > ref else "#DC2626"
+
+
+def _secao_desconto(ds) -> None:
+    st.markdown('<div class="ciano-label" style="margin-top:22px;">Comprar descontado e segurar × CDI</div>',
+                unsafe_allow_html=True)
+    if not isinstance(ds, dict) or ds.get("erro"):
+        st.caption("Estudo do desconto indisponível agora.")
+        return
+    faixa = ds["faixa_atual"]
+    prof = ds.get("nivel_profundo_pts")
+    forte = ds.get("nivel_forte_pts")
+    queda = ds.get("queda_ate_profundo_pct")
+    fa = next((f for f in ds["faixas"] if f["faixa"] == faixa), {})
+    bate = fa.get("pct_bate")
+    exc = fa.get("exc_med")
+    nm = fa.get("n_meses")
+    ne = fa.get("n_episodios")
+    _rot_z = {"profundo": "z < −1,5", "forte": "z de −1,5 a −1,0", "moderado": "z de −1,0 a −0,5",
+              "leve": "z de −0,5 a 0", "acima da média": "z ≥ 0"}
+
+    if bate is None:
+        cor, titulo = "#64748B", f"Desconto {faixa}"
+        corpo = "Poucos meses históricos nessa faixa para comparar com o CDI."
+    elif faixa in ("profundo", "forte"):
+        cor, titulo = "#16A34A", f"Desconto {faixa}"
+        corpo = (f"Historicamente, entrar nessa faixa e segurar 12 meses bateu o CDI em {bate:.0f}% dos casos "
+                 f"(excesso mediano {_fmt_pc(exc)}), mas a amostra é pequena: {nm} meses, {ne} episódios.")
+    elif faixa in ("moderado", "leve"):
+        cor, titulo = "#D97706", f"Desconto {faixa} — ainda não é o ponto"
+        corpo = (f"Nessa faixa, comprar e segurar 12 meses bateu o CDI em apenas {bate:.0f}% dos casos "
+                 f"(excesso mediano {_fmt_pc(exc)}; {nm} meses, {ne} episódios). "
+                 "Estar abaixo da tendência, sozinho, não compensou o juro alto.")
+    else:
+        cor, titulo = "#64748B", "Sem desconto"
+        corpo = ("Ibov acima da própria tendência: comprar e segurar 12 meses empatou com o CDI "
+                 f"({bate:.0f}% de acerto) — não há o colchão do desconto.")
+    niveis = ""
+    if prof and forte:
+        mil = lambda n: f"{n:,.0f}".replace(",", ".")  # noqa: E731  (milhar com ponto)
+        niveis = (f"O desconto <b>forte</b> começa em ~{mil(forte)} pts e o <b>profundo</b> em "
+                  f"~{mil(prof)} pts ({_fmt_pc(queda)} a partir de hoje).")
+    st.markdown(
+        f'<div style="background:#F8FAFC;border:1px solid {COR_BORDA};border-left:4px solid {cor};'
+        f'border-radius:12px;padding:13px 18px;margin:0 0 6px;">'
+        f'<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;">'
+        f'<span style="font-size:0.68rem;letter-spacing:.06em;text-transform:uppercase;color:#64748B;'
+        f'font-weight:700;">{html.escape(titulo)}</span>'
+        f'<span style="font-size:0.9rem;font-weight:800;color:{cor};">z {_n2(ds["z"], True)}</span></div>'
+        f'<div style="font-size:0.92rem;color:#132244;line-height:1.5;margin-top:3px;">{html.escape(corpo)}</div>'
+        + (f'<div style="font-size:0.82rem;color:#475569;margin-top:5px;">{niveis}</div>' if niveis else "")
+        + '</div>', unsafe_allow_html=True)
+
+    # Resultado por faixa de desconto
+    linhas, destaque = [], None
+    for i, f in enumerate(ds["faixas"]):
+        if f["faixa"] == faixa:
+            destaque = i
+        rot = f'<b>{html.escape(f["faixa"].capitalize())}</b> <span style="color:#94A3B8;">{_rot_z.get(f["faixa"], "")}</span>'
+        if f.get("ibov_med") is None:
+            linhas.append([rot, "—", "—", "—", "—", "—"])
+            continue
+        linhas.append([
+            rot, f'{f["n_meses"]} ({f["n_episodios"]} ep.)',
+            f'<span style="color:{_cor_vs(f["ibov_med"], f["cdi_med"])};font-weight:700;">{_fmt_pc(f["ibov_med"])}</span>',
+            _fmt_pc(f["cdi_med"], sinal=False), f'{f["pct_bate"]:.0f}%', _fmt_pc(f["pior"])])
+    st.markdown(_tabela_html(["Faixa de desconto", "Meses", "Ibov em 12m (mediana)", "CDI em 12m",
+                              "Bate o CDI", "Pior caso"], linhas, destaque), unsafe_allow_html=True)
+
+    # Episódios de desconto profundo, um a um
+    eps = ds.get("episodios") or []
+    if eps:
+        st.markdown('<div style="font-size:0.7rem;letter-spacing:.06em;text-transform:uppercase;color:#64748B;'
+                    'font-weight:700;margin:6px 0 0;">Cada vez que o desconto foi profundo (z &lt; −1,5), '
+                    'entrando no primeiro mês</div>', unsafe_allow_html=True)
+        lin = []
+        for e in eps:
+            lin.append([
+                f'<b>{html.escape(e["inicio"])}</b>', f'{e["z_min"]:+.1f}'.replace(".", ","),
+                f'<span style="color:{_cor_vs(e["ibov12"], e["cdi12"])};font-weight:700;">{_fmt_pc(e["ibov12"])}</span>',
+                _fmt_pc(e["cdi12"], sinal=False),
+                f'<span style="color:{_cor_vs(e["ibov24"], e["cdi24"])};font-weight:700;">{_fmt_pc(e["ibov24"])}</span>',
+                _fmt_pc(e["cdi24"], sinal=False)])
+        st.markdown(_tabela_html(["Entrada", "z mínimo", "Ibov 12m", "CDI 12m", "Ibov 24m", "CDI 24m"], lin),
+                    unsafe_allow_html=True)
+        b12, t12 = ds["ep_bate12"]
+        b24, t24 = ds["ep_bate24"]
+        st.caption(
+            f"Entrando no primeiro mês de cada episódio, o Ibov bateu o CDI em {b12} de {t12} casos em 12 meses e "
+            f"em apenas {b24} de {t24} em 24 meses. O ganho se concentra em poucos episódios (2016 e 2020): "
+            "a mediana das faixas acima é puxada por eles, e em 2008 o desconto ainda ficou mais profundo depois "
+            "da entrada. Verde = bateu o CDI. Comprar e segurar o Ibov no período inteiro perdeu do CDI."
+        )
+
+
+def _secao_correlacoes(cs) -> None:
+    st.markdown('<div class="ciano-label" style="margin-top:22px;">Os drivers ainda movem o Ibov?</div>',
+                unsafe_allow_html=True)
+    if not isinstance(cs, list) or not cs:
+        st.caption("Correlações móveis indisponíveis agora.")
+        return
+    st.caption(
+        "Correlação de 36 meses entre o retorno mensal do Ibov e a variação mensal de cada driver. "
+        "Abaixo de zero = o driver pesa na bolsa, como esperado (juro real ou risco subindo, bolsa caindo). "
+        "Quando a correlação some ou muda de sinal, o mercado está olhando para outra coisa — "
+        "sinal de que o regime pode ter mudado e os modelos merecem menos confiança."
+    )
+    cols = st.columns(len(cs))
+    _STC = {"firme": ("#16A34A", "Firme"), "fraca": ("#D97706", "Fraca"), "invertida": ("#DC2626", "Invertida")}
+    for col, c in zip(cols, cs):
+        cor, rot = _STC.get(c["status"], ("#64748B", c["status"]))
+        afrouxou = c["atual"] > c["media"] + 0.15
+        nota = "Mais fraca que o normal — o mercado dá menos peso a esse driver agora." if afrouxou else \
+               "Em linha com o histórico."
+        col.markdown(
+            f'<div style="background:{COR_CARD};border:1px solid {COR_BORDA};border-top:3px solid {COR_NAVY};'
+            f'border-radius:10px;padding:12px 14px;">'
+            f'<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">'
+            f'<span style="font-size:0.66rem;letter-spacing:.05em;text-transform:uppercase;color:#64748B;'
+            f'font-weight:700;">{html.escape(c["driver"])}</span>'
+            f'<span style="display:inline-flex;align-items:center;gap:5px;font-size:0.64rem;font-weight:600;'
+            f'color:#64748B;"><span style="width:7px;height:7px;border-radius:50%;background:{cor};"></span>{rot}</span></div>'
+            f'<div style="font-size:1.25rem;font-weight:800;color:{COR_INK};margin:3px 0 2px;">'
+            f'{_n2(c["atual"])}</div>'
+            f'<div style="font-size:0.72rem;color:#475569;line-height:1.5;">Média: {_n2(c["media"])}</div>'
+            f'<div style="font-size:0.72rem;color:#475569;line-height:1.5;">Faixa: {_n2(c["min"])} '
+            f'a {_n2(c["max"])}</div>'
+            f'<div style="font-size:0.72rem;color:#64748B;line-height:1.45;margin-top:4px;">{nota}</div></div>',
+            unsafe_allow_html=True)
+    try:
+        import plotly.graph_objects as go
+        fig = go.Figure()
+        paleta = ["#2a78d6", "#eb6834"]
+        for i, c in enumerate(cs):
+            fig.add_trace(go.Scatter(x=c["serie"]["datas"], y=c["serie"]["valor"], name=c["driver"],
+                                     mode="lines", line=dict(color=paleta[i % 2], width=2.2),
+                                     hovertemplate="%{y:.2f}<extra>" + c["driver"] + "</extra>"))
+        fig.add_hline(y=0, line=dict(color="#94A3B8", width=1, dash="dot"))
+        fig.update_layout(height=250, margin=dict(l=8, r=8, t=10, b=8), hovermode="x unified",
+                          paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+                          legend=dict(orientation="h", yanchor="bottom", y=1.0, x=0, font=dict(size=11)))
+        fig.update_yaxes(range=[-1, 0.4], showgrid=True, gridcolor="rgba(148,163,184,0.18)", title=None)
+        fig.update_xaxes(showgrid=False, title=None)
+        st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    except Exception:  # noqa: BLE001
+        pass
+
+
+def _secao_validacao(v) -> None:
+    st.markdown('<div class="ciano-label" style="margin-top:22px;">Quanto confiar nesse score?</div>',
+                unsafe_allow_html=True)
+    if not isinstance(v, dict) or v.get("erro"):
+        st.caption("Validação indisponível agora.")
+        return
+    nomes = {"baixo": "Score baixo", "médio": "Score médio", "alto": "Score alto"}
+    lin = [[f'<b>{nomes.get(t["nome"], t["nome"])}</b>',
+            f'<span style="color:{"#16A34A" if t["exc_med"] > 0 else "#DC2626"};font-weight:700;">{_fmt_pc(t["exc_med"])}</span>',
+            f'{t["pct_bate"]:.0f}%'] for t in v["tercos"]]
+    st.markdown(_tabela_html(["Terço do score", "Excesso sobre o CDI em 12m (mediana)", "Janelas que bateram o CDI"], lin),
+                unsafe_allow_html=True)
+    st.caption(
+        f"Teste de {v['inicio']} a {v['fim']}, com janelas de 12 meses que não se sobrepõem. "
+        f"O score alto de fato antecipou melhores 12 meses — mas são só ~{v['n_janelas']} janelas independentes e o "
+        f"resultado oscila muito conforme o mês de partida (correlação de postos entre {_n2(v['spearman_min'], True)} e "
+        f"{_n2(v['spearman_max'], True)}, média {_n2(v['spearman_medio'], True)}). Ou seja: é um indício real, porém frágil. "
+        "E o teste é otimista: a normalização usa só o passado, mas os pesos do score foram escolhidos olhando "
+        "as correlações da amostra inteira. Trate o score como um voto no comitê, nunca como o juiz."
+    )
+
+
 def _aba_preditivo() -> None:
     st.markdown('<div class="ciano-label">Ibovespa — leitura preditiva</div>', unsafe_allow_html=True)
     st.caption(
@@ -2643,14 +2861,10 @@ def _aba_preditivo() -> None:
         "Ibov está esticado demais frente à própria tendência. Tudo é sinal de apoio, não ordem."
     )
     try:
-        import preditor
         with st.spinner("Calculando a leitura do ciclo…"):
-            p = preditor.prever()
+            p = _prever_cache()
     except Exception as e:  # noqa: BLE001
         st.warning(f"Leitura preditiva indisponível agora: {e}")
-        return
-    if p.get("erro"):
-        st.warning(p["erro"])
         return
 
     _bloco_preditor(p)
@@ -2664,6 +2878,10 @@ def _aba_preditivo() -> None:
     )
     if not _grafico_banda(p.get("serie_banda") or {}):
         st.caption("Gráfico indisponível (série curta ou Plotly ausente).")
+
+    _secao_desconto(p.get("desconto"))
+    _secao_correlacoes(p.get("correlacoes"))
+    _secao_validacao(p.get("validacao"))
 
     st.caption("Leitura educacional de estrutura de mercado, não recomendação de compra ou venda.")
 
