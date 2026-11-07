@@ -429,6 +429,8 @@ _HERO = {
                   "As teses próprias da Ciano ordenadas por upside, lado a lado."),
     "🔀 Cenários": ("Leitura de ciclo", "Ciclos de mercado",
                    "Onde o Ibovespa está no ciclo e quais alavancas sustentam (ou derrubam) a alta."),
+    "🔮 Preditivo": ("Assimetria do Ibov", "Ibovespa preditivo",
+                    "Score de continuidade e banda de exposição — mede a assimetria do ciclo, com a amostra à mostra."),
     "📈 Lucros": ("Resultados agregados", "Lucros & EBIT",
                  "Os lucros e o EBIT do Ibovespa e das Small Caps, somados ano a ano — subindo ou caindo, e por setor."),
     "📉 Macro": ("Panorama macro", "Indicadores econômicos",
@@ -453,6 +455,7 @@ _ROTULO_NAV = {
     "⭐ Carteira": "Carteira",
     "🏅 Ranking": "Ranking",
     "🔀 Cenários": "Ciclos",
+    "🔮 Preditivo": "Preditivo",
     "📈 Lucros": "Lucros",
     "📉 Macro": "Macro",
     "💵 Câmbio": "Câmbio",
@@ -2454,14 +2457,15 @@ def _rotulo_faixa(pct: float, baixo: str, medio: str, alto: str) -> str:
     return baixo if pct < 34 else alto if pct > 66 else medio
 
 
-def _bloco_preditor() -> None:
+def _bloco_preditor(p: dict = None) -> None:
     """Termômetro de continuidade + distribuição condicional (preditor.py)."""
-    try:
-        import preditor
-        with st.spinner("Lendo a assimetria do ciclo…"):
-            p = preditor.prever()
-    except Exception as e:  # noqa: BLE001
-        p = {"erro": str(e)}
+    if p is None:
+        try:
+            import preditor
+            with st.spinner("Lendo a assimetria do ciclo…"):
+                p = preditor.prever()
+        except Exception as e:  # noqa: BLE001
+            p = {"erro": str(e)}
     if p.get("erro"):
         st.caption(f"Leitura preditiva indisponível agora: {p['erro']}")
         return
@@ -2531,20 +2535,26 @@ def _bloco_preditor() -> None:
             unsafe_allow_html=True,
         )
 
-    # Banda de exposição (mean-reversion validada fora da amostra).
+    # Banda de exposição — forma refinada (redução parcial + trava do macro).
     be = p.get("banda_exposicao") or {}
     if be.get("z") is not None:
-        _ZONA = {
-            "comprimida": ("#16A34A", "Zona de recompra",
-                           "Ibov abaixo da própria tendência — historicamente ponto de manter ou retomar exposição."),
-            "neutra": ("#64748B", "Exposição neutra",
-                       "Nem esticado nem comprimido — seguir o plano, sem gatilho de banda."),
-            "esticada": ("#D97706", "Zona de alívio",
-                         "Ibov esticado acima da tendência — historicamente valeu aliviar um pouco e recomprar na volta à média."),
-            "muito esticada": ("#DC2626", "Zona de alívio forte",
-                               "Ibov bem acima da tendência — maior risco de devolver o ganho num evento."),
-        }
-        czona, titulo_z, desc_z = _ZONA.get(be["zona"], ("#64748B", "—", ""))
+        _TIT = {"comprimida": "Zona de retomada", "neutra": "Exposição neutra",
+                "esticada": "Zona de atenção", "muito esticada": "Zona de atenção forte"}
+        if be.get("ativa"):
+            czona = "#DC2626" if be["zona"] == "muito esticada" else "#D97706"
+        elif be["zona"] == "comprimida":
+            czona = "#16A34A"
+        else:
+            czona = "#64748B"
+        titulo_z = _TIT.get(be["zona"], "—")
+        teto, media, ibv = be.get("teto_pts"), be.get("media_pts"), be.get("ibov_pts")
+        if be["zona"] in ("esticada", "muito esticada"):
+            niveis = (f'Recompra na volta à média: ~{media:,.0f} pts.'.replace(",", ".")
+                      if media else "")
+        else:
+            niveis = (f'Teto de atenção (z=1,5): ~{teto:,.0f} pts · '
+                      f'tendência: ~{media:,.0f} pts.'.replace(",", ".")
+                      if (teto and media) else "")
         st.markdown(
             f'<div style="background:#F8FAFC;border:1px solid {COR_BORDA};border-left:4px solid {czona};'
             f'border-radius:12px;padding:13px 18px;margin:0 0 10px;">'
@@ -2552,11 +2562,12 @@ def _bloco_preditor() -> None:
             f'<span style="font-size:0.68rem;letter-spacing:.06em;text-transform:uppercase;color:#64748B;'
             f'font-weight:700;">Banda de exposição · {html.escape(titulo_z)}</span>'
             f'<span style="font-size:0.9rem;font-weight:800;color:{czona};">z {be["z"]:+.1f}</span></div>'
-            f'<div style="font-size:0.92rem;color:#132244;line-height:1.5;margin-top:3px;">{html.escape(desc_z)}</div>'
-            f'<div style="font-size:0.78rem;color:#64748B;margin-top:5px;">'
-            f'Teste fora da amostra (2013–26): aliviar nas zonas esticadas e recomprar na média '
-            f'rendeu ~12,6% a.a. vs CDI 9,9%, com tombo menor. Gira bastante — considere IR e custos. '
-            f'Sinal de apoio, não ordem.</div></div>',
+            f'<div style="font-size:0.92rem;color:#132244;line-height:1.5;margin-top:3px;">{html.escape(be.get("nota",""))}</div>'
+            + (f'<div style="font-size:0.8rem;color:#475569;margin-top:4px;">{niveis}</div>' if niveis else "")
+            + f'<div style="font-size:0.78rem;color:#64748B;margin-top:5px;">'
+            f'Validada fora da amostra (2013–26): aliviar parte nas zonas esticadas e recomprar na '
+            f'média bateu o CDI com tombo menor. O ganho vem muito do carrego do CDI — some com juro baixo. '
+            f'Gira: considere IR e custos. Sinal de apoio, nunca ordem.</div></div>',
             unsafe_allow_html=True,
         )
 
@@ -2574,6 +2585,87 @@ def _bloco_preditor() -> None:
         f"(base mensal desde 1999). Não é recomendação. Amostras com janelas de 12m se "
         f"sobrepõem — por isso mostramos o nº de episódios. Fonte: {p.get('fonte', '—')}."
     )
+
+
+def _grafico_banda(serie: dict) -> bool:
+    """Ibov × tendência (z=0) × teto (z=1,5), com a banda sombreada e os disparos."""
+    try:
+        import plotly.graph_objects as go
+    except Exception:  # noqa: BLE001
+        return False
+    x = serie.get("datas") or []
+    ib = serie.get("ibov") or []
+    pz0 = serie.get("pz0") or []
+    pz15 = serie.get("pz15") or []
+    if len(x) < 12:
+        return False
+
+    # disparos: Ibov cruza ACIMA do teto (esticou)
+    dx, dy = [], []
+    for i in range(1, len(x)):
+        if ib[i] > pz15[i] and ib[i - 1] <= pz15[i - 1]:
+            dx.append(x[i]); dy.append(ib[i])
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=x, y=pz15, name="Teto z=1,5 (atenção)", mode="lines",
+                             line=dict(color="#EA8A3C", width=1.4, dash="dash"),
+                             hovertemplate="Teto: %{y:,.0f}<extra></extra>"))
+    fig.add_trace(go.Scatter(x=x, y=pz0, name="Tendência / recompra (z=0)", mode="lines",
+                             line=dict(color="#94A3B8", width=1.4, dash="dash"),
+                             fill="tonexty", fillcolor="rgba(234,138,60,0.08)",
+                             hovertemplate="Tendência: %{y:,.0f}<extra></extra>"))
+    fig.add_trace(go.Scatter(x=x, y=ib, name="Ibovespa", mode="lines",
+                             line=dict(color="#2a78d6", width=2.4),
+                             hovertemplate="Ibov: %{y:,.0f} pts<extra></extra>"))
+    if dx:
+        fig.add_trace(go.Scatter(x=dx, y=dy, name="Esticou (z>1,5)", mode="markers",
+                                 marker=dict(color="#DC2626", size=9, line=dict(color="#fff", width=1.5)),
+                                 hovertemplate="Esticou: %{x} · %{y:,.0f}<extra></extra>"))
+    fig.update_layout(
+        height=380, margin=dict(l=8, r=8, t=10, b=8),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+        legend=dict(orientation="h", yanchor="bottom", y=1.0, x=0, font=dict(size=11)),
+        hovermode="x unified",
+    )
+    fig.update_yaxes(type="log", showgrid=True, gridcolor="rgba(148,163,184,0.18)",
+                     tickformat=",.0f", title=None)
+    fig.update_xaxes(showgrid=False, title=None)
+    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    return True
+
+
+def _aba_preditivo() -> None:
+    st.markdown('<div class="ciano-label">Ibovespa — leitura preditiva</div>', unsafe_allow_html=True)
+    st.caption(
+        "Não prevê topo nem fundo (ninguém faz isso de forma confiável). Mede **assimetria** "
+        "com dados mensais desde 1999 e sempre mostra a amostra: o **score de continuidade** diz "
+        "se o vento macro favorece seguir comprado, e a **banda de exposição** marca quando o "
+        "Ibov está esticado demais frente à própria tendência. Tudo é sinal de apoio, não ordem."
+    )
+    try:
+        import preditor
+        with st.spinner("Calculando a leitura do ciclo…"):
+            p = preditor.prever()
+    except Exception as e:  # noqa: BLE001
+        st.warning(f"Leitura preditiva indisponível agora: {e}")
+        return
+    if p.get("erro"):
+        st.warning(p["erro"])
+        return
+
+    _bloco_preditor(p)
+
+    st.markdown('<div class="ciano-label" style="margin-top:18px;">Banda de exposição — Ibov × tendência × teto</div>',
+                unsafe_allow_html=True)
+    st.caption(
+        "Azul = Ibovespa. Cinza = tendência de 24 meses (nível de recompra, z=0). Laranja = teto "
+        "de atenção (z≈13–14% acima da tendência, z=1,5). Pontos vermelhos: quando o Ibov furou o "
+        "teto. A recompra é só na volta à média — nunca no teto (seria comprar caro)."
+    )
+    if not _grafico_banda(p.get("serie_banda") or {}):
+        st.caption("Gráfico indisponível (série curta ou Plotly ausente).")
+
+    st.caption("Leitura educacional de estrutura de mercado, não recomendação de compra ou venda.")
 
 
 def _aba_ciclo() -> None:
@@ -3058,7 +3150,6 @@ def _aba_lucros() -> None:
 
 
 def _aba_cenarios() -> None:
-    _bloco_preditor()
     st.markdown('<div class="ciano-label">Cenários — onde estamos no ciclo</div>', unsafe_allow_html=True)
     st.caption("As 4 alavancas que movem a bolsa (lucro, múltiplo, juro, fluxo), o estado de hoje "
                "e o case base histórico desde 1994. Decidir por analogia, não por previsão.")
@@ -3506,7 +3597,7 @@ def main() -> None:
 
     # --- Navegação no TOPO (pills) ---
     paginas_analise = ["🔎 Empresa", "📊 Screener", "⭐ Carteira", "🏅 Ranking"]
-    paginas_mercado = ["🔀 Cenários", "📈 Lucros", "📉 Macro", "💵 Câmbio", "🌎 Estrangeiro"]
+    paginas_mercado = ["🔀 Cenários", "🔮 Preditivo", "📈 Lucros", "📉 Macro", "💵 Câmbio", "🌎 Estrangeiro"]
     paginas_acomp = ["📰 Notícias", "🔔 Gatilhos"]
     ordem = paginas_analise + paginas_mercado + paginas_acomp
 
@@ -3556,7 +3647,8 @@ def main() -> None:
             _aba_ranking(*prem)
     else:
         paginas_mercado_fn = {
-            "🔀 Cenários": _aba_cenarios, "📈 Lucros": _aba_lucros,
+            "🔀 Cenários": _aba_cenarios, "🔮 Preditivo": _aba_preditivo,
+            "📈 Lucros": _aba_lucros,
             "📉 Macro": _aba_macro, "💵 Câmbio": _aba_cambio,
             "🌎 Estrangeiro": _aba_estrangeiro,
             "📰 Notícias": _aba_noticias, "🔔 Gatilhos": _aba_gatilhos,

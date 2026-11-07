@@ -145,8 +145,14 @@ def _com_features(df: pd.DataFrame) -> pd.DataFrame:
     # z da banda (mesma definição validada no walk-forward): desvio do ln(preço)
     # da MM24, padronizado por 36m. Mede quantos desvios o Ibov está da tendência.
     lnp = np.log(d["ibov"])
-    estic_log = lnp - lnp.rolling(24).mean()
-    d["z"] = (estic_log - estic_log.rolling(36).mean()) / estic_log.rolling(36).std()
+    mm24 = lnp.rolling(24).mean()
+    estic_log = lnp - mm24
+    mest = estic_log.rolling(36).mean()
+    sest = estic_log.rolling(36).std()
+    d["z"] = (estic_log - mest) / sest
+    # Níveis em PONTOS do Ibov: tendência (z=0, onde recompra) e teto (z=1,5, onde alivia).
+    d["pz0"] = np.exp(mm24 + mest)
+    d["pz15"] = np.exp(mm24 + mest + 1.5 * sest)
     return d
 
 
@@ -206,31 +212,52 @@ def _banda_score(score: float) -> tuple[str, str]:
 _LIMIAR_ESTICADO = 1.0   # z acima disto = zona de alívio (robusto fora da amostra)
 
 
-def banda_exposicao(d: pd.DataFrame) -> dict:
-    """Zona de exposição de hoje + o que veio depois em zonas parecidas."""
+def banda_exposicao(d: pd.DataFrame, score: float = 50.0) -> dict:
+    """Zona de exposição de hoje — FORMA REFINADA (lições do stress-test):
+
+    - Redução SEMPRE parcial (deixar só o lucro / reduzir metade), nunca 100%:
+      numa bolsa que se reacomoda mais alto, sair inteiro te tira do novo patamar.
+    - TRAVA DO MACRO: em zona esticada, a banda só sugere aliviar quando o score
+      de continuidade NÃO está forte. Esticado + Selic cortando = bull (2016, 2026)
+      — nesses casos o histórico diz para NÃO aliviar.
+    - Recompra só na volta à média (z<0); nunca no teto (seria comprar caro).
+    """
     z = d["z"].iloc[-1]
     if z is None or pd.isna(z):
         return {"zona": "indefinida", "z": None}
 
-    if z >= 1.5:
-        zona, acao = "muito esticada", "aliviar"
-    elif z >= _LIMIAR_ESTICADO:
-        zona, acao = "esticada", "aliviar"
-    elif z <= 0:
-        zona, acao = "comprimida", "recomprar"
-    else:
-        zona, acao = "neutra", "manter"
+    teto = d["pz15"].iloc[-1]
+    media = d["pz0"].iloc[-1]
+    ibov = d["ibov"].iloc[-1]
+    macro_forte = score >= 68
 
-    hi = d.loc[d["z"] >= _LIMIAR_ESTICADO, "fwd12"].dropna()
-    lo = d.loc[d["z"] <= 0, "fwd12"].dropna()
+    if z >= _LIMIAR_ESTICADO:
+        zona = "muito esticada" if z >= 1.5 else "esticada"
+        if macro_forte:
+            acao, ativa = "manter", False
+            nota = ("Esticado, mas o macro está em continuidade forte (Selic cedendo). "
+                    "Histórico (2016, 2026): não aliviar dentro de um bull.")
+        else:
+            acao, ativa = "aliviar parte", True
+            nota = ("Esticado e macro sem apoio — considere aliviar PARTE (deixar só o lucro / "
+                    "reduzir metade) e estacionar no CDI. Nunca sair 100%.")
+    elif z <= 0:
+        zona, acao, ativa = "comprimida", "retomar", False
+        nota = "Ibov abaixo da própria tendência — zona de manter ou retomar exposição."
+    else:
+        zona, acao, ativa = "neutra", "manter", False
+        nota = "Nem esticado nem comprimido — sem gatilho de banda."
+
     return {
         "z": round(float(z), 2),
         "zona": zona,
         "acao": acao,
-        "med_esticado": round(float(hi.median()) * 100, 1) if len(hi) else None,
-        "med_comprimido": round(float(lo.median()) * 100, 1) if len(lo) else None,
-        "n_esticado": int(len(hi)),
-        "n_comprimido": int(len(lo)),
+        "ativa": ativa,
+        "macro_forte": bool(macro_forte),
+        "nota": nota,
+        "teto_pts": int(round(float(teto))) if pd.notna(teto) else None,
+        "media_pts": int(round(float(media))) if pd.notna(media) else None,
+        "ibov_pts": int(round(float(ibov))) if pd.notna(ibov) else None,
     }
 
 
@@ -323,9 +350,21 @@ def prever(usar_cache: bool = True) -> dict:
         "banda_texto": banda_txt,
         "componentes": sc["componentes"],
         "distribuicao": _distribuicao(d),
-        "banda_exposicao": banda_exposicao(d),
+        "banda_exposicao": banda_exposicao(d, sc["score"]),
         "exaustao": exaustao,
+        "serie_banda": _serie_banda(d),
         "fonte": "Yahoo (^BVSP) · cambio.py (EMBI+CDS) · BCB SGS 432",
+    }
+
+
+def _serie_banda(d: pd.DataFrame, n: int = 156) -> dict:
+    """Série curta (últimos ``n`` meses) p/ o gráfico Ibov × tendência × teto."""
+    s = d.dropna(subset=["pz15"]).tail(n)
+    return {
+        "datas": [str(p) for p in s.index],
+        "ibov": [int(round(v)) for v in s["ibov"]],
+        "pz0": [int(round(v)) for v in s["pz0"]],
+        "pz15": [int(round(v)) for v in s["pz15"]],
     }
 
 
