@@ -1,0 +1,107 @@
+{
+  "entradas": [
+    {
+      "mes": "2026-11",
+      "data_registro": "2026-11-07",
+      "regras_versao": "1",
+      "regras_hash": "74df04a3e98c",
+      "ibov": 168498,
+      "z": -0.58,
+      "score": 56.7,
+      "faixa_score": "neutro",
+      "zona_banda": "comprimida",
+      "acao_banda": "retomar",
+      "faixa_desconto": "moderado",
+      "ciclo_selic": "cortando",
+      "ntnb": 7.78,
+      "risco_pais": 208.0,
+      "mediana_analogos": 10.8,
+      "n_episodios_analogos": 9,
+      "exaustao": false
+    }
+  ],
+  "regras": {
+    "versao": "1",
+    "congelado_em": "2026-11-07",
+    "hash": "74df04a3e98c",
+    "parametros": {
+      "pesos_score": {
+        "risco": 0.255,
+        "selic": 0.17,
+        "risco_d12": 0.119,
+        "carry": 0.102,
+        "estic_inv": 0.102,
+        "selic_ciclo": 0.102,
+        "ntnb": 0.15
+      },
+      "ciclo_score": {
+        "cortando": 100.0,
+        "parada": 50.0,
+        "subindo": 18.0
+      },
+      "score_forte": 68,
+      "score_neutro": 45,
+      "esticamento_pct_exaustao": 75,
+      "janelas": {
+        "mm_estic": 12,
+        "z_tendencia": 24,
+        "z_padrao": 36,
+        "fwd": 12
+      },
+      "fase_selic_limiar": 0.25,
+      "k_vizinhos": 36,
+      "colunas_analogos": [
+        "risco",
+        "selic",
+        "selic_d6",
+        "estic"
+      ],
+      "limiar_esticado": 1.0,
+      "banda_padrao": {
+        "alivio": 1.5,
+        "recompra": 0.0,
+        "modo": "50",
+        "trava": "nenhuma",
+        "max_meses": 0,
+        "queda_venda": 0.0
+      },
+      "faixas_desconto": [
+        [
+          "profundo",
+          null,
+          -1.5
+        ],
+        [
+          "forte",
+          -1.5,
+          -1.0
+        ],
+        [
+          "moderado",
+          -1.0,
+          -0.5
+        ],
+        [
+          "leve",
+          -0.5,
+          0.0
+        ]
+      ]
+    }
+  },
+  "hipoteses": [
+    {
+      "id": "H1",
+      "texto": "Score alto (>= 68) é seguido por excesso positivo sobre o CDI em 12 meses na maioria dos casos; score baixo (< 45), por excesso negativo. No histórico: o terço alto bateu o CDI em 57% das janelas, o baixo em 38%."
+    },
+    {
+      "id": "H2",
+      "texto": "Em desconto profundo (z < -1,5), comprar e segurar 12 meses bate o CDI. No histórico: 6 de 9 episódios."
+    },
+    {
+      "id": "H3",
+      "texto": "Quando o z passa de 1,5 (zona de alívio), o Ibov rende menos que o CDI nos 12 meses seguintes — EXCETO se houve desconto profundo (z < -1,5) nos 18 meses anteriores (hipótese do falso topo pós-crash, nascida de apenas 2 casos: 2003 e 2016)."
+    }
+  ],
+  "nota": "Antes do congelamento foram exploradas mais de 25 variações (limiares, frações, travas, faixas de desconto, regras de recompra). Qualquer número histórico bonito deve ser lido com esse desconto de múltiplos testes."
+}

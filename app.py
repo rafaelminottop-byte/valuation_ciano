@@ -3060,6 +3060,77 @@ def _secao_validacao(v) -> None:
     )
 
 
+def _secao_registro(rg) -> None:
+    st.markdown('<div class="ciano-label" style="margin-top:22px;">Registro ao vivo — o teste de verdade</div>',
+                unsafe_allow_html=True)
+    if not isinstance(rg, dict) or rg.get("erro"):
+        st.caption("Registro indisponível agora.")
+        return
+    st.caption(
+        "Tudo acima usa um passado que já foi visto e usado para calibrar, então não é um teste limpo. "
+        "A única evidência limpa é a que ainda não aconteceu: as regras ficam congeladas e, uma vez por mês, "
+        "o sinal que o app emitiu é gravado sem poder ser alterado depois. Passados 12 meses, cada sinal é "
+        "comparado com o que o Ibovespa e o CDI realmente fizeram."
+    )
+    dt = rg["congelado_em"]
+    dt_br = dt[8:10] + "/" + dt[5:7] + "/" + dt[:4]
+    if rg.get("alteradas"):
+        cor, titulo = "#DC2626", "Regras alteradas desde o congelamento"
+        corpo = ("Os parâmetros do código não batem mais com os congelados (hash " + rg["hash_atual"] +
+                 " contra " + rg["hash_congelado"] + "). Registros novos ficam bloqueados até uma nova versão "
+                 "ser declarada, porque misturariam sinais de regras diferentes.")
+    else:
+        cor, titulo = "#16A34A", "Regras congeladas"
+        corpo = ("Versão " + rg["versao"] + ", congeladas em " + dt_br + ". Impressão digital dos parâmetros: " +
+                 rg["hash_atual"] + ". Cobre os pesos do score, os limiares, as janelas do z, as colunas dos "
+                 "meses parecidos, a banda padrão e as faixas de desconto.")
+    st.markdown(
+        f'<div style="background:#F8FAFC;border:1px solid {COR_BORDA};border-left:4px solid {cor};'
+        f'border-radius:12px;padding:12px 18px;margin:4px 0 8px;">'
+        f'<div style="font-size:0.68rem;letter-spacing:.06em;text-transform:uppercase;color:#64748B;'
+        f'font-weight:700;">{html.escape(titulo)}</div>'
+        f'<div style="font-size:0.9rem;color:#132244;line-height:1.5;margin-top:3px;">{html.escape(corpo)}</div></div>',
+        unsafe_allow_html=True)
+
+    hip = rg.get("hipoteses") or []
+    if hip:
+        itens = "".join(
+            f'<li style="margin-bottom:5px;"><b>{html.escape(h["id"])}.</b> {html.escape(h["texto"])}</li>'
+            for h in hip)
+        st.markdown(
+            f'<div style="font-size:0.7rem;letter-spacing:.06em;text-transform:uppercase;color:#64748B;'
+            f'font-weight:700;margin:8px 0 2px;">Hipóteses escritas antes de haver dado ao vivo</div>'
+            f'<ul style="margin:0 0 6px;padding-left:18px;font-size:0.88rem;line-height:1.5;color:#132244;">{itens}</ul>',
+            unsafe_allow_html=True)
+
+    ent = rg.get("entradas") or []
+    if not ent:
+        st.caption("Ainda não há nenhum registro.")
+    else:
+        lin = []
+        for e in ent:
+            if e.get("ibov12") is None:
+                res = ['<span style="color:#94A3B8;">avalia em ' + html.escape(e.get("avalia_em", "—")) + "</span>",
+                       "—", "—"]
+            else:
+                cor_e = "#16A34A" if e["exc12"] > 0 else "#DC2626"
+                res = [_fmt_pc(e["ibov12"]), _fmt_pc(e["cdi12"], sinal=False),
+                       f'<span style="color:{cor_e};font-weight:700;">{_fmt_pc(e["exc12"])}</span>']
+            ibov_txt = f'{e["ibov"]:,.0f}'.replace(",", ".") if e.get("ibov") else "—"
+            lin.append([f'<b>{html.escape(e["mes"])}</b>', ibov_txt,
+                        _n2(e["z"], True) if e.get("z") is not None else "—",
+                        f'{e["score"]:.0f} ({html.escape(str(e.get("faixa_score", "")))})' if e.get("score") is not None else "—",
+                        html.escape(str(e.get("zona_banda", "—"))), html.escape(str(e.get("faixa_desconto", "—")))] + res)
+        st.markdown(_tabela_html(["Mês", "Ibov", "z", "Score", "Banda", "Desconto",
+                                  "Ibov em 12m", "CDI em 12m", "Excesso"], lin), unsafe_allow_html=True)
+        n_ok = sum(1 for e in ent if e.get("ibov12") is not None)
+        st.caption(f"{len(ent)} registro(s), {n_ok} já avaliado(s). Cada sinal só pode ser avaliado 12 meses depois, "
+                   "então a primeira leitura útil só chega no fim de um ano — e ainda será uma amostra de poucos "
+                   "meses. Quanto mais tempo passar, mais valor tem.")
+    if rg.get("nota"):
+        st.caption(rg["nota"])
+
+
 def _aba_preditivo() -> None:
     st.markdown('<div class="ciano-label">Ibovespa — leitura preditiva</div>', unsafe_allow_html=True)
     st.caption(
@@ -3082,6 +3153,7 @@ def _aba_preditivo() -> None:
     _secao_desconto(p.get("desconto"))
     _secao_correlacoes(p.get("correlacoes"))
     _secao_validacao(p.get("validacao"))
+    _secao_registro(p.get("registro"))
 
     st.caption("Leitura educacional de estrutura de mercado, não recomendação de compra ou venda.")
 

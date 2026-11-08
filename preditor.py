@@ -48,6 +48,15 @@ CACHE_TTL_SEGUNDOS = 24 * 60 * 60  # 24h (padrão do projeto)
 INICIO = "1994-07"
 VALID_INICIO = "1999-01"   # início da validação do score (já há >4 anos de histórico)
 JANELA_FWD = 12      # meses à frente que queremos descrever
+SCORE_FORTE = 68     # a partir daqui o score é "forte"
+SCORE_NEUTRO = 45    # abaixo daqui o score é "fraco"
+ESTIC_PCT_EXAUSTAO = 75   # percentil de esticamento p/ a flag de exaustão
+MM_ESTIC = 12        # média móvel do esticamento simples (meses)
+Z_JANELA_TENDENCIA = 24    # média móvel do ln(preço) que define a tendência do z
+Z_JANELA_PADRAO = 36       # janela que padroniza o esticamento em desvios (z)
+FASE_SELIC_LIMIAR = 0.25   # variação de 6 meses (p.p.) que separa cortando/parada/subindo
+# Colunas da distância nos "meses parecidos" (sem carry de propósito: só existe desde 2013).
+COLS_ANALOGOS = ("risco", "selic", "selic_d6", "estic")
 K_VIZINHOS = 36      # meses análogos usados na distribuição condicional
 
 # Pesos do score, proporcionais à força histórica (|correlação|) de cada sinal.
@@ -235,15 +244,15 @@ def _com_features(df: pd.DataFrame) -> pd.DataFrame:
     d["fwd12"] = d["ibov"].shift(-JANELA_FWD) / d["ibov"] - 1.0
     d["selic_d6"] = d["selic"].diff(6)
     d["risco_d12"] = d["risco"].diff(12)
-    d["mm12"] = d["ibov"].rolling(12).mean()
+    d["mm12"] = d["ibov"].rolling(MM_ESTIC).mean()
     d["estic"] = d["ibov"] / d["mm12"] - 1.0   # esticamento vs MM12
     # z da banda (mesma definição validada no walk-forward): desvio do ln(preço)
     # da MM24, padronizado por 36m. Mede quantos desvios o Ibov está da tendência.
     lnp = np.log(d["ibov"])
-    mm24 = lnp.rolling(24).mean()
+    mm24 = lnp.rolling(Z_JANELA_TENDENCIA).mean()
     estic_log = lnp - mm24
-    mest = estic_log.rolling(36).mean()
-    sest = estic_log.rolling(36).std()
+    mest = estic_log.rolling(Z_JANELA_PADRAO).mean()
+    sest = estic_log.rolling(Z_JANELA_PADRAO).std()
     d["z"] = (estic_log - mest) / sest
     # Níveis em PONTOS do Ibov: tendência (z=0, onde recompra) e teto (z=1,5, onde alivia).
     d["ln_media"] = mm24 + mest
@@ -269,9 +278,9 @@ def _com_features(df: pd.DataFrame) -> pd.DataFrame:
 def _fase_selic(d6: float | None) -> str:
     if d6 is None or pd.isna(d6):
         return "parada"
-    if d6 < -0.25:
+    if d6 < -FASE_SELIC_LIMIAR:
         return "cortando"
-    if d6 > 0.25:
+    if d6 > FASE_SELIC_LIMIAR:
         return "subindo"
     return "parada"
 
@@ -317,9 +326,9 @@ def _score(d: pd.DataFrame) -> dict:
 
 
 def _banda_score(score: float) -> tuple[str, str]:
-    if score >= 68:
+    if score >= SCORE_FORTE:
         return "forte", "Continuidade favorável — colchão de segurança grande."
-    if score >= 45:
+    if score >= SCORE_NEUTRO:
         return "neutro", "Terreno neutro — assimetria sem viés claro."
     return "fraco", "Colchão fino — a margem de segurança histórica sumiu."
 
@@ -350,7 +359,7 @@ def banda_exposicao(d: pd.DataFrame, score: float = 50.0) -> dict:
     teto = d["pz15"].iloc[-1]
     media = d["pz0"].iloc[-1]
     ibov = d["ibov"].iloc[-1]
-    macro_forte = score >= 68
+    macro_forte = score >= SCORE_FORTE
 
     if z >= _LIMIAR_ESTICADO:
         zona = "muito esticada" if z >= 1.5 else "esticada"
@@ -570,7 +579,7 @@ def validar_score(d: pd.DataFrame, inicio: str = VALID_INICIO, scores: pd.Series
 # ---------------------------------------------------------------------------
 LAB_PADRAO = {"alivio": 1.5, "recompra": 0.0, "modo": "50", "trava": "nenhuma",
               "max_meses": 0, "queda_venda": 0.0}
-LAB_LIMIAR_TRAVA = 68.0   # score a partir do qual a trava do macro impede o alívio
+LAB_LIMIAR_TRAVA = float(SCORE_FORTE)   # score a partir do qual a trava do macro impede o alívio
 LAB_INICIO_TRAVA = VALID_INICIO  # o score histórico só é confiável a partir daqui
 
 
@@ -733,7 +742,7 @@ def _n_episodios(periodos: list[pd.Period]) -> int:
 def _distribuicao(d: pd.DataFrame, k: int = K_VIZINHOS) -> dict:
     # Sem o carry de propósito: ele só existe desde 2013 e amarrava os análogos a 4 episódios.
     # Sem ele a busca usa o histórico desde 1995 (9 episódios) com leitura parecida.
-    cols = ["risco", "selic", "selic_d6", "estic"]
+    cols = list(COLS_ANALOGOS)
     base = d.dropna(subset=cols)
     if len(base) < k + 6:
         return {"erro": "Histórico insuficiente para análogos.", "n_meses": 0}
@@ -789,7 +798,7 @@ def prever(usar_cache: bool = True) -> dict:
 
     # Flag de exaustão: esticado (topo 25% histórico) E macro apertando (score baixo).
     estic_pct = _pct(d["estic"], cur["estic"])
-    exaustao = bool(estic_pct >= 75 and sc["score"] < 45)
+    exaustao = bool(estic_pct >= ESTIC_PCT_EXAUSTAO and sc["score"] < SCORE_NEUTRO)
 
     # Score histórico (só dados do passado em cada mês): calculado uma vez e usado
     # tanto na validação quanto no laboratório da banda.
@@ -817,6 +826,7 @@ def prever(usar_cache: bool = True) -> dict:
         "desconto": _seguro(zona_desconto, d),
         "correlacoes": _seguro(correlacoes_moveis, d),
         "validacao": _seguro(validar_score, d, VALID_INICIO, sh),
+        "registro": _seguro(resumo_registro, d),
         "lab": _seguro(_serie_lab, d, sh),
         "exaustao": exaustao,
         "serie_banda": _serie_banda(d),
@@ -833,6 +843,134 @@ def _serie_banda(d: pd.DataFrame, n: int = 156) -> dict:
         "pz0": [int(round(v)) for v in s["pz0"]],
         "pz15": [int(round(v)) for v in s["pz15"]],
     }
+
+
+# ---------------------------------------------------------------------------
+# Congelamento das regras + registro ao vivo (o teste fora da amostra de verdade)
+#
+# Por que existe: o histórico já foi visto e usado para calibrar — não há conjunto de
+# teste virgem. A única evidência limpa é a que ainda não aconteceu. Então:
+#   1. as regras ficam CONGELADAS (hash dos parâmetros; se alguém mexer, o app avisa);
+#   2. todo mês grava-se o sinal que o app emitiu naquele dia (nunca sobrescreve);
+#   3. quando passam 12 meses, compara-se cada sinal com o que o Ibov e o CDI fizeram.
+# As hipóteses abaixo foram escritas ANTES de haver qualquer dado ao vivo.
+# ---------------------------------------------------------------------------
+REGRAS_VERSAO = "1"
+REGRAS_CONGELADAS_EM = "2026-11-07"
+REGRAS_HASH_CONGELADO = "74df04a3e98c"
+ARQ_REGISTRO = Path(__file__).resolve().parent / "data" / "registro_sinais.json"
+
+HIPOTESES_PRE_REGISTRADAS = [
+    {"id": "H1", "texto": "Score alto (>= 68) é seguido por excesso positivo sobre o CDI em 12 meses na "
+                           "maioria dos casos; score baixo (< 45), por excesso negativo. "
+                           "No histórico: o terço alto bateu o CDI em 57% das janelas, o baixo em 38%."},
+    {"id": "H2", "texto": "Em desconto profundo (z < -1,5), comprar e segurar 12 meses bate o CDI. "
+                           "No histórico: 6 de 9 episódios."},
+    {"id": "H3", "texto": "Quando o z passa de 1,5 (zona de alívio), o Ibov rende menos que o CDI nos 12 meses "
+                           "seguintes — EXCETO se houve desconto profundo (z < -1,5) nos 18 meses anteriores "
+                           "(hipótese do falso topo pós-crash, nascida de apenas 2 casos: 2003 e 2016)."},
+]
+NOTA_HIPOTESES = ("Antes do congelamento foram exploradas mais de 25 variações (limiares, frações, travas, "
+                  "faixas de desconto, regras de recompra). Qualquer número histórico bonito deve ser lido "
+                  "com esse desconto de múltiplos testes.")
+
+
+def _parametros_regras() -> dict:
+    """Tudo o que define os sinais. Mudou algo aqui => o hash muda => o app avisa."""
+    def finito(v):
+        return None if v in (float("inf"), float("-inf")) else v
+    return {
+        "pesos_score": PESOS, "ciclo_score": _CICLO_SCORE,
+        "score_forte": SCORE_FORTE, "score_neutro": SCORE_NEUTRO,
+        "esticamento_pct_exaustao": ESTIC_PCT_EXAUSTAO,
+        "janelas": {"mm_estic": MM_ESTIC, "z_tendencia": Z_JANELA_TENDENCIA,
+                    "z_padrao": Z_JANELA_PADRAO, "fwd": JANELA_FWD},
+        "fase_selic_limiar": FASE_SELIC_LIMIAR,
+        "k_vizinhos": K_VIZINHOS, "colunas_analogos": list(COLS_ANALOGOS),
+        "limiar_esticado": _LIMIAR_ESTICADO, "banda_padrao": LAB_PADRAO,
+        "faixas_desconto": [[n, finito(lo), finito(hi)] for n, lo, hi in _FAIXAS_DESCONTO],
+    }
+
+
+def hash_regras() -> str:
+    import hashlib
+    txt = json.dumps(_parametros_regras(), sort_keys=True, ensure_ascii=False)
+    return hashlib.sha256(txt.encode("utf-8")).hexdigest()[:12]
+
+
+def regras_alteradas() -> bool:
+    return hash_regras() != REGRAS_HASH_CONGELADO
+
+
+def ler_registro() -> dict:
+    if ARQ_REGISTRO.exists():
+        try:
+            return json.loads(ARQ_REGISTRO.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            pass
+    return {"entradas": []}
+
+
+def registrar(p: dict, hoje: date = None) -> dict:
+    """Acrescenta o sinal de HOJE ao registro, um por mês. Nunca sobrescreve e se recusa
+    a registrar se as regras mudaram sem um novo congelamento (versão + hash)."""
+    if regras_alteradas():
+        raise RuntimeError("As regras mudaram desde o congelamento (hash diferente). Isso invalida a "
+                           "comparação com as entradas anteriores: declare uma nova versão em "
+                           "REGRAS_VERSAO / REGRAS_HASH_CONGELADO antes de registrar.")
+    hoje = hoje or date.today()
+    mes = hoje.strftime("%Y-%m")
+    reg = ler_registro()
+    for e in reg.get("entradas", []):
+        if e["mes"] == mes:
+            return {"status": "ja_existia", "entrada": e}
+    be = p.get("banda_exposicao") or {}
+    ds = p.get("desconto") or {}
+    est = p.get("estado") or {}
+    dist = p.get("distribuicao") or {}
+    entrada = {
+        "mes": mes, "data_registro": hoje.isoformat(), "regras_versao": REGRAS_VERSAO,
+        "regras_hash": hash_regras(), "ibov": be.get("ibov_pts"), "z": be.get("z"),
+        "score": p.get("score"), "faixa_score": p.get("banda"), "zona_banda": be.get("zona"),
+        "acao_banda": be.get("acao"), "faixa_desconto": ds.get("faixa_atual"),
+        "ciclo_selic": est.get("ciclo_selic"), "ntnb": est.get("ntnb"), "risco_pais": est.get("risco_pais"),
+        "mediana_analogos": dist.get("mediana"), "n_episodios_analogos": dist.get("n_episodios"),
+        "exaustao": p.get("exaustao"),
+    }
+    reg.setdefault("entradas", []).append(entrada)
+    reg["regras"] = {"versao": REGRAS_VERSAO, "congelado_em": REGRAS_CONGELADAS_EM,
+                     "hash": REGRAS_HASH_CONGELADO, "parametros": _parametros_regras()}
+    reg["hipoteses"] = HIPOTESES_PRE_REGISTRADAS
+    reg["nota"] = NOTA_HIPOTESES
+    ARQ_REGISTRO.parent.mkdir(exist_ok=True)
+    tmp = ARQ_REGISTRO.with_suffix(".tmp")
+    tmp.write_text(json.dumps(reg, ensure_ascii=False, indent=2), encoding="utf-8")
+    tmp.replace(ARQ_REGISTRO)
+    return {"status": "registrado", "entrada": entrada}
+
+
+def resumo_registro(d: pd.DataFrame) -> dict:
+    """Entradas gravadas + resultado de 12 meses quando já dá para medir."""
+    reg = ler_registro()
+    ult = d.index[-1]
+    saida = []
+    for e in reg.get("entradas", []):
+        per = pd.Period(e["mes"], "M")
+        item = dict(e)
+        alvo = per + 12
+        cdi12 = d.loc[per, "cdi12"] if per in d.index else float("nan")
+        # só mede com o mês-alvo FECHADO (o último mês do painel é parcial)
+        if alvo < ult and e.get("ibov") and alvo in d.index and pd.notna(cdi12):
+            r12 = float(d.loc[alvo, "ibov"]) / float(e["ibov"]) - 1
+            item["ibov12"], item["cdi12"], item["exc12"] = _pc(r12), _pc(float(cdi12)), _pc(r12 - float(cdi12))
+        else:
+            item["ibov12"] = item["cdi12"] = item["exc12"] = None
+            item["avalia_em"] = str(alvo)
+        saida.append(item)
+    return {"versao": REGRAS_VERSAO, "congelado_em": REGRAS_CONGELADAS_EM,
+            "hash_atual": hash_regras(), "hash_congelado": REGRAS_HASH_CONGELADO,
+            "alteradas": regras_alteradas(), "entradas": saida,
+            "hipoteses": HIPOTESES_PRE_REGISTRADAS, "nota": NOTA_HIPOTESES}
 
 
 if __name__ == "__main__":
