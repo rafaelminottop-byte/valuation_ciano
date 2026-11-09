@@ -3131,14 +3131,59 @@ def _secao_registro(rg) -> None:
         st.caption(rg["nota"])
 
 
+def _resumo_hoje(p: dict) -> None:
+    """O essencial em 3 linhas, em português simples. O resto fica nas seções abaixo."""
+    be = p.get("banda_exposicao") or {}
+    ds = p.get("desconto") if isinstance(p.get("desconto"), dict) else {}
+    cor = _BANDA_COR.get(p.get("banda"), "#64748B")
+
+    z = be.get("z")
+    zt = _n2(z, True) if z is not None else "—"
+    zona = be.get("zona")
+    if zona in ("esticada", "muito esticada"):
+        preco = ("Ibov acima da própria tendência (z " + zt + "): zona de atenção. Historicamente já valeu "
+                 "considerar reduzir parte da posição.")
+    elif zona == "comprimida":
+        preco = "Ibov abaixo da própria tendência (z " + zt + "): nenhum sinal para reduzir agora."
+    else:
+        preco = "Ibov perto da própria tendência (z " + zt + "): nenhum sinal para reduzir agora."
+
+    faixa = ds.get("faixa_atual")
+    prof = ds.get("nivel_profundo_pts")
+    if faixa in ("profundo", "forte"):
+        desc = "Desconto " + faixa + ": nessa faixa, comprar e segurar costumou bater o CDI."
+    elif faixa in ("moderado", "leve"):
+        desc = ("Desconto " + faixa + ": ainda não é a faixa em que comprar e segurar costumou bater o CDI.")
+        if prof:
+            desc += " O desconto profundo começa em ~" + f"{prof:,.0f}".replace(",", ".") + " pts."
+    elif faixa:
+        desc = "Sem desconto: o Ibov está acima da própria tendência."
+    else:
+        desc = "Estudo de desconto indisponível agora."
+
+    linhas = [
+        ("Cenário", "Nota " + f"{float(p['score']):.0f}" + " de 100 — " + str(p.get("banda_texto", ""))),
+        ("Preço", preco),
+        ("Desconto", desc),
+    ]
+    rows = "".join(
+        '<div style="display:flex;gap:14px;padding:9px 0;border-top:1px solid #EEF2F6;">'
+        '<div style="width:84px;flex:none;font-size:0.68rem;letter-spacing:.06em;text-transform:uppercase;'
+        'color:#64748B;font-weight:700;padding-top:3px;">' + html.escape(r) + '</div>'
+        '<div style="font-size:0.95rem;color:#132244;line-height:1.5;">' + html.escape(t) + '</div></div>'
+        for r, t in linhas)
+    st.markdown(
+        f'<div style="background:{COR_CARD};border:1px solid {COR_BORDA};border-top:4px solid {cor};'
+        f'border-radius:12px;padding:6px 20px 4px;margin:2px 0 10px;box-shadow:0 1px 3px rgba(19,34,74,.06);">'
+        f'<div style="font-size:0.68rem;letter-spacing:.11em;text-transform:uppercase;color:#64748B;'
+        f'font-weight:700;padding:8px 0 6px;">Hoje, em três linhas</div>{rows}</div>',
+        unsafe_allow_html=True)
+
+
 def _aba_preditivo() -> None:
-    st.markdown('<div class="ciano-label">Ibovespa — leitura preditiva</div>', unsafe_allow_html=True)
-    st.caption(
-        "Não prevê topo nem fundo (ninguém faz isso de forma confiável). Mede **assimetria** "
-        "com dados mensais desde o Plano Real (1994) e sempre mostra a amostra: o **score de continuidade** diz "
-        "se o vento macro favorece seguir comprado, e a **banda de exposição** marca quando o "
-        "Ibov está esticado demais frente à própria tendência. Tudo é sinal de apoio, não ordem."
-    )
+    st.markdown('<div class="ciano-label">Ibovespa — leitura de hoje</div>', unsafe_allow_html=True)
+    st.caption("Não prevê topo nem fundo: mede a assimetria do Ibovespa com dados desde 1994. "
+               "É um sinal de apoio, não uma ordem.")
     try:
         with st.spinner("Calculando a leitura do ciclo…"):
             p = _prever_cache()
@@ -3146,14 +3191,21 @@ def _aba_preditivo() -> None:
         st.warning(f"Leitura preditiva indisponível agora: {e}")
         return
 
-    _bloco_preditor(p)
+    _resumo_hoje(p)
 
-    _laboratorio_banda(p)
-
-    _secao_desconto(p.get("desconto"))
-    _secao_correlacoes(p.get("correlacoes"))
-    _secao_validacao(p.get("validacao"))
-    _secao_registro(p.get("registro"))
+    st.caption("Os detalhes e os estudos ficam nas seções abaixo. Abra só o que quiser.")
+    with st.expander("Nota do cenário e leitura detalhada"):
+        _bloco_preditor(p)
+    with st.expander("Laboratório: simular a regra de reduzir e voltar a comprar"):
+        _laboratorio_banda(p)
+    with st.expander("Comprar com desconto e segurar × CDI"):
+        _secao_desconto(p.get("desconto"))
+    with st.expander("Os drivers ainda movem o Ibovespa?"):
+        _secao_correlacoes(p.get("correlacoes"))
+    with st.expander("Quanto confiar na nota?"):
+        _secao_validacao(p.get("validacao"))
+    with st.expander("Registro ao vivo (o teste de verdade)"):
+        _secao_registro(p.get("registro"))
 
     st.caption("Leitura educacional de estrutura de mercado, não recomendação de compra ou venda.")
 
