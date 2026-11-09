@@ -620,7 +620,8 @@ def _fechar_ciclo(aberto: dict, data_rec, preco_rec: float, motivo) -> dict:
     cdi_acc = aberto["cdi"] - 1
     return {"venda": aberto["data"], "preco_venda": aberto["preco"],
             "recompra": data_rec, "preco_recompra": preco_rec, "motivo": motivo,
-            "var_ibov": _pc(var), "cdi": _pc(cdi_acc), "vantagem": _pc(cdi_acc - var)}
+            "var_ibov": _pc(var), "cdi": _pc(cdi_acc), "vantagem": _pc(cdi_acc - var),
+            "lucro_posicao": _pc(aberto.get("lucro"))}
 
 
 def backtest_banda(lab: dict, alivio: float = 1.5, recompra: float = 0.0, modo: str = "50",
@@ -648,6 +649,9 @@ def backtest_banda(lab: dict, alivio: float = 1.5, recompra: float = 0.0, modo: 
     W = 1.0
     ib_val, cd_val, principal = 1.0, 0.0, 1.0   # só usados no modo 'lucro'
     rets, ref_ib, ref_cdi, sinais, ciclos = [], [], [], [], []
+    ref_preco = ibv[i0 - 1]                 # preço em que a posição "foi comprada" (início ou última volta)
+    s_dat, s_cart, s_ib, s_cdi = [], [], [], []   # curvas acumuladas (começam em 1,0)
+    w_ib = w_cdi = 1.0
     meses_fora = vendas = 0
     aberto = None
     for i in range(i0, n):
@@ -662,7 +666,8 @@ def backtest_banda(lab: dict, alivio: float = 1.5, recompra: float = 0.0, modo: 
             if not fora and zp > alivio and not bloqueia:
                 fora = True
                 vendas += 1
-                aberto = {"data": datas[i], "preco": ibv[i - 1], "cdi": 1.0, "meses": 0}
+                aberto = {"data": datas[i], "preco": ibv[i - 1], "cdi": 1.0, "meses": 0,
+                          "lucro": ibv[i - 1] / ref_preco - 1}
                 sinais.append({"data": datas[i], "tipo": "venda", "ibov": ibv[i - 1]})
                 if modo == "lucro":
                     mover = min(principal, ib_val)
@@ -682,6 +687,7 @@ def backtest_banda(lab: dict, alivio: float = 1.5, recompra: float = 0.0, modo: 
                                    "motivo": motivo})
                     ciclos.append(_fechar_ciclo(aberto, datas[i], ibv[i - 1], motivo))
                     aberto = None
+                    ref_preco = ibv[i - 1]
                     if modo == "lucro":
                         tot = ib_val + cd_val
                         ib_val, cd_val, principal = tot, 0.0, tot
@@ -701,6 +707,12 @@ def backtest_banda(lab: dict, alivio: float = 1.5, recompra: float = 0.0, modo: 
         rets.append(ret)
         ref_ib.append(ri)
         ref_cdi.append(ci)
+        w_ib *= (1 + ri)
+        w_cdi *= (1 + ci)
+        s_dat.append(datas[i])
+        s_cart.append(W)
+        s_ib.append(w_ib)
+        s_cdi.append(w_cdi)
         if fora:
             meses_fora += 1
             aberto["cdi"] *= (1 + ci)
@@ -714,7 +726,38 @@ def backtest_banda(lab: dict, alivio: float = 1.5, recompra: float = 0.0, modo: 
     est["vendas"] = vendas
     return {"estrategia": est, "bh": _metricas_ret(ref_ib), "cdi": _metricas_ret(ref_cdi),
             "sinais": sinais, "ciclos": ciclos, "inicio": datas[i0], "fim": datas[-1],
-            "n_meses": len(rets)}
+            "n_meses": len(rets),
+            "serie": {"datas": s_dat, "carteira": s_cart, "ibov": s_ib, "cdi": s_cdi}}
+
+
+def retornos_apos_reducoes(bt: dict) -> list:
+    """Para cada redução: o lucro da posição até ali, o que o Ibov e a Selic (CDI) fizeram nos
+    12 meses seguintes e, do INÍCIO da simulação até o fim desses 12 meses, o rendimento da
+    carteira, do Ibov puro e da Selic pura. Reduções com menos de 12 meses de dados vão até
+    o último mês disponível (``parcial``)."""
+    s = bt.get("serie") or {}
+    datas = s.get("datas") or []
+    if not datas:
+        return []
+    pos = {d: k for k, d in enumerate(datas)}
+    out = []
+    for c in bt.get("ciclos", []):
+        k = pos.get(c["venda"])
+        if k is None:
+            continue
+        fim = min(k + 11, len(datas) - 1)
+
+        def apos(arr):
+            base = arr[k - 1] if k > 0 else 1.0
+            return arr[fim] / base - 1
+
+        out.append({
+            "data": c["venda"], "lucro_posicao": c.get("lucro_posicao"),
+            "ibov12": _pc(apos(s["ibov"])), "cdi12": _pc(apos(s["cdi"])),
+            "carteira_ate": _pc(s["carteira"][fim] - 1), "ibov_ate": _pc(s["ibov"][fim] - 1),
+            "cdi_ate": _pc(s["cdi"][fim] - 1), "ate": datas[fim], "parcial": (k + 11) > (len(datas) - 1),
+        })
+    return out
 
 
 def _seguro(fn, *args):

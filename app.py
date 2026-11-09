@@ -2785,6 +2785,47 @@ def _laboratorio_banda(p: dict) -> None:
                "A decisão de cada mês usa só o que se sabia no mês anterior. Não desconta IR nem custos "
                "(girar tem custo). O último mês pode estar incompleto.")
 
+    # O que veio depois de cada redução — tabela para mostrar aos sócios.
+    rr = preditor.retornos_apos_reducoes(bt)
+    if rr:
+        st.markdown('<div style="font-size:0.7rem;letter-spacing:.06em;text-transform:uppercase;color:#64748B;'
+                    'font-weight:700;margin:8px 0 0;">O que veio depois de cada redução</div>',
+                    unsafe_allow_html=True)
+
+        def p0(v):
+            return "—" if v is None else f"{v:+,.0f}".replace(",", ".") + "%"
+
+        lin_r = []
+        for r in rr:
+            cor_i = "#16A34A" if (r["ibov12"] is not None and r["ibov12"] > r["cdi12"]) else "#DC2626"
+            lin_r.append([
+                "<b>" + html.escape(r["data"]) + "</b>" + ("*" if r["parcial"] else ""),
+                p0(r["lucro_posicao"]),
+                '<span style="color:' + cor_i + ';font-weight:700;">' + p0(r["ibov12"]) + "</span>",
+                p0(r["cdi12"]),
+                "<b>" + p0(r["carteira_ate"]) + "</b>", p0(r["ibov_ate"]), p0(r["cdi_ate"])])
+        st.markdown(_tabela_html(
+            ["Reduziu em", "Lucro da posição até ali", "Ibov nos 12 meses seguintes",
+             "Selic nos 12 meses seguintes", "Carteira: do início até 12 meses depois",
+             "Ibov puro: do início até 12 meses depois", "Selic pura: do início até 12 meses depois"],
+            lin_r), unsafe_allow_html=True)
+        aviso_parcial = ("* Menos de 12 meses de dados: vai até o último mês disponível. "
+                         if any(r["parcial"] for r in rr) else "")
+        st.caption(
+            "Carteira = a simulação com os parâmetros escolhidos acima (padrão: reduz 50% e volta a comprar "
+            "com z abaixo de 0). Selic = CDI acumulado. 'Do início' = a partir de " + bt["inicio"] + ". "
+            "'Lucro da posição até ali' supõe que a posição foi comprada no início ou na última vez em que "
+            "voltou a comprar. Verde = o Ibov rendeu mais que a Selic nos 12 meses seguintes. " + aviso_parcial +
+            "Não desconta imposto nem custos, e o último mês pode estar incompleto.")
+        df_rr = pd.DataFrame([{
+            "Reduziu em": r["data"], "Lucro da posição até ali (%)": r["lucro_posicao"],
+            "Ibov nos 12 meses seguintes (%)": r["ibov12"], "Selic nos 12 meses seguintes (%)": r["cdi12"],
+            "Carteira do início até 12 meses depois (%)": r["carteira_ate"],
+            "Ibov puro do início até 12 meses depois (%)": r["ibov_ate"],
+            "Selic pura do início até 12 meses depois (%)": r["cdi_ate"],
+            "Até": r["ate"]} for r in rr]).set_index("Reduziu em")
+        _baixar_csv_br(df_rr, "reducoes_carteira_vs_ibov_vs_selic", "dl_reducoes")
+
     # Cada alívio e a sua recompra — para julgar se a recompra foi boa.
     cic = bt.get("ciclos") or []
     if cic:
