@@ -366,15 +366,16 @@ def banda_exposicao(d: pd.DataFrame, score: float = 50.0) -> dict:
         if macro_forte:
             acao, ativa = "manter", False
             nota = ("Esticado, mas o score está forte. Hipótese: esticado com macro a favor "
-                    "tende a ser bull e não topo — NÃO comprovada: esse cenário quase nunca "
-                    "ocorreu (score ≥ 68 em 3 de 131 meses desde 2016).")
+                    "tende a ser bull e não topo — NÃO comprovada: esse cenário foi raro no histórico.")
         else:
             acao, ativa = "aliviar parte", True
-            nota = ("Esticado e macro sem apoio — considere aliviar PARTE (deixar só o lucro / "
-                    "reduzir metade) e estacionar no CDI. Nunca sair 100%.")
+            nota = ("Esticado e macro sem apoio — considere reduzir PARTE da posição (deixar só o lucro "
+                    "ou reduzir metade) e passar para o CDI. Reduzir só parte, e não tudo, é uma escolha "
+                    "de prudência: no histórico sair de tudo rendeu mais, mas arrisca ficar de fora "
+                    "de uma alta.")
     elif z <= 0:
         zona, acao, ativa = "comprimida", "retomar", False
-        nota = "Ibov abaixo da própria tendência — zona de manter ou retomar exposição."
+        nota = "Ibov abaixo da própria tendência — zona de manter a posição ou voltar a comprar."
     else:
         zona, acao, ativa = "neutra", "manter", False
         nota = "Nem esticado nem comprimido — sem gatilho de banda."

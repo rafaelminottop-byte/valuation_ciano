@@ -2551,7 +2551,7 @@ def _bloco_preditor(p: dict = None) -> None:
         titulo_z = _TIT.get(be["zona"], "—")
         teto, media, ibv = be.get("teto_pts"), be.get("media_pts"), be.get("ibov_pts")
         if be["zona"] in ("esticada", "muito esticada"):
-            niveis = (f'Recompra na volta à média: ~{media:,.0f} pts.'.replace(",", ".")
+            niveis = (f'Voltar a comprar na volta à média: ~{media:,.0f} pts.'.replace(",", ".")
                       if media else "")
         else:
             niveis = ("Teto de atenção (z=1,5): ~" + f"{teto:,.0f}".replace(",", ".") + " pts · tendência: ~"
@@ -2593,9 +2593,9 @@ _LAB_MODOS = {"Reduzir 25%": "25", "Reduzir 50%": "50", "Reduzir 75%": "75",
               "Reduzir 100% (tudo)": "100", "Deixar só o lucro": "lucro"}
 _LAB_TRAVAS = {"Nenhuma": "nenhuma", "Score forte (≥ 68)": "score",
                "Selic cortando": "selic"}
-_LAB_CAMADAS = ["Ibovespa", "Nível de recompra", "Teto de alívio",
+_LAB_CAMADAS = ["Ibovespa", "Nível para voltar a comprar", "Teto para reduzir",
                 "Níveis de desconto (z −1,0 e −1,5)", "Sinais da simulação", "Score (painel abaixo)"]
-_LAB_CAMADAS_PADRAO = ["Ibovespa", "Nível de recompra", "Teto de alívio", "Sinais da simulação"]
+_LAB_CAMADAS_PADRAO = ["Ibovespa", "Nível para voltar a comprar", "Teto para reduzir", "Sinais da simulação"]
 _LAB_PERIODOS = {"Tudo": None, "20 anos": 240, "10 anos": 120, "5 anos": 60}
 
 
@@ -2634,20 +2634,20 @@ def _laboratorio_banda(p: dict) -> None:
         "A simulação vai de 1999 (câmbio flutuante) até hoje; 1994–98 só servem para calcular o z e o score."
     )
     c1, c2 = st.columns(2)
-    alivio = c1.slider("Alívio quando o Ibov passa de z =", 0.5, 3.0, 1.5, 0.1, key="lab_alivio",
+    alivio = c1.slider("Reduzir quando o Ibov passa de z =", 0.5, 3.0, 1.5, 0.1, key="lab_alivio",
                        help="z = quantos desvios o Ibov está acima da própria tendência de 24 meses. "
-                            "Mais alto = alivia só em esticamentos mais extremos (mais agressivo para cima).")
-    recompra = c2.slider("Recompra quando volta a z =", -1.0, 1.0, 0.0, 0.1, key="lab_recompra",
+                            "Mais alto = reduz só em esticamentos mais extremos (mais agressivo para cima).")
+    recompra = c2.slider("Voltar a comprar quando z cair a =", -1.0, 1.0, 0.0, 0.1, key="lab_recompra",
                          help="0 = só volta quando o Ibov cai até a tendência. Comprar no teto seria comprar caro.")
     c3, c4 = st.columns(2)
-    modo_rot = c3.selectbox("Quanto aliviar", list(_LAB_MODOS), index=1, key="lab_modo")
-    trava_rot = c4.selectbox("Trava: não alivia quando…", list(_LAB_TRAVAS), index=0, key="lab_trava")
+    modo_rot = c3.selectbox("Quanto reduzir", list(_LAB_MODOS), index=1, key="lab_modo")
+    trava_rot = c4.selectbox("Trava: não reduz quando…", list(_LAB_TRAVAS), index=0, key="lab_trava")
     c8, c9 = st.columns(2)
-    max_meses = c8.slider("Recompra também após N meses fora (0 = desligado)", 0, 36, 0, 3, key="lab_maxmeses",
+    max_meses = c8.slider("Voltar a comprar também após N meses fora (0 = desligado)", 0, 36, 0, 3, key="lab_maxmeses",
                           help="Evita ficar de fora para sempre quando a média sobe mais rápido que o preço "
                                "(em 2016 foram 26 meses fora).")
     queda = c9.slider("…ou se o Ibov cair X% abaixo do preço de venda (0 = desligado)", 0, 30, 0, 5,
-                      key="lab_queda", help="Recompra mais barato do que vendeu. Se o preço nunca cai, não dispara.")
+                      key="lab_queda", help="Volta a comprar mais barato do que vendeu. Se o preço nunca cai, não dispara.")
     c5, c6, c7 = st.columns([3, 1.3, 1.1])
     camadas = c5.multiselect("Camadas no gráfico", _LAB_CAMADAS, default=_LAB_CAMADAS_PADRAO,
                              key="lab_camadas")
@@ -2679,16 +2679,16 @@ def _laboratorio_banda(p: dict) -> None:
         return f"{v:.1f}".replace(".", ",")
 
     fig = go.Figure()
-    if "Teto de alívio" in camadas:
-        fig.add_trace(go.Scatter(x=xs, y=nivel(alivio), name="Teto de alívio (z=" + fz(alivio) + ")",
+    if "Teto para reduzir" in camadas:
+        fig.add_trace(go.Scatter(x=xs, y=nivel(alivio), name="Teto para reduzir (z=" + fz(alivio) + ")",
                                  mode="lines", line=dict(color="#EA8A3C", width=1.5, dash="dash"),
                                  hovertemplate="Teto: %{y:,.0f}<extra></extra>"))
-    if "Nível de recompra" in camadas:
-        fig.add_trace(go.Scatter(x=xs, y=nivel(recompra), name="Recompra (z=" + fz(recompra) + ")",
+    if "Nível para voltar a comprar" in camadas:
+        fig.add_trace(go.Scatter(x=xs, y=nivel(recompra), name="Voltar a comprar (z=" + fz(recompra) + ")",
                                  mode="lines", line=dict(color="#94A3B8", width=1.5, dash="dash"),
-                                 fill="tonexty" if "Teto de alívio" in camadas else "none",
+                                 fill="tonexty" if "Teto para reduzir" in camadas else "none",
                                  fillcolor="rgba(234,138,60,0.08)",
-                                 hovertemplate="Recompra: %{y:,.0f}<extra></extra>"))
+                                 hovertemplate="Voltar a comprar: %{y:,.0f}<extra></extra>"))
     if "Níveis de desconto (z −1,0 e −1,5)" in camadas:
         for zk, nome, cor in ((-1.0, "Desconto forte (z −1,0)", "#5DB37E"),
                               (-1.5, "Desconto profundo (z −1,5)", "#16A34A")):
@@ -2701,8 +2701,8 @@ def _laboratorio_banda(p: dict) -> None:
                                  hovertemplate="Ibov: %{y:,.0f} pts<extra></extra>"))
     if "Sinais da simulação" in camadas and not bt.get("erro"):
         ib_por_data = dict(zip(datas, lab["ibov"]))
-        for tipo, cor, simb, nome in (("venda", "#DC2626", "triangle-down", "Aliviou"),
-                                      ("recompra", "#16A34A", "triangle-up", "Recomprou")):
+        for tipo, cor, simb, nome in (("venda", "#DC2626", "triangle-down", "Reduziu"),
+                                      ("recompra", "#16A34A", "triangle-up", "Voltou a comprar")):
             pts = [s for s in bt["sinais"] if s["tipo"] == tipo and s["data"] >= xs[0]]
             if pts:
                 fig.add_trace(go.Scatter(
@@ -2748,17 +2748,17 @@ def _laboratorio_banda(p: dict) -> None:
         teto = math.exp(lm + alivio * s_now)
         rec = math.exp(lm + recompra * s_now)
         if z_now > alivio:
-            situ = "o Ibov está ACIMA do seu teto de alívio"
+            situ = "o Ibov está ACIMA do seu teto para reduzir"
         elif z_now < recompra:
-            situ = "o Ibov está abaixo do seu nível de recompra"
+            situ = "o Ibov está abaixo do seu nível para voltar a comprar"
         else:
-            situ = "o Ibov está entre a recompra e o teto (sem gatilho)"
+            situ = "o Ibov está entre o nível de voltar a comprar e o teto (sem gatilho)"
         st.markdown(
             f'<div style="background:#F8FAFC;border:1px solid {COR_BORDA};border-radius:12px;'
             f'padding:11px 16px;margin:4px 0 8px;font-size:0.9rem;color:#132244;line-height:1.5;">'
             f'<b>Hoje com os seus parâmetros:</b> z {_n2(z_now, True)} — {situ}. '
-            f'O alívio começa em ~{mil(teto)} pts ({_fmt_pc((teto / ibov_now - 1) * 100)} a partir de hoje) '
-            f'e a recompra em ~{mil(rec)} pts.</div>', unsafe_allow_html=True)
+            f'Reduzir a partir de ~{mil(teto)} pts ({_fmt_pc((teto / ibov_now - 1) * 100)} em relação a hoje) '
+            f'e voltar a comprar em ~{mil(rec)} pts.</div>', unsafe_allow_html=True)
 
     # ---------------- simulação: sua configuração × padrão × referências ----------------
     if bt.get("erro"):
@@ -2774,12 +2774,12 @@ def _laboratorio_banda(p: dict) -> None:
 
     linhas = [
         lin("<b>Sua configuração</b>", e, e["pct_fora"], e["vendas"]),
-        lin("Padrão congelado (z>1,5 · reduz 50% · recompra z<0)", ep, ep["pct_fora"], ep["vendas"]),
+        lin("Padrão congelado (z>1,5 · reduz 50% · volta a comprar com z<0)", ep, ep["pct_fora"], ep["vendas"]),
         lin("Ibov comprar e segurar", bt["bh"]),
         lin("CDI", bt["cdi"]),
     ]
     st.markdown(_tabela_html(["Simulação", "Ganho ao ano", "Multiplicou", "Pior queda",
-                              "Tempo aliviado", "Nº de alívios"], linhas, destaque=0),
+                              "Tempo reduzido", "Nº de reduções"], linhas, destaque=0),
                 unsafe_allow_html=True)
     st.caption(f"Simulado de {bt['inicio']} a {bt['fim']} ({bt['n_meses']} meses), dados mensais. "
                "A decisão de cada mês usa só o que se sabia no mês anterior. Não desconta IR nem custos "
@@ -2789,8 +2789,8 @@ def _laboratorio_banda(p: dict) -> None:
     cic = bt.get("ciclos") or []
     if cic:
         st.markdown('<div style="font-size:0.7rem;letter-spacing:.06em;text-transform:uppercase;color:#64748B;'
-                    'font-weight:700;margin:8px 0 0;">Cada alívio e a sua recompra</div>', unsafe_allow_html=True)
-        _MOT = {"z": "voltou à recompra", "tempo": "tempo máximo", "queda": "caiu abaixo da venda", None: "ainda aliviado"}
+                    'font-weight:700;margin:8px 0 0;">Cada redução e a sua volta a comprar</div>', unsafe_allow_html=True)
+        _MOT = {"z": "voltou ao nível de compra", "tempo": "tempo máximo", "queda": "caiu abaixo da venda", None: "ainda reduzido"}
         lin_c = []
         for c in cic:
             mais_caro = c["preco_recompra"] > c["preco_venda"]
@@ -2801,13 +2801,13 @@ def _laboratorio_banda(p: dict) -> None:
                 _fmt_pc(c["cdi"], sinal=False),
                 f'<span style="color:{"#16A34A" if c["vantagem"] > 0 else "#DC2626"};font-weight:700;">{_fmt_pc(c["vantagem"])}</span>',
                 html.escape(_MOT.get(c["motivo"], "—"))])
-        st.markdown(_tabela_html(["Aliviou em", "Ibov", "Recomprou em", "Ibov", "Ibov no meio", "CDI no meio",
+        st.markdown(_tabela_html(["Reduziu em", "Ibov", "Voltou a comprar em", "Ibov", "Ibov no meio", "CDI no meio",
                                   "Sair rendeu (pp)", "Motivo"], lin_c), unsafe_allow_html=True)
         caras = sum(1 for c in cic if c["recompra"] and c["preco_recompra"] > c["preco_venda"])
         fech = sum(1 for c in cic if c["recompra"])
         comp = sum(1 for c in cic if c["vantagem"] > 0)
-        st.caption(f"A recompra saiu mais cara que a venda em {caras} de {fech} ciclos fechados, e sair compensou "
-                   f"em {comp} de {len(cic)}. Vermelho em 'Ibov no meio' = recomprou mais caro. 'Sair rendeu' = CDI "
+        st.caption(f"Voltar a comprar saiu mais caro que a venda em {caras} de {fech} ciclos fechados, e sair compensou "
+                   f"em {comp} de {len(cic)}. Vermelho em 'Ibov no meio' = voltou a comprar mais caro. 'Sair rendeu' = CDI "
                    "acumulado menos a variação do Ibov (em pontos percentuais, para 100% da posição).")
 
     # O que a trava mudou, em datas concretas.
@@ -2821,10 +2821,10 @@ def _laboratorio_banda(p: dict) -> None:
             n_forte = sum(1 for v, _ in sc_ok if v >= 68)
             n_estic = sum(1 for v, zz in sc_ok if v >= 68 and zz > alivio)
             st.caption(f"Trava por score: o score passou de 68 em {n_forte} de {len(sc_ok)} meses e em "
-                       f"{n_estic} deles o Ibov estava acima do seu teto de alívio, então ela quase não atua. "
+                       f"{n_estic} deles o Ibov estava acima do seu teto para reduzir, então ela quase não atua. "
                        "O score mede mais o desconto da bolsa do que a continuidade da alta.")
         txt = ", ".join(evitados) if evitados else "nenhum"
-        st.caption("Alívios que essa trava evitou: " + txt + ". Compare com o que o Ibov fez depois "
+        st.caption("Reduções que essa trava evitou: " + txt + ". Compare com o que o Ibov fez depois "
                    "de cada um antes de concluir que a trava ajuda.")
 
     n_test = len(testadas)
@@ -3094,6 +3094,9 @@ def _secao_registro(rg) -> None:
 
     hip = rg.get("hipoteses") or []
     if hip:
+        st.caption("Legenda: nas hipóteses abaixo, 'zona de alívio' = zona em que se considera reduzir a posição, "
+                   "e 'recompra' = voltar a comprar. O texto original foi mantido de propósito, porque as "
+                   "hipóteses foram registradas antes dos dados.")
         itens = "".join(
             f'<li style="margin-bottom:5px;"><b>{html.escape(h["id"])}.</b> {html.escape(h["texto"])}</li>'
             for h in hip)
