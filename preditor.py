@@ -730,6 +730,32 @@ def backtest_banda(lab: dict, alivio: float = 1.5, recompra: float = 0.0, modo: 
             "serie": {"datas": s_dat, "carteira": s_cart, "ibov": s_ib, "cdi": s_cdi}}
 
 
+def estrategia_desconto(lab: dict, entrada: float = -1.5, meses: int = 24) -> dict:
+    """Fica no CDI; compra o Ibov no 1º mês em que o z (do mês anterior) fica abaixo de
+    ``entrada`` e segura ``meses`` meses; depois volta ao CDI. Curvas acumuladas e janelas."""
+    datas, r, cdi, z = lab["datas"], lab["r"], lab["cdi"], lab["z"]
+    n = len(datas)
+    est, cd, ib = [1.0], [1.0], [1.0]
+    janelas, t0, on = [], 0, False
+    for i in range(1, n):
+        zi = z[i - 1]
+        if not on and zi is not None and zi < entrada:
+            on, t0 = True, i
+        elif on and i - t0 >= meses:
+            on = False
+            janelas.append((datas[t0], datas[i - 1]))
+        ri = r[i] or 0.0
+        ci = cdi[i] or 0.0
+        est.append(est[-1] * (1 + (ri if on else ci)))
+        cd.append(cd[-1] * (1 + ci))
+        ib.append(ib[-1] * (1 + ri))
+    if on:
+        janelas.append((datas[t0], datas[-1]))
+    return {"datas": datas, "estrategia": est, "cdi": cd, "ibov": ib, "janelas": janelas,
+            "nivel_entrada": [None if (m is None or s is None) else float(np.exp(m + entrada * s))
+                              for m, s in zip(lab["ln_media"], lab["sest"])]}
+
+
 def retornos_apos_reducoes(bt: dict) -> list:
     """Para cada redução: o lucro da posição até ali, o que o Ibov e a Selic (CDI) fizeram nos
     12 meses seguintes e, do INÍCIO da simulação até o fim desses 12 meses, o rendimento da

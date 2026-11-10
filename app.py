@@ -429,6 +429,8 @@ _HERO = {
                   "As teses próprias da Ciano ordenadas por upside, lado a lado."),
     "🔀 Cenários": ("Leitura de ciclo", "Ciclos de mercado",
                    "Onde o Ibovespa está no ciclo e quais alavancas sustentam (ou derrubam) a alta."),
+    "🧭 Decisão": ("Painel de decisão", "Como está cada indicador hoje",
+                  "Preço, juros, risco-país, fiscal e valor relativo numa tela só, cada um com o seu sinal."),
     "🔮 Preditivo": ("Assimetria do Ibov", "Ibovespa preditivo",
                     "Score de continuidade e banda de exposição — mede a assimetria do ciclo, com a amostra à mostra."),
     "📈 Lucros": ("Resultados agregados", "Lucros & EBIT",
@@ -455,6 +457,7 @@ _ROTULO_NAV = {
     "⭐ Carteira": "Carteira",
     "🏅 Ranking": "Ranking",
     "🔀 Cenários": "Ciclos",
+    "🧭 Decisão": "Decisão",
     "🔮 Preditivo": "Preditivo",
     "📈 Lucros": "Lucros",
     "📉 Macro": "Macro",
@@ -3224,6 +3227,292 @@ def _resumo_hoje(p: dict) -> None:
         unsafe_allow_html=True)
 
 
+def _secao_estrategia_desconto(p: dict) -> None:
+    """Estratégia 'fica no CDI e compra o Ibov só no desconto profundo' x Selic x Ibov puro."""
+    import preditor
+    lab = p.get("lab")
+    if not lab:
+        st.info("Sem dados para simular agora.")
+        return
+    st.caption("Regra: o dinheiro fica no CDI. Quando o Ibov fecha o mês bem abaixo da sua "
+               "tendência (linha vermelha), compra e segura por um tempo. Depois volta ao CDI.")
+    c1, c2 = st.columns(2)
+    entrada = c1.select_slider("Quão barato para comprar (z)", options=[-1.0, -1.25, -1.5, -1.75, -2.0],
+                               value=-1.5, key="ed_entrada")
+    meses = c2.select_slider("Meses segurando", options=[6, 12, 18, 24, 36], value=24, key="ed_meses")
+    e = preditor.estrategia_desconto(lab, entrada, meses)
+    de, a = e["datas"], len(e["datas"])
+    anos = max(a / 12, 1e-9)
+    v = lambda s: s[-1]
+    cag = lambda s: (s[-1] ** (1 / anos) - 1) * 100
+    m1, m2, m3 = st.columns(3)
+    m1.metric("Estratégia", f"{v(e['estrategia']):.1f}x".replace(".", ","), f"{cag(e['estrategia']):.1f}% a.a.".replace(".", ","))
+    m2.metric("Selic (CDI)", f"{v(e['cdi']):.1f}x".replace(".", ","), f"{cag(e['cdi']):.1f}% a.a.".replace(".", ","))
+    m3.metric("Ibov puro", f"{v(e['ibov']):.1f}x".replace(".", ","), f"{cag(e['ibov']):.1f}% a.a.".replace(".", ","))
+    st.caption(f"De {de[0]} a {de[-1]}. {len(e['janelas'])} entradas no período. "
+               "Os valores são quantas vezes o capital inicial multiplicou.")
+    try:
+        import plotly.graph_objects as go
+        f1 = go.Figure()
+        f1.add_trace(go.Scatter(x=de, y=lab["ibov"], name="Ibovespa", line=dict(color="#0b6e7a", width=2)))
+        f1.add_trace(go.Scatter(x=de, y=e["nivel_entrada"], name="Desconto profundo",
+                                line=dict(color="#c0392b", width=1.5)))
+        for ini, fim in e["janelas"]:
+            f1.add_vrect(x0=ini, x1=fim, fillcolor="#2ecc71", opacity=0.22, line_width=0)
+        f1.update_yaxes(type="log", gridcolor="rgba(148,163,184,0.18)")
+        f1.update_layout(height=320, margin=dict(l=8, r=8, t=24, b=8), hovermode="x unified",
+                         title=dict(text="Quando compra (faixas verdes); fora delas fica no CDI", font=dict(size=13)),
+                         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+                         legend=dict(orientation="h", y=-0.12))
+        st.plotly_chart(f1, use_container_width=True, config={"displayModeBar": False})
+        f2 = go.Figure()
+        f2.add_trace(go.Scatter(x=de, y=e["estrategia"], name="Estratégia", line=dict(color="#1b9a5b", width=3)))
+        f2.add_trace(go.Scatter(x=de, y=e["cdi"], name="Selic (CDI)", line=dict(color="#d9822b", width=3)))
+        f2.add_trace(go.Scatter(x=de, y=e["ibov"], name="Ibov puro", line=dict(color="#0b6e7a", width=1.5)))
+        f2.update_yaxes(type="log", gridcolor="rgba(148,163,184,0.18)")
+        f2.update_layout(height=320, margin=dict(l=8, r=8, t=24, b=8), hovermode="x unified",
+                         title=dict(text="R$ 1 investido no início (escala log)", font=dict(size=13)),
+                         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+                         legend=dict(orientation="h", y=-0.12))
+        st.plotly_chart(f2, use_container_width=True, config={"displayModeBar": False})
+    except Exception:  # noqa: BLE001
+        st.warning("Não foi possível desenhar o gráfico agora.")
+    st.warning("Poucas entradas (seis em 27 anos). Duas delas, 2016 e 2020, geram quase todo o ganho; "
+               "2008, 2012 e 2022 perderam ou empataram com o CDI. É uma regra candidata, ainda "
+               "não comprovada, e foi escolhida entre muitas variações testadas.")
+
+
+_ST_DECISAO = {
+    "fav": ("Favorável", "#16A34A"),
+    "neu": ("Neutro", "#D97706"),
+    "atn": ("Atenção", "#DC2626"),
+    "inf": ("Informativo", "#64748B"),
+}
+
+
+def _card_decisao(rotulo: str, valor: str, estado: str, frase: str) -> str:
+    rot, cor = _ST_DECISAO.get(estado, _ST_DECISAO["inf"])
+    return (
+        f'<div style="background:{COR_CARD};border:1px solid {COR_BORDA};border-top:4px solid {cor};'
+        f'border-radius:10px;padding:12px 14px;height:100%;box-shadow:0 1px 3px rgba(19,34,74,.05);">'
+        f'<div style="font-size:0.66rem;letter-spacing:.09em;text-transform:uppercase;color:#64748B;'
+        f'font-weight:700;">{html.escape(rotulo)}</div>'
+        f'<div style="font-size:1.35rem;font-weight:800;color:{COR_INK};margin:3px 0 2px;">{html.escape(valor)}</div>'
+        f'<div style="display:inline-flex;align-items:center;gap:5px;font-size:0.72rem;font-weight:700;color:{cor};">'
+        f'<span style="width:8px;height:8px;border-radius:50%;background:{cor};"></span>{rot}</div>'
+        f'<div style="font-size:0.8rem;color:#475569;line-height:1.45;margin-top:5px;">{html.escape(frase)}</div></div>'
+    )
+
+
+def _linha_cards(cards: list) -> None:
+    cols = st.columns(len(cards))
+    for c, (rot, val, est, fr) in zip(cols, cards):
+        c.markdown(_card_decisao(rot, val, est, fr), unsafe_allow_html=True)
+
+
+def _risco_pais_decisao():
+    """Nível, mudança em 12 meses e percentil histórico do risco-país (painel desde 1994)."""
+    try:
+        import preditor
+        s = preditor._painel()["risco"].dropna()
+        atual = float(s.iloc[-1])
+        d12 = atual - float(s.iloc[-13]) if len(s) > 13 else None
+        pct = float((s < atual).mean() * 100)
+        return atual, d12, pct
+    except Exception:  # noqa: BLE001
+        return None, None, None
+
+
+def _aba_decisao() -> None:
+    import macro as mac
+    import ibov_ciclo
+
+    st.markdown('<div class="ciano-label">Painel de decisão — como está cada indicador hoje</div>',
+                unsafe_allow_html=True)
+    st.caption("Uma tela só. Cada quadro mostra o valor, se ele ajuda ou pesa sobre a bolsa e o que isso "
+               "quer dizer. É um resumo do cenário, não uma ordem de compra ou venda.")
+    try:
+        with st.spinner("Reunindo os indicadores…"):
+            p = _prever_cache()
+            dados = st.session_state.get("macro")
+            if dados is None:
+                dados = mac.buscar_macro()
+                st.session_state.macro = dados
+            mat = ibov_ciclo.buscar_maturidade()
+    except Exception as e:  # noqa: BLE001
+        st.warning(f"Painel indisponível agora: {e}")
+        return
+
+    g, b = dados.get("global", {}), dados.get("brasil", {})
+    est = _estados_macro(g, b)
+    conv = {"alivia": "fav", "aperta": "atn", "neutro": "neu", None: "inf"}
+    v = lambda node: (node or {}).get("valor")
+    fm = lambda x, nd=1: ("—" if x is None else f"{x:,.{nd}f}".replace(",", "X").replace(".", ",").replace("X", "."))
+    be, ds, es = p.get("banda_exposicao") or {}, (p.get("desconto") or {}), (p.get("estado") or {})
+    todos = []
+
+    def grupo(titulo, cards):
+        st.markdown(f'<div class="ciano-label" style="margin-top:14px;">{titulo}</div>', unsafe_allow_html=True)
+        _linha_cards(cards)
+        todos.extend((c[0], c[2]) for c in cards)
+
+    # --- 1) Preço do Ibov ---------------------------------------------------
+    z = be.get("z")
+    if z is None:
+        ez, fz = "inf", "Sem leitura de preço agora."
+    elif z > 1.5:
+        ez, fz = "atn", "Ibov esticado acima da tendência. Historicamente, zona de atenção."
+    elif z < -1.5:
+        ez, fz = "fav", "Desconto profundo. Aqui comprar e segurar costumou bater o CDI."
+    else:
+        ez, fz = "neu", "Ibov perto da tendência, sem extremo para nenhum lado."
+    ate = ds.get("queda_ate_profundo_pct")
+    prof = ds.get("nivel_profundo_pts")
+    c_prof = ("neu" if (ate is not None and ate < 0) else "fav" if ate is not None else "inf")
+    qt = mat.get("queda_desde_topo")
+    grupo("1 · Preço do Ibovespa", [
+        ("Ibov × tendência (z)", fm(z, 2), ez, fz),
+        ("Falta para o desconto profundo",
+         "—" if ate is None else f"{fm(ate)}%" + ("" if not prof else f" ({fm(prof / 1000)} mil pts)"), c_prof,
+         "Nível de preço em que a regra de comprar no desconto passa a valer."),
+        ("Queda desde o topo", "—" if qt is None else f"{fm(qt)}%", "inf",
+         "Quanto o Ibov já devolveu do último pico."),
+    ])
+
+    # --- 2) Juros -----------------------------------------------------------
+    ciclo = es.get("ciclo_selic")
+    ec = "fav" if ciclo == "cortando" else "atn" if ciclo == "subindo" else "neu"
+    ntnb = v(b.get("ntnb_10a"))
+    grupo("2 · Juros", [
+        ("Selic hoje", f"{fm(es.get('selic'), 2)}%", ec,
+         {"cortando": "Banco Central cortando juros: costuma ajudar a bolsa.",
+          "subindo": "Banco Central subindo juros: pesa sobre a bolsa."}.get(ciclo, "Selic parada.")),
+        ("Selic esperada (Focus)", f"{fm(v(b.get('focus_selic')), 2)}%", conv.get(est.get("selic_dir"), "inf"),
+         "Mercado espera Selic menor à frente: ajuda." if est.get("selic_dir") == "alivia" else
+         "Mercado espera Selic maior à frente: pesa." if est.get("selic_dir") == "aperta" else
+         "Mercado espera Selic parecida com a de hoje."),
+        ("Juro real esperado", f"{fm(v(b.get('juro_real_ex_ante')))}%", conv.get(est.get("juro_real"), "inf"),
+         "Juro real alto segura a economia e comprime o valuation."),
+        ("NTN-B 10 anos", f"{fm(ntnb, 2)}%", "inf",
+         "Juro longo real. Quanto mais alto, mais a renda fixa concorre com a bolsa."),
+    ])
+
+    # --- 3) Risco, fluxo e fiscal ------------------------------------------
+    r_at, r_d12, r_pct = _risco_pais_decisao()
+    if r_at is None:
+        er, fr_ = "inf", "Risco-país indisponível agora."
+    else:
+        er = "atn" if (r_d12 or 0) > 25 else "fav" if (r_d12 or 0) < -25 else "neu"
+        fr_ = (f"{'Subiu' if (r_d12 or 0) > 0 else 'Caiu'} {fm(abs(r_d12 or 0), 0)} pts em 12 meses. "
+               f"Nível mais alto que {fm(r_pct, 0)}% da história desde 1994.")
+    grupo("3 · Risco, fluxo e fiscal", [
+        ("Risco-país", "—" if r_at is None else fm(r_at, 0), er, fr_),
+        ("Dívida / PIB", f"{fm(v(b.get('divida_pib')))}%", conv.get(est.get("divida"), "inf"),
+         "Dívida alta mantém o risco fiscal no radar."),
+        ("Dólar no ano", "—" if (g.get("dolar_real") or {}).get("var_ano") is None
+         else f"{fm(g['dolar_real']['var_ano'])}%", conv.get(est.get("dolar"), "inf"),
+         "Real forte sugere entrada de dinheiro estrangeiro. Real fraco, saída."),
+        ("Diferença de juros (BR − EUA)", f"{fm(v(g.get('carry_real')))} pp", conv.get(est.get("carry"), "inf"),
+         "Prêmio de juro real por ficar no real em vez do dólar."),
+    ])
+
+    # --- 4) Ciclo (média de 200 semanas e tempo desde o fundo) ----------------
+    ciclo_cards = []
+    try:
+        dist, p75 = mat["dist_atual"], mat.get("p75") or 40
+        ed = "atn" if dist > p75 else "neu" if dist > 0 else "fav"
+        ciclo_cards.append((
+            "Distância da média de 200 semanas", f"{dist:+.0f}%".replace(".", ","), ed,
+            ("Zona de topo: mais esticado que 75% da história." if ed == "atn" else
+             "Acima da média, ainda sem esticar demais." if ed == "neu" else "Abaixo da média: zona de fundo.")
+            + f" Esticado a partir de +{p75:.0f}%."))
+        d_ciclo = ibov_ciclo.buscar_ciclo_ibov()
+        legs = [lg for lg in (d_ciclo.get("legs") or []) if lg.get("tipo") == "alta" and lg.get("meses")]
+        serie_c = d_ciclo.get("serie") or []
+        if legs and serie_c:
+            import statistics as _st
+            ini = legs[-1]["de"]
+            meses = (int(serie_c[-1]["data"][:4]) - int(ini[:4])) * 12 + (int(serie_c[-1]["data"][5:7]) - int(ini[5:7]))
+            tip, rec = int(_st.median([lg["meses"] for lg in legs])), int(max(lg["meses"] for lg in legs))
+            et = "atn" if meses >= rec else "neu" if meses > tip else "fav"
+            ciclo_cards.append((
+                "Tempo desde o fundo recente", f"{meses} meses", et,
+                f"Uma alta típica dura {tip} meses e a mais longa durou {rec}."))
+    except Exception:  # noqa: BLE001
+        pass
+    if ciclo_cards:
+        grupo("4 · Ciclo do Ibovespa", ciclo_cards)
+
+    # --- 5) As quatro alavancas (da aba Ciclos) ---------------------------------
+    alav_cards = []
+    try:
+        viv = _cenarios_dados_vivos()
+        base = json.loads(DATA_CICLOS.read_text(encoding="utf-8"))
+        hoje = next((e for e in base.get("episodios", []) if e["id"] == "2022-hoje"), {})
+        al = hoje.get("alavancas", {})
+        mapa = {"verde": "fav", "amarelo": "neu", "vermelho": "atn"}
+        k = lambda chave: mapa.get((chave or "").split("-")[0], "inf")
+        lc, lv, _ld = _alavanca_lucro(_lucro_ibov_agregado())
+        alav_cards.append(("Lucro das empresas (5 anos)", lv, k(lc),
+                           "Crescimento do lucro da empresa típica. Acima da inflação é ganho real."))
+        if viv.get("pl_grande") and viv.get("pl_small"):
+            alav_cards.append(("P/L: grandes × small", f"{viv['pl_grande']:.1f}x × {viv['pl_small']:.1f}x".replace(".", ","),
+                               k(al.get("multiplo")),
+                               "P/L menor é mais barato. Hoje o P/L menor está nas "
+                               + ("small caps." if viv["pl_small"] < viv["pl_grande"] else "grandes.")))
+        elif viv.get("pl"):
+            alav_cards.append(("P/L do mercado", f"{viv['pl']:.1f}x".replace(".", ","), k(al.get("multiplo")),
+                               "Quantos anos de lucro você paga pelo mercado."))
+        fc, fv, _fd = _alavanca_fluxo(_fluxo_estrangeiro_atual())
+        alav_cards.append(("Fluxo estrangeiro", fv, k(fc), "Saldo do estrangeiro na B3 no ano e nas últimas semanas."))
+    except Exception:  # noqa: BLE001
+        pass
+    if alav_cards:
+        grupo("5 · Lucro, múltiplo e fluxo", alav_cards)
+
+    # --- 6) Bolsa × renda fixa e nota --------------------------------------
+    sp = v(b.get("spread_ey_ntnb"))
+    sc = float(p["score"]) if p.get("score") is not None else None
+    en = "fav" if (sc is not None and sc >= 68) else "atn" if (sc is not None and sc < 45) else "neu"
+    grupo("6 · Valor relativo e nota do cenário", [
+        ("Bolsa × NTN-B (prêmio)", "—" if sp is None else f"{sp:+.1f} pp".replace(".", ","), conv.get(est.get("spread"), "inf"),
+         "Quanto o lucro da bolsa rende acima da renda fixa real. Positivo, bolsa barata no relativo."),
+        ("Nota do cenário", "—" if sc is None else f"{sc:.0f} / 100", en,
+         str(p.get("banda_texto", "")) + " Funciona como termômetro de desconto."),
+    ])
+
+    # --- Resumo -------------------------------------------------------------
+    def nomes(est_):
+        return [r for r, e_ in todos if e_ == est_]
+
+    def coluna(titulo, cor, lista):
+        itens = "".join(f'<li style="margin-bottom:3px;">{html.escape(x)}</li>' for x in lista) or \
+            '<li style="color:#64748B;">nenhum</li>'
+        return (f'<div style="flex:1 1 220px;min-width:200px;">'
+                f'<div style="font-size:0.95rem;font-weight:800;color:{cor};margin-bottom:4px;">'
+                f'{len(lista)} {titulo}</div>'
+                f'<ul style="margin:0;padding-left:18px;font-size:0.86rem;line-height:1.45;color:{COR_INK};">'
+                f'{itens}</ul></div>')
+
+    fav, neu, atn, inf = nomes("fav"), nomes("neu"), nomes("atn"), nomes("inf")
+    st.markdown(
+        f'<div style="background:{COR_CARD};border:1px solid {COR_BORDA};border-left:5px solid {COR_CIANO};'
+        f'border-radius:12px;padding:14px 18px;margin:16px 0 6px;">'
+        f'<div style="font-size:0.7rem;letter-spacing:.12em;text-transform:uppercase;color:#64748B;font-weight:700;'
+        f'margin-bottom:8px;">Balanço dos indicadores</div>'
+        f'<div style="display:flex;flex-wrap:wrap;gap:18px;">'
+        + coluna("favoráveis", "#16A34A", fav) + coluna("neutros", "#D97706", neu)
+        + coluna("de atenção", "#DC2626", atn) +
+        f'</div>'
+        f'<div style="font-size:0.84rem;color:#475569;margin-top:10px;line-height:1.5;">'
+        f'Só informativos (não entram na conta): ' + (html.escape(", ".join(inf)) or "nenhum") +
+        f'. A regra de comprar o Ibov no desconto profundo (hoje '
+        + ("—" if ate is None else f"{fm(abs(ate))}% abaixo do preço atual") +
+        f') é uma hipótese em teste, não uma recomendação.</div></div>',
+        unsafe_allow_html=True)
+    st.caption("Estes quadros resumem; os detalhes e os estudos ficam nas abas Preditivo, Macro e Ciclos.")
+
+
 def _aba_preditivo() -> None:
     st.markdown('<div class="ciano-label">Ibovespa — leitura de hoje</div>', unsafe_allow_html=True)
     st.caption("Não prevê topo nem fundo: mede a assimetria do Ibovespa com dados desde 1994. "
@@ -3242,6 +3531,8 @@ def _aba_preditivo() -> None:
         _bloco_preditor(p)
     with st.expander("Laboratório: simular a regra de reduzir e voltar a comprar"):
         _laboratorio_banda(p)
+    with st.expander("Estratégia: ficar no CDI e comprar só no desconto profundo"):
+        _secao_estrategia_desconto(p)
     with st.expander("Comprar com desconto e segurar × CDI"):
         _secao_desconto(p.get("desconto"))
     with st.expander("Os drivers ainda movem o Ibovespa?"):
@@ -4183,7 +4474,8 @@ def main() -> None:
 
     # --- Navegação no TOPO (pills) ---
     paginas_analise = ["🔎 Empresa", "📊 Screener", "⭐ Carteira", "🏅 Ranking"]
-    paginas_mercado = ["🔀 Cenários", "🔮 Preditivo", "📈 Lucros", "📉 Macro", "💵 Câmbio", "🌎 Estrangeiro"]
+    paginas_mercado = ["🧭 Decisão", "🔀 Cenários", "🔮 Preditivo", "📈 Lucros", "📉 Macro", "💵 Câmbio",
+                       "🌎 Estrangeiro"]
     paginas_acomp = ["📰 Notícias", "🔔 Gatilhos"]
     ordem = paginas_analise + paginas_mercado + paginas_acomp
 
@@ -4233,6 +4525,7 @@ def main() -> None:
             _aba_ranking(*prem)
     else:
         paginas_mercado_fn = {
+            "🧭 Decisão": _aba_decisao,
             "🔀 Cenários": _aba_cenarios, "🔮 Preditivo": _aba_preditivo,
             "📈 Lucros": _aba_lucros,
             "📉 Macro": _aba_macro, "💵 Câmbio": _aba_cambio,
