@@ -3350,10 +3350,13 @@ def _aba_decisao() -> None:
     fm = lambda x, nd=1: ("—" if x is None else f"{x:,.{nd}f}".replace(",", "X").replace(".", ",").replace("X", "."))
     be, ds, es = p.get("banda_exposicao") or {}, (p.get("desconto") or {}), (p.get("estado") or {})
     todos = []
+    topo = st.container()   # o balanço entra aqui, no topo, depois que os indicadores forem calculados
+    corpo = st.expander("Ver cada indicador, com o valor e o motivo do sinal")
 
     def grupo(titulo, cards):
-        st.markdown(f'<div class="ciano-label" style="margin-top:14px;">{titulo}</div>', unsafe_allow_html=True)
-        _linha_cards(cards)
+        with corpo:
+            st.markdown(f'<div class="ciano-label" style="margin-top:14px;">{titulo}</div>', unsafe_allow_html=True)
+            _linha_cards(cards)
         todos.extend((c[0], c[2]) for c in cards)
 
     # --- 1) Preço do Ibov ---------------------------------------------------
@@ -3381,11 +3384,25 @@ def _aba_decisao() -> None:
 
     # --- 2) Juros -----------------------------------------------------------
     ciclo = es.get("ciclo_selic")
-    ec = "fav" if ciclo == "cortando" else "atn" if ciclo == "subindo" else "neu"
+    try:
+        import preditor
+        _ss = preditor._painel()["selic"].dropna()
+        d6 = float(_ss.iloc[-1] - _ss.iloc[-7])
+    except Exception:  # noqa: BLE001
+        d6 = None
+    # Favorável só se a Selic caiu E o Focus ainda espera queda; senão o ciclo pode estar acabando.
+    if ciclo == "subindo":
+        ec = "atn"
+    elif ciclo == "cortando":
+        ec = "fav" if est.get("selic_dir") == "alivia" else "neu"
+    else:
+        ec = "neu"
     ntnb = v(b.get("ntnb_10a"))
+    d6t = "" if d6 is None else f" ({fm(d6, 2)} pp em 6m)"
     grupo("2 · Juros", [
-        ("Selic hoje", f"{fm(es.get('selic'), 2)}%", ec,
-         {"cortando": "Banco Central cortando juros: costuma ajudar a bolsa.",
+        ("Selic: direção em 6 meses", f"{fm(es.get('selic'), 2)}%{d6t}", ec,
+         {"cortando": "Vem caindo, mas o Focus não espera mais cortes: o ciclo pode estar acabando."
+          if est.get("selic_dir") != "alivia" else "Vem caindo e o Focus espera mais cortes: ajuda a bolsa.",
           "subindo": "Banco Central subindo juros: pesa sobre a bolsa."}.get(ciclo, "Selic parada.")),
         ("Selic esperada (Focus)", f"{fm(v(b.get('focus_selic')), 2)}%", conv.get(est.get("selic_dir"), "inf"),
          "Mercado espera Selic menor à frente: ajuda." if est.get("selic_dir") == "alivia" else
@@ -3495,7 +3512,7 @@ def _aba_decisao() -> None:
                 f'{itens}</ul></div>')
 
     fav, neu, atn, inf = nomes("fav"), nomes("neu"), nomes("atn"), nomes("inf")
-    st.markdown(
+    topo.markdown(
         f'<div style="background:{COR_CARD};border:1px solid {COR_BORDA};border-left:5px solid {COR_CIANO};'
         f'border-radius:12px;padding:14px 18px;margin:16px 0 6px;">'
         f'<div style="font-size:0.7rem;letter-spacing:.12em;text-transform:uppercase;color:#64748B;font-weight:700;'
@@ -3510,7 +3527,7 @@ def _aba_decisao() -> None:
         + ("—" if ate is None else f"{fm(abs(ate))}% abaixo do preço atual") +
         f') é uma hipótese em teste, não uma recomendação.</div></div>',
         unsafe_allow_html=True)
-    st.caption("Estes quadros resumem; os detalhes e os estudos ficam nas abas Preditivo, Macro e Ciclos.")
+    topo.caption("Abra a seção abaixo para ver cada indicador. Os estudos ficam nas abas Preditivo, Macro e Ciclos.")
 
 
 def _aba_preditivo() -> None:
