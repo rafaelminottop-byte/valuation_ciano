@@ -445,6 +445,8 @@ _HERO = {
                    "O noticiário que mexe com as suas teses, reunido num lugar só."),
     "🏢 FII": ("Fundos imobiliários", "Panorama dos FIIs",
               "Desconto sobre o patrimônio e yield por segmento, comparados com a Selic."),
+    "🗂️ Acompanhamento": ("Carteira", "Acompanhamento da carteira",
+                         "Todos os ativos por classe e a saúde financeira das empresas e FIIs."),
     "🔔 Gatilhos": ("Monitor técnico", "Gatilhos",
                    "Quem está perto de um ponto de decisão técnico no Ibovespa, Small Caps e IFIX."),
 }
@@ -468,6 +470,7 @@ _ROTULO_NAV = {
     "📰 Notícias": "Notícias",
     "🏢 FII": "FII",
     "🔔 Gatilhos": "Gatilhos",
+    "🗂️ Acompanhamento": "Acompanhamento",
 }
 
 
@@ -4555,6 +4558,11 @@ def _checar_senha() -> bool:
     return False
 
 
+def _aba_acompanhamento() -> None:
+    import app_acompanhamento
+    app_acompanhamento.render()
+
+
 def main() -> None:
     st.set_page_config(
         page_title="Valuation Ciano", page_icon="📈", layout="wide",
@@ -4568,7 +4576,7 @@ def main() -> None:
     paginas_analise = ["🔎 Empresa", "📊 Screener", "⭐ Carteira", "🏅 Ranking"]
     paginas_mercado = ["🧭 Decisão", "🔀 Cenários", "🔮 Preditivo", "📈 Lucros", "📉 Macro", "💵 Câmbio",
                        "🌎 Estrangeiro", "🏢 FII"]
-    paginas_acomp = ["📰 Notícias", "🔔 Gatilhos"]
+    paginas_acomp = ["📰 Notícias", "🔔 Gatilhos", "🗂️ Acompanhamento"]
     ordem = paginas_analise + paginas_mercado + paginas_acomp
 
     pagina = _topbar(ordem)
@@ -4623,6 +4631,7 @@ def main() -> None:
             "📉 Macro": _aba_macro, "💵 Câmbio": _aba_cambio,
             "🌎 Estrangeiro": _aba_estrangeiro, "🏢 FII": _aba_fii,
             "📰 Notícias": _aba_noticias, "🔔 Gatilhos": _aba_gatilhos,
+            "🗂️ Acompanhamento": _aba_acompanhamento,
         }
         paginas_mercado_fn[pagina]()
 
