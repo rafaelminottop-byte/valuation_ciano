@@ -911,6 +911,7 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
                         "ticker": ticker,
                         "preco_atual": dados["preco_atual"],
                         "ebit_por_acao": dados["ebit_atual"] / dados["acoes_em_circulacao"],
+                        "acoes": dados["acoes_em_circulacao"],
                         "lpa": lpa,
                         "base": dados.get("base_calculo", "EBIT"),
                     }
@@ -1011,7 +1012,64 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
         _render_estimado_realizado_empresa(emp["ticker"], eua)
 
         if not eua:
+            _bloco_ebit_normalizado(emp, comuns)
             _render_tese(emp["ticker"])
+
+
+def _bloco_ebit_normalizado(emp: dict, comuns: dict) -> None:
+    """EBIT anual desde 2010 (CVM) e o valor justo com o EBIT médio, para empresas de ciclo."""
+    import cvm_historico as cvm
+
+    with st.expander("EBIT de 2010 até hoje (CVM) e valor com o EBIT médio do ciclo"):
+        try:
+            h = cvm.historico(emp["ticker"])
+        except Exception as e:  # noqa: BLE001
+            st.warning(f"Histórico da CVM indisponível agora: {e}")
+            return
+        anos = (h or {}).get("anos") or {}
+        pontos = [(a, d["ebit"]) for a, d in anos.items() if d.get("ebit") is not None]
+        if not pontos:
+            st.info("Não encontrei o EBIT dessa empresa na CVM (bancos e seguradoras não têm EBIT).")
+            return
+        st.caption("Balanços anuais consolidados da CVM, em reais. O EBIT de um ano só engana em empresa "
+                   "de ciclo: no fundo a ação parece cara e no pico parece barata.")
+        try:
+            import plotly.graph_objects as go
+            f = go.Figure(go.Bar(x=[str(a) for a, _ in pontos], y=[v / 1e9 for _, v in pontos],
+                                 marker_color=["#DC2626" if v < 0 else "#0b6e7a" for _, v in pontos],
+                                 hovertemplate="%{x}: R$ %{y:.1f} bi<extra></extra>"))
+            f.update_layout(height=260, margin=dict(l=8, r=8, t=10, b=8), paper_bgcolor="rgba(0,0,0,0)",
+                            plot_bgcolor="rgba(0,0,0,0)", yaxis_title="EBIT (R$ bi)")
+            f.update_yaxes(gridcolor="rgba(148,163,184,0.18)")
+            st.plotly_chart(f, use_container_width=True, config={"displayModeBar": False})
+        except Exception:  # noqa: BLE001
+            pass
+
+        acoes = emp.get("acoes")
+        if not acoes:
+            st.caption("Sem número de ações nessa busca; o valor com EBIT médio não pôde ser calculado.")
+            return
+        linhas = []
+        for rot, n in (("EBIT de hoje", 0), ("Média de 5 anos", 5), ("Média de 10 anos", 10), ("Média desde 2010", 99)):
+            if n == 0:
+                fluxo = emp["ebit_por_acao"]
+                extra = ""
+            else:
+                nm = cvm.ebit_normalizado(h, n)
+                if not nm["media"] or nm["media"] <= 0:
+                    continue
+                fluxo = nm["media"] / acoes
+                extra = f"{nm['n']} anos, {nm['negativos']} negativos"
+            r = calcular_valuation_completo(ticker=emp["ticker"], ebit_atual=fluxo, **comuns)
+            ref = "intermediario" if "intermediario" in r["resultados"] else list(r["resultados"])[0]
+            res = r["resultados"][ref]
+            linhas.append({"EBIT usado": rot, "EBIT por ação (R$)": round(fluxo, 2),
+                           "Valor justo (R$)": round(res.valuation_final_por_acao, 2),
+                           "Upside": f"{res.upside_percentual:+.0f}%", "Anos usados": extra})
+        if linhas:
+            st.dataframe(pd.DataFrame(linhas).set_index("EBIT usado"), use_container_width=True)
+        st.caption("Mesmo motor e mesmas premissas do resultado acima; só muda o EBIT de partida. "
+                   "Se a empresa tem dívida alta, o EBIT não é todo do acionista.")
 
 
 def _screener_crescimento() -> None:
