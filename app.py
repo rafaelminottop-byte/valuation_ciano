@@ -443,6 +443,8 @@ _HERO = {
                       "Entrada e saída do investidor estrangeiro na B3, saldo oficial em D+2."),
     "📰 Notícias": ("Acompanhamento", "Notícias do dia",
                    "O noticiário que mexe com as suas teses, reunido num lugar só."),
+    "🏢 FII": ("Fundos imobiliários", "Panorama dos FIIs",
+              "Desconto sobre o patrimônio e yield por segmento, comparados com a Selic."),
     "🔔 Gatilhos": ("Monitor técnico", "Gatilhos",
                    "Quem está perto de um ponto de decisão técnico no Ibovespa, Small Caps e IFIX."),
 }
@@ -464,6 +466,7 @@ _ROTULO_NAV = {
     "💵 Câmbio": "Câmbio",
     "🌎 Estrangeiro": "Estrangeiro",
     "📰 Notícias": "Notícias",
+    "🏢 FII": "FII",
     "🔔 Gatilhos": "Gatilhos",
 }
 
@@ -4338,6 +4341,78 @@ def _fmt_mi(v: float) -> str:
     return f"R$ {s} mi"
 
 
+def _aba_fii() -> None:
+    import fii
+
+    st.markdown('<div class="ciano-label">Panorama dos fundos imobiliários</div>', unsafe_allow_html=True)
+    st.caption("Fonte: Fundamentus (atualiza 1x ao dia). Só entram fundos com negociação real "
+               "(liquidez mínima de R$ 200 mil/dia) e P/VP entre 0,2 e 3. "
+               "Limite da fonte: fundos de papel (CRI) vêm com yield zerado e ficam de fora.")
+    if st.button("Atualizar dados", key="fii_upd"):
+        st.session_state.pop("fii_df", None)
+    try:
+        if "fii_df" not in st.session_state:
+            with st.spinner("Buscando os FIIs…"):
+                st.session_state.fii_df = fii.baixar()
+        df = fii.filtrar(st.session_state.fii_df)
+    except Exception as exc:  # rede/site fora do ar
+        st.error(f"Não consegui buscar os FIIs agora ({exc}).")
+        return
+    if df.empty:
+        st.warning("Nenhum fundo passou nos filtros.")
+        return
+
+    r = fii.resumo(df)
+    selic = None
+    try:
+        import macro as mac
+        selic = ((mac.buscar_macro().get("brasil") or {}).get("selic") or {}).get("valor")
+    except Exception:
+        pass
+    c = st.columns(4)
+    c[0].metric("Fundos analisados", r["fundos"])
+    c[1].metric("P/VP mediano", f"{r['pvp']:.2f}")
+    c[2].metric("Dividend yield mediano", f"{r['dy'] * 100:.1f}%",
+                delta=(f"{r['dy'] * 100 - selic:+.1f} pp vs Selic" if selic else None))
+    c[3].metric("Fundos abaixo do VP", f"{r['abaixo_vp'] * 100:.0f}%")
+    st.caption("Yield acima da Selic com cota abaixo do patrimônio = mercado pagando para você "
+               "esperar. Mas desconto grande também pode ser risco (vacância, calote): olhe o fundo.")
+
+    seg = fii.por_segmento(df)
+    st.markdown('<div class="ciano-label">Por segmento</div>', unsafe_allow_html=True)
+    graf = (alt.Chart(seg).mark_bar(color=COR_ACCENT).encode(
+        x=alt.X("PVP:Q", title="P/VP mediano", scale=alt.Scale(zero=False)),
+        y=alt.Y("Segmento:N", sort="-x", title=None),
+        tooltip=["Segmento", "Fundos", alt.Tooltip("PVP:Q", format=".2f"),
+                 alt.Tooltip("DY:Q", format=".1%")]).properties(height=34 * len(seg) + 30))
+    st.altair_chart(graf, use_container_width=True)
+    tab = seg.assign(DY=seg["DY"] * 100, Valor=seg["Valor"] / 1e9, Liquidez=seg["Liquidez"] / 1e6)
+    st.dataframe(tab.rename(columns={"PVP": "P/VP", "DY": "DY (%)", "Valor": "Valor de mercado (R$ bi)",
+                                     "Liquidez": "Liquidez/dia (R$ mi)"}),
+                 hide_index=True, use_container_width=True,
+                 column_config={"P/VP": st.column_config.NumberColumn(format="%.2f"),
+                                "DY (%)": st.column_config.NumberColumn(format="%.1f"),
+                                "Valor de mercado (R$ bi)": st.column_config.NumberColumn(format="%.1f"),
+                                "Liquidez/dia (R$ mi)": st.column_config.NumberColumn(format="%.1f")})
+
+    st.markdown('<div class="ciano-label">Fundos com maior desconto</div>', unsafe_allow_html=True)
+    segs = ["Todos"] + sorted(df["Segmento"].unique())
+    esc = st.selectbox("Segmento", segs, key="fii_seg")
+    base = df if esc == "Todos" else df[df["Segmento"] == esc]
+    top = base.sort_values("P/VP").head(25)[["Papel", "Segmento", "Cotacao", "P/VP", "DY", "Vacancia",
+                                              "Liquidez"]].copy()
+    top["DY"] = top["DY"] * 100
+    top["Vacancia"] = top["Vacancia"] * 100
+    top["Liquidez"] = top["Liquidez"] / 1e6
+    st.dataframe(top.rename(columns={"Cotacao": "Cotação", "DY": "DY (%)", "Vacancia": "Vacância (%)",
+                                     "Liquidez": "Liquidez/dia (R$ mi)"}),
+                 hide_index=True, use_container_width=True,
+                 column_config={"P/VP": st.column_config.NumberColumn(format="%.2f"),
+                                "DY (%)": st.column_config.NumberColumn(format="%.1f"),
+                                "Vacância (%)": st.column_config.NumberColumn(format="%.1f"),
+                                "Liquidez/dia (R$ mi)": st.column_config.NumberColumn(format="%.1f")})
+
+
 def _aba_estrangeiro() -> None:
     import fluxo_b3
 
@@ -4492,7 +4567,7 @@ def main() -> None:
     # --- Navegação no TOPO (pills) ---
     paginas_analise = ["🔎 Empresa", "📊 Screener", "⭐ Carteira", "🏅 Ranking"]
     paginas_mercado = ["🧭 Decisão", "🔀 Cenários", "🔮 Preditivo", "📈 Lucros", "📉 Macro", "💵 Câmbio",
-                       "🌎 Estrangeiro"]
+                       "🌎 Estrangeiro", "🏢 FII"]
     paginas_acomp = ["📰 Notícias", "🔔 Gatilhos"]
     ordem = paginas_analise + paginas_mercado + paginas_acomp
 
@@ -4546,7 +4621,7 @@ def main() -> None:
             "🔀 Cenários": _aba_cenarios, "🔮 Preditivo": _aba_preditivo,
             "📈 Lucros": _aba_lucros,
             "📉 Macro": _aba_macro, "💵 Câmbio": _aba_cambio,
-            "🌎 Estrangeiro": _aba_estrangeiro,
+            "🌎 Estrangeiro": _aba_estrangeiro, "🏢 FII": _aba_fii,
             "📰 Notícias": _aba_noticias, "🔔 Gatilhos": _aba_gatilhos,
         }
         paginas_mercado_fn[pagina]()
