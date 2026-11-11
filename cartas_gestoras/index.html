@@ -3,33 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alpha Black · Cartas das Gestoras</title>
+  <title>Farol Invest · Cartas das Gestoras</title>
   <link rel="icon" type="image/x-icon" href="assets/alpha.ico">
   <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
   <header class="topo">
     <div class="marca">
-      <img class="logo" src="assets/alpha_symbol.png" alt="Alpha Black">
+      <img class="logo" src="assets/alpha_symbol.png" alt="Farol Invest">
       <div>
         <h1>Cartas das Gestoras</h1>
-        <p class="sub">Alpha Black Investimentos · resumos das principais gestoras do Brasil</p>
+        <p class="sub">Farol Invest · resumos das principais gestoras do Brasil</p>
       </div>
     </div>
     <nav class="abas">
       <button class="aba ativa" data-modo="feed">📬 Feed</button>
+      <button class="aba" data-modo="panorama">📊 Panorama</button>
       <button class="aba" data-modo="gestoras">🏦 Gestoras</button>
+      <button class="aba aba-atualizar" id="btn-atualizar">🔄 Atualizar cartas</button>
     </nav>
   </header>
 
   <main id="conteudo"></main>
 
+  <!-- Aviso rápido (toast) -->
+  <div class="toast" id="toast" hidden></div>
+
   <footer class="rodape">
-    Para adicionar cartas novas: rode <code>coletor.py</code>, peça o resumo ao Claude e edite <code>dados/cartas.js</code>
+    Para adicionar cartas novas: clique em <strong>🔄 Atualizar cartas</strong> ou rode <code>atualizar.py</code>
   </footer>
 
   <script src="dados/gestoras.js"></script>
   <script src="dados/cartas.js"></script>
+  <script src="dados/panorama.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

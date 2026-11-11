@@ -1,0 +1,841 @@
+FONTE: https://www.dynamo.com.br/wp-content/uploads/2026/10/Carta-Dynamo-129.pdf
+PAGINAS: 9
+CARACTERES: 43609
+
+Carta
+DYNAMO129
+20261/4
+O Tao do Sistema 3
+Há uma longa tradição inaugurada na antigui-
+dade clássica que reconhece a autocrítica como disposi-
+ção favorável para o desenvolvimento do indivíduo. A
+prática preservou-se através do exame de consciência in-
+corporado na cultura ocidental como a avaliação refle-
+xiva das próprias condutas e pensamentos. E aqui deixa
+de ser apenas inclinação psicológica para associar-se à
+virtude, ligada à humildade intelectual e à prudência,
+quando praticada de forma construtiva. Os benefícios
+pessoais de um hábito autocrítico são indiscutíveis, em-
+bora como veremos mais à frente, entendimentos mais
+recentes da neurociência revelam que o nosso aparato
+cognitivo, by design, apresenta dificuldades naturais para
+desempenhar bem esta tarefa.
+Quando pensamos nas companhias, também já
+está amplamente reconhecido os benefícios da autocrí-
+tica enquanto atributo coletivo. Primeiro, o combate à
+complacência. Companhias bem-sucedidas costumam
+perseguir de maneira particular esta disposição de autoa-
+valiação contínua. É a mentalidade do “Day 1” da Ama-
+zon, aquela atitude de jamais perder de vista os valores e
+impulsos do começo evitando os perigos da estagnação
+e irrelevância do “Day 2”. Ou a institucionalização da
+“paranoia” na Intel de Andy Grove, que incentivava uma
+hipervigilância permanente, a fim de evitar qualquer sen-
+sação de invencibilidade.
+A segunda vantagem da autocrítica coletiva é o
+entendimento de que o erro oferece oportunidade para o
+aprendizado. E é este segundo aspecto que nos interessa
+aqui, até porque o primeiro pressupõe um mérito anterior
+que não nos cabe julgar, nem muito menos pretendemos
+nos apropriar. O erro sim, é instância epistemológica
+muito cara aqui na Dynamo. Nunca gostamos daquele
+enunciado de que o erro é bom. Não, o erro não é bom e
+fazemos de tudo ao nosso alcance para evitá-lo. Mas,
+quando acontece, não apenas deve ser reconhecido,
+mas analisado. Interrogado. Mastigado. Dissecado. Se-
+guimos à risca a recomendação mungeriana: na
+Dynamo, “esfregamos os narizes” em nossos erros. Cada
+erro contém matizes próprias, todos eles revelam lições
+válidas. Erros costumam exibir marcadores químicos de
+futuras patologias escondidas e ao mesmo tempo ofere-
+cem matéria orgânica para aprendizagem e crescimento.
+O trabalho de exumação exige desprendimento e
+perseverança. É fácil encontrar logo suspeitos usuais e
+classificações óbvias. “Assunto passado é assunto encer-
+rado, o que foi já foi”. “Temos um portfólio a gerir e um
+mapa de oportunidades a explorar. Vamos em frente”.
+Na Dynamo, não. Erros custam, erros doem. Precisamos
+compreender suas raízes e contextos, decifrar nuances e
+conexões. Enquanto não conseguimos esquadrilhá-los
+por completo, permanecem vivos em nossas memórias e
+ressurgem amiúde em nossas discussões.
+A história que iremos contar adiante é um desses
+casos. Um investimento que há alguns anos já não faz
+parte do nosso portfólio, mas que desde então segue fre-
+quentando nossas reflexões. Mesmo não tendo sido uma
+posição de destaque, estivemos bastante envolvidos por
+muito tempo. Estamos falando da Technos S/A.
+Como vestígio do nosso empenho por extrair li-
+ções destas experiências, o texto ficou longo e decidimos
+quebrá-lo em três Cartas. Nesta, descrevemos aspectos
+deste exercício de autocrítica e anatomia dos erros que
+são fustigados na arena das nossas discussões coletivas.
+Na próxima, apresentamos uma descrição de uma des-
+coberta tardia de entendimentos sobre a natureza do ne-
+gócio da Technos que não havíamos percebido em seu
+inteiro teor na época em que éramos investidores. O
+texto ilustra precisamente este esforço de continuar ilumi-
+nando recantos talvez ainda não explorados, e assim am-
+pliar os limites de demarcação do nosso conhecimento a
+fim de preencher vazios onde nossas falhas possam ter se
+instalado. À luz desta preparação, a terceira Carta des-
+creve nossa jornada na Technos propriamente dita.
+O exercício de olhar para trás a fim de reconstruir
+no espaço-tempo o contexto das decisões passadas é
+sempre impreciso e perigoso. Para alguns até equivo-
+cado, pois seria cognitivamente impraticável reproduzir
+com completa objetividade o estado de incerteza anterior
+tendo posse desde já da narrativa efetiva dos aconteci-
+mentos que se sucederam, pois assim tendemos a enfati-
+zar os sinais que deveriam nos ter alertado para o erro e
+desprezar o ruído e a ambiguidade genuína que existiam
+lá atrás (viés de retrospectiva). Isso sem falar nos incenti-
+vos emocionais que conspiram contra uma reconstrução
+isenta de comprometimentos da integridade reputacional
+daqueles diretamente envolvidos no processo de decisão
+equivocada. Feita a ressalva, e conhecendo essas limita-
+ções, nós, ainda assim, julgamos válida a empreitada. E
+da mesma forma que em nosso processo de construção
+coletiva de uma tese de investimento buscamos evitar os
+desvios do groupthink, aqui também tentamos de ma-
+neira conjunta repelir a inércia que nos atrai para uma
+posição cômoda de não enfrentar o desconforto psicoló-
+gico coletivo. Ou seja, estamos lidando com tendências
+arraigadas da personalidade humana e a ação coletiva
+precisa estar atenta para não as reforçar, ao contrário,
+necessita despender energia a fim de superá-las.
+Outra lembrança a ter sempre presente é que há
+dois tipos básicos de erro. Em um mundo sob incerteza,
+povoado por unknown unknowns, coisas completamente
+imprevisíveis podem acontecer sem que se possa prote-
+ger de forma minimamente razoável o portfólio. É
+quando os acontecimentos não podem ser fatorados em
+um mapa razoável de riscos ex ante, como os movimen-
+tos tectônicos de alta intensidade do planeta ainda im-
+possíveis de serem antecipados com a tecnologia de mo-
+nitoramento sísmico que dispomos. Neste caso, as per-
+das são resultado do imponderável puro. Não há lições
+genuínas a serem extraídas. O exercício de dissecação
+seria anacrônico e improdutivo. Naturalmente, esses
+eventos, que já aconteceram em nossa história de investi-
+mentos, são raros. Nós precisamos ter a lucidez de não
+infiltrarmos por condescendência nesse grupo erros que
+mereciam ser contemplados em nosso inventário de ris-
+cos, ao mesmo tempo em que não podemos racionalizar
+o que pertence ao quadrante do genuinamente imponde-
+rável. Portanto, vamos tratar aqui apenas do segundo
+grupo, os erros em que podemos atribuir um “registro ge-
+ral” de identificação, conferir um “prontuário médico” de
+descrição de ocorrências – em suma, aqueles que pode-
+riam ter sido evitados.
+Entre investidores financeiros, um dos grandes ini-
+migos deste exercício de inquérito dos erros é o que po-
+demos chamar de “álibi estatístico”. O argumento se fun-
+damenta da seguinte forma: como a gestão de um port-
+fólio de investimentos é composta por um sem-número
+de ativos e/ou de movimentações cotidianas, dissecá-las
+uma a uma seria contraproducente, competiria com os
+recursos cognitivos escassos que deveriam ser dedicados
+exclusivamente à execução mais nobre da gestão. Me-
+lhor tratar a apuração de resultados – acertos e erros –
+sob uma lógica estatística agregada.
+Exemplo típico é um fundo de venture capital com
+cerca de duzentas posições, digamos. Já se sabe na par-
+tida que a distribuição de retornos do fundo obedece a
+uma lei de potência (power law), onde cerca de 5% dos
+investimentos bem-sucedidos contribuem para a quase
+totalidade dos resultados. A falha “modal” do portfólio, o
+“fracasso” da grande maioria dos investimentos, não re-
+flete um processo equivocado, mas trata-se de uma ca-
+racterística de desenho. Na verdade, é uma assinatura
+estatística esperada de uma arquitetura que pode ser
+considerada bem-sucedida. Era o que se esperava na
+partida. Gastar tempo esmiuçando individualmente 190
+investimentos que ficaram pelo caminho de fato não pa-
+rece fazer qualquer sentido. Talvez, se possa enquadrá-
+los em uma tipologia agregada de erros, a fim de identifi-
+car algum padrão fora da “normalidade” estatística. E é
+tudo. Na verdade, faz mais sentido para o VC gastar mais
+tempo analisando as boas oportunidades perdidas e o
+tamanho (sizing) dos investimentos que deram muito
+certo. O equívoco genuíno do VC consiste em deixar es-
+capar os deals multiplicadores que passaram à sua
+frente, quando o gestor incorre no erro estatístico tipo I,
+de rejeitar a hipótese nula verdadeira. Na linguagem
+Mungeriana, são os “pecados de omissão”.
+No caso da Dynamo, estamos sim muito preocu-
+pados com os erros. Precisamente porque fazemos pou-
+cos investimentos por ano e porque nosso portfólio é con-
+centrado, cada posição precisa individualmente ter boa
+probabilidade de acerto porque a menor diversificação
+produz como contrapartida um peso maior para o erro
+idiossincrático. Como nutrimos uma expectativa elevada
+em cada novo investimento, de forma proporcional e si-
+métrica, o erro transmite muito mais informação qualita-
+tiva. Ou seja, um investimento ruim é evidência estatisti-
+camente muito mais forte de falha de processo, precisa-
+mente porque a taxa de acerto esperada deveria ser mais
+elevada e a recorrência de eventos é pequena. Natural-
+mente, tudo isso se agrava se o investimento for de alta
+convicção, ocupando a primeira faixa de posições do
+fundo, onde teoricamente o processo de análise foi mais
+extenso, profundo e duradouro. O desvio entre resultado
+esperado e observado carrega muito mais informação
+por unidade de evento quando a taxa base esperada era
+alta e o número de eventos é pequeno. O problema
+2
+maior aqui são os erros tipo II, quando não se rejeita a hi-
+pótese nula falsa. Neste caso, incorremos em crime de
+“comissão”. Não que o erro de omissão não seja impor-
+tante e não mereça o devido o escrutínio. Nada disso.
+Ainda mais quando se perde um raro caso de investi-
+mento capaz de compor retornos robustos por um longo
+período. É que a consequência do erro de omissão se ex-
+pressa como custo de oportunidade do capital, enquanto
+o erro de comissão agride a própria preservação do capi-
+tal, sendo assim mais grave em sua essência.
+Mais relevante ainda, além da diferença de abor-
+dagens descrita em termos estatísticos acima, quando
+saímos de um portfólio extremamente diversificado para
+outro bem mais concentrado, há uma transformação
+qualitativa fundamental no entendimento do risco como
+conceito não paramétrico associado a cada ativo e do
+erro como resultado do processo de análise propria-
+mente dito, e não apenas efeito estatístico agregado. As-
+sim como a construção do nosso portfólio é toda feita de
+forma artesanal, bottom up, ativo por ativo, assim tam-
+bém deve ser conduzida a desconstrução de cada tese de
+investimento. O equívoco de avaliarmos erros como me-
+ros agregados estatísticos é o mesmo de tratarmos risco
+simplesmente como afastamento de benchmarks (trac-
+king error) ou como medida de volatilidade das cotas do
+fundo apenas. Risco para nós é grandeza não paramé-
+trica que participa em cada domínio do nosso processo
+de análise; se expressa em uma perda permanente de ca-
+pital e não através de flutuação de preços. De forma si-
+métrica, erro é instância qualitativa, sinal de que algo
+precisa ser revisto em nosso processo, merecendo escrutí-
+nio e taxionomia individualizados.
+Portanto, uma pista para analisarmos os nossos
+erros seria tomarmos o caminho inverso daquelas quatro
+trilhas por onde buscamos formar competência em nosso
+trabalho de análise, que descrevemos na Carta Dynamo
+76: números, companhia, administração e negócio.
+Números é por onde se começa. São os marcado-
+res quantitativos. Como os exames clínicos, situam a
+companhia em intervalos de saúde desejados. Afasta-
+mentos deste espectro acendem sinais de alerta. Aqui, a
+diferença do bom analista está na habilidade/experiência
+para propor adaptações necessárias que superam os re-
+gramentos estáticos dos princípios gerais de contabili-
+dade. Não é “jeitinho” nem capricho autoral, é adapta-
+ção necessária a fim de gerar métricas capazes de refletir
+com mais acurácia a realidade das margens e da gera-
+ção de caixa operacionais, além de balizar os cálculos de
+retorno sobre o capital investido. Aqui, portanto, o erro
+consiste basicamente em tomar a valor de face os valores
+reportados e não olhar para o número refinado. Pela sua
+natureza quantitativa, trata-se da região onde os mode-
+los de Inteligência Artificial prometem ter papel cada vez
+mais relevante, substituindo o trabalho “braçal” do
+analista. Desde que, por óbvio, a tecnologia dos
+refinamentos seja devidamente instruída em prompts e
+skills bem arquitetados.
+Companhia é o objeto central do nosso trabalho
+de análise. É organização de pessoas e insumos produti-
+vos. É também organismo vivo. Economia e biologia.
+Precisa ser observada em todas suas dimensões. Capital
+físico e humano, recursos e capacidades. Instalações,
+marcas e contratos. Sociedade, governança e cultura. In-
+centivos, valores e propósitos. Companhia é entidade in-
+dividualizada em troca permanente com o ambiente ex-
+terno. O olhar necessita abranger instâncias extramuros
+como a dinâmica da competição, vantagens e barreiras,
+efeitos de rede, natureza dos retornos, cadeia de forneci-
+mento, base de clientes, pool de credores, perfil dos acio-
+nistas. Licença para operar, vigilância regulatória, ambi-
+ente institucional, capital natural. Tudo entrelaçado num
+pulsar contínuo conexões. De onde pode vir o erro? Por
+toda parte. De cada uma das partes. De efeitos secundá-
+rios das interações entre as partes. Recomenda-se desen-
+volver um ferramental multidisciplinar. Como diz o princí-
+pio da cibernética: “Apenas variedade absorve varie-
+dade”. É preciso cultivar sensibilidade para as con-
+sequências não intencionais, para os efeitos de segunda
+ordem, para as propriedades emergentes. O todo é
+maior do que a análise das partes. O erro também pode
+vir da síntese.
+A Administração é a mais enigmática das instân-
+cias, pois compreende a psicologia humana com toda
+sua plasticidade inexpugnável. A história de vida e experi-
+ência profissional de cada executivo e membros do con-
+selho oferecem dicas válidas. Traços dominantes das per-
+sonalidades, do altruísmo ao narcisismo, integridade de
+caráter, valores e virtudes, estilo de liderança, modelos
+de gestão, interesses e incentivos. É preciso transitar do
+indivíduo para a análise do time, perceber como os atri-
+butos pessoais se reforçam ou se cancelam no âmbito do
+trabalho em equipe. Na análise das pessoas, é onde en-
+contramos a maior dificuldade para traduzir o nosso re-
+servatório de experiências em convicções. Já vimos de
+tudo. Executivos brilhantes tomando decisões medíocres
+de alocação de capital no final de carreira. Executivos
+menos experientes entregando resultados consistentes em
+3
+situações desafiadoras. É a região onde talvez se concen-
+trem a maior parte dos nossos erros. Diante das dificulda-
+des, adotamos mais do que em nenhum outro lugar
+a humildade como método, e assim esta dimensão
+costuma ocupar parte relevante e recorrente das
+nossas discussões.
+Negócios exercem uma força gravitacional predo-
+minante sobre as companhias. Estabelecem as regras do
+jogo, o intervalo de risco e de alavancagem toleráveis, a
+velocidade de mudança exigida e o grau de ameaça tec-
+nológica, o peso da regulação, o modelo de relação
+com o cliente, a intensidade de capital, o perfil do pool
+de talentos etc. Formatam, portanto, não apenas carac-
+terísticas físicas, mas também competências intangíveis e
+a própria identidade de empresa. Cada setor se organiza
+a partir de diferentes combinações e intensidades destes
+e de outros elementos determinantes. Trata-se de um es-
+pectro extremamente sutil de possibilidades onde deve-
+mos situar cada companhia. Os erros aqui derivam de
+compreensões e classificações inadequadas destas gran-
+dezas. A Carta seguinte ilustra precisamente este ponto:
+entendimentos sobre aspectos do negócio da Technos
+que não havíamos percebido em todos os seus matizes
+no momento em que investimos na companhia.
+Além destes quadrantes que abrangem as regiões-
+objeto da análise, os erros também podem ocorrer a par-
+tir das chamadas heurísticas e vieses, as falhas de proces-
+samento derivadas de estratégias intuitivas e atalhos
+mentais. A partir dos estudos empíricos seminais de Da-
+niel Kahneman e Amos Tversky na década de 70, for-
+mou-se uma extensa tipologia de desvios cognitivos e
+comportamentais1. Trata-se de um tema que acompa-
+nhamos com interesse – foi objeto das Cartas Dynamo 44
+e 45, já se vão mais de vinte anos -, não apenas por curi-
+osidade acadêmica, mas, acima de tudo, pelos insights
+empíricos tão próximos à nossa experiência quotidiana.
+E assim, é muito comum no trabalho de análise
+que procuremos informações e selecionemos conversas
+que confirmem nossas premissas. Uma inclinação tão es-
+pontânea que periga se infiltrar de forma despercebida.
+Trata-se do conhecido “viés de confirmação”, que adici-
+ona ainda mais lenha na fogueira do desvio cognitivo do
+“excesso de confiança”, o peso desmedido que
+1 Algumas listas chegam a quase duzentos desvios catalogados,
+mas reconhecemos que há muita sobreposição semântica - deno-
+minações diferentes para refletir o mesmo fenômeno. Pode-se di-
+zer um grupo menor de talvez 20 vieses são os mais frequentes e
+relevantes em nossa atividade.
+atribuímos à precisão dos nossos julgamentos e habilida-
+des. Como o tempo é recurso escasso, também é natural
+conferirmos valor proporcional ao esforço dedicado. E
+assim, olhando para o estoque de diligências passadas,
+temos dificuldade de reconhecer que as condições de de-
+terminado investimento pioraram ou de abandonar linhas
+pouco promissoras, e incorremos no “viés de custo afun-
+dado”. Também costumamos formar uma opinião de
+uma companhia ou de um executivo a partir de sinais
+mais salientes como uma boa apresentação, encadea-
+mento lógico de argumentos, narrativa consistente, capa-
+cidade de comunicação, carisma, confiança, linguagem
+corporal etc., atributos cada vez mais “treinados”, diga-
+se de passagem, mas que não oferecem quaisquer escla-
+recimentos sobre a qualidade do negócio ou a capaci-
+dade de alocação de capital da companhia. E assim, so-
+mos sugestionados por uma heurística de substituição de
+atributos, fazendo com que impressões mais disponíveis
+desloquem o trabalho analítico mais árduo produzindo
+julgamentos de pior qualidade, tendência conhecida
+como Efeito Halo.
+Planilhas eletrônicas exercem uma sedução des-
+medida no imaginário do analista. E assim é comum con-
+fiar que os modelos mais detalhados aumentam nossa
+segurança sobre o investimento em determinada compa-
+nhia. Aqui, estamos diante da famigerada “ilusão de con-
+trole”. O trabalho de análise do investidor de longo prazo
+não ostenta glamour e por vezes pode se mostrar árido.
+Por outro lado, requer uma interação frequente com a
+companhia. O perigo aqui consiste em passarmos a pre-
+ferir executivos que nos tratam bem e companhias que
+“gostamos” mais. São as insinuações incansáveis dos
+“envolvimentos emocionais”, assunto que tratamos na
+Carta Dynamo 83. Outro resultado interessante é captu-
+rado pela chamada “Teoria do Prospecto” (TP). De ma-
+neira coloquial, a TP formula que percebemos com inten-
+sidade mais aguda (cerca de 2 a 2,5x) a dor de uma
+perda do que o prazer de um ganho. O corolário prático
+é o chamado “efeito disposição”: com receio de perder o
+lucro já obtido, tendemos a vender mais rápido as ações
+que estão performando bem. Por outro lado, a fim de
+não realizar a perda mais sensível, nos inclinamos a se-
+gurar investimentos ruins, na esperança de que o prejuízo
+possa ser revertido ou minimizado. E ainda, uma consta-
+tação intrigante: como os preços das ações atualizam o
+valor futuro das empresas, em tese, são hiperlinks para o
+que está por vir e consistem em instâncias essencialmente
+prospectivas. Acontece que em nossas decisões de inves-
+timentos os preços passados costumam exercer uma
+4
+atração gravitacional, o que teoricamente não faz sentido
+algum. Efeito do corriqueiro “viés de ancoragem”.
+O investidor em ações encontra-se uma dupla en-
+rascada. Primeiro, seu objeto epistemológico, as compa-
+nhias e o ambiente de negócios, é complexo e abran-
+gente, apresenta um espectro amplo de dimensões a se-
+rem investigadas por lentes de diversas disciplinas. Adici-
+onalmente, tanto o contexto dos negócios como o ecos-
+sistema do mercado de capitais encontram-se imersos
+em condições de incerteza genuína, o que dificulta bas-
+tante a jornada de tomada de decisões e a formação de
+julgamentos pertinentes. Diante do desafio composto,
+cabe aos investidores desenvolverem seus ferramentais à
+altura. Aqui estarão as diversas técnicas e experiências
+adquiridas do time de investimento, além das proteções
+imunológicas contra as ofensivas consecutivas dos des-
+vios processuais e inclinações comportamentais.
+É antiga a linha teórica da psicologia que descreve
+o pensamento como resultado de um processo cognitivo
+composto por dois mecanismos distintos e interlaçados.
+Sistemas 1 e 2 já haviam sido nomeados (Stanovich &
+West, 2000)2, mas foi Kahneman (2011) quem os popu-
+larizou como metáfora do maquinário cerebral. De forma
+didática, segundo esta tradição, o Sistema 1 caracteriza-
+se por ser rápido, automático, associativo e intuitivo,
+opera com pouco ou nenhum esforço, sem uma percep-
+ção de controle voluntário, nos permite tomar decisões
+rápidas e fazer julgamentos baseados em padrões e ex-
+periências. Partindo de uma memória associativa veloz, o
+Sistema 1 avalia continuamente o ambiente gerando im-
+pressões, intuições, sentimentos, além de leituras e res-
+postas emocionais, sugerindo linhas de ações e reflexos
+compatíveis. É o pular após um gol decisivo, o esquivar-
+se de um animal decidido; o reconhecer um andar atra-
+sado, o intuir um ambiente pesado; o parar no vermelho,
+o culpar o espelho.
+Já o Sistema 2 é lento, deliberativo e analítico. É o
+mecanismo que se encarrega das atividades mentais que
+requerem esforço e atenção, incluindo computações
+complexas. Entra em ação quando multiplicamos com
+dois dígitos, ou reconhecemos contratos ilícitos; quando
+encontramos alguém em uma multidão, ou seguimos
+manuais de instrução; quando comparamos preços, ou
+procuramos endereços. Ao recrutar atenção voluntária, o
+Sistema 2 despende maior gasto energético. Sendo
+2 Como de costume, as referências bibliográficas completas podem
+ser encontradas em nosso site, https://www.dynamo.com.br/
+assim, permanece em um modo de menor esforço, dei-
+xando o Sistema 1 trabalhar ativamente. A “preguiça”
+do Sistema 2 não é algo negativo, mas uma estratégia
+biológica inteligente, economizando glicose e
+capacidade cognitiva.
+Na maior parte do tempo, o Sistema 1 desempe-
+nha muito bem seu papel, modelando as situações fami-
+liares, fazendo boas previsões de curto-prazo e sugerindo
+reações adaptadas, a ponto de Kahneman reputá-lo
+como o verdadeiro “herói”. A ciência do comportamento
+estima que cerca de 90/95% das nossas decisões diárias
+são tomadas automaticamente. O Sistema 2 geralmente
+acolhe as reações e linhas de ações sugeridas pelo Sis-
+tema 1, o que assegura uma combinação de eficácia e
+parcimônia vantajosas. Acontece que por vezes, o Sis-
+tema 1, que nunca é desligado, pode incorrer em erros
+sistemáticos, encontrando respostas mais disponíveis que
+não são as mais apropriadas, sem falar que não lidam
+bem com questões lógicas e estatísticas. Neste momento,
+o Sistema 2 mobiliza esforços para exercer seu papel de
+vigilância, examinando criticamente as sugestões do Sis-
+tema 1. Assim, grande parte do que acreditamos pensar
+é originado no Sistema 1, mas o Sistema 2 assume o con-
+trole quando as coisas se tornam mais difíceis e é ele
+quem tem a palavra final.
+De forma resumida, temos duas engrenagens de
+arquitetura cognitiva responsáveis pela nossa capaci-
+dade de compreender o mundo, fazer julgamentos e to-
+mar decisões. A primeira é rápida, incansável, intuitiva,
+eficiente para decifrar o ambiente e sugerir respostas coti-
+dianas, mas não é infalível. Ao contrário, incorre em er-
+ros sistemáticos que precisam ser avaliados pelo segundo
+sistema, que é mais lento, custoso (energeticamente),
+analítico e metódico. Acontece que o padrão de quali-
+dade do sistema de supervisão por vezes falha, principal-
+mente quando se encontra muito ocupado, sendo facil-
+mente sugestionado pelas insinuações emocionais do
+mecanismo anterior. Quando se trata de autocrítica, nos-
+sos dois processos mentais deixam a desejar. O Sistema
+1 trabalha para gerar coerência interna e produzir uma
+sensação de confiança, mesmo quando a base preditiva
+é fraca, originando uma “ilusão de validade”. Nosso Sis-
+tema 1 não possui capacidade crítica independente e
+não foi desenhado para detectar suas próprias lacunas.
+Isto está a cargo do Sistema 2. Acontece que o Sistema 2
+opera com orçamento de esforço limitado e só é acio-
+nado quando o Sistema 1 sinaliza dificuldade e surpresa,
+por exemplo, na presença de algo “novo demais”, que
+escapa ao processamento familiar rápido. Ainda assim,
+5
+salvo quando há conflitos, esforço cognitivo disponível e
+motivação para investigar, o Sistema 2 tende a endossar
+as sugestões do Sistema 1, quando deveria auditá-las. Ao
+invés de verificar, o Sistema 2 acaba construindo justifica-
+tivas para a conclusão que o Sistema 1 já entregou,
+como se o viés de confirmação operasse dentro do pró-
+prio ato de reflexão. E ainda há o problema de disponibi-
+lidade. Frequentemente, nem temos acesso privilegiado
+aos processos que geram nossos julgamentos. O ideal
+seria que o Sistema 2 fosse menos apoiador das ligeire-
+zas do Sistema 1 e mais autocrítico. Mas ele não é. Tam-
+bém já se sabe que tentar treinar cada um desses meca-
+nismos é tarefa de validade duvidosa. Interessados que
+estamos em melhorar nossos processos de julgamento e
+decisão, precisamos desenvolver outro mecanismo.
+Acrescentamos uma terceira camada de vigilância ex-
+terna. E aqui, entra em cena o nosso “Sistema 3”.
+Na Dynamo, os diversos negócios são cobertos no
+mínimo por uma dupla de analistas, responsáveis primá-
+rios pelas proposições de investimento nos respectivos se-
+tores. Não há qualquer hierarquia, cada dupla se auto-
+organiza conforme a agenda de diligências cotidianas,
+eventos, reuniões e prioridades. Quando uma sugestão
+amadurece o suficiente, a dupla submete a tese de inves-
+timentos a todos os demais em uma reunião coletiva
+onde cada um procura contribuir com uma perspectiva
+crítica escaneando a partir da sua experiência pessoal
+eventuais lacunas cognitivas, omissões, falhas processu-
+ais, ou mesmo envolvimentos emocionais dos proponen-
+tes. Trata-se do grupo trabalhando coletivamente a fim
+de refinar o que eventualmente tenha escapado do al-
+cance da dupla.
+É um olhar para os vazios, para os recantos não
+iluminados, para os detalhes ocultos, para os argumen-
+tos esquecidos, para os atores escondidos; para as con-
+dições de segunda ordem, para o que pode dar errado,
+para o contrafactual, para as consequências não intenci-
+onais. O debate é franco, aberto e objetivo. Sem seniori-
+dade nem regramentos; autoridade, apenas dos argu-
+mentos. Cabem perguntas espontâneas, respostas só
+elaboradas. A dúvida é matéria-prima, a diversidade é
+recurso. O preparo - e não a persuasão - emerge reco-
+nhecido. O dissenso é genuíno, incentivado e não for-
+jado. Não há papéis a desempenhar, apenas o exercício
+do desprendimento pessoal em benefício do debate cole-
+tivo produtivo. Há uma busca disciplinada pela refutação
+empírica objetiva, evitando o debate apenas retórico do
+jogo de convencimento lógico. Neste sentido, vasculha-
+mos em busca dos cisnes negros genuínos, evitando a
+cilada dos “patos pintados de preto”, as falsas conjectu-
+ras que nós mesmo imaginamos e nos desviam das teses
+promissoras. Quando a tese atravessa o crivo crítico do
+debate e alcança o portfólio, geralmente após superar
+dúvidas e incorporar sugestões, passa a adquirir o status
+de patrimônio coletivo, apropriado por todos. É o “dis-
+cuss and commit” (Grove, 1983) em pleno vigor.
+Sistema 3 é uma licença semântica, já que delibe-
+radamente extrapolamos a ciência dos processos cogniti-
+vos das mentes individuais, adicionando uma instância
+de decisão alheia coletiva. Ainda assim, julgamos válida
+a metáfora, desde que estejamos atentos aos cuidados
+de desenho organizacional que a nova dimensão exige.
+Evitar o groupthink, a ilusão de invulnerabilidade dos gru-
+pos coesos, o isolamento a opiniões externas, a falta de
+independência e os efeitos do fenômeno da “cascata de
+julgamentos”, a insuficiência de diversidade efetiva, o
+uso de racionalizações para descartar alertas negativos,
+a ilusão de unanimidade, a autocensura, o incentivo à re-
+ciprocidade branda gerado pelo jogo repetido (mesmo
+time interagindo por muitos anos), o reforço coletivo de
+vieses e convicções individuais, um dissenso apenas artifi-
+cial, entre outros. Não são poucos os inimigos de uma
+decisão coletiva de qualidade. Ainda assim, dispostas as
+devidas diligências, refletidas nos predicados das nossas
+discussões, mencionados acima e perseguidos com disci-
+plina há décadas na Dynamo, acreditamos que o arranjo
+coletivo bem executado traz resultados superiores.
+Naturalmente, todas essas valências são mais fá-
+ceis de enunciar no papel do que vivenciar na prática.
+Isto porque precisam ser amparadas em última instância
+nos valores e princípios que orientam a sociedade. O que
+anima nosso dia a dia na Dynamo é a aspiração de pre-
+servar e ampliar patrimônios para que famílias e institui-
+ções possam realizar seus projetos de vida. O nosso zelo
+reflete a contrapartida da confiança em nós depositada
+pelos nossos investidores; a nossa diligência deve estar à
+altura da disciplina e da parcimônia que originaram os
+recursos que nos foram confiados e que precisam ser re-
+munerados de forma compatível.
+Estamos envolvidos em uma jornada de longo
+prazo, onde o tempo consiste em substrato fundamental.
+Tempo para que as companhias em nosso portfólio ve-
+jam seus projetos de investimentos maturar. Tempo para
+que o mercado reconheça o mérito destas iniciativas,
+tempo para que o Fundo capture a apreciação em suas
+cotas, e assim a paciência de nossos investidores seja de-
+vidamente recompensada. Na Dynamo, nossos valores e
+6
+propósitos, governança e cultura, incentivos e remu-
+neração, processos e desenhos organizacionais, tudo
+está alinhado e é pensado sob esta dimensão temporal
+alongada. E não poderia ser diferente.
+Como construções em ambientes complexos ja-
+mais podem ser atribuídas ao mérito individual exclusiva-
+mente, tudo o que aqui fazemos constitui obra coletiva,
+sejam os acertos, e também os erros. Sob este desenho, o
+“Sistema 3” em ação produz alguns efeitos vantajosos,
+que operam de forma silenciosa. Destacamos dois. O
+primeiro é o de conferir uma dimensão ampliada às pe-
+quenas tarefas cotidianas, por mais rotineiras que pare-
+çam, que consiste na expectativa de que elas possam vir
+a compor uma proposição de investimento, transfor-
+mando-se em matéria-prima para discussões importan-
+tes, e a partir daí adquirirem a reputação de patrimônio
+coletivo. O segundo é a segurança psicológica que con-
+siste em uma crença compartilhada pela equipe que é se-
+guro para cada membro tomar riscos interpessoais. Atitu-
+des como admitir erros, fazer perguntas “óbvias”, discor-
+dar dos mais experientes, reportar notícias ruins, não
+apenas não vão resultar em retaliações, mas, ao contrá-
+rio, são bem recebidas, pois asseguram as bases para os
+aprimoramentos da qualidade das decisões futuras.
+Quando os erros são vistos como atributos coletivos e
+não ocasiões de punição endereçada, evitam-se atitudes
+defensivas e burocráticas, transferência de culpas, com-
+portamentos artificiais, ou simplesmente o silêncio. Na
+nossa experiência, um ambiente psicológico protegido
+não exime iniciativas, nem responsabilidades pessoais,
+nem muito menos compromete performance, ao contrá-
+rio, permite difundir uma mentalidade de dono e de to-
+mada de risco prudente, faz prosperar um sentido de
+pertencimento efetivo, estimula impulsos criativos e ainda
+estabelece as condições para o surgimento de uma
+autocrítica genuína.
+Nossa percepção dialoga com descobertas da
+neurociência e tem o respaldo de estudos empíricos.
+Hoje já se sabe que o medo compete com recursos cog-
+nitivos em partes do cérebro responsáveis pela gestão da
+memória de trabalho e pelo processamento de informa-
+ção nova, além de atrapalhar o pensamento analítico, o
+insight criativo e a solução de problemas. No ambiente
+de trabalho, o medo reduz a propensão ao engajamento
+em comportamentos que produzem aprendizado, como
+partilhar informações, solicitar ajuda, discutir equívocos,
+experimentar etc. Não por acaso, segurança psicológica
+já foi apontada como o elemento mais importante para
+explicação da performance de um time.
+Como regra geral, o sucesso de uma companhia e
+a capacidade de superar competidores depende essenci-
+almente do engajamento e colaboração das equipes. Di-
+ante desta constatação, em 2012, o Google decidiu de-
+dicar esforços e recursos a fim de descobrir como cons-
+truir um “time perfeito”, embarcando em uma iniciativa
+interna denominada “Projeto Aristóteles”, que reuniu es-
+pecialistas de diversas áreas da empresa. Começou per-
+correndo cinquenta anos de literatura profissional, ten-
+tando identificar padrões – e eles são bons nisso – em
+comportamentos, composições de time, desenhos opera-
+cionais, tarefas, normas, características pessoais de líde-
+res e membros, como formação educacional, hobbies,
+traços de personalidade etc. E... nada. Uma quantidade
+gigante de dados analisados, e nada parecia fazer dife-
+rença, nenhuma direção evidente. Até que os responsá-
+veis pela pesquisa “encontraram o conceito de segurança
+psicológica nos estudos acadêmicos. E foi como se tudo
+de repente se encaixasse” (Duhigg, 2016).
+O trabalho empírico que deu origem ao conceito
+de segurança psicológica (Edmondson, 1996) resultou
+de uma descoberta não intencional (outro exemplo para
+nossa coleção) na área de cuidados de saúde em hospi-
+tais da região de Boston. De forma contraintuitiva, o es-
+tudo constatou que as equipes de enfermagem com me-
+lhor desempenho eram justamente as que mais reporta-
+vam erros de medicação, não as que menos erravam. Es-
+ses times não cometiam mais erros; apenas se sentiam
+mais seguros para comunicá-los. Já os demais, por re-
+ceio de danos reputacionais, escondiam seus equívocos.
+Os erros reportados abriam espaço para autocrítica e
+aprendizado, permitindo que esses grupos melhorassem.
+Os outros permaneciam em atitudes defensivas e ten-
+diam a repetir os mesmos erros. Desde então, diversos
+estudos reforçaram a mesma linha de argumentação: em
+grupos de trabalho, a segurança psicológica cria as con-
+dições para comportamentos de aprendizado coletivo,
+tais como fazer perguntas, buscar feedback, discutir er-
+ros, experimentar e refletir sobre resultados, o que por
+sua vez parecem ser um dos principais precursores da ex-
+celência de desempenho.
+Antes de concluirmos, um último exemplo a fim de
+ilustrar o fato de que a maneira pela qual enfrentamos o
+erro a acaba sendo o principal determinante para su-
+perá-lo. A aviação civil tornou-se bem mais segura ao
+longo dos anos, sendo hoje reconhecida pelas melhores
+práticas de aprendizado dos erros. Quando um acidente
+ocorre, inaugura-se uma investigação profunda, minuci-
+osa e aberta, sem buscar atribuições de culpa, mas
+7
+focada em uma análise sistemática dos fatos a fim de
+compreender as causas do desastre. Para tanto, a inven-
+ção da caixa-preta teve papel fundamental (cfr. Syed,
+2015). O dispositivo substituiu ruídos e hipóteses por si-
+nais e provas. É claro que no começo precisou enfrentar
+não pouca resistência do establishment, principalmente
+dos pilotos que temiam comprometer suas reputações,
+classificando-a de forma pejorativa como “gravador bis-
+bilhoteiro”. Inspirada na aviação, alguns hospitais de
+fronteira dos Estados Unidos estão desenvolvendo a
+“caixa-preta cirúrgica”, um ecossistema de sensores e mi-
+crofones que captura uma enorme quantidade de dados,
+com o intuito de antecipar erros médicos antes que cau-
+sem danos aos pacientes. Apoiadas em regras de privaci-
+dade, de forma análoga à aviação, a ideia é transferir o
+foco para o sistema e não culpar personagens. A princi-
+pal lição aqui é que enfrentar o erro com coragem, mé-
+todo e diligência, se possível desenvolvendo ferramentas
+de prevenção adequadas, consiste na melhor maneira de
+reduzir sua incidência futura.
+# #
+Após muitos anos estudando, observando e tes-
+tando modelos diferentes, nosso desenho de organização
+de trabalho evoluiu para um arranjo essencialmente par-
+ticipativo e colegiado, que se encaixa não apenas com os
+valores e temperamentos dos sócios da Dynamo, mas
+também com o fato de sermos um grupo pequeno que
+toma poucas decisões relevantes de investimento a cada
+ano. Mesmo sem sabermos de antemão, hoje reconhece-
+mos que nosso “Sistema 3” reúne qualidades difíceis de
+serem reproduzidas e que nos deixam muito satisfeitos,
+entre as quais destacamos:
+(i) oferece uma alternativa à limitação crônica da
+autocrítica como instância cognitiva individual, identifi-
+cada como estranha ao Sistema 1 e omissa no Sistema 2.
+Precisamente porque conferimos imenso valor à autocrí-
+tica, a ponto de considerá-la como traço cultural, sendo
+capaz de desempenhar diversos papéis funcionais,
+como antídoto ao “consenso acrítico”, oportunidade
+de aprendizado e censora de desvios de julgamentos,
+é que atribuímos mérito destacado ao nosso
+arranjo refutacionista;
+(ii) consiste em um dispositivo organizacional, de-
+senvolvido by design, de enfrentamento do erro e reco-
+nhecimento dos vieses como instâncias de aprendizado e
+aperfeiçoamento, decantando-os em uma discussão
+franca, construtiva e colegiada;
+(iii) imprime uma dimensão e um incentivo amplifi-
+cados aos pequenos fragmentos do trabalho cotidiano,
+pois quando estes são integrados em uma nova tese de
+investimento, se credenciam para adquirir o status de pa-
+trimônio intelectual coletivo;
+(iv) Como os erros na Dynamo são igualmente
+percebidos como atributos coletivos, quando acontecem,
+passam a ser investigados como insumos para aprendi-
+zado, e não explorados como instância de repreensão.
+Isto estabelece um ambiente de proteção psicológica,
+pré-condição social para que a autocrítica e o dissenso
+aconteçam sem custo reputacional individual. Afastada a
+ansiedade negativa, prevalece a confiança, o sentido de
+pertencimento, precursores do engajamento produtivo,
+da criatividade e da admiração mútua, segredos
+para um ambiente de trabalho saudável e uma
+partnership longeva.
+Rio de Janeiro, 16 de outubro de 2026.
+(*) Ibovespa Fechamento. O índice é apresentado para merareferência econômica e não constitui meta ou parâmetro de perfor-mance do Fundo.
+Dynamo Cougar x Ibovespa
+Rentabilidade em R$ até Setembro de 2026
+Período Dynamo Cougar Ibovespa*
+120 meses 215,8% 219,3%
+60 meses 24,7% 67,9%
+36 meses 52,6% 59,9%
+24 meses 32,6% 41,4%
+12 meses 21,7% 27,4%
+No ano (2026) 11,2% 15,6%
+No mês (Setembro) 4,5% 5,0%
+8
+DYNAMO COUGAR x IBOVESPA
+(Rentabilidade em US$*)
+Período
+DYNAMO COUGAR IBOVESPA**
+No Ano Desde01/09/93 No Ano Desde01/09/93
+1993 38,8% 38,8% 7,7% 7,7%
+1994 245,6% 379,5% 62,6% 75,1%
+1995 -3,6% 362,2% -14,0% 50,5%
+1996 53,6% 609,8% 53,2% 130,6%
+1997 -6,2% 565,5% 34,7% 210,6%
+1998 -19,1% 438,1% -38,5% 91,0%
+1999 104,6% 1.001,2% 70,2% 224,9%
+2000 3,0% 1.034,5% -18,3% 165,4%
+2001 -6,4% 962,4% -25,0% 99,0%
+2002 -7,9% 878,9% -45,5% 8,5%
+2003 93,9% 1.798,5% 141,3% 161,8%
+2004 64,4% 3.020,2% 28,2% 235,7%
+2005 41,2% 4.305,5% 44,8% 386,1%
+2006 49,8% 6.498,3% 45,5% 607,5%
+2007 59,7% 10.436,6% 73,4% 1.126,8%
+2008 -47,1% 5.470,1% -55,4% 446,5%
+2009 143,7% 13.472,6% 145,2% 1.239,9%
+2010 28,1% 17.282,0% 5,6% 1.331,8%
+2011 -4,4% 16.514,5% -27,3% 929,1%
+2012 14,0% 18.844,6% -1,4% 914,5%
+2013 -7,3% 17.456,8% -26,3% 647,9%
+2014 -6,0% 16.401,5% -14,4% 540,4%
+2015 -23,3% 12.560,8% -41,0% 277,6%
+2016 42,4% 17.926,4% 66,5% 528,6%
+2017 25,8% 22.574,0% 25,0% 685,6%
+2018 -8,9% 20.567,8% -1,8% 671,5%
+2019 53,2% 31.570,4% 26,5% 875,9%
+2020 -2,2% 30.886,1% -20,2% 679,0%
+2021 -23,0% 23.762,3% -18,0% 538,9%
+2022 -7,8% 21.899,9% 12,0% 615,4%
+2023 32,1% 28.965,0% 31,8% 842,8%
+2024 -30,8% 20.002,8% -29,9% 560,7%
+2025 56,1% 31.224,4% 50,8% 845,5%
+2026*** 18,1% 36.961,4% 22,8% 1.123,4%
+(*) Tendo em vista se tratar de um Fundo existente desde 1993, os valores foram
+convertidos para dólar (US$) como forma de expurgar a volatilidade da moeda bra-
+sileira ao longo do período e, dessa forma, minimizar o risco de possíveis interpre-
+tações equivocadas do leitor em uma decisão de investimento/desinvestimento. O
+Dynamo Cougar é um fundo de investimento em cotas de fundo de investimento em
+ações e está fechado para captação. (**) Ibovespa fechamento. O índice é apre-
+sentado para mera referência econômica e não constitui meta ou parâmetro de
+performance do Fundo. (***) Rentabilidade até Setembro de 2026.
+Informações adicionais:
+(*) Veja descrição detalhada no regulamento.
+Para mais informações sobre a Dynamo,
+sobre o Dynamo Cougar ou para comparar a
+performance do Fundo com diversos índices,
+em períodos específicos, visite nosso site:
+www.dynamo.com.br
+Data de Início: 01/09/1993•
+Objetivo: Proporcionar aos cotistas valorização real de suas
+cotas a médio e longo prazo, mediante aplicação de, no
+mínimo, 95% (noventa e cinco por cento) do seu patrimô-
+nio líquido em cotas do Dynamo Cougar Master Fundo de
+Investimento em Ações (“Fundo Master”)
+•
+Público-alvo: Investidores qualificados•
+Status: Fechado para aplicações•
+Carência para resgate: 12 meses de carência ou taxa
+de liquidez de 3% para resgates dentro deste período*
+•
+Cota de Resgate: D+12 (corridos)*•
+Pagamento do Resgate: D+2 (úteis) da conversão da cota*•
+Tributação aplicável: Renda variável•
+Classificação Anbima: Ações Livre•
+Taxa de administração: 1,90% ao ano no Fundo +
+0,10% ao ano no Fundo Master
+•
+Taxa de Performance: 15% do que exceder IPCA + IMAB*•
+Patrimônio líquido médio mensal dos últimos 12
+(doze) meses: R$ 5.876,9 milhões.
+•
+Esta carta é publicada somente com o propósito de divulgação de informações e não deve ser considerada como uma oferta de venda do Dynamo Cougar ou de qualquer outro
+fundo, nem tampouco como uma recomendação de investimento ou desinvestimento em nenhum dos valores mobiliários citados. Todos os julgamentos e estimativas aqui
+contidos são apenas exposições de opiniões e podem mudar a qualquer momento, sem necessidade de aviso. As informações contidas neste documento são, no melhor
+entendimento da Dynamo, materialmente precisas. Não obstante, a Dynamo não se responsabiliza por eventuais erros, omissões ou imprecisões nas informações divulgadas. A
+rentabilidade obtida no passado não representa garantia de resultados futuros. A rentabilidade divulgada é líquida das taxas de administração e performance, mas não é líquida
+de impostos, ajuste de performance e taxa de saída, caso aplicáveis. O investimento em fundos de investimentos apresenta riscos. Leia cuidadosamente o regulamento antes de
+investir. O regulamento do Dynamo Cougar está disponível na página da Dynamo na rede mundial de computadores em www.dynamo.com.br. Os investimentos em fundos
+não são garantidos pelo administrador ou por qualquer mecanismo de seguro, ou ainda, pelo Fundo Garantidor de Crédito. Supervisão e Fiscalização: Comissão de Valores
+Mobiliários - CVM Serviço de Atendimento ao Cidadão em www.cvm.gov.br.
+DYNAMO ADMINISTRAÇÃO DE RECURSOS LTDA.
+Av. Ataulfo de Paiva, 1235 / 6º andar - Leblon - 22440-034 - Rio - RJ - Tel.: (21) 2512-9394 - Contato: dynamo@dynamo.com.br

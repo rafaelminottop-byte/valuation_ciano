@@ -74,3 +74,49 @@ a.link-pdf:hover{text-decoration:underline}
 .gestora-card .n-cartas{font-size:12px;color:var(--ciano);font-weight:700}
 
 .vazio{text-align:center;color:var(--texto2);padding:40px 20px;font-size:15px}
+
+/* Panorama */
+.pano-destaque{background:linear-gradient(135deg,var(--marinho),var(--marinho2));color:#fff;border-radius:14px;padding:20px 22px;margin-bottom:18px;box-shadow:var(--sombra);border-left:4px solid var(--ciano)}
+.pano-periodo{color:var(--ciano-claro);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.pano-destaque p{font-size:15px;line-height:1.65}
+.pano-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.pano-card{background:var(--card);border:1px solid var(--borda);border-radius:14px;padding:18px 20px;box-shadow:var(--sombra)}
+.pano-topo{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.pano-emoji{font-size:22px}
+.pano-topo h3{flex:1;font-size:16px;color:var(--marinho)}
+.pano-num{background:rgba(252,39,100,.12);color:var(--ciano);font-weight:800;font-size:12px;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.pano-resumo{font-size:14px;color:var(--texto);margin-bottom:10px}
+.pano-nota{font-size:12.5px;color:var(--ciano);font-weight:600;margin-bottom:10px}
+.pano-rodape{text-align:center;color:var(--texto2);font-size:12px;margin-top:18px;font-style:italic}
+.pano-sec{color:var(--marinho);font-size:15px;margin:4px 0 12px}
+.pano-aviso{color:var(--texto2);font-size:11.5px;font-style:italic;margin:8px 0 20px}
+.consenso{background:var(--card);border:1px solid var(--borda);border-radius:14px;overflow:hidden;box-shadow:var(--sombra)}
+.cons-row{display:grid;grid-template-columns:200px 44px 1fr;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--borda)}
+.cons-row:last-child{border-bottom:none}
+.cons-ind{font-weight:700;font-size:13.5px;color:var(--marinho)}
+.cons-dir{font-size:18px;font-weight:800;text-align:center}
+.cons-dir.up{color:#1f9d57}
+.cons-dir.down{color:#c81050}
+.cons-dir.flat{color:var(--texto2)}
+.cons-vis{font-size:13.5px;color:var(--texto)}
+.cons-ges{display:block;font-size:11.5px;color:var(--ciano);font-weight:600;margin-top:2px}
+@media(max-width:560px){.cons-row{grid-template-columns:1fr 34px;grid-template-areas:'ind dir' 'vis vis'}.cons-ind{grid-area:ind}.cons-dir{grid-area:dir}.cons-vis{grid-area:vis}}
+
+/* Botao atualizar */
+.aba-atualizar{background:var(--ciano);border-color:var(--ciano)}
+.aba-atualizar:hover{background:#d81a5e}
+
+/* Toast (aviso rápido) */
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(16px);max-width:480px;width:calc(100% - 32px);background:var(--marinho);color:#fff;border-radius:12px;padding:14px 18px;font-size:13.5px;line-height:1.5;box-shadow:0 12px 34px rgba(13,18,33,.4);border-left:4px solid var(--ciano);opacity:0;transition:opacity .28s,transform .28s;z-index:60}
+.toast.ver{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast code{background:rgba(255,255,255,.14);padding:1px 6px;border-radius:5px;font-size:12.5px}
+.toast b{color:var(--ciano-claro)}
+.pano-forca{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:99px;margin-bottom:10px}
+.pano-forca.forte{background:rgba(22,163,74,.14);color:#15803d}
+.pano-forca.medio{background:rgba(217,119,6,.14);color:#b45309}
+.pano-forca.fraco{background:rgba(100,116,139,.16);color:#475569}
+.pano-fontes{margin-top:10px;font-size:12.5px}
+.pano-fontes summary{cursor:pointer;color:var(--ciano);font-weight:600}
+.pano-fontes a{display:block;margin-top:6px;color:var(--texto);text-decoration:underline}
+.pano-acoes{text-align:center;margin-top:18px}
+.pano-copiado{margin-left:10px;color:#15803d;font-weight:700;font-size:13px}

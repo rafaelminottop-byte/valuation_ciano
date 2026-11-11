@@ -1,0 +1,84 @@
+// Panorama: sintese dos principais topicos das ULTIMAS cartas (foco 2026, ago-out).
+// Editado junto com dados/cartas.js. "gestoras" lista quem tocou no tema recentemente.
+window.PANORAMA = {
+  atualizadoEm: "2026-10-29",
+  periodo: "Últimas cartas · ago–out/2026",
+  destaque: "A eleição domina as cartas do período: com a oposição à frente no 1º turno (segundo o relato dos próprios gestores), os fundos capturaram a reprecificação — bolsa e Real em alta, juros em queda — e agora apostam num fiscal mais contido, que abriria espaço para cortes de juros. No pano de fundo global, os juros longos sobem no mundo desenvolvido e o ouro vira proteção.",
+  // Consenso direcional extraido das ultimas cartas (quem comentou + direcao da visao).
+  // dir: "alta" | "queda" | "lateral". NAO sao previsoes numericas nossas, e sim a sintese das visoes.
+  consenso: [
+    { indicador: "Selic / juros curtos BR", dir: "queda", visao: "Fim do ciclo de alta; espaço para cortes se o fiscal melhorar", gestoras: ["Verde", "Dahlia"] },
+    { indicador: "Bolsa Brasil", dir: "alta", visao: "Construtivo (com cautela): prêmio de risco atrativo e alocação a risco muito baixa", gestoras: ["Verde", "Kinea"] },
+    { indicador: "Real (câmbio)", dir: "alta", visao: "Apreciou forte após o 1º turno; dólar global mais fraco ajuda", gestoras: ["Verde"] },
+    { indicador: "Juros longos EUA / desenvolvidos", dir: "alta", visao: "Risco central: Treasury 10a subindo (fiscal + petróleo + capex de IA)", gestoras: ["Verde", "Kinea"] },
+    { indicador: "Ouro e prata", dir: "alta", visao: "Comprados como reserva de valor; bancos centrais comprando", gestoras: ["Verde"] },
+    { indicador: "Petróleo", dir: "alta", visao: "Pressionado (~US$90) pelo conflito EUA–Irã sem desfecho", gestoras: ["Verde", "Kinea"] },
+    { indicador: "Atividade BR em 2027", dir: "queda", visao: "Desaceleração esperada; carteira desenhada para a turbulência", gestoras: ["Kinea"] }
+  ],
+  temas: [
+    {
+      emoji: "🗳️",
+      titulo: "Eleição 2026 e a virada de cenário",
+      resumo: "Tema central do período. Os fundos vinham posicionados para a “convexidade” do pleito e capturaram os movimentos: no dia seguinte ao 1º turno a bolsa saltou (+7,7% no relato da Verde), juros de 10 anos caíram ~135 bps e o Real valorizou ~4,2%. A tese agora é de uma possível virada do “acelerador fiscal com freio monetário” para algo mais contido — positivo para ativos BR, ainda mais com a alocação de investidores a risco muito baixa.",
+      gestoras: ["Verde (MM set/26)", "Verde (Ações set/26)", "Kinea (“Highlander”)"],
+      fontes: ["verde-mm-2026-09","verde-acoes-2026-09","kinea-2026-09"],
+      nota: "Consenso forte entre os multimercados e o fundo de ações."
+    },
+    {
+      emoji: "💣",
+      titulo: "Dívida e âncora fiscal (Brasil e EUA)",
+      resumo: "Preocupação estrutural recorrente: a dívida “cresce só com o tempo passar” e exige ação. No Brasil, pagamos um dos juros reais mais altos do mundo para contê-la. Nos desenvolvidos, a falta de apetite político por ajuste tende a empurrar a saída para mais inflação ou repressão financeira.",
+      gestoras: ["Kinea (“A Hora do Pesadelo”)", "Verde (MM)", "Atmos 33"],
+      fontes: ["kinea-2026-09","verde-mm-2026-09","atmos-33"],
+      nota: "Pano de fundo que conecta o cenário local ao global."
+    },
+    {
+      emoji: "📈",
+      titulo: "Juros longos subindo no mundo desenvolvido",
+      resumo: "O “preço mais importante do mundo” (Treasury 10 anos) acumula forte alta — na Verde, +130 bps desde março, 54 bps só em setembro. Pressão vinda de petróleo/conflitos, do fiscal e das emissões para financiar o capex de Inteligência Artificial. Tende a reverberar em todos os mercados.",
+      gestoras: ["Verde (MM ago e set/26)", "Kinea"],
+      fontes: ["verde-mm-2026-08","verde-mm-2026-09","kinea-2026-09"],
+      nota: "Principal risco global apontado."
+    },
+    {
+      emoji: "🥇",
+      titulo: "Ouro e prata como reserva de valor",
+      resumo: "Com dólar mais fraco, compras de bancos centrais e um mundo mais fragmentado, ouro e prata aparecem como peças centrais do portfólio — e como proteção contra a “repressão financeira” que pode vir do descontrole fiscal.",
+      gestoras: ["Verde (MM ago/26)", "Kinea (2025)"],
+      fontes: ["verde-mm-2026-08","kinea-2025-12"],
+      nota: "Destaque de alocação defensiva."
+    },
+    {
+      emoji: "🛢️",
+      titulo: "Petróleo e energia (conflito EUA–Irã)",
+      resumo: "A guerra sem desfecho mantém o petróleo pressionado (~US$90) e chega “a todos pelo diesel”. Na ponta das ações, a aposta é Petrobras pela geração de caixa e dividendos, mas sempre com hedge na curva de petróleo caso o Oriente Médio melhore.",
+      gestoras: ["Verde (Ações)", "Kinea"],
+      fontes: ["verde-acoes-2026-09","kinea-2026-09"],
+      nota: "Risco e oportunidade ao mesmo tempo."
+    },
+    {
+      emoji: "⚡",
+      titulo: "Teses de qualidade: elétricas e bancos",
+      resumo: "Nomes que “funcionam independentemente da eleição”, com bom crescimento de lucros e preços julgados estressados. A Verde dobrou apostas em quedas exageradas do 3T. Recorrentes: Equatorial, Sabesp, Copel, BTG, Itaú.",
+      gestoras: ["Verde (Ações)", "Kinea"],
+      fontes: ["verde-acoes-2026-09","kinea-2026-09"],
+      nota: "Onde está o “core” de convicção."
+    },
+    {
+      emoji: "🧠",
+      titulo: "Disciplina, processo e aprender com erros",
+      resumo: "Veio forte nas cartas de ações: a Dynamo escreve sobre autocrítica e “esfregar o nariz nos próprios erros” (Munger) e sobre serendipidade/opcionalidade; a Squadra assume com franqueza o maior erro de sua história (Hapvida) e adota uma “postura de guerra”. O fio comum é consistência e honestidade intelectual.",
+      gestoras: ["Dynamo (128 e 129)", "Squadra (1S26)"],
+      fontes: ["dynamo-129","dynamo-128","squadra-1s26"],
+      nota: "Tom mais reflexivo / de filosofia de investimento."
+    },
+    {
+      emoji: "📉",
+      titulo: "Indústria de fundos sob pressão",
+      resumo: "A gestão ativa atravessa uma das maiores ondas de resgates de sua história — casas fechando, virando family office ou sendo absorvidas. O outro lado: justamente essa alocação baixíssima a risco cria assimetria positiva para quem aguenta o ciclo.",
+      gestoras: ["Squadra (1S26)", "Verde"],
+      fontes: ["squadra-1s26","verde-mm-2026-09"],
+      nota: "Contexto da indústria — importante para o timing."
+    }
+  ]
+};
