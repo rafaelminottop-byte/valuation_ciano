@@ -914,12 +914,18 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
                     linha = df_fonte[df_fonte["ticker"].str.upper() == ticker]
                     p_l = pd.to_numeric(linha["p_l"], errors="coerce").iloc[0] if not linha.empty else None
                     lpa = (dados["preco_atual"] / p_l) if (p_l and p_l > 0) else None
+                    # Dívida líquida / EBIT = (EV/EBIT) − (P/EBIT): o valor da empresa menos o valor de mercado
+                    # é a dívida líquida, e os dois múltiplos usam o mesmo EBIT.
+                    ev_e = pd.to_numeric(linha["ev_ebit"], errors="coerce").iloc[0] if not linha.empty else None
+                    p_e = pd.to_numeric(linha["p_ebit"], errors="coerce").iloc[0] if not linha.empty else None
+                    div_liq_ebit = float(ev_e - p_e) if (ev_e == ev_e and p_e == p_e and ev_e and p_e and p_e > 0) else None
                     st.session_state.empresa = {
                         "ticker": ticker,
                         "preco_atual": dados["preco_atual"],
                         "ebit_por_acao": dados["ebit_atual"] / dados["acoes_em_circulacao"],
                         "acoes": dados["acoes_em_circulacao"],
                         "lpa": lpa,
+                        "div_liq_ebit": div_liq_ebit,
                         "base": dados.get("base_calculo", "EBIT"),
                     }
                 except Exception as e:  # noqa: BLE001 - mostra o erro na UI
@@ -1019,8 +1025,58 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
         _render_estimado_realizado_empresa(emp["ticker"], eua)
 
         if not eua:
+            _bloco_divida_juros(emp)
             _bloco_ebit_normalizado(emp, comuns)
             _render_tese(emp["ticker"])
+
+
+def _bloco_divida_juros(emp: dict) -> None:
+    """Dívida líquida / EBIT e se o EBIT cobre a despesa financeira (CVM, ano a ano)."""
+    import cvm_historico as cvm
+
+    dl = emp.get("div_liq_ebit")
+    try:
+        cob = cvm.cobertura_juros(cvm.historico(emp["ticker"]))
+    except Exception:  # noqa: BLE001
+        cob = []
+    if dl is None and not cob:
+        return
+    ult = cob[-1] if cob else None
+    # Faixas simples: até 2 anos de EBIT para quitar a dívida líquida é confortável; acima de 3,5 é pesado.
+    if dl is None:
+        txt = "sem dado"
+    elif dl <= 0:
+        txt = "🟢 caixa líquido"
+    elif dl <= 2:
+        txt = "🟢 confortável"
+    elif dl <= 3.5:
+        txt = "🟡 atenção"
+    else:
+        txt = "🔴 pesada"
+    st.markdown("**Dívida e juros**")
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Dívida líquida / EBIT", "—" if dl is None else f"{dl:.1f}×", txt, delta_color="off",
+              help="Quantos anos de EBIT seriam precisos para pagar a dívida líquida. Vem do Fundamentus: "
+                   "(valor da empresa ÷ EBIT) − (valor de mercado ÷ EBIT).")
+    if ult:
+        sinal = "🟢 sim" if ult["cobre"] else "🔴 não"
+        c2.metric(f"EBIT cobre a despesa financeira? ({ult['ano']})", sinal,
+                  None if ult["cobertura"] is None else f"EBIT = {ult['cobertura']:.1f}× os juros", delta_color="off")
+        nao = sum(1 for r in cob if not r["cobre"])
+        c3.metric("Anos em que não cobriu", f"{nao} de {len(cob)}",
+                  help="Anos desde 2010 em que o EBIT foi menor que a despesa financeira (CVM).")
+    with st.expander("Ver ano a ano (CVM)"):
+        if cob:
+            df = pd.DataFrame([{"Ano": r["ano"], "EBIT (R$ mi)": round(r["ebit"] / 1e6),
+                                "Despesa financeira (R$ mi)": round(r["desp_fin"] / 1e6),
+                                "EBIT ÷ juros": None if r["cobertura"] is None else round(r["cobertura"], 1),
+                                "Cobre?": "sim" if r["cobre"] else "NÃO"} for r in cob]).set_index("Ano")
+            st.dataframe(df, use_container_width=True)
+            st.caption("Despesa financeira = conta 3.06.02 da DRE consolidada; inclui variação cambial e outros "
+                       "itens, então oscila bastante de um ano para o outro. Abaixo de 1× o lucro operacional não "
+                       "paga os juros; entre 1× e 2× a folga é pequena.")
+        else:
+            st.caption("Sem a despesa financeira dessa empresa na CVM.")
 
 
 def _bloco_ebit_normalizado(emp: dict, comuns: dict) -> None:

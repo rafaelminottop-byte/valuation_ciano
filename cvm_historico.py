@@ -9,8 +9,8 @@ Fontes (públicas):
 - DFP / DRE consolidada: https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/
 - FCA / valores mobiliários (liga o ticker ao CNPJ): https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/FCA/DADOS/
 
-Contas usadas: 3.05 (resultado antes do resultado financeiro e dos tributos = EBIT) e
-3.11 (lucro líquido consolidado). Bancos e seguradoras têm DRE diferente: para eles o EBIT
+Contas usadas: 3.05 (resultado antes do resultado financeiro e dos tributos = EBIT),
+3.06.02 (despesas financeiras) e 3.11 (lucro líquido consolidado). Bancos e seguradoras têm DRE diferente: para eles o EBIT
 não faz sentido e o histórico vem marcado como ``financeira``.
 """
 from __future__ import annotations
@@ -56,7 +56,7 @@ def _ler_dfp(ano: int, req) -> list[dict]:
     df = pd.read_csv(z.open(f"dfp_cia_aberta_DRE_con_{ano}.csv"), sep=";", encoding="latin1",
                      decimal=",", dtype={"CNPJ_CIA": str, "CD_CONTA": str})
     ordem = df["ORDEM_EXERC"].str.upper().str.replace("Ú", "U", regex=False)
-    df = df[ordem.str.startswith("ULT") & df["CD_CONTA"].isin(["3.05", "3.11"])]
+    df = df[ordem.str.startswith("ULT") & df["CD_CONTA"].isin(["3.05", "3.11", "3.06.02"])]
     linhas = []
     for _, x in df.iterrows():
         esc = 1000.0 if str(x["ESCALA_MOEDA"]).upper().startswith("MIL") else 1.0
@@ -64,7 +64,8 @@ def _ler_dfp(ano: int, req) -> list[dict]:
         if v is None:
             continue
         linhas.append({"cnpj": x["CNPJ_CIA"], "nome": x["DENOM_CIA"], "ano": ano,
-                       "conta": "ebit" if x["CD_CONTA"] == "3.05" else "lucro", "valor": v * esc})
+                       "conta": {"3.05": "ebit", "3.11": "lucro", "3.06.02": "desp_fin"}[x["CD_CONTA"]],
+                       "valor": v * esc})
     return linhas
 
 
@@ -138,7 +139,8 @@ def historico(ticker: str, cache: dict | None = None) -> dict:
     e = (c.get("empresas") or {}).get(cnpj) if cnpj else None
     if not e:
         return {}
-    anos = {int(a): {"ebit": _num(v.get("ebit")), "lucro": _num(v.get("lucro"))}
+    anos = {int(a): {"ebit": _num(v.get("ebit")), "lucro": _num(v.get("lucro")),
+                     "desp_fin": _num(v.get("desp_fin"))}   # despesa financeira (conta 3.06.02), vem negativa na DRE
             for a, v in e["anos"].items()}
     return {"nome": e["nome"], "cnpj": cnpj, "anos": dict(sorted(anos.items()))}
 
@@ -151,3 +153,22 @@ def ebit_normalizado(h: dict, n: int = 10, campo: str = "ebit") -> dict:
         return {"media": None, "n": 0, "anos": [], "negativos": 0}
     return {"media": sum(v for _, v in vals) / len(vals), "n": len(vals),
             "anos": [a for a, _ in vals], "negativos": sum(1 for _, v in vals if v < 0)}
+
+
+def cobertura_juros(h: dict) -> list[dict]:
+    """Por ano: EBIT, despesa financeira (positiva) e a cobertura = EBIT / despesa financeira.
+
+    ``cobre`` é True quando o EBIT é maior que a despesa financeira (sobra para o acionista antes
+    do imposto). Sem despesa financeira (empresa sem dívida) a cobertura fica None e ``cobre`` True
+    se o EBIT for positivo. A despesa financeira da DRE inclui variação cambial e outros itens,
+    então é uma medida conservadora."""
+    out = []
+    for ano, d in (h.get("anos") or {}).items():
+        ebit, desp = d.get("ebit"), d.get("desp_fin")
+        if ebit is None or desp is None:
+            continue
+        desp = abs(desp)
+        cob = (ebit / desp) if desp > 0 else None
+        out.append({"ano": ano, "ebit": ebit, "desp_fin": desp, "cobertura": cob,
+                    "cobre": (ebit > desp) if desp > 0 else ebit > 0})
+    return out

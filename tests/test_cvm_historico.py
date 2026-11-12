@@ -20,7 +20,7 @@ def test_historico_liga_ticker_ao_cnpj_e_ordena_os_anos():
     h = cvm.historico("cicl4", CACHE)
     assert h["nome"] == "CICLICA S.A."
     assert list(h["anos"]) == [2013, 2014, 2015, 2016, 2017]
-    assert h["anos"][2016] == {"ebit": 8.0, "lucro": None}
+    assert h["anos"][2016] == {"ebit": 8.0, "lucro": None, "desp_fin": None}
 
 
 def test_ticker_desconhecido_devolve_vazio():
@@ -40,3 +40,16 @@ def test_media_normalizada_usa_so_os_n_ultimos_anos_e_conta_negativos():
 
 def test_media_sem_dados():
     assert cvm.ebit_normalizado({}, 5)["media"] is None
+
+
+def test_cobertura_dos_juros_compara_ebit_com_despesa_financeira():
+    cache = {"tickers": {"X3": "1"}, "empresas": {"1": {"nome": "X", "anos": {
+        "2020": {"ebit": 100.0, "desp_fin": -40.0},     # a DRE traz a despesa negativa
+        "2021": {"ebit": 30.0, "desp_fin": -60.0},
+        "2022": {"ebit": 50.0, "desp_fin": 0.0},        # sem dívida
+        "2023": {"ebit": 50.0}}}}}                      # sem a conta: ignora
+    c = {r["ano"]: r for r in cvm.cobertura_juros(cvm.historico("X3", cache))}
+    assert c[2020]["cobertura"] == pytest.approx(2.5) and c[2020]["cobre"]
+    assert c[2021]["cobertura"] == pytest.approx(0.5) and not c[2021]["cobre"]
+    assert c[2022]["cobertura"] is None and c[2022]["cobre"]
+    assert 2023 not in c
