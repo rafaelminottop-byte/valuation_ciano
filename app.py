@@ -443,6 +443,8 @@ _HERO = {
                       "Entrada e saída do investidor estrangeiro na B3, saldo oficial em D+2."),
     "📰 Notícias": ("Acompanhamento", "Notícias do dia",
                    "O noticiário que mexe com as suas teses, reunido num lugar só."),
+    "🏦 Gestoras": ("Cartas do buy-side", "Cartas das gestoras",
+                   "O que as principais gestoras do Brasil estão escrevendo — panorama de consenso e resumo carta a carta."),
     "🏢 FII": ("Fundos imobiliários", "Panorama dos FIIs",
               "Desconto sobre o patrimônio e yield por segmento, comparados com a Selic."),
     "🗂️ Acompanhamento": ("Carteira", "Acompanhamento da carteira",
@@ -468,6 +470,7 @@ _ROTULO_NAV = {
     "💵 Câmbio": "Câmbio",
     "🌎 Estrangeiro": "Estrangeiro",
     "📰 Notícias": "Notícias",
+    "🏦 Gestoras": "Gestoras",
     "🏢 FII": "FII",
     "🔔 Gatilhos": "Gatilhos",
     "🗂️ Acompanhamento": "Acompanhamento",
@@ -2211,6 +2214,11 @@ def _card_noticia(n: dict) -> str:
         f'<a href="{link}" target="_blank" rel="noopener">{_esc_html(n["titulo"])}</a>'
         f'<span class="noti-meta">{meta}</span></div>'
     )
+
+
+def _aba_gestoras() -> None:
+    import gestoras_cartas
+    gestoras_cartas.render()
 
 
 def _aba_noticias() -> None:
@@ -4735,7 +4743,7 @@ def main() -> None:
     paginas_analise = ["🔎 Empresa", "📊 Screener", "⭐ Carteira", "🏅 Ranking"]
     paginas_mercado = ["🧭 Decisão", "🔀 Cenários", "🔮 Preditivo", "📈 Lucros", "📉 Macro", "💵 Câmbio",
                        "🌎 Estrangeiro", "🏢 FII"]
-    paginas_acomp = ["📰 Notícias", "🔔 Gatilhos", "🗂️ Acompanhamento"]
+    paginas_acomp = ["📰 Notícias", "🏦 Gestoras", "🔔 Gatilhos", "🗂️ Acompanhamento"]
     ordem = paginas_analise + paginas_mercado + paginas_acomp
 
     pagina = _topbar(ordem)
@@ -4789,7 +4797,8 @@ def main() -> None:
             "📈 Lucros": _aba_lucros,
             "📉 Macro": _aba_macro, "💵 Câmbio": _aba_cambio,
             "🌎 Estrangeiro": _aba_estrangeiro, "🏢 FII": _aba_fii,
-            "📰 Notícias": _aba_noticias, "🔔 Gatilhos": _aba_gatilhos,
+            "📰 Notícias": _aba_noticias, "🏦 Gestoras": _aba_gestoras,
+            "🔔 Gatilhos": _aba_gatilhos,
             "🗂️ Acompanhamento": _aba_acompanhamento,
         }
         paginas_mercado_fn[pagina]()
