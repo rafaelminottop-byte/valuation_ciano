@@ -80,7 +80,7 @@ class TestAvaliarLote(unittest.TestCase):
         # Alavancada: a TMA pelo EBIT dispara (ou nem converge) — é o sinal de alerta
         alav = df.loc["ALAV"]
         self.assertGreater(alav["tma_lpa_pct"], 0)
-        self.assertTrue(pd.isna(alav["tma_ebit_pct"]) or alav["tma_ebit_pct"] > 100)
+        self.assertTrue(pd.isna(alav["tma_ebit_pct"]) or alav["tma_ebit_pct"] > 50)
 
     def test_sem_lpa_nao_tem_tma(self):
         linha = self._df().set_index("ticker").loc["SEMLPA"]

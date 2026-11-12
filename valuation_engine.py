@@ -15,7 +15,13 @@ PREMISSAS_PADRAO = {
     "ipca": 0.06,
     "anos_fase_1": 5,
     "anos_fase_2": 10,
+    # Método P/L: no fim da fase 2 o comprador aceita um dividendo mínimo de 6% (mercado saudável,
+    # juros baixos), o que dá um múltiplo de 1/6% = 16,7x o LUCRO distribuível.
     "retorno_alvo_pl": 0.06,
+    # Mas a projeção parte do EBIT, que é antes de imposto (e de juros). Quem recebe dividendo recebe
+    # só o que sobra: usamos 66% do EBIT (descontados os ~34% de IR/CSLL). Sem isso o 6% valia sobre
+    # o EBIT e o dividendo real saía de uns 3% a 4%.
+    "conversao_ebit_lucro": 0.66,
 }
 
 # Mercado americano: o fluxo da empresa é em DÓLAR. Descontá-lo à TMA brasileira
@@ -63,12 +69,14 @@ def calcular_cenario(
     anos_fase_1: int = 5,
     anos_fase_2: int = 10,
     nome_cenario: str = "",
+    conversao_ebit_lucro: float = 1.0,
 ) -> ResultadoCenario:
     g1, g2 = crescimento_fase_1, crescimento_fase_2
 
     # --- Método P/L trazido a valor presente ---
     lucro_projetado = ebit_atual * (1 + g1) ** anos_fase_1 * (1 + g2) ** anos_fase_2
-    eps_futuro = lucro_projetado / acoes_em_circulacao
+    # o comprador do fim da fase 2 recebe dividendo sobre o lucro, não sobre o EBIT
+    eps_futuro = lucro_projetado * conversao_ebit_lucro / acoes_em_circulacao
     preco_futuro = eps_futuro / retorno_alvo
     metodo_pl_valor_presente = preco_futuro / (1 + tma) ** (anos_fase_1 + anos_fase_2)
 
@@ -76,7 +84,9 @@ def calcular_cenario(
     # Cada fase é uma soma geométrica; _soma_geometrica evita divisão por zero
     # quando o crescimento iguala a TMA (r == 1).
     r1 = (1 + g1) / (1 + tma)
-    fcd_ebit_fase1 = ebit_atual * _soma_geometrica(r1, anos_fase_1 + 1)
+    # O fluxo do ano t vale ebit*(1+g)^t/(1+tma)^t, de t=1 a n. O lucro de hoje (t=0)
+    # não entra: já foi gerado e não é fluxo futuro a descontar.
+    fcd_ebit_fase1 = ebit_atual * r1 * _soma_geometrica(r1, anos_fase_1)
     ebit_fim_fase1 = ebit_atual * r1 ** anos_fase_1
 
     r2 = (1 + g2) / (1 + tma)
@@ -108,6 +118,7 @@ def calcular_valuation_completo(
     cenarios: dict = None,
     anos_fase_1: int = None,
     anos_fase_2: int = None,
+    conversao_ebit_lucro: float = None,
 ) -> dict:
     """Roda os 3 cenários e devolve o veredito automático."""
     tma = tma if tma is not None else PREMISSAS_PADRAO["tma"]
@@ -115,6 +126,8 @@ def calcular_valuation_completo(
     anos_fase_1 = anos_fase_1 if anos_fase_1 is not None else PREMISSAS_PADRAO["anos_fase_1"]
     anos_fase_2 = anos_fase_2 if anos_fase_2 is not None else PREMISSAS_PADRAO["anos_fase_2"]
     cenarios = cenarios if cenarios is not None else CENARIOS_PADRAO
+    conversao_ebit_lucro = (conversao_ebit_lucro if conversao_ebit_lucro is not None
+                            else PREMISSAS_PADRAO["conversao_ebit_lucro"])
 
     resultados = {}
     for nome, params in cenarios.items():
@@ -129,6 +142,7 @@ def calcular_valuation_completo(
             anos_fase_1=anos_fase_1,
             anos_fase_2=anos_fase_2,
             nome_cenario=nome,
+            conversao_ebit_lucro=conversao_ebit_lucro,
         )
 
     valores = [r.valuation_final_por_acao for r in resultados.values()]

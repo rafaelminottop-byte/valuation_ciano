@@ -5,6 +5,78 @@
 // A flag "lida" é controlada pelo app (salva no localStorage), não precisa vir aqui.
 window.CARTAS = [
   {
+    id: "dynamo-129",
+    gestora: "Dynamo",
+    titulo: "Carta Dynamo 129 — “O Tao do Sistema 3”",
+    data: "2026-10-16",
+    categoria: "Ações",
+    url: "https://www.dynamo.com.br/wp-content/uploads/2026/10/Carta-Dynamo-129.pdf",
+    tese: "Ensaio sobre autocrítica como virtude — individual e corporativa — e sobre como aprender com os erros, apesar de o nosso aparato cognitivo ser, “by design”, mal equipado para se autoavaliar.",
+    bullets: [
+      "Autocrítica como virtude ligada à humildade intelectual e à prudência; a neurociência mostra que o cérebro tem dificuldade natural de se autoavaliar bem.",
+      "Nas empresas, a autocrítica coletiva combate a complacência — a mentalidade “Day 1” da Amazon (evitar o “Day 2” da estagnação) e a “paranoia” institucionalizada da Intel de Andy Grove.",
+      "Postura da Dynamo sobre erro: “o erro não é bom” e fazem de tudo para evitá-lo — mas, quando ocorre, deve ser reconhecido, dissecado e interrogado. Seguem Munger: “esfregamos os narizes nos nossos erros”.",
+      "Cada erro traz lições próprias e funciona como “marcador químico” de patologias futuras — matéria-prima para aprendizado e crescimento.",
+      "Carta mais filosófica/de processo (sem teses de ações específicas). Rio de Janeiro, 16/10/2026."
+    ],
+    ativos: ["Carta de reflexão sobre processo (sem teses de ações específicas)"],
+    tags: ["filosofia de investimento", "autocrítica", "erros", "Munger", "Day 1", "processo"]
+  },
+  {
+    id: "verde-mm-2026-09",
+    gestora: "Verde Asset",
+    titulo: "Relatório de Gestão — Verde FIF Multimercado (Set/2026)",
+    data: "2026-09-30",
+    categoria: "Multimercado",
+    url: "https://www.verdeasset.com.br/public/files/rel_gestao/158094/Verde-REL-2026_09.pdf",
+    tese: "O fundo capturou a “convexidade” do pleito eleitoral brasileiro; com a perspectiva de uma política fiscal mais contida, o quadro local melhora — mas o cenário global ficou mais inóspito com a disparada dos juros longos.",
+    bullets: [
+      "Setembro quase neutro: +0,26% no mês (CDI +1,08%), +10,62% em 2026. Ganhos em ações Brasil e valor relativo em juro real; perdas em commodities, juro real americano e bolsa global.",
+      "Eleição: segundo o relato da carta, o 1º turno surpreendeu as pesquisas, com Flávio Bolsonaro fechando à frente de Lula e uma onda à direita na Câmara/Senado; a Verde vê baixa probabilidade de virada no 2º turno.",
+      "Reação dos mercados no dia seguinte ao pleito: Ibovespa +7,7%, juros de 10 anos -135 bps e Real +4,2% — movimentos que o fundo capturou (a “convexidade” que vinha mencionando há meses).",
+      "Tese: uma eventual virada do “acelerador fiscal com freio monetário” para algo mais contido no fiscal (permitindo cortes maiores de juros) é positiva para os ativos BR, ainda mais com a alocação muito baixa de investidores locais e estrangeiros a risco.",
+      "Contraponto global: juros longos subindo em todos os desenvolvidos — Treasury 10 anos +130 bps desde março (54 bps só em setembro), pressionado por petróleo/conflitos e fiscal."
+    ],
+    ativos: ["Ações Brasil", "Juro real BR (valor relativo)", "Treasuries 10y", "Real"],
+    tags: ["multimercado", "eleições 2026", "convexidade", "juros longos", "fiscal"]
+  },
+  {
+    id: "verde-acoes-2026-09",
+    gestora: "Verde Asset",
+    titulo: "Relatório de Gestão — Verde AM Ações (Set/2026)",
+    data: "2026-09-29",
+    categoria: "Ações",
+    url: "https://www.verdeasset.com.br/public/files/rel_gestao/118/Acoes-REL-2026_09.pdf",
+    tese: "Ativos locais dispararam com a melhora da oposição nas pesquisas, apesar de um externo pior; a gestão seguiu aumentando alocação via opções e manteve o core de alta convicção (Equatorial, Sabesp) e Petrobras com hedge.",
+    bullets: [
+      "Mês forte: +5,53% (Ibov +5,03%), +8,90% em 2026 e +15,95% em 12 meses. Bolsa e juros reagiram à melhora da oposição nas pesquisas eleitorais.",
+      "Externo pior: conflito no Irã sem solução pressionando derivados de petróleo e forte alta de juros nos EUA (10y +55 bps), com a curva precificando mais altas.",
+      "Ganhos: posições de petróleo (guerra), e nomes onde dobraram a aposta após quedas exageradas no 3T (BTG e Sabesp); XP também respondeu bem ao avanço da oposição. Destaque negativo: imobiliário de baixa renda (mudanças no crédito + greve na Caixa).",
+      "Seguiram aumentando alocação via opções com assimetria ao cenário eleitoral, mantendo o core que “funciona independentemente da eleição” (Equatorial, Sabesp) e Petrobras com hedge na curva.",
+      "Maiores contribuições: BTG e Petrobras (+); Tenda e Vale (-). Maiores posições: Petrobras, Equatorial e BTG."
+    ],
+    ativos: ["Petrobras", "Equatorial", "BTG", "Sabesp", "XP", "Tenda", "Vale"],
+    tags: ["ações Brasil", "eleições 2026", "opções", "petróleo", "elétricas"]
+  },
+  {
+    id: "kinea-2026-09",
+    gestora: "Kinea",
+    titulo: "Carta do Gestor — “Highlander” (Set/2026)",
+    data: "2026-09-30",
+    categoria: "Multimercado",
+    url: "https://www.kinea.com.br/wp-content/uploads/2026/10/Carta-do-Gestor-Prev-Multimercado-2026-09.pdf",
+    tese: "A eleição de 2026 vira um “duelo final” (Lula x Flávio Bolsonaro); a Kinea trabalha com desaceleração do Brasil em 2027 e carteira desenhada para atravessar a turbulência com risco controlado.",
+    bullets: [
+      "Metáfora de “Highlander” (“só pode haver um”): ao longo da década duas forças políticas eliminaram concorrentes até a eleição se resolver num duelo entre o incumbente Lula e o desafiante Flávio Bolsonaro.",
+      "Leitura política: incumbência deixou de ser vantagem (redes sociais + insatisfação difusa reduzem reeleições no mundo); o desafiante precisa converter rejeição em adesão no Sudeste, onde está o eleitorado indeciso.",
+      "Dado histórico citado: em 2024 todo partido governista perdeu votos — fato inédito na série de eleições de países desenvolvidos.",
+      "Commodities: duas guerras sem desfecho chegam a todos via diesel; relatórios (não lançamento de modelos) é o foco.",
+      "Posicionamento: trabalham com desaceleração no Brasil em 2027 e carteira desenhada para atravessar a turbulência com risco controlado."
+    ],
+    ativos: ["Ativos Brasil (juros/bolsa/câmbio)", "Commodities/diesel"],
+    tags: ["multimercado", "macro", "eleições 2026", "desaceleração 2027", "risco controlado"]
+  },
+  {
     id: "verde-mm-2026-08",
     gestora: "Verde Asset",
     titulo: "Relatório de Gestão — Verde FIF Multimercado (Ago/2026)",

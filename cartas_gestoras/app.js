@@ -121,17 +121,108 @@ function renderGestoras() {
   conteudo.innerHTML = html;
 }
 
-function render() {
-  if (modo === "feed") renderFeed(); else renderGestoras();
+// Cartas citadas por um tema (ids em t.fontes -> CARTAS)
+function panoCartas(t) {
+  return (t.fontes || []).map(id => (window.CARTAS || []).find(c => c.id === id)).filter(Boolean);
+}
+// Selo de força: quantas gestoras diferentes falaram do tema
+function panoForca(t) {
+  const n = new Set(panoCartas(t).map(c => c.gestora)).size;
+  if (!n) return "";
+  const [cls, txt] = n >= 3 ? ["forte", "Consenso forte"] : n === 2 ? ["medio", "Duas casas"] : ["fraco", "Uma casa só"];
+  return `<div class="pano-forca ${cls}">${txt} · ${n} gestora${n > 1 ? "s" : ""}</div>`;
+}
+function panoFontes(t) {
+  const cs = panoCartas(t);
+  if (!cs.length) return "";
+  return `<details class="pano-fontes"><summary>Ler nas cartas (${cs.length})</summary>${cs.map(c =>
+    `<a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(c.gestora)} · ${esc(c.data.split("-").reverse().join("/"))} — ${esc(c.titulo)}</a>`).join("")}</details>`;
+}
+function panoTexto(p) {
+  return [p.periodo, "", p.destaque, ""].concat(p.temas.map((t, i) => `${i + 1}. ${t.titulo}\n${t.resumo}\nQuem falou: ${(t.gestoras || []).join(", ")}\n`))
+    .concat(["Síntese das visões dos gestores nas últimas cartas — não é recomendação de investimento."]).join("\n");
 }
 
-document.querySelectorAll(".aba").forEach(aba => {
+function renderPanorama() {
+  const p = window.PANORAMA;
+  if (!p) { conteudo.innerHTML = `<div class="vazio">Panorama ainda não gerado.</div>`; return; }
+  conteudo.innerHTML = `
+    <div class="pano-destaque">
+      <div class="pano-periodo">📊 ${esc(p.periodo || "Panorama")}</div>
+      <p>${esc(p.destaque)}</p>
+    </div>
+    ${(p.consenso && p.consenso.length) ? `
+    <h3 class="pano-sec">📐 Consenso das gestoras</h3>
+    <div class="consenso">
+      ${p.consenso.map(c => {
+        const d = c.dir === "alta" ? { s: "▲", cls: "up", t: "Alta" }
+               : c.dir === "queda" ? { s: "▼", cls: "down", t: "Queda" }
+               : { s: "▬", cls: "flat", t: "Lateral" };
+        return `<div class="cons-row">
+          <div class="cons-ind">${esc(c.indicador)}</div>
+          <div class="cons-dir ${d.cls}" title="${d.t}">${d.s}</div>
+          <div class="cons-vis">${esc(c.visao)}<span class="cons-ges">${c.gestoras.map(esc).join(" · ")}</span></div>
+        </div>`;
+      }).join("")}
+    </div>
+    <p class="pano-aviso">Direção da visão predominante nas cartas (não são previsões numéricas nossas).</p>
+    <h3 class="pano-sec">🧩 Principais temas</h3>` : ""}
+    <div class="pano-grid">
+      ${p.temas.map((t, i) => `
+        <article class="pano-card">
+          <div class="pano-topo"><span class="pano-emoji">${esc(t.emoji || "•")}</span>
+            <h3>${esc(t.titulo)}</h3><span class="pano-num">${i + 1}</span></div>
+          <p class="pano-resumo">${esc(t.resumo)}</p>
+          ${panoForca(t)}
+          ${t.nota ? `<p class="pano-nota">${esc(t.nota)}</p>` : ""}
+          ${(t.gestoras && t.gestoras.length) ? `<div class="meta-linha">${t.gestoras.map(g => `<span class="tag">${esc(g)}</span>`).join("")}</div>` : ""}
+          ${panoFontes(t)}
+        </article>`).join("")}
+    </div>
+    <div class="pano-acoes"><button class="aba" id="btn-copiar-pano">📋 Copiar resumo em texto</button><span id="pano-copiado" class="pano-copiado" hidden>Copiado!</span></div>
+    <p class="pano-rodape">Síntese das visões dos gestores nas últimas cartas — não é recomendação de investimento. Atualizado em ${esc((p.atualizadoEm||"").split("-").reverse().join("/"))}.</p>`;
+}
+
+document.addEventListener("click", e => {
+  if (e.target.id !== "btn-copiar-pano" || !window.PANORAMA) return;
+  const ok = () => { const m = document.getElementById("pano-copiado"); m.hidden = false; setTimeout(() => m.hidden = true, 1800); };
+  navigator.clipboard.writeText(panoTexto(window.PANORAMA)).then(ok).catch(() => {});
+});
+
+function render() {
+  if (modo === "feed") renderFeed();
+  else if (modo === "panorama") renderPanorama();
+  else renderGestoras();
+}
+
+document.querySelectorAll(".aba[data-modo]").forEach(aba => {
   aba.addEventListener("click", () => {
-    document.querySelectorAll(".aba").forEach(a => a.classList.remove("ativa"));
+    document.querySelectorAll(".aba[data-modo]").forEach(a => a.classList.remove("ativa"));
     aba.classList.add("ativa");
     modo = aba.getAttribute("data-modo");
     render();
   });
+});
+
+// Botão "Atualizar cartas": copia o comando e mostra um aviso rápido (sem tela cheia)
+let toastTimer = null;
+function mostrarToast(html) {
+  const t = document.getElementById("toast");
+  if (!t) return;
+  t.innerHTML = html;
+  t.hidden = false;
+  t.classList.add("ver");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.classList.remove("ver"); setTimeout(() => t.hidden = true, 300); }, 6000);
+}
+document.getElementById("btn-atualizar")?.addEventListener("click", () => {
+  const cmd = "py atualizar.py";
+  const feito = () => mostrarToast(`✅ <b>Comando copiado!</b> Cole no terminal e aperte Enter — ou dê 2 cliques em <code>Atualizar_Cartas.bat</code>. Depois é só recarregar (F5).`);
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(cmd).then(feito).catch(() => mostrarToast(`Para atualizar, rode <code>${cmd}</code> ou o <code>Atualizar_Cartas.bat</code>.`));
+  } else {
+    mostrarToast(`Para atualizar, rode <code>${cmd}</code> ou o <code>Atualizar_Cartas.bat</code>.`);
+  }
 });
 
 render();

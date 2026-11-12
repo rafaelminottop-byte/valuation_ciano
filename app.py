@@ -443,6 +443,12 @@ _HERO = {
                       "Entrada e saída do investidor estrangeiro na B3, saldo oficial em D+2."),
     "📰 Notícias": ("Acompanhamento", "Notícias do dia",
                    "O noticiário que mexe com as suas teses, reunido num lugar só."),
+    "🏦 Gestoras": ("Cartas do buy-side", "Cartas das gestoras",
+                   "O que as principais gestoras do Brasil estão escrevendo — panorama de consenso e resumo carta a carta."),
+    "🏢 FII": ("Fundos imobiliários", "Panorama dos FIIs",
+              "Desconto sobre o patrimônio e yield por segmento, comparados com a Selic."),
+    "🗂️ Acompanhamento": ("Carteira", "Acompanhamento da carteira",
+                         "Todos os ativos por classe e a saúde financeira das empresas e FIIs."),
     "🔔 Gatilhos": ("Monitor técnico", "Gatilhos",
                    "Quem está perto de um ponto de decisão técnico no Ibovespa, Small Caps e IFIX."),
 }
@@ -464,7 +470,10 @@ _ROTULO_NAV = {
     "💵 Câmbio": "Câmbio",
     "🌎 Estrangeiro": "Estrangeiro",
     "📰 Notícias": "Notícias",
+    "🏦 Gestoras": "Gestoras",
+    "🏢 FII": "FII",
     "🔔 Gatilhos": "Gatilhos",
+    "🗂️ Acompanhamento": "Acompanhamento",
 }
 
 
@@ -901,11 +910,18 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
                     linha = df_fonte[df_fonte["ticker"].str.upper() == ticker]
                     p_l = pd.to_numeric(linha["p_l"], errors="coerce").iloc[0] if not linha.empty else None
                     lpa = (dados["preco_atual"] / p_l) if (p_l and p_l > 0) else None
+                    # Dívida líquida / EBIT = (EV/EBIT) − (P/EBIT): o valor da empresa menos o valor de mercado
+                    # é a dívida líquida, e os dois múltiplos usam o mesmo EBIT.
+                    ev_e = pd.to_numeric(linha["ev_ebit"], errors="coerce").iloc[0] if not linha.empty else None
+                    p_e = pd.to_numeric(linha["p_ebit"], errors="coerce").iloc[0] if not linha.empty else None
+                    div_liq_ebit = float(ev_e - p_e) if (ev_e == ev_e and p_e == p_e and ev_e and p_e and p_e > 0) else None
                     st.session_state.empresa = {
                         "ticker": ticker,
                         "preco_atual": dados["preco_atual"],
                         "ebit_por_acao": dados["ebit_atual"] / dados["acoes_em_circulacao"],
+                        "acoes": dados["acoes_em_circulacao"],
                         "lpa": lpa,
+                        "div_liq_ebit": div_liq_ebit,
                         "base": dados.get("base_calculo", "EBIT"),
                     }
                 except Exception as e:  # noqa: BLE001 - mostra o erro na UI
@@ -1005,7 +1021,159 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
         _render_estimado_realizado_empresa(emp["ticker"], eua)
 
         if not eua:
+            _bloco_divida_juros(emp)
+            _bloco_ebit_normalizado(emp, comuns)
             _render_tese(emp["ticker"])
+
+
+# Cada situação tem a sua cor.
+_COR_DIV = {"baixo": "#15803D", "confortavel": "#0E7490", "atencao": "#D97706", "alto": "#B91C1C"}
+_LEGENDA_DIVIDA = [
+    ("Baixo", _COR_DIV["baixo"], "até 1×: paga toda a dívida líquida com menos de 1 ano de EBIT (ou tem caixa líquido)"),
+    ("Confortável", _COR_DIV["confortavel"], "de 1× a 3×: nível administrável para a maioria dos setores"),
+    ("Atenção", _COR_DIV["atencao"], "de 3× a 4×: alavancagem maior; pesa se os juros subirem ou a receita cair"),
+    ("Alto", _COR_DIV["alto"], "acima de 4×: reduz a capacidade de pagamento e gera desconfiança"),
+]
+_LEGENDA_COBERTURA = [
+    ("Folga razoável", _COR_DIV["baixo"], "acima de 2×"),
+    ("Folga pequena", _COR_DIV["atencao"], "entre 1× e 2×: um ano ruim vira problema"),
+    ("Não paga os juros", _COR_DIV["alto"], "abaixo de 1×: o negócio não paga os juros"),
+]
+
+
+def _selo(rotulo: str, cor: str) -> str:
+    return (f"<span style='background:{cor};color:#fff;border-radius:999px;padding:2px 10px;"
+            f"font-size:0.8rem;font-weight:600'>{rotulo}</span>")
+
+
+def _faixa_div_liq_ebit(dl):
+    """(rótulo, cor) da dívida líquida / EBIT."""
+    if dl is None:
+        return "Sem dado", "#64748B"
+    if dl <= 0:
+        return "Baixo · caixa líquido", _COR_DIV["baixo"]
+    if dl <= 1:
+        return "Baixo", _COR_DIV["baixo"]
+    if dl <= 3:
+        return "Confortável", _COR_DIV["confortavel"]
+    if dl <= 4:
+        return "Atenção", _COR_DIV["atencao"]
+    return "Alto", _COR_DIV["alto"]
+
+
+def _faixa_cobertura(cobertura, cobre):
+    """(rótulo, cor) de quantas vezes o EBIT cobre a despesa financeira."""
+    if cobertura is None:
+        return ("Sem dívida", _COR_DIV["baixo"]) if cobre else ("Sem EBIT", _COR_DIV["alto"])
+    if cobertura >= 2:
+        return "Folga razoável", _COR_DIV["baixo"]
+    if cobertura >= 1:
+        return "Folga pequena", _COR_DIV["atencao"]
+    return "Não paga os juros", _COR_DIV["alto"]
+
+
+def _bloco_divida_juros(emp: dict) -> None:
+    """Dívida líquida / EBIT e se o EBIT cobre a despesa financeira (CVM, ano a ano)."""
+    import cvm_historico as cvm
+
+    dl = emp.get("div_liq_ebit")
+    try:
+        cob = cvm.cobertura_juros(cvm.historico(emp["ticker"]))
+    except Exception:  # noqa: BLE001
+        cob = []
+    if dl is None and not cob:
+        return
+    ult = cob[-1] if cob else None
+    st.markdown("**Dívida e juros**")
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.metric("Dívida líquida / EBIT", "—" if dl is None else f"{dl:.1f}×",
+                  help="Quantos anos de EBIT seriam precisos para pagar a dívida líquida. Vem do Fundamentus: "
+                       "(valor da empresa ÷ EBIT) − (valor de mercado ÷ EBIT).")
+        st.markdown(_selo(*_faixa_div_liq_ebit(dl)), unsafe_allow_html=True)
+    if ult:
+        with c2:
+            st.metric(f"EBIT cobre a despesa financeira? ({ult['ano']})", "Sim" if ult["cobre"] else "Não",
+                      None if ult["cobertura"] is None else f"EBIT = {ult['cobertura']:.1f}× os juros",
+                      delta_color="off")
+            st.markdown(_selo(*_faixa_cobertura(ult["cobertura"], ult["cobre"])), unsafe_allow_html=True)
+        nao = sum(1 for r in cob if not r["cobre"])
+        c3.metric("Anos em que não cobriu", f"{nao} de {len(cob)}",
+                  help="Anos desde 2010 em que o EBIT foi menor que a despesa financeira (CVM).")
+    with st.expander("Como ler as cores"):
+        st.markdown("<b>Dívida líquida / EBIT</b>" + "".join(
+            f"<div style='margin:4px 0'>{_selo(r, c)} <span style='color:#475569'>{d}</span></div>"
+            for r, c, d in _LEGENDA_DIVIDA) + "<b>EBIT ÷ despesa financeira</b>" + "".join(
+            f"<div style='margin:4px 0'>{_selo(r, c)} <span style='color:#475569'>{d}</span></div>"
+            for r, c, d in _LEGENDA_COBERTURA), unsafe_allow_html=True)
+    with st.expander("Ver ano a ano (CVM)"):
+        if cob:
+            df = pd.DataFrame([{"Ano": r["ano"], "EBIT (R$ mi)": round(r["ebit"] / 1e6),
+                                "Despesa financeira (R$ mi)": round(r["desp_fin"] / 1e6),
+                                "EBIT ÷ juros": None if r["cobertura"] is None else round(r["cobertura"], 1),
+                                "Cobre?": "sim" if r["cobre"] else "NÃO"} for r in cob]).set_index("Ano")
+            st.dataframe(df, use_container_width=True)
+            st.caption("Despesa financeira = conta 3.06.02 da DRE consolidada; inclui variação cambial e outros "
+                       "itens, então oscila bastante de um ano para o outro. Abaixo de 1× o lucro operacional não "
+                       "paga os juros; entre 1× e 2× a folga é pequena.")
+        else:
+            st.caption("Sem a despesa financeira dessa empresa na CVM.")
+
+
+def _bloco_ebit_normalizado(emp: dict, comuns: dict) -> None:
+    """EBIT anual desde 2010 (CVM) e o valor justo com o EBIT médio, para empresas de ciclo."""
+    import cvm_historico as cvm
+
+    with st.expander("EBIT de 2010 até hoje (CVM) e valor com o EBIT médio do ciclo"):
+        try:
+            h = cvm.historico(emp["ticker"])
+        except Exception as e:  # noqa: BLE001
+            st.warning(f"Histórico da CVM indisponível agora: {e}")
+            return
+        anos = (h or {}).get("anos") or {}
+        pontos = [(a, d["ebit"]) for a, d in anos.items() if d.get("ebit") is not None]
+        if not pontos:
+            st.info("Não encontrei o EBIT dessa empresa na CVM (bancos e seguradoras não têm EBIT).")
+            return
+        st.caption("Balanços anuais consolidados da CVM, em reais. O EBIT de um ano só engana em empresa "
+                   "de ciclo: no fundo a ação parece cara e no pico parece barata.")
+        try:
+            import plotly.graph_objects as go
+            f = go.Figure(go.Bar(x=[str(a) for a, _ in pontos], y=[v / 1e9 for _, v in pontos],
+                                 marker_color=["#DC2626" if v < 0 else "#0b6e7a" for _, v in pontos],
+                                 hovertemplate="%{x}: R$ %{y:.1f} bi<extra></extra>"))
+            f.update_layout(height=260, margin=dict(l=8, r=8, t=10, b=8), paper_bgcolor="rgba(0,0,0,0)",
+                            plot_bgcolor="rgba(0,0,0,0)", yaxis_title="EBIT (R$ bi)")
+            f.update_yaxes(gridcolor="rgba(148,163,184,0.18)")
+            st.plotly_chart(f, use_container_width=True, config={"displayModeBar": False})
+        except Exception:  # noqa: BLE001
+            pass
+
+        acoes = emp.get("acoes")
+        if not acoes:
+            st.caption("Sem número de ações nessa busca; o valor com EBIT médio não pôde ser calculado.")
+            return
+        linhas = []
+        for rot, n in (("EBIT de hoje", 0), ("Média de 5 anos", 5), ("Média de 10 anos", 10), ("Média desde 2010", 99)):
+            if n == 0:
+                fluxo = emp["ebit_por_acao"]
+                extra = ""
+            else:
+                nm = cvm.ebit_normalizado(h, n)
+                if not nm["media"] or nm["media"] <= 0:
+                    continue
+                fluxo = nm["media"] / acoes
+                extra = f"{nm['n']} anos, {nm['negativos']} negativos"
+            r = calcular_valuation_completo(ticker=emp["ticker"], ebit_atual=fluxo, **comuns)
+            ref = "intermediario" if "intermediario" in r["resultados"] else list(r["resultados"])[0]
+            res = r["resultados"][ref]
+            linhas.append({"EBIT usado": rot, "EBIT por ação (R$)": round(fluxo, 2),
+                           "Valor justo (R$)": round(res.valuation_final_por_acao, 2),
+                           "Upside": f"{res.upside_percentual:+.0f}%", "Anos usados": extra})
+        if linhas:
+            st.dataframe(pd.DataFrame(linhas).set_index("EBIT usado"), use_container_width=True)
+        st.caption("Mesmo motor e mesmas premissas do resultado acima; só muda o EBIT de partida. "
+                   "Se a empresa tem dívida alta, o EBIT não é todo do acionista.")
 
 
 def _screener_crescimento() -> None:
@@ -2046,6 +2214,11 @@ def _card_noticia(n: dict) -> str:
         f'<a href="{link}" target="_blank" rel="noopener">{_esc_html(n["titulo"])}</a>'
         f'<span class="noti-meta">{meta}</span></div>'
     )
+
+
+def _aba_gestoras() -> None:
+    import gestoras_cartas
+    gestoras_cartas.render()
 
 
 def _aba_noticias() -> None:
@@ -4338,6 +4511,78 @@ def _fmt_mi(v: float) -> str:
     return f"R$ {s} mi"
 
 
+def _aba_fii() -> None:
+    import fii
+
+    st.markdown('<div class="ciano-label">Panorama dos fundos imobiliários</div>', unsafe_allow_html=True)
+    st.caption("Fonte: Fundamentus (atualiza 1x ao dia). Só entram fundos com negociação real "
+               "(liquidez mínima de R$ 200 mil/dia) e P/VP entre 0,2 e 3. "
+               "Limite da fonte: fundos de papel (CRI) vêm com yield zerado e ficam de fora.")
+    if st.button("Atualizar dados", key="fii_upd"):
+        st.session_state.pop("fii_df", None)
+    try:
+        if "fii_df" not in st.session_state:
+            with st.spinner("Buscando os FIIs…"):
+                st.session_state.fii_df = fii.baixar()
+        df = fii.filtrar(st.session_state.fii_df)
+    except Exception as exc:  # rede/site fora do ar
+        st.error(f"Não consegui buscar os FIIs agora ({exc}).")
+        return
+    if df.empty:
+        st.warning("Nenhum fundo passou nos filtros.")
+        return
+
+    r = fii.resumo(df)
+    selic = None
+    try:
+        import macro as mac
+        selic = ((mac.buscar_macro().get("brasil") or {}).get("selic") or {}).get("valor")
+    except Exception:
+        pass
+    c = st.columns(4)
+    c[0].metric("Fundos analisados", r["fundos"])
+    c[1].metric("P/VP mediano", f"{r['pvp']:.2f}")
+    c[2].metric("Dividend yield mediano", f"{r['dy'] * 100:.1f}%",
+                delta=(f"{r['dy'] * 100 - selic:+.1f} pp vs Selic" if selic else None))
+    c[3].metric("Fundos abaixo do VP", f"{r['abaixo_vp'] * 100:.0f}%")
+    st.caption("Yield acima da Selic com cota abaixo do patrimônio = mercado pagando para você "
+               "esperar. Mas desconto grande também pode ser risco (vacância, calote): olhe o fundo.")
+
+    seg = fii.por_segmento(df)
+    st.markdown('<div class="ciano-label">Por segmento</div>', unsafe_allow_html=True)
+    graf = (alt.Chart(seg).mark_bar(color=COR_ACCENT).encode(
+        x=alt.X("PVP:Q", title="P/VP mediano", scale=alt.Scale(zero=False)),
+        y=alt.Y("Segmento:N", sort="-x", title=None),
+        tooltip=["Segmento", "Fundos", alt.Tooltip("PVP:Q", format=".2f"),
+                 alt.Tooltip("DY:Q", format=".1%")]).properties(height=34 * len(seg) + 30))
+    st.altair_chart(graf, use_container_width=True)
+    tab = seg.assign(DY=seg["DY"] * 100, Valor=seg["Valor"] / 1e9, Liquidez=seg["Liquidez"] / 1e6)
+    st.dataframe(tab.rename(columns={"PVP": "P/VP", "DY": "DY (%)", "Valor": "Valor de mercado (R$ bi)",
+                                     "Liquidez": "Liquidez/dia (R$ mi)"}),
+                 hide_index=True, use_container_width=True,
+                 column_config={"P/VP": st.column_config.NumberColumn(format="%.2f"),
+                                "DY (%)": st.column_config.NumberColumn(format="%.1f"),
+                                "Valor de mercado (R$ bi)": st.column_config.NumberColumn(format="%.1f"),
+                                "Liquidez/dia (R$ mi)": st.column_config.NumberColumn(format="%.1f")})
+
+    st.markdown('<div class="ciano-label">Fundos com maior desconto</div>', unsafe_allow_html=True)
+    segs = ["Todos"] + sorted(df["Segmento"].unique())
+    esc = st.selectbox("Segmento", segs, key="fii_seg")
+    base = df if esc == "Todos" else df[df["Segmento"] == esc]
+    top = base.sort_values("P/VP").head(25)[["Papel", "Segmento", "Cotacao", "P/VP", "DY", "Vacancia",
+                                              "Liquidez"]].copy()
+    top["DY"] = top["DY"] * 100
+    top["Vacancia"] = top["Vacancia"] * 100
+    top["Liquidez"] = top["Liquidez"] / 1e6
+    st.dataframe(top.rename(columns={"Cotacao": "Cotação", "DY": "DY (%)", "Vacancia": "Vacância (%)",
+                                     "Liquidez": "Liquidez/dia (R$ mi)"}),
+                 hide_index=True, use_container_width=True,
+                 column_config={"P/VP": st.column_config.NumberColumn(format="%.2f"),
+                                "DY (%)": st.column_config.NumberColumn(format="%.1f"),
+                                "Vacância (%)": st.column_config.NumberColumn(format="%.1f"),
+                                "Liquidez/dia (R$ mi)": st.column_config.NumberColumn(format="%.1f")})
+
+
 def _aba_estrangeiro() -> None:
     import fluxo_b3
 
@@ -4480,6 +4725,11 @@ def _checar_senha() -> bool:
     return False
 
 
+def _aba_acompanhamento() -> None:
+    import app_acompanhamento
+    app_acompanhamento.render()
+
+
 def main() -> None:
     st.set_page_config(
         page_title="Valuation Ciano", page_icon="📈", layout="wide",
@@ -4492,8 +4742,8 @@ def main() -> None:
     # --- Navegação no TOPO (pills) ---
     paginas_analise = ["🔎 Empresa", "📊 Screener", "⭐ Carteira", "🏅 Ranking"]
     paginas_mercado = ["🧭 Decisão", "🔀 Cenários", "🔮 Preditivo", "📈 Lucros", "📉 Macro", "💵 Câmbio",
-                       "🌎 Estrangeiro"]
-    paginas_acomp = ["📰 Notícias", "🔔 Gatilhos"]
+                       "🌎 Estrangeiro", "🏢 FII"]
+    paginas_acomp = ["📰 Notícias", "🏦 Gestoras", "🔔 Gatilhos", "🗂️ Acompanhamento"]
     ordem = paginas_analise + paginas_mercado + paginas_acomp
 
     pagina = _topbar(ordem)
@@ -4546,8 +4796,10 @@ def main() -> None:
             "🔀 Cenários": _aba_cenarios, "🔮 Preditivo": _aba_preditivo,
             "📈 Lucros": _aba_lucros,
             "📉 Macro": _aba_macro, "💵 Câmbio": _aba_cambio,
-            "🌎 Estrangeiro": _aba_estrangeiro,
-            "📰 Notícias": _aba_noticias, "🔔 Gatilhos": _aba_gatilhos,
+            "🌎 Estrangeiro": _aba_estrangeiro, "🏢 FII": _aba_fii,
+            "📰 Notícias": _aba_noticias, "🏦 Gestoras": _aba_gestoras,
+            "🔔 Gatilhos": _aba_gatilhos,
+            "🗂️ Acompanhamento": _aba_acompanhamento,
         }
         paginas_mercado_fn[pagina]()
 
