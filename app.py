@@ -756,6 +756,13 @@ def _render_tese(ticker: str) -> None:
                 )
 
 
+def _retorno_alvo_mercado(retorno_alvo, eua):
+    """Empresa americana usa o retorno alvo em dólar (10%) quando o campo está no padrão do Brasil."""
+    if eua and abs(retorno_alvo - PREMISSAS_PADRAO["retorno_alvo_pl"]) < 1e-9:
+        return PREMISSAS_EUA["retorno_alvo_pl"]
+    return retorno_alvo
+
+
 def _busca_em_lote(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) -> None:
     """Avalia várias empresas de uma vez, pelos dois métodos (LPA e EBIT)."""
     from lote import avaliar_lote, separar_tickers
@@ -805,7 +812,7 @@ def _busca_em_lote(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2
         st.session_state.lote = {
             "df": avaliar_lote(
                 empresas, cenarios=montar_cenarios(valores_cenarios),
-                tma=PREMISSAS_EUA["tma"] if eua else tma, retorno_alvo=retorno_alvo,
+                tma=PREMISSAS_EUA["tma"] if eua else tma, retorno_alvo=_retorno_alvo_mercado(retorno_alvo, eua),
                 anos_fase_1=anos_fase_1, anos_fase_2=anos_fase_2,
             ),
             "falhas": falhas,
@@ -963,7 +970,7 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
         cenarios_uso = montar_cenarios(valores_cenarios)
         comuns = dict(
             acoes_em_circulacao=1.0, preco_atual=emp["preco_atual"], tma=tma_uso,
-            retorno_alvo=retorno_alvo, cenarios=cenarios_uso,
+            retorno_alvo=_retorno_alvo_mercado(retorno_alvo, eua), cenarios=cenarios_uso,
             anos_fase_1=anos_fase_1, anos_fase_2=anos_fase_2,
         )
         # O mesmo motor, rodado sobre os dois fluxos: o EBIT e o lucro líquido (LPA).

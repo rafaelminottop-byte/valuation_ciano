@@ -21,8 +21,12 @@ class TestPremissasPorMercado(unittest.TestCase):
         self.assertAlmostEqual(PREMISSAS_EUA["tma"], 0.10)
 
     def test_eua_herda_o_resto_das_premissas(self):
-        for chave in ("anos_fase_1", "anos_fase_2", "retorno_alvo_pl"):
+        for chave in ("anos_fase_1", "anos_fase_2"):
             self.assertEqual(PREMISSAS_EUA[chave], PREMISSAS_PADRAO[chave])
+
+    def test_retorno_alvo_do_pl_acompanha_a_tma_de_cada_mercado(self):
+        self.assertEqual(PREMISSAS_PADRAO["retorno_alvo_pl"], PREMISSAS_PADRAO["tma"])
+        self.assertEqual(PREMISSAS_EUA["retorno_alvo_pl"], PREMISSAS_EUA["tma"])
 
     def test_tma_menor_gera_valuation_maior(self):
         # Descontar a uma taxa menor -> valor presente maior (mesma empresa).
@@ -55,7 +59,7 @@ class TestValuationEngine(unittest.TestCase):
 
     def test_valuation_final_por_acao_pessimista(self):
         pessimista = self.resultado["resultados"]["pessimista"]
-        self.assertAlmostEqual(pessimista.valuation_final_por_acao, 115.76, places=1)  # 126.92 antes de tirar o "ano zero" do FCD
+        self.assertAlmostEqual(pessimista.valuation_final_por_acao, 96.75, places=1)  # era 126,92 antes de tirar o "ano zero" do FCD e de igualar o retorno alvo do P/L à TMA
 
     def test_valuation_cresce_do_pessimista_ao_otimista(self):
         valores = [

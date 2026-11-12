@@ -15,14 +15,17 @@ PREMISSAS_PADRAO = {
     "ipca": 0.06,
     "anos_fase_1": 5,
     "anos_fase_2": 10,
-    "retorno_alvo_pl": 0.06,
+    # Retorno exigido de quem compra a empresa no fim da fase 2 (define o múltiplo final = 1/retorno).
+    # Igual à TMA para o modelo ser coerente: antes era 6% (a inflação), que pedia retorno real
+    # zero e dava 16,7x o lucro, contra os 14% exigidos hoje.
+    "retorno_alvo_pl": 0.14,
 }
 
 # Mercado americano: o fluxo da empresa é em DÓLAR. Descontá-lo à TMA brasileira
 # (14%) exigiria um retorno que quase nenhuma companhia dos EUA entrega — o veredito
 # falaria mais sobre a Selic do que sobre a empresa. A TMA em dólar é 10% a.a.
 # Os demais parâmetros seguem o modelo brasileiro.
-PREMISSAS_EUA = {**PREMISSAS_PADRAO, "tma": 0.10}
+PREMISSAS_EUA = {**PREMISSAS_PADRAO, "tma": 0.10, "retorno_alvo_pl": 0.10}
 
 CENARIOS_PADRAO = {
     "pessimista": {"crescimento_fase_1": 0.05, "crescimento_fase_2": 0.00},
