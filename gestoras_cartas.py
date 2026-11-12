@@ -187,8 +187,40 @@ def render() -> None:
         "Resumos das cartas das principais gestoras do Brasil. Síntese editorial das "
         "visões dos gestores — não é recomendação de investimento."
     )
-    modo = st.radio("Ver", ["📊 Panorama", "📬 Cartas"], horizontal=True, key="gest_modo")
+    modo = st.radio("Ver", ["📊 Panorama", "📬 Cartas", "🔄 Atualizar"], horizontal=True, key="gest_modo")
     if modo.startswith("📊"):
         _render_panorama(pano)
+    elif modo.startswith("🔄"):
+        _render_atualizar(cartas, pano)
     else:
         _render_feed(cartas)
+
+
+# --------------------------------------------------------------- Atualizar ---
+def _render_atualizar(cartas: list, pano: dict) -> None:
+    ult = max((c.get("data", "") for c in cartas), default="")
+    st.markdown(
+        f'<div style="background:#fff;border:1px solid {_BORDA};border-radius:14px;'
+        f'padding:18px 20px;margin-bottom:8px;">'
+        f'<div style="font-weight:800;color:{_INK2};font-size:1rem;margin-bottom:6px;">Como atualizar as cartas</div>'
+        f'<div style="color:{_INK};font-size:0.9rem;line-height:1.6;">'
+        f'Hoje há <b>{len(cartas)} cartas</b> no feed — a mais recente é de <b>{_fmt_data(ult)}</b>. '
+        f'As cartas não entram sozinhas aqui no site: é preciso rodar o buscador no computador e '
+        f'subir a atualização. O passo a passo:</div></div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        "**1.** No seu PC, dentro da pasta `valuation_ciano\\cartas_gestoras`, rode o buscador "
+        "(ou dê 2 cliques no `Atualizar_Cartas.bat`):"
+    )
+    st.code("py atualizar.py", language="bash")
+    st.markdown(
+        "**2.** Ele lista as cartas novas. Peça ao Claude: *\"li as cartas novas em `_coletados`, "
+        "atualize o feed e o panorama\"* — ele escreve os resumos.\n\n"
+        "**3.** Reexporte os dados para o app Valuation e faça o commit. O Claude cuida disso; "
+        "o site se atualiza sozinho em ~2 min depois do `git push` no `main`."
+    )
+    st.caption(
+        f"Panorama sintetizado em {_fmt_data(pano.get('atualizadoEm',''))}. "
+        "No celular/site este botão é só o guia — o download roda no computador."
+    )
