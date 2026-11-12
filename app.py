@@ -756,13 +756,6 @@ def _render_tese(ticker: str) -> None:
                 )
 
 
-def _retorno_alvo_mercado(retorno_alvo, eua):
-    """Empresa americana usa o retorno alvo em dólar (10%) quando o campo está no padrão do Brasil."""
-    if eua and abs(retorno_alvo - PREMISSAS_PADRAO["retorno_alvo_pl"]) < 1e-9:
-        return PREMISSAS_EUA["retorno_alvo_pl"]
-    return retorno_alvo
-
-
 def _busca_em_lote(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) -> None:
     """Avalia várias empresas de uma vez, pelos dois métodos (LPA e EBIT)."""
     from lote import avaliar_lote, separar_tickers
@@ -812,7 +805,7 @@ def _busca_em_lote(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2
         st.session_state.lote = {
             "df": avaliar_lote(
                 empresas, cenarios=montar_cenarios(valores_cenarios),
-                tma=PREMISSAS_EUA["tma"] if eua else tma, retorno_alvo=_retorno_alvo_mercado(retorno_alvo, eua),
+                tma=PREMISSAS_EUA["tma"] if eua else tma, retorno_alvo=retorno_alvo,
                 anos_fase_1=anos_fase_1, anos_fase_2=anos_fase_2,
             ),
             "falhas": falhas,
@@ -976,7 +969,7 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
         cenarios_uso = montar_cenarios(valores_cenarios)
         comuns = dict(
             acoes_em_circulacao=1.0, preco_atual=emp["preco_atual"], tma=tma_uso,
-            retorno_alvo=_retorno_alvo_mercado(retorno_alvo, eua), cenarios=cenarios_uso,
+            retorno_alvo=retorno_alvo, cenarios=cenarios_uso,
             anos_fase_1=anos_fase_1, anos_fase_2=anos_fase_2,
         )
         # O mesmo motor, rodado sobre os dois fluxos: o EBIT e o lucro líquido (LPA).
@@ -1030,6 +1023,52 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
             _render_tese(emp["ticker"])
 
 
+# Cada situação tem a sua cor.
+_COR_DIV = {"baixo": "#15803D", "confortavel": "#0E7490", "atencao": "#D97706", "alto": "#B91C1C"}
+_LEGENDA_DIVIDA = [
+    ("Baixo", _COR_DIV["baixo"], "até 1×: paga toda a dívida líquida com menos de 1 ano de EBIT (ou tem caixa líquido)"),
+    ("Confortável", _COR_DIV["confortavel"], "de 1× a 3×: nível administrável para a maioria dos setores"),
+    ("Atenção", _COR_DIV["atencao"], "de 3× a 4×: alavancagem maior; pesa se os juros subirem ou a receita cair"),
+    ("Alto", _COR_DIV["alto"], "acima de 4×: reduz a capacidade de pagamento e gera desconfiança"),
+]
+_LEGENDA_COBERTURA = [
+    ("Folga razoável", _COR_DIV["baixo"], "acima de 2×"),
+    ("Folga pequena", _COR_DIV["atencao"], "entre 1× e 2×: um ano ruim vira problema"),
+    ("Não paga os juros", _COR_DIV["alto"], "abaixo de 1×: o negócio não paga os juros"),
+]
+
+
+def _selo(rotulo: str, cor: str) -> str:
+    return (f"<span style='background:{cor};color:#fff;border-radius:999px;padding:2px 10px;"
+            f"font-size:0.8rem;font-weight:600'>{rotulo}</span>")
+
+
+def _faixa_div_liq_ebit(dl):
+    """(rótulo, cor) da dívida líquida / EBIT."""
+    if dl is None:
+        return "Sem dado", "#64748B"
+    if dl <= 0:
+        return "Baixo · caixa líquido", _COR_DIV["baixo"]
+    if dl <= 1:
+        return "Baixo", _COR_DIV["baixo"]
+    if dl <= 3:
+        return "Confortável", _COR_DIV["confortavel"]
+    if dl <= 4:
+        return "Atenção", _COR_DIV["atencao"]
+    return "Alto", _COR_DIV["alto"]
+
+
+def _faixa_cobertura(cobertura, cobre):
+    """(rótulo, cor) de quantas vezes o EBIT cobre a despesa financeira."""
+    if cobertura is None:
+        return ("Sem dívida", _COR_DIV["baixo"]) if cobre else ("Sem EBIT", _COR_DIV["alto"])
+    if cobertura >= 2:
+        return "Folga razoável", _COR_DIV["baixo"]
+    if cobertura >= 1:
+        return "Folga pequena", _COR_DIV["atencao"]
+    return "Não paga os juros", _COR_DIV["alto"]
+
+
 def _bloco_divida_juros(emp: dict) -> None:
     """Dívida líquida / EBIT e se o EBIT cobre a despesa financeira (CVM, ano a ano)."""
     import cvm_historico as cvm
@@ -1042,29 +1081,28 @@ def _bloco_divida_juros(emp: dict) -> None:
     if dl is None and not cob:
         return
     ult = cob[-1] if cob else None
-    # Faixas simples: até 2 anos de EBIT para quitar a dívida líquida é confortável; acima de 3,5 é pesado.
-    if dl is None:
-        txt = "sem dado"
-    elif dl <= 0:
-        txt = "🟢 caixa líquido"
-    elif dl <= 2:
-        txt = "🟢 confortável"
-    elif dl <= 3.5:
-        txt = "🟡 atenção"
-    else:
-        txt = "🔴 pesada"
     st.markdown("**Dívida e juros**")
     c1, c2, c3 = st.columns(3)
-    c1.metric("Dívida líquida / EBIT", "—" if dl is None else f"{dl:.1f}×", txt, delta_color="off",
-              help="Quantos anos de EBIT seriam precisos para pagar a dívida líquida. Vem do Fundamentus: "
-                   "(valor da empresa ÷ EBIT) − (valor de mercado ÷ EBIT).")
+    with c1:
+        st.metric("Dívida líquida / EBIT", "—" if dl is None else f"{dl:.1f}×",
+                  help="Quantos anos de EBIT seriam precisos para pagar a dívida líquida. Vem do Fundamentus: "
+                       "(valor da empresa ÷ EBIT) − (valor de mercado ÷ EBIT).")
+        st.markdown(_selo(*_faixa_div_liq_ebit(dl)), unsafe_allow_html=True)
     if ult:
-        sinal = "🟢 sim" if ult["cobre"] else "🔴 não"
-        c2.metric(f"EBIT cobre a despesa financeira? ({ult['ano']})", sinal,
-                  None if ult["cobertura"] is None else f"EBIT = {ult['cobertura']:.1f}× os juros", delta_color="off")
+        with c2:
+            st.metric(f"EBIT cobre a despesa financeira? ({ult['ano']})", "Sim" if ult["cobre"] else "Não",
+                      None if ult["cobertura"] is None else f"EBIT = {ult['cobertura']:.1f}× os juros",
+                      delta_color="off")
+            st.markdown(_selo(*_faixa_cobertura(ult["cobertura"], ult["cobre"])), unsafe_allow_html=True)
         nao = sum(1 for r in cob if not r["cobre"])
         c3.metric("Anos em que não cobriu", f"{nao} de {len(cob)}",
                   help="Anos desde 2010 em que o EBIT foi menor que a despesa financeira (CVM).")
+    with st.expander("Como ler as cores"):
+        st.markdown("<b>Dívida líquida / EBIT</b>" + "".join(
+            f"<div style='margin:4px 0'>{_selo(r, c)} <span style='color:#475569'>{d}</span></div>"
+            for r, c, d in _LEGENDA_DIVIDA) + "<b>EBIT ÷ despesa financeira</b>" + "".join(
+            f"<div style='margin:4px 0'>{_selo(r, c)} <span style='color:#475569'>{d}</span></div>"
+            for r, c, d in _LEGENDA_COBERTURA), unsafe_allow_html=True)
     with st.expander("Ver ano a ano (CVM)"):
         if cob:
             df = pd.DataFrame([{"Ano": r["ano"], "EBIT (R$ mi)": round(r["ebit"] / 1e6),

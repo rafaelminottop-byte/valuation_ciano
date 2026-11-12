@@ -15,17 +15,20 @@ PREMISSAS_PADRAO = {
     "ipca": 0.06,
     "anos_fase_1": 5,
     "anos_fase_2": 10,
-    # Retorno exigido de quem compra a empresa no fim da fase 2 (define o múltiplo final = 1/retorno).
-    # Igual à TMA para o modelo ser coerente: antes era 6% (a inflação), que pedia retorno real
-    # zero e dava 16,7x o lucro, contra os 14% exigidos hoje.
-    "retorno_alvo_pl": 0.14,
+    # Método P/L: no fim da fase 2 o comprador aceita um dividendo mínimo de 6% (mercado saudável,
+    # juros baixos), o que dá um múltiplo de 1/6% = 16,7x o LUCRO distribuível.
+    "retorno_alvo_pl": 0.06,
+    # Mas a projeção parte do EBIT, que é antes de imposto (e de juros). Quem recebe dividendo recebe
+    # só o que sobra: usamos 66% do EBIT (descontados os ~34% de IR/CSLL). Sem isso o 6% valia sobre
+    # o EBIT e o dividendo real saía de uns 3% a 4%.
+    "conversao_ebit_lucro": 0.66,
 }
 
 # Mercado americano: o fluxo da empresa é em DÓLAR. Descontá-lo à TMA brasileira
 # (14%) exigiria um retorno que quase nenhuma companhia dos EUA entrega — o veredito
 # falaria mais sobre a Selic do que sobre a empresa. A TMA em dólar é 10% a.a.
 # Os demais parâmetros seguem o modelo brasileiro.
-PREMISSAS_EUA = {**PREMISSAS_PADRAO, "tma": 0.10, "retorno_alvo_pl": 0.10}
+PREMISSAS_EUA = {**PREMISSAS_PADRAO, "tma": 0.10}
 
 CENARIOS_PADRAO = {
     "pessimista": {"crescimento_fase_1": 0.05, "crescimento_fase_2": 0.00},
@@ -66,12 +69,14 @@ def calcular_cenario(
     anos_fase_1: int = 5,
     anos_fase_2: int = 10,
     nome_cenario: str = "",
+    conversao_ebit_lucro: float = 1.0,
 ) -> ResultadoCenario:
     g1, g2 = crescimento_fase_1, crescimento_fase_2
 
     # --- Método P/L trazido a valor presente ---
     lucro_projetado = ebit_atual * (1 + g1) ** anos_fase_1 * (1 + g2) ** anos_fase_2
-    eps_futuro = lucro_projetado / acoes_em_circulacao
+    # o comprador do fim da fase 2 recebe dividendo sobre o lucro, não sobre o EBIT
+    eps_futuro = lucro_projetado * conversao_ebit_lucro / acoes_em_circulacao
     preco_futuro = eps_futuro / retorno_alvo
     metodo_pl_valor_presente = preco_futuro / (1 + tma) ** (anos_fase_1 + anos_fase_2)
 
@@ -113,6 +118,7 @@ def calcular_valuation_completo(
     cenarios: dict = None,
     anos_fase_1: int = None,
     anos_fase_2: int = None,
+    conversao_ebit_lucro: float = None,
 ) -> dict:
     """Roda os 3 cenários e devolve o veredito automático."""
     tma = tma if tma is not None else PREMISSAS_PADRAO["tma"]
@@ -120,6 +126,8 @@ def calcular_valuation_completo(
     anos_fase_1 = anos_fase_1 if anos_fase_1 is not None else PREMISSAS_PADRAO["anos_fase_1"]
     anos_fase_2 = anos_fase_2 if anos_fase_2 is not None else PREMISSAS_PADRAO["anos_fase_2"]
     cenarios = cenarios if cenarios is not None else CENARIOS_PADRAO
+    conversao_ebit_lucro = (conversao_ebit_lucro if conversao_ebit_lucro is not None
+                            else PREMISSAS_PADRAO["conversao_ebit_lucro"])
 
     resultados = {}
     for nome, params in cenarios.items():
@@ -134,6 +142,7 @@ def calcular_valuation_completo(
             anos_fase_1=anos_fase_1,
             anos_fase_2=anos_fase_2,
             nome_cenario=nome,
+            conversao_ebit_lucro=conversao_ebit_lucro,
         )
 
     valores = [r.valuation_final_por_acao for r in resultados.values()]

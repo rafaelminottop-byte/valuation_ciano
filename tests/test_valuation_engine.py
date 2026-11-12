@@ -24,9 +24,15 @@ class TestPremissasPorMercado(unittest.TestCase):
         for chave in ("anos_fase_1", "anos_fase_2"):
             self.assertEqual(PREMISSAS_EUA[chave], PREMISSAS_PADRAO[chave])
 
-    def test_retorno_alvo_do_pl_acompanha_a_tma_de_cada_mercado(self):
-        self.assertEqual(PREMISSAS_PADRAO["retorno_alvo_pl"], PREMISSAS_PADRAO["tma"])
-        self.assertEqual(PREMISSAS_EUA["retorno_alvo_pl"], PREMISSAS_EUA["tma"])
+    def test_dividendo_de_6pct_vale_sobre_o_lucro_nao_sobre_o_ebit(self):
+        # O P/L final capitaliza 66% do EBIT (depois do imposto) a 6%, não o EBIT inteiro.
+        self.assertAlmostEqual(PREMISSAS_PADRAO["retorno_alvo_pl"], 0.06)
+        self.assertAlmostEqual(PREMISSAS_PADRAO["conversao_ebit_lucro"], 0.66)
+        args = dict(ticker="X", ebit_atual=10.0, acoes_em_circulacao=1.0, preco_atual=100.0)
+        cheio = calcular_valuation_completo(**args, conversao_ebit_lucro=1.0)["resultados"]["intermediario"]
+        padrao = calcular_valuation_completo(**args)["resultados"]["intermediario"]
+        self.assertAlmostEqual(padrao.valor_metodo_pl, cheio.valor_metodo_pl * 0.66)
+        self.assertAlmostEqual(padrao.valor_fcd_ebit, cheio.valor_fcd_ebit)   # o FCD não muda
 
     def test_tma_menor_gera_valuation_maior(self):
         # Descontar a uma taxa menor -> valor presente maior (mesma empresa).
@@ -59,7 +65,7 @@ class TestValuationEngine(unittest.TestCase):
 
     def test_valuation_final_por_acao_pessimista(self):
         pessimista = self.resultado["resultados"]["pessimista"]
-        self.assertAlmostEqual(pessimista.valuation_final_por_acao, 96.75, places=1)  # era 126,92 antes de tirar o "ano zero" do FCD e de igualar o retorno alvo do P/L à TMA
+        self.assertAlmostEqual(pessimista.valuation_final_por_acao, 104.45, places=1)  # era 126,92 antes de tirar o "ano zero" do FCD e de aplicar o 6% ao lucro (66% do EBIT)
 
     def test_valuation_cresce_do_pessimista_ao_otimista(self):
         valores = [
