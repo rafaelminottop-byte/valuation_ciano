@@ -76,7 +76,9 @@ def calcular_cenario(
     # Cada fase é uma soma geométrica; _soma_geometrica evita divisão por zero
     # quando o crescimento iguala a TMA (r == 1).
     r1 = (1 + g1) / (1 + tma)
-    fcd_ebit_fase1 = ebit_atual * _soma_geometrica(r1, anos_fase_1 + 1)
+    # O fluxo do ano t vale ebit*(1+g)^t/(1+tma)^t, de t=1 a n. O lucro de hoje (t=0)
+    # não entra: já foi gerado e não é fluxo futuro a descontar.
+    fcd_ebit_fase1 = ebit_atual * r1 * _soma_geometrica(r1, anos_fase_1)
     ebit_fim_fase1 = ebit_atual * r1 ** anos_fase_1
 
     r2 = (1 + g2) / (1 + tma)

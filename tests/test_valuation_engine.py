@@ -55,7 +55,7 @@ class TestValuationEngine(unittest.TestCase):
 
     def test_valuation_final_por_acao_pessimista(self):
         pessimista = self.resultado["resultados"]["pessimista"]
-        self.assertAlmostEqual(pessimista.valuation_final_por_acao, 126.92, places=1)
+        self.assertAlmostEqual(pessimista.valuation_final_por_acao, 115.76, places=1)  # 126.92 antes de tirar o "ano zero" do FCD
 
     def test_valuation_cresce_do_pessimista_ao_otimista(self):
         valores = [
