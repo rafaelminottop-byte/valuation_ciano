@@ -24,15 +24,24 @@ _LINHAS_LUCRO = ["Net Income", "Net Income Common Stockholders"]
 _LINHAS_LPA = ["Diluted EPS", "Basic EPS"]
 
 
-def _cagr(serie: list):
-    """CAGR do mais antigo ao mais recente; None se base/fim não positivos."""
-    s = [float(x) for x in serie if x is not None and x == x]
-    if len(s) < 2:
+def _cagr(serie: list, datas: list | None = None):
+    """CAGR do primeiro ao último ponto com dado; None se base/fim não positivos.
+
+    O expoente usa os ANOS que separam os dois pontos, não quantos pontos existem: se o Yahoo
+    deixa anos no meio sem dado (None/NaN), 100 -> 150 entre 2020 e 2024 é 10,7% a.a., e não 50%.
+    ``datas`` (mesmo tamanho da série) dá o intervalo real; sem ela vale a posição na lista.
+    """
+    pontos = [(i, float(x)) for i, x in enumerate(serie) if x is not None and x == x]
+    if len(pontos) < 2:
         return None
-    ini, fim = s[0], s[-1]
+    (i0, ini), (i1, fim) = pontos[0], pontos[-1]
     if ini <= 0 or fim <= 0:
         return None
-    return round(((fim / ini) ** (1 / (len(s) - 1)) - 1) * 100, 1)
+    if datas is not None and len(datas) == len(serie):
+        anos = max(1, round((pd.Timestamp(datas[i1]) - pd.Timestamp(datas[i0])).days / 365.25))
+    else:
+        anos = i1 - i0
+    return round(((fim / ini) ** (1 / anos) - 1) * 100, 1)
 
 
 def _linha(fin: pd.DataFrame, nomes: list, cols: list) -> list:
@@ -54,7 +63,7 @@ def _coletar_ticker(ticker: str) -> dict:
     lucro = _linha(fin, _LINHAS_LUCRO, cols)
     lpa = _linha(fin, _LINHAS_LPA, cols)
     lucro_lim = [v for v in lucro if v is not None]  # ignora anos sem dado (NaN)
-    return {"ebit": _cagr(ebit), "lucro": _cagr(lucro), "lpa": _cagr(lpa),
+    return {"ebit": _cagr(ebit, cols), "lucro": _cagr(lucro, cols), "lpa": _cagr(lpa, cols),
             "lucro_cai": len(lucro_lim) >= 2 and lucro_lim[-1] < lucro_lim[0],
             "anos": len(cols)}
 
