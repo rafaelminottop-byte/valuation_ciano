@@ -532,8 +532,8 @@ def _celula_tma(tma) -> str:
     return f'<td><div class="v" style="color:{cor};">{tma*100:.1f}%</div></td>'
 
 
-def _linhas_multiplo(ticker: str, preco_atual: float, lpa) -> list:
-    """As duas linhas extras da tabela: P/L histórico do setor e P/L pelo juro real de hoje."""
+def _linhas_multiplo(ticker: str, preco_atual: float, lpa, ebit_por_acao=None, div_liq_ebit=None) -> list:
+    """Linhas extras da tabela: P/L do setor, P/L pelo juro real e EV/EBIT do setor."""
     if not lpa or lpa <= 0:
         return []
     import multiplos_historicos as mh
