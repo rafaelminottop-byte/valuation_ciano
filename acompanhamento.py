@@ -73,6 +73,12 @@ def classificar(produto: str, base: float = 0.0) -> tuple[str, str]:
         return "A receber / a liquidar", "Proventos a receber"
     if p.startswith("COMPRA -"):
         return "A receber / a liquidar", "Compras a liquidar"
+    if p.startswith("VENDA -"):
+        return "A receber / a liquidar", "Vendas a liquidar"
+    if p.startswith(("CORRETAGEM BTC", "TAXA EMPRESTIMO")):
+        return "A receber / a liquidar", "Taxas de aluguel de ações (BTC)"
+    if p.startswith("COE"):
+        return "Renda Fixa Direta", "Estruturadas · COE"
     if p in CAIXA:
         return "Caixa & Liquidez", CAIXA[p]
     if p in RF_DIRETA:
@@ -167,6 +173,11 @@ def _rotulo(nota: float) -> str:
     return "Forte" if nota >= 65 else ("Atenção" if nota >= 40 else "Frágil")
 
 
+COLS_ACOES = ["ticker", "nota", "situacao", "tipo", "P/L", "P/VP", "ROE", "ROIC", "Margem EBIT",
+              "Dív.líq/PL (x)", "Liq. corrente", "Cresc. receita 5a", "DY", "alertas"]
+COLS_FIIS = ["ticker", "segmento", "P/VP", "DY 12m", "Vacância", "Liquidez diária", "situacao", "alertas"]
+
+
 def saude_acoes(fund: pd.DataFrame, tickers: list[str]) -> pd.DataFrame:
     """Termômetro 0–100 por ação (Fundamentus, últimos 12 meses)."""
     linhas = []
@@ -215,7 +226,7 @@ def saude_acoes(fund: pd.DataFrame, tickers: list[str]) -> pd.DataFrame:
             "Cresc. receita 5a": cresc, "DY": _pct(r["Div.Yield"]),
             "alertas": "; ".join(alertas) or "—",
         })
-    return pd.DataFrame(linhas)
+    return pd.DataFrame(linhas, columns=COLS_ACOES) if not linhas else pd.DataFrame(linhas)
 
 
 def saude_fiis(fii: pd.DataFrame, tickers: list[str]) -> pd.DataFrame:
@@ -241,7 +252,7 @@ def saude_fiis(fii: pd.DataFrame, tickers: list[str]) -> pd.DataFrame:
         linhas.append({"ticker": t, "segmento": r["Segmento"], "P/VP": pvp, "DY 12m": dy,
                        "Vacância": vac, "Liquidez diária": r["Liquidez"],
                        "situacao": situ, "alertas": "; ".join(alertas) or "—"})
-    return pd.DataFrame(linhas)
+    return pd.DataFrame(linhas, columns=COLS_FIIS) if not linhas else pd.DataFrame(linhas)
 
 
 # ------------------------------------------------------------- histórico
@@ -267,3 +278,64 @@ def evolucao_classes(base: str = "liquido") -> pd.DataFrame:
         d = montar(ler_snapshot(c), base)
         saida[c.stem.replace("posicoes_", "")] = d.groupby("classe")["valor"].sum()
     return pd.DataFrame(saida).T.fillna(0.0)
+
+
+# ------------------------------------------------------------- API Alia
+def _sem_zeros(conta) -> str:
+    return str(conta).strip().lstrip("0")
+
+
+def _filtrar_contas(registros: list[dict], contas: list[str] = None) -> list[dict]:
+    if not contas:
+        return registros
+    alvo = {_sem_zeros(c) for c in contas}
+    return [r for r in registros if _sem_zeros(r.get("account_number")) in alvo]
+
+
+def posicoes_alia(registros: list[dict], contas: list[str] = None) -> pd.DataFrame:
+    """Registros da Alia -> (produto, bruto, liquido), somando por produto.
+
+    ``contas``: números de conta a incluir (None = todas, somadas). O campo
+    ``product`` da Alia já vem como o produto/ticker ("CDB", "HGLG11", nome do fundo).
+    """
+    linhas = []
+    for r in _filtrar_contas(registros, contas):
+        prod = str(r.get("product") or r.get("asset") or "").strip()
+        if not prod:
+            continue
+        linhas.append({"produto": prod, "bruto": _num(r.get("gross_value") or 0),
+                       "liquido": _num(r.get("net_value") or r.get("gross_value") or 0)})
+    if not linhas:
+        return pd.DataFrame(columns=["produto", "bruto", "liquido"])
+    return pd.DataFrame(linhas).groupby("produto", as_index=False)[["bruto", "liquido"]].sum()
+
+
+def papeis_alia(registros: list[dict], contas: list[str] = None) -> pd.DataFrame:
+    """Papéis de renda fixa/crédito com emissor (a Alia informa o emissor de cada um)."""
+    linhas = []
+    for r in _filtrar_contas(registros, contas):
+        if str(r.get("market")) not in ("RENDA FIXA", "COE"):
+            continue
+        linhas.append({
+            "produto": str(r.get("product") or "").strip(),
+            "papel": str(r.get("asset") or "").strip(),
+            "emissor": str(r.get("issuer") or "").strip() or "(sem emissor)",
+            "indexador": str(r.get("indexer") or "").strip(),
+            "vencimento": str(r.get("maturity_date") or "")[:10],
+            "bruto": _num(r.get("gross_value") or 0),
+            "liquido": _num(r.get("net_value") or r.get("gross_value") or 0),
+        })
+    return pd.DataFrame(linhas, columns=["produto", "papel", "emissor", "indexador",
+                                          "vencimento", "bruto", "liquido"])
+
+
+def exposicao_por_emissor(papeis: pd.DataFrame, base: str = "liquido") -> pd.DataFrame:
+    """Total por emissor (e tipo de produto), do maior para o menor."""
+    if papeis.empty:
+        return papeis
+    g = papeis.groupby("emissor").agg(
+        valor=(base, "sum"), papeis=("papel", "count"),
+        produtos=("produto", lambda s: ", ".join(sorted(set(s)))),
+        vence_ate=("vencimento", "max")).reset_index()
+    g["% da renda fixa"] = g["valor"] / g["valor"].sum() * 100
+    return g.sort_values("valor", ascending=False)
