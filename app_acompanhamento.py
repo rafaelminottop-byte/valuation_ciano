@@ -44,25 +44,70 @@ def _pintar(df: pd.DataFrame, col: str = "situacao"):
 
 def render() -> None:
     """Desenha a página inteira (usada pelo app.py e pelo modo sozinho)."""
+    papeis = None
+    fonte = st.radio("Fonte das posições", ["API Alia (clientes)", "Posição salva / colada"],
+                     horizontal=True, key="acomp_fonte")
     snaps = ac.listar_snapshots()
-    if not snaps:
-        st.info("Nenhuma posição salva ainda. Vá na aba **Atualizar posições** e cole os dados.")
-        texto = st.text_area("Cole aqui (colunas: product, total_gross_value, total_net_value)", height=200)
-        if st.button("Salvar") and texto.strip():
-            ac.salvar_snapshot(ac.ler_posicoes(texto))
-            st.rerun()
-        return
-
-    c_a, c_b = st.columns([1, 2])
-    escolhido = c_a.selectbox(
-        "Posição de", snaps[::-1], format_func=lambda p: p.stem.replace("posicoes_", ""))
-    base_nome = c_b.radio("Valor considerado", ["Líquido (após impostos)", "Bruto"], horizontal=True)
-    base = "liquido" if base_nome.startswith("Líq") else "bruto"
-    dados = ac.montar(ac.ler_snapshot(escolhido), base)
+    if fonte.startswith("API"):
+        import alia
+        c1_, c2_, c3_ = st.columns([1, 2, 1])
+        baixadas = sorted(p.stem.replace("positions_", "") for p in alia.CACHE_DIR.glob("positions_*.json"))             if alia.CACHE_DIR.exists() else []
+        padrao = date.fromisoformat(baixadas[-1]) if baixadas else alia.ultimo_dia_util()
+        dia_ref = c1_.date_input("Data", value=padrao, max_value=date.today(),
+                                 key="acomp_alia_data",
+                                 help="Abre na última data já baixada; mude e clique em Buscar para outra.")
+        iso = dia_ref.isoformat()
+        if c3_.button("Buscar da Alia" if not alia.tem_cache(iso) else "Recarregar da Alia",
+                      key="acomp_alia_btn"):
+            try:
+                with st.spinner("Buscando na Alia (pode levar alguns minutos)…"):
+                    st.session_state["acomp_regs"] = alia.buscar_posicoes(
+                        iso, usar_cache=False if alia.tem_cache(iso) else True)
+                    st.session_state["acomp_regs_data"] = iso
+            except alia.AliaErro as e:
+                st.error(str(e))
+        elif alia.tem_cache(iso) and st.session_state.get("acomp_regs_data") != iso:
+            st.session_state["acomp_regs"] = alia.buscar_posicoes(iso)  # cache local, instantâneo
+            st.session_state["acomp_regs_data"] = iso
+        regs = st.session_state.get("acomp_regs") if st.session_state.get("acomp_regs_data") == iso else None
+        if not regs:
+            st.info("Escolha a data e clique em **Buscar da Alia**. A API só responde dentro da "
+                    "rede Tailscale (este computador, com o Tailscale ligado) — no app online "
+                    "ela não é alcançada.")
+            return
+        nomes = alia.carregar_contas()
+        contas = sorted({str(r.get("account_number")) for r in regs if r.get("account_number")})
+        rot = {c: nomes.get(c) or nomes.get(c.zfill(9)) or c for c in contas}
+        escolha = c2_.selectbox("Cliente", ["Todos os clientes (soma)"] + sorted(contas, key=lambda c: rot[c].lower()),
+                                format_func=lambda c: c if c.startswith("Todos") else rot[c],
+                                key="acomp_cliente")
+        sel = None if escolha.startswith("Todos") else [escolha]
+        base_nome = st.radio("Valor considerado", ["Líquido (após impostos)", "Bruto"],
+                             horizontal=True, key="acomp_base_alia")
+        base = "liquido" if base_nome.startswith("Líq") else "bruto"
+        dados = ac.montar(ac.posicoes_alia(regs, sel), base)
+        papeis = ac.papeis_alia(regs, sel)
+        if dados.empty:
+            st.warning("Esse cliente não tem posições nessa data.")
+            return
+    else:
+        if not snaps:
+            st.info("Nenhuma posição salva ainda. Vá na aba **Atualizar posições** e cole os dados.")
+            texto = st.text_area("Cole aqui (colunas: product, total_gross_value, total_net_value)", height=200)
+            if st.button("Salvar") and texto.strip():
+                ac.salvar_snapshot(ac.ler_posicoes(texto))
+                st.rerun()
+            return
+        c_a, c_b = st.columns([1, 2])
+        escolhido = c_a.selectbox(
+            "Posição de", snaps[::-1], format_func=lambda p: p.stem.replace("posicoes_", ""))
+        base_nome = c_b.radio("Valor considerado", ["Líquido (após impostos)", "Bruto"], horizontal=True)
+        base = "liquido" if base_nome.startswith("Líq") else "bruto"
+        dados = ac.montar(ac.ler_snapshot(escolhido), base)
     patrimonio = dados.loc[~dados["classe"].isin(["Opções", "A receber / a liquidar"]), "valor"].sum()
 
     abas = st.tabs(["Resumo por classe", "Ações — saúde das empresas", "FIIs", "Opções",
-                    "Todas as posições", "Evolução", "Atualizar posições"])
+                    "Todas as posições", "Evolução", "Atualizar posições", "Crédito por emissor"])
 
     # ------------------------------------------------------------------ resumo
     with abas[0]:
@@ -236,7 +281,35 @@ def render() -> None:
             except Exception as e:  # formato inesperado
                 st.error(f"Não consegui ler: {e}")
 
+    # --------------------------------------------------------- crédito por emissor
+    with abas[7]:
+        if papeis is None:
+            st.info("Esta aba usa o emissor de cada papel, que só vem pela **API Alia**. "
+                    "Troque a fonte das posições no topo.")
+        elif papeis.empty:
+            st.info("Sem papéis de renda fixa nessa seleção.")
+        else:
+            exp = ac.exposicao_por_emissor(papeis, base)
+            c1, c2 = st.columns(2)
+            c1.metric("Renda fixa e COE com emissor", brl(exp["valor"].sum()))
+            c2.metric("Emissores", len(exp))
+            st.caption("Cada CDB, LCI, LCA, CRI, CRA, debênture e COE agrupado pelo emissor. "
+                       "Fundos de crédito não aparecem aqui (a Alia mostra o fundo, não a carteira dele).")
+            top = exp.head(15)
+            st.altair_chart(alt.Chart(top).mark_bar(color=DOURADO).encode(
+                x=alt.X("valor:Q", title="R$"), y=alt.Y("emissor:N", sort="-x", title=None),
+                tooltip=["emissor", alt.Tooltip("valor:Q", format=",.0f"), "produtos"]),
+                use_container_width=True)
+            st.dataframe(exp, hide_index=True, use_container_width=True, column_config={
+                "valor": st.column_config.NumberColumn("Valor (R$)", format="%.0f"),
+                "% da renda fixa": st.column_config.NumberColumn(format="%.1f%%"),
+                "vence_ate": "Último vencimento", "papeis": "Nº papéis", "produtos": "Produtos"})
+            with st.expander("Papel por papel"):
+                st.dataframe(papeis.sort_values("liquido", ascending=False), hide_index=True,
+                             use_container_width=True)
+
 
 if __name__ == "__main__":
     st.set_page_config(page_title="Acompanhamento da Carteira", page_icon="📊", layout="wide")
     render()
+
