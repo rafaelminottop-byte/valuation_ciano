@@ -30,3 +30,19 @@ def test_snapshot_atual_sem_nao_classificados():
     if snaps:
         d = ac.montar(ac.ler_snapshot(snaps[-1]))
         assert d[d["classe"] == "Outros / revisar"].empty
+
+
+def test_alia_posicoes_e_emissor():
+    regs = [
+        {"account_number": "005407133", "product": "CRA", "asset": "CRA-X", "issuer": "EMP A",
+         "market": "RENDA FIXA", "gross_value": 100, "net_value": 90, "maturity_date": "2031-04-15"},
+        {"account_number": "5407133", "product": "CRA", "asset": "CRA-Y", "issuer": "EMP A",
+         "market": "RENDA FIXA", "gross_value": 50, "net_value": 50, "maturity_date": "2030-01-01"},
+        {"account_number": "999", "product": "HGLG11", "market": "RENDA VARIAVEL",
+         "gross_value": 10, "net_value": 10},
+    ]
+    p = ac.posicoes_alia(regs, ["005407133"])
+    assert list(p["produto"]) == ["CRA"] and p.loc[0, "liquido"] == 140
+    assert len(ac.posicoes_alia(regs)) == 2
+    e = ac.exposicao_por_emissor(ac.papeis_alia(regs))
+    assert e.loc[0, "emissor"] == "EMP A" and e.loc[0, "valor"] == 140
