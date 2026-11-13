@@ -532,11 +532,52 @@ def _celula_tma(tma) -> str:
     return f'<td><div class="v" style="color:{cor};">{tma*100:.1f}%</div></td>'
 
 
+def _linhas_multiplo(ticker: str, preco_atual: float, lpa) -> list:
+    """As duas linhas extras da tabela: P/L histórico do setor e P/L pelo juro real de hoje."""
+    if not lpa or lpa <= 0:
+        return []
+    import multiplos_historicos as mh
+
+    dados = mh.carregar()
+    if not dados:
+        return []
+    try:
+        import setores_b3
+
+        setor = setores_b3.garantir_setores([ticker]).get(ticker) or ""
+    except Exception:  # noqa: BLE001 - sem setor, cai no múltiplo do mercado todo
+        setor = ""
+    try:
+        from macro import _ntnb_10a
+
+        ntnb = _ntnb_10a().get("valor")
+    except Exception:  # noqa: BLE001
+        ntnb = None
+    nome_setor = _SETOR_ROTULO.get(setor, "mercado")
+    linhas = [("P/L do setor", f"histórico: {nome_setor}",
+               mh.resultado_por_multiplo(lpa, preco_atual, mh.multiplos_setor(setor, dados)))]
+    if ntnb is not None:
+        linhas.append(("P/L pelo juro real", f"NTN-B hoje {ntnb:.1f}%",
+                       mh.resultado_por_multiplo(lpa, preco_atual, mh.multiplos_juro_real(ntnb, dados))))
+    return linhas
+
+
+_SETOR_ROTULO = {
+    "Basic Materials": "commodities", "Energy": "petróleo e gás", "Financial Services": "bancos e financeiro",
+    "Utilities": "elétricas e saneamento", "Consumer Defensive": "consumo básico",
+    "Consumer Cyclical": "varejo e consumo cíclico", "Industrials": "indústria",
+    "Real Estate": "imobiliário", "Communication Services": "comunicação", "Healthcare": "saúde",
+    "Technology": "tecnologia",
+}
+
+
 def _render_resultado(ticker: str, preco_atual: float, resultado_ebit: dict,
                       resultado_lpa: dict = None, moeda: str = "R$",
                       tma_lucro: float = None, tma_ebit: float = None,
-                      tem_lpa: bool = True) -> None:
-    """Caixa única: cenários (colunas) × métodos LPA/EBIT (linhas) + TIR implícita."""
+                      tem_lpa: bool = True, extras: list = None) -> None:
+    """Caixa única: cenários (colunas) × métodos LPA/EBIT (linhas) + TIR implícita.
+
+    `extras`: linhas a mais, (rótulo, sub, resultado) — sem TIR implícita (comparação por múltiplo)."""
     cenarios = list(resultado_ebit["resultados"].keys())
 
     def linha(rotulo: str, sub: str, resultado: dict, tma_impl, mostrar_tma: bool) -> str:
@@ -556,6 +597,7 @@ def _render_resultado(ticker: str, preco_atual: float, resultado_ebit: dict,
         "<tbody>"
         + linha("Método LPA", "sobre o lucro líquido", resultado_lpa, tma_lucro, tem_lpa)
         + linha("Método EBIT", "sobre o EBIT", resultado_ebit, tma_ebit, True)
+        + "".join(linha(r, sb, res, None, False) for r, sb, res in (extras or []) if res)
         + "</tbody></table></div>"
     )
 
@@ -571,6 +613,13 @@ def _render_resultado(ticker: str, preco_atual: float, resultado_ebit: dict,
         "valer o preço de hoje (cenário intermediário) — é o desconto que ele impõe. "
         "Quando a do EBIT dispara, é sinal de que o EBIT não é do acionista."
     )
+    if any(res for _, _, res in (extras or [])):
+        st.caption(
+            "**Linhas por múltiplo histórico** (só comparação, não substituem os métodos acima): "
+            "lucro por ação de hoje × o P/L que o mercado costumou pagar (2011–2025, 150 maiores empresas). "
+            "Pessimista = 25% das vezes pagou menos que isso; intermediário = mediana; otimista = 25% pagou mais. "
+            "Só empresas que ainda existem entram na base, então o histórico pode estar um pouco inflado."
+        )
 
 
 MESES_PT = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
@@ -994,7 +1043,8 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
         _render_resultado(emp["ticker"], emp["preco_atual"], resultado_ebit,
                           resultado_lpa, moeda=moeda,
                           tma_lucro=lr["tma_lucro"], tma_ebit=lr["tma_ebit"],
-                          tem_lpa=resultado_lpa is not None)
+                          tem_lpa=resultado_lpa is not None,
+                          extras=None if eua else _linhas_multiplo(emp["ticker"], emp["preco_atual"], lpa))
 
         # Guarda-corpo: quando as duas óticas divergem muito, o EBIT está distorcido
         # por dívida (vai para credores, não para o acionista) — vale um aviso curto.
