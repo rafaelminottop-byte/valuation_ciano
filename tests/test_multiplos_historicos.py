@@ -42,3 +42,23 @@ class TestMultiplos(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestEvEbit(unittest.TestCase):
+    M = {"pessimista": 4.0, "intermediario": 6.0, "otimista": 8.0}
+
+    def test_desconta_a_divida_liquida(self):
+        r = mh.resultado_ev_ebit(2.0, 1.0, 10.0, self.M)["resultados"]   # 2 * (6 - 1)
+        self.assertAlmostEqual(r["intermediario"].valuation_final_por_acao, 10.0)
+        self.assertAlmostEqual(r["intermediario"].upside_percentual, 0.0)
+
+    def test_caixa_liquido_soma(self):
+        r = mh.resultado_ev_ebit(2.0, -1.0, 10.0, self.M)["resultados"]   # 2 * (6 + 1)
+        self.assertAlmostEqual(r["intermediario"].valuation_final_por_acao, 14.0)
+
+    def test_divida_maior_que_o_valor_nao_aplica(self):
+        self.assertIsNone(mh.resultado_ev_ebit(2.0, 5.0, 10.0, self.M))   # no pessimista 4-5 < 0
+
+    def test_sem_dados(self):
+        self.assertIsNone(mh.resultado_ev_ebit(2.0, None, 10.0, self.M))
+        self.assertIsNone(mh.multiplos_ev_ebit("X", {}))

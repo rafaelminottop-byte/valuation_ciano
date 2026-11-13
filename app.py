@@ -559,6 +559,9 @@ def _linhas_multiplo(ticker: str, preco_atual: float, lpa) -> list:
     if ntnb is not None:
         linhas.append(("P/L pelo juro real", f"NTN-B hoje {ntnb:.1f}%",
                        mh.resultado_por_multiplo(lpa, preco_atual, mh.multiplos_juro_real(ntnb, dados))))
+    if setor != "Financial Services":   # EV/EBIT não faz sentido para banco
+        linhas.append(("EV/EBIT do setor", f"histórico: {nome_setor}, desconta a dívida",
+                       mh.resultado_ev_ebit(ebit_por_acao, div_liq_ebit, preco_atual, mh.multiplos_ev_ebit(setor, dados))))
     return linhas
 
 
@@ -616,7 +619,7 @@ def _render_resultado(ticker: str, preco_atual: float, resultado_ebit: dict,
     if any(res for _, _, res in (extras or [])):
         st.caption(
             "**Linhas por múltiplo histórico** (só comparação, não substituem os métodos acima): "
-            "lucro por ação de hoje × o P/L que o mercado costumou pagar (2011–2025, 150 maiores empresas). "
+            "lucro por ação de hoje × o P/L que o mercado costumou pagar (2011–2025, 150 maiores empresas); no EV/EBIT, EBIT × o múltiplo do setor menos a dívida líquida de hoje. "
             "Pessimista = 25% das vezes pagou menos que isso; intermediário = mediana; otimista = 25% pagou mais. "
             "Só empresas que ainda existem entram na base, então o histórico pode estar um pouco inflado."
         )
@@ -1044,7 +1047,8 @@ def _aba_empresa(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2) 
                           resultado_lpa, moeda=moeda,
                           tma_lucro=lr["tma_lucro"], tma_ebit=lr["tma_ebit"],
                           tem_lpa=resultado_lpa is not None,
-                          extras=None if eua else _linhas_multiplo(emp["ticker"], emp["preco_atual"], lpa))
+                          extras=None if eua else _linhas_multiplo(emp["ticker"], emp["preco_atual"], lpa,
+                                                                   emp["ebit_por_acao"], emp.get("div_liq_ebit")))
 
         # Guarda-corpo: quando as duas óticas divergem muito, o EBIT está distorcido
         # por dívida (vai para credores, não para o acionista) — vale um aviso curto.

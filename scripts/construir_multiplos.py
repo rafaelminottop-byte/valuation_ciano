@@ -18,6 +18,7 @@ import pandas as pd
 warnings.filterwarnings("ignore")
 RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ))
+import cvm_balanco  # noqa: E402
 import setores_b3  # noqa: E402
 
 PL_MAX = 60  # descarta P/L absurdo (lucro quase zero)
@@ -30,6 +31,7 @@ def construir(pkl: str) -> dict:
     emp, tick = cache["empresas"], cache["tickers"]
     sec = setores_b3.carregar_mapa()
     F = pd.read_pickle(sorted((RAIZ / ".cache").glob("fundamentus_v*.pkl"))[-1]).set_index("ticker")
+    bal = cvm_balanco.carregar()
     rows = []
     for t, c in tick.items():
         if t not in PC.columns or c not in emp or c not in shares or t not in sec:
@@ -45,10 +47,12 @@ def construir(pkl: str) -> dict:
             v, p = anos.get(ult), PC.at[m, t]
             if v is None or not (p == p and p > 0):
                 continue
-            l = v.get("lucro")
+            l, e = v.get("lucro"), v.get("ebit")
             mc = p * sh
-            rows.append((m, c, sec[t], mc, mc / l if l and l > 0 else np.nan))
-    D = pd.DataFrame(rows, columns=["m", "c", "setor", "mc", "pl"])
+            dl = cvm_balanco.divida_liquida(c, ult, bal)
+            ev_ebit = (mc + dl) / e if (dl is not None and e and e > 0 and sec[t] != "Financial Services") else np.nan
+            rows.append((m, c, sec[t], mc, mc / l if l and l > 0 else np.nan, ev_ebit))
+    D = pd.DataFrame(rows, columns=["m", "c", "setor", "mc", "pl", "ev_ebit"])
     D = D.sort_values(["m", "c", "mc"]).groupby(["m", "c"]).tail(1)
     D = D[D.groupby("m").mc.rank(ascending=False) <= 150]
     a = D[(D.pl > 0) & (D.pl < PL_MAX)]
@@ -58,6 +62,14 @@ def construir(pkl: str) -> dict:
         if len(g) >= 150 and s.strip():
             q = g.pl.quantile([.25, .5, .75])
             setores[s] = {"p25": round(q[.25], 1), "p50": round(q[.5], 1), "p75": round(q[.75], 1), "obs": int(len(g))}
+    ev = D[(D.ev_ebit > 0) & (D.ev_ebit < PL_MAX)]
+    setores_ev = {}
+    for s_, g in ev.groupby("setor"):
+        if len(g) >= 150 and s_.strip():
+            q = g.ev_ebit.quantile([.25, .5, .75])
+            setores_ev[s_] = {"p25": round(q[.25], 1), "p50": round(q[.5], 1), "p75": round(q[.75], 1), "obs": int(len(g))}
+    q = ev.ev_ebit.quantile([.25, .5, .75])
+    mercado_ev = {"p25": round(q[.25], 1), "p50": round(q[.5], 1), "p75": round(q[.75], 1), "obs": int(len(ev))}
     q = a.pl.quantile([.25, .5, .75])
     mercado = {"p25": round(q[.25], 1), "p50": round(q[.5], 1), "p75": round(q[.75], 1), "obs": int(len(a))}
 
@@ -72,7 +84,8 @@ def construir(pkl: str) -> dict:
             "res_p25": round(res.quantile(.25), 3), "res_p75": round(res.quantile(.75), 3),
             "corr_pl_ntnb": round(J.pl.corr(J.ntnb), 2), "meses": int(len(J)),
             "de": str(J.index[0]), "ate": str(J.index[-1])}
-    return {"gerado_em": str(pd.Timestamp.today().date()), "mercado": mercado, "setores": setores, "juro_real": juro}
+    return {"gerado_em": str(pd.Timestamp.today().date()), "mercado": mercado, "setores": setores,
+            "ev_ebit": {"mercado": mercado_ev, "setores": setores_ev}, "juro_real": juro}
 
 
 if __name__ == "__main__":
