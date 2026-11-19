@@ -4477,6 +4477,8 @@ def _aba_cambio() -> None:
         f"Painel montado em {dados.get('atualizado_em', '—')} · cache 12h."
     )
 
+    _secao_dolar_justo(dados)
+
     df = pd.DataFrame(dados["serie"])
     df["data"] = pd.to_datetime(df["data"] + "-01")
 
@@ -4555,6 +4557,128 @@ def _aba_cambio() -> None:
                "é mais lento e previsível que o risco. Subiu forte no ciclo de alta da Selic (2021-22) e segue "
                "alto hoje. Compare com o dólar acima: o carry importa, mas o risco manda.")
     st.caption("Leitura educacional da relação juro-risco-câmbio, não recomendação de investimento.")
+
+
+def _fmt_r(v: float) -> str:
+    return f"R$ {v:.2f}".replace(".", ",")
+
+
+def _secao_dolar_justo(dados_cambio: dict) -> None:
+    """Dólar justo: PPC por ano-base + o que explica o movimento de 12 meses. Não é previsão."""
+    import dolar_justo as dj
+
+    st.markdown('<div class="ciano-label" style="margin-top:18px;">⚖️ Dólar justo — o real está caro ou barato?</div>',
+                unsafe_allow_html=True)
+    try:
+        with st.spinner("Calculando o dólar justo…"):
+            r = dj.calcular(dados_cambio["serie"], dj.carregar_insumos())
+    except Exception as exc:  # noqa: BLE001 - fonte fora do ar não pode derrubar a aba
+        st.caption(f"Não consegui calcular o dólar justo agora ({exc}).")
+        return
+    if r.get("aviso"):
+        st.warning(f"⚠️ {r['aviso']}")
+    m, ppc = r["modelo"], r["ppc"]
+    st.caption("Não existe um único preço justo: o gráfico mostra duas réguas ao lado do dólar real, e "
+               "nenhuma prevê o dólar de amanhã. O câmbio pode ficar longe do equilíbrio por anos.")
+
+    # --- gráfico: dólar real x dólar justo (inflação) x dólar explicado pelos fatores ---
+    series_ppc = r.get("ppc_series") or {}
+    if series_ppc:
+        anos = sorted(series_ppc)
+        ano_base = st.selectbox(
+            "Ano-base da paridade de inflação", anos,
+            index=anos.index(dj.ANO_BASE_INICIAL) if dj.ANO_BASE_INICIAL in anos else len(anos) - 1,
+            key="dj_ano_base",
+            help="Ano em que você considera o câmbio 'no lugar'. Escolher esse ano já é uma opinião.")
+        sp = series_ppc[ano_base]
+        justo_hoje, mes_ppc = sp["justo"][-1], sp["data"][-1]
+        dolar_ser = dict(zip(r["dolar_serie"]["data"], r["dolar_serie"]["dolar"]))
+        real_ppc = dolar_ser.get(mes_ppc)
+        atual = r["dolar_atual"]
+        c1, c2, c3 = st.columns(3)
+        c1.metric(f"Dólar justo (inflação, base {ano_base})", _fmt_r(justo_hoje),
+                  help=f"Calculado para {mes_ppc}, último mês com inflação dos dois países.")
+        c2.metric(f"Dólar atual ({r['mes']})", _fmt_r(atual))
+        if real_ppc:
+            c3.metric("Real vs justo", f"{(real_ppc / justo_hoje - 1) * 100:+.0f}%",
+                      help="Positivo = dólar acima do justo pela inflação (real fraco).")
+        linhas = [{"Mês": pd.to_datetime(d + "-01"), "Série": "Dólar real", "R$": v}
+                  for d, v in dolar_ser.items() if d >= "2012-01"]
+        linhas += [{"Mês": pd.to_datetime(d + "-01"), "Série": f"Dólar justo (inflação, base {ano_base})", "R$": v}
+                   for d, v in zip(sp["data"], sp["justo"]) if d >= "2012-01"]
+        if m:
+            linhas += [{"Mês": pd.to_datetime(d + "-01"), "Série": "Explicado pelos fatores", "R$": v}
+                       for d, v in zip(m["serie"]["data"], m["serie"]["explicado"]) if v is not None]
+        gdf = pd.DataFrame(linhas)
+        nomes = [f"Dólar justo (inflação, base {ano_base})", "Dólar real", "Explicado pelos fatores"]
+        cores = ["#4C8DFF", "#DC2626", "#9CA3AF"]
+        graf = (alt.Chart(gdf).mark_line(strokeWidth=2).encode(
+            x=alt.X("Mês:T", title=None, axis=alt.Axis(labelColor=COR_LIGHT, grid=False)),
+            y=alt.Y("R$:Q", title="Dólar (R$)", scale=alt.Scale(zero=False),
+                    axis=alt.Axis(labelColor=COR_LIGHT, gridOpacity=0.12)),
+            color=alt.Color("Série:N", scale=alt.Scale(domain=nomes, range=cores),
+                            legend=alt.Legend(orient="top", title=None)),
+            strokeDash=alt.condition(alt.datum["Série"] == "Explicado pelos fatores",
+                                     alt.value([4, 3]), alt.value([1, 0])),
+            tooltip=["Série", alt.Tooltip("Mês:T", format="%m/%Y"), alt.Tooltip("R$:Q", format=".2f")])
+            .properties(height=340))
+        st.altair_chart(graf.configure_view(strokeWidth=0).configure(background="rgba(0,0,0,0)"),
+                        use_container_width=True)
+        st.caption("Linha azul: onde o dólar estaria se só a diferença de inflação Brasil × EUA mexesse com ele, "
+                   f"a partir do dólar médio de {ano_base}. Linha cinza tracejada: o que o dólar global, as "
+                   "commodities, o risco-país e o carry explicam. A distância entre o real e as outras duas "
+                   "linhas é o que o mercado paga a mais (ou a menos) do que as réguas justificam.")
+        with st.expander("Ver o dólar justo por inflação em outros anos-base"):
+            linhas_t = [{"Ano-base": a, "Dólar médio no ano": _fmt_r(v["base"]),
+                         "Dólar justo pela PPC hoje": _fmt_r(v["justo"]),
+                         "Dólar real vs PPC": f"{(v['dolar_ate'] / v['justo'] - 1) * 100:+.0f}%"}
+                        for a, v in sorted(ppc.items())]
+            st.dataframe(pd.DataFrame(linhas_t), hide_index=True, use_container_width=True)
+            st.caption("Bases antigas dão valores baixos porque o real perdeu valor também por outras razões "
+                       "além da inflação.")
+    else:
+        st.caption("A régua da inflação ficou indisponível agora (a fonte do IPCA ou do CPI americano não "
+                   "respondeu). Ela volta sozinha quando a fonte voltar.")
+
+    # --- Modelo de fundamentos: o que empurrou o dólar ---
+    st.markdown("**O que empurrou o dólar nos últimos 12 meses**")
+    if not m:
+        st.caption("Dados insuficientes para o modelo.")
+        return
+    c = st.columns(3)
+    c[0].metric(f"Dólar real ({m['ate']})", _fmt_r(m["dolar_atual"]),
+                delta=f"{m['variacao_real_pct']:+.1f}% em 12m", delta_color="off")
+    c[1].metric("Dólar que os fatores explicam", _fmt_r(m["explicado"]),
+                delta=f"{m['variacao_explicada_pct']:+.1f}% em 12m", delta_color="off")
+    c[2].metric("Diferença (real vs explicado)", f"{m['gap_pct']:+.1f}%",
+                help="Negativo = o real está mais forte do que os fatores justificam.")
+    rot = {**{k: dj.ROTULO_FATOR[k] for k in dj.FATORES},
+           "tendencia": "Tendência (inflação BR > EUA)", "nao_explicado": "Não explicado"}
+    cdf = pd.DataFrame([{"Fator": rot[k], "pp": v} for k, v in m["contrib_pp"].items()])
+    graf = (alt.Chart(cdf).mark_bar().encode(
+        x=alt.X("pp:Q", title="Contribuição para o dólar em 12 meses (pontos percentuais)"),
+        y=alt.Y("Fator:N", sort=list(rot.values()), title=None),
+        color=alt.condition(alt.datum.pp > 0, alt.value("#DC2626"), alt.value("#15803D")),
+        tooltip=["Fator", alt.Tooltip("pp:Q", format="+.1f")]).properties(height=210))
+    st.altair_chart(graf, use_container_width=True)
+    st.caption("Vermelho empurrou o dólar para cima; verde empurrou para baixo. "
+               f"Dados completos até {m['ate']} (o carry tem defasagem de divulgação).")
+
+    t = m.get("teste")
+    with st.expander("Como foi montado e o que o teste diz"):
+        st.markdown(
+            f"- Regressão do movimento do dólar em 12 meses contra: dólar global (DXY), commodities (ETF DBC), "
+            f"risco-país e carry. {m['meses']} meses, {m['de']} a {m['ate']}; R² dentro da amostra {m['r2']:.2f}.\n"
+            "- Usa **variações**, não níveis: a versão em níveis falhou fora da amostra e foi descartada.\n"
+            "- O risco-país é em parte efeito do próprio câmbio e do cenário fiscal: o modelo mostra "
+            "**associação**, não causa.")
+        if t:
+            st.markdown(
+                f"- **Teste fora da amostra:** ajustado só até {t['corte']} e conferido nos {t['meses_teste']} meses "
+                f"seguintes: correlação {t['corr']:.2f}, R² {t['r2_fora']:.2f}. Erro médio de "
+                f"{t['erro_medio_pp']:.1f} pp contra {t['erro_dolar_parado_pp']:.1f} pp de quem diz que "
+                "'o dólar não muda'. Ou seja: explica bem o que já aconteceu, mas continua não sendo previsão.")
+    st.caption("Leitura educacional, não recomendação de investimento.")
 
 
 def _fmt_mi(v: float) -> str:
