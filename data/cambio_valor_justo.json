@@ -1,0 +1,32 @@
+{
+  "_comentario": "Referências manuais para a régua de preço justo do dólar (aba Câmbio) e o prêmio fiscal (aba Macro). Atualize quando sair estimativa nova; mantenha a data de cada uma.",
+  "atualizado_em": "19/11/2026",
+  "modelos": [
+    {
+      "fonte": "Itaú BBA",
+      "valor": 4.95,
+      "data": "abr/2026",
+      "metodo": "Modelo de fundamentos — valor justo no mercado à vista"
+    },
+    {
+      "fonte": "Bradesco",
+      "valor": 5.30,
+      "data": "2025",
+      "metodo": "Modelo VEC — termos de troca e passivo externo líquido/PIB"
+    }
+  ],
+  "juros_vizinhos": {
+    "data": "nov/2026",
+    "taxas": {
+      "Chile": 4.50,
+      "Peru": 4.50,
+      "Colômbia": 12.25,
+      "México": 6.25
+    },
+    "fed": 4.00,
+    "referencia_2019": {
+      "selic": 4.50,
+      "media_vizinhos": 3.875
+    }
+  }
+}

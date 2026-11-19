@@ -22,7 +22,8 @@ import requests
 import yfinance as yf
 
 CACHE_DIR = Path(__file__).resolve().parent / ".cache"
-CACHE_FILE = CACHE_DIR / "cambio_v2.json"
+CACHE_FILE = CACHE_DIR / "cambio_v3.json"  # v3: inclui a régua de PPC (preço justo)
+VALOR_JUSTO_FILE = Path(__file__).resolve().parent / "data" / "cambio_valor_justo.json"
 CACHE_TTL = 24 * 60 * 60  # 24h
 HEADERS = {"User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                           "(KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36")}
@@ -59,7 +60,8 @@ def _sgs(cod: int) -> pd.Series:
     return s.sort_index().resample("ME").last()
 
 
-def _cpi_yoy() -> pd.Series:
+def _cpi_nivel() -> pd.Series:
+    """Nível do CPI-U (BLS), mensal."""
     def bls(y0, y1):
         dados = None
         for _ in range(3):
@@ -95,8 +97,68 @@ def _cpi_yoy() -> pd.Series:
         a = b + 1
     s = pd.Series(lvl)
     s.index = pd.to_datetime(s.index)
-    s = s.sort_index().resample("ME").last()
+    return s.sort_index().resample("ME").last()
+
+
+def _cpi_yoy(nivel: pd.Series | None = None) -> pd.Series:
+    s = _cpi_nivel() if nivel is None else nivel
     return (s / s.shift(12) - 1) * 100
+
+
+# ---------------------------------------------------------------------------
+# Preço justo do dólar — funções puras (testadas sem rede)
+# ---------------------------------------------------------------------------
+def paridade_poder_compra(dolar_base: float, idx_br_base: float, idx_br_hoje: float,
+                          idx_eua_base: float, idx_eua_hoje: float) -> float | None:
+    """Dólar pela PPC relativa: corrige o dólar da data-base pela diferença de inflação.
+
+    dólar justo = dólar_base × (inflação BR acumulada) ÷ (inflação EUA acumulada).
+    """
+    try:
+        if min(dolar_base, idx_br_base, idx_br_hoje, idx_eua_base, idx_eua_hoje) <= 0:
+            return None
+        return dolar_base * (idx_br_hoje / idx_br_base) / (idx_eua_hoje / idx_eua_base)
+    except (TypeError, ValueError):
+        return None
+
+
+def premio_sobre_justo(dolar: float | None, justo: float | None) -> float | None:
+    """Quanto o dólar de hoje está acima (+) ou abaixo (−) do justo, em %."""
+    if not dolar or not justo:
+        return None
+    return (dolar / justo - 1) * 100
+
+
+def media_vizinhos(taxas: dict | None) -> float | None:
+    vals = [float(v) for v in (taxas or {}).values() if v is not None]
+    return sum(vals) / len(vals) if vals else None
+
+
+def carregar_valor_justo() -> dict:
+    """Referências manuais (modelos de bancos e juros dos vizinhos) em data/cambio_valor_justo.json."""
+    try:
+        return json.loads(VALOR_JUSTO_FILE.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {"modelos": [], "juros_vizinhos": {}}
+
+
+def _ppc_por_base(dolar: pd.Series, idx_br: pd.Series, idx_eua: pd.Series, bases: tuple) -> dict:
+    """PPC para cada data-base (dez/AAAA), até o último mês com BR e EUA disponíveis."""
+    comum = pd.concat([idx_br.rename("br"), idx_eua.rename("eua")], axis=1).dropna()
+    if comum.empty:
+        return {}
+    ult = comum.index.max()
+    out = {"ate": ult.strftime("%Y-%m")}
+    for ano in bases:
+        ref = pd.Timestamp(f"{ano}-12-31")
+        if ref not in comum.index or ref not in dolar.index or pd.isna(dolar.get(ref)):
+            continue
+        v = paridade_poder_compra(float(dolar[ref]), float(comum.at[ref, "br"]), float(comum.at[ult, "br"]),
+                                  float(comum.at[ref, "eua"]), float(comum.at[ult, "eua"]))
+        if v is not None:
+            out[f"base_{ano}"] = round(v, 2)
+            out[f"dolar_{ano}"] = round(float(dolar[ref]), 2)
+    return out
 
 
 def _embi() -> pd.Series:
@@ -155,7 +217,8 @@ def _coletar() -> dict:
                                f"(última: {ult.date() if ult is not None else 'vazia'})")
     br_real = ((1 + selic / 100) / (1 + ipca / 100) - 1) * 100
     tnx = _mensal_yahoo("^TNX")
-    us_real = (tnx - _cpi_yoy()).dropna()
+    cpi_nivel = _cpi_nivel()
+    us_real = (tnx - _cpi_yoy(cpi_nivel)).dropna()
     carry = (br_real - us_real).dropna()
 
     embi = _embi()
@@ -197,6 +260,13 @@ def _coletar() -> dict:
         "cds_min": round(cds_info[2][0], 0) if cds_info else None,
         "cds_max": round(cds_info[2][1], 0) if cds_info else None,
     }
+    # régua de preço justo pela PPC (IPCA mensal × CPI), bases dez/2019 e dez/2017
+    try:
+        ipca_m = _sgs(433)
+        idx_br = (1 + ipca_m / 100).cumprod()
+        atual["ppc"] = _ppc_por_base(dolar, idx_br, cpi_nivel, (2019, 2017))
+    except Exception:  # noqa: BLE001
+        atual["ppc"] = {}
     # correlação da variação 12m risco x dólar (prova da tese, calculada no próprio dado)
     corr = df[["risco", "dolar"]].dropna()
     atual["corr_risco_dolar"] = (round(float(corr["risco"].diff(12).corr(corr["dolar"].diff(12))), 2)
