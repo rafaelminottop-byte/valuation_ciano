@@ -1406,7 +1406,7 @@ def _aba_screener(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
     cs3.write("")
     if cs3.button("💾 Salvar lista") and nome:
         lst.salvar_lista(nome, list(tabela["ticker"].head(topn)))
-        st.success(f'Lista "{nome}" salva com {topn} tickers. Use na aba Gatilhos.')
+        st.success(f'Lista "{nome}" salva com {topn} tickers.')
 
 
 CARTEIRA_PADRAO = "Minha carteira"
@@ -1442,7 +1442,7 @@ def _aba_carteira(tma, retorno_alvo, valores_cenarios, anos_fase_1, anos_fase_2)
 
     st.caption(
         "Monte **várias carteiras** e avalie cada uma de uma vez. Elas ficam salvas em "
-        "`data/listas.json` e também aparecem na aba **Gatilhos** (em 'Lista salva')."
+        "`data/listas.json`."
     )
 
     carteiras = lst.carregar_listas()
@@ -3600,7 +3600,22 @@ def _aba_decisao() -> None:
     prof = ds.get("nivel_profundo_pts")
     c_prof = ("neu" if (ate is not None and ate < 0) else "fav" if ate is not None else "inf")
     qt = mat.get("queda_desde_topo")
+    # Nível de desconto (faixas do estudo do Preditivo): 0 = sem desconto, 1 = moderado, 2 = forte, 3 = profundo.
+    # Só o nível 3 tem respaldo nos dados (comprar e segurar bateu o CDI); 1 e 2 são aviso, não sinal de compra.
+    if z is None:
+        niv, en_niv, tx_niv = None, "inf", "Sem leitura de preço agora."
+    elif z < -1.5:
+        niv, en_niv, tx_niv = 3, "fav", "Desconto profundo: o único nível em que comprar e segurar costumou bater o CDI."
+    elif z < -1.0:
+        niv, en_niv, tx_niv = 2, "neu", "Desconto forte. Em teste: ainda não é o ponto que o histórico sustentou."
+    elif z < -0.5:
+        niv, en_niv, tx_niv = 1, "neu", "Desconto moderado. No histórico, esse nível não compensou contra o CDI."
+    else:
+        niv, en_niv, tx_niv = 0, "neu", "Sem desconto relevante em relação à tendência."
     grupo("1 · Preço do Ibovespa", [
+        # "inf": só informa. Quem entra na conta do balanço é o cartão "Ibov × tendência (z)" logo abaixo,
+        # que já marca o desconto profundo (= nível 3) como favorável; contar os dois seria contar em dobro.
+        ("Nível de desconto do Ibov", "—" if niv is None else f"Nível {niv} de 3", "inf", tx_niv),
         ("Ibov × tendência (z)", fm(z, 2), ez, fz),
         ("Falta para o desconto profundo",
          "—" if ate is None else f"{fm(ate)}%" + ("" if not prof else f" ({fm(prof / 1000)} mil pts)"), c_prof,
@@ -3754,7 +3769,7 @@ def _aba_decisao() -> None:
         + ("—" if ate is None else f"{fm(abs(ate))}% abaixo do preço atual") +
         f') é uma hipótese em teste, não uma recomendação.</div></div>',
         unsafe_allow_html=True)
-    topo.caption("Abra a seção abaixo para ver cada indicador. Os estudos ficam nas abas Preditivo, Macro e Ciclos.")
+    topo.caption("Abra a seção abaixo para ver cada indicador. Os estudos ficam nas abas Macro e Ciclos.")
 
 
 def _aba_preditivo() -> None:
@@ -4918,10 +4933,15 @@ def main() -> None:
         st.stop()
 
     # --- Navegação no TOPO (pills) ---
-    paginas_analise = ["🔎 Empresa", "📊 Screener", "⭐ Carteira", "🏅 Ranking"]
-    paginas_mercado = ["🧭 Decisão", "🔀 Cenários", "🔮 Preditivo", "📈 Lucros", "📉 Macro", "💵 Câmbio",
-                       "🌎 Estrangeiro", "🏢 FII"]
-    paginas_acomp = ["📰 Notícias", "🏦 Gestoras", "🔔 Gatilhos", "🗂️ Acompanhamento"]
+    # Abas guardadas: o código de cada uma continua no arquivo, só ficam fora do menu.
+    # Para reativar uma, apague o nome dela deste conjunto.
+    abas_guardadas = {"⭐ Carteira", "🏅 Ranking", "🏢 FII", "🔔 Gatilhos", "🔮 Preditivo"}
+    paginas_analise = [p for p in ["🔎 Empresa", "📊 Screener", "⭐ Carteira", "🏅 Ranking"]
+                       if p not in abas_guardadas]
+    paginas_mercado = [p for p in ["🧭 Decisão", "🔀 Cenários", "🔮 Preditivo", "📈 Lucros", "📉 Macro",
+                                   "💵 Câmbio", "🌎 Estrangeiro", "🏢 FII"] if p not in abas_guardadas]
+    paginas_acomp = [p for p in ["📰 Notícias", "🏦 Gestoras", "🔔 Gatilhos", "🗂️ Acompanhamento"]
+                     if p not in abas_guardadas]
     ordem = paginas_analise + paginas_mercado + paginas_acomp
 
     pagina = _topbar(ordem)
