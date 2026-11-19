@@ -2035,6 +2035,8 @@ def _aba_macro() -> None:
         "vs. NTN-B, carry e risco fiscal. Não é recomendação — é um resumo do cenário."
     )
 
+    _bloco_premio_fiscal(b)
+
     # 2) Olhando pra frente (lucro esperado) e o que pode quebrar.
     _bloco_expectativa_lucro()
     _bloco_gatilhos(None)  # "O que derruba daqui" (movido da aba Ciclos p/ cá)
@@ -4393,6 +4395,128 @@ def _anota_eventos(dfbase, campo: str, cor: str = "#94A3B8"):
     return regua + txt
 
 
+def _fmt_rs(v: float) -> str:
+    return f"R$ {v:.2f}".replace(".", ",")
+
+
+def _pt(v: float, casas: int = 1, sinal: bool = False) -> str:
+    return (f"{v:+.{casas}f}" if sinal else f"{v:.{casas}f}").replace(".", ",").replace("-", "−")
+
+
+def _bloco_preco_justo_dolar(a: dict) -> None:
+    """Régua do preço justo do dólar: PPC (ao vivo) → modelos de fundamentos → dólar de hoje."""
+    import cambio as cmb
+
+    vj = cmb.carregar_valor_justo()
+    modelos = [m for m in vj.get("modelos", []) if m.get("valor")]
+    dolar = a.get("dolar")
+    ppc = a.get("ppc") or {}
+    p19, p17 = ppc.get("base_2019"), ppc.get("base_2017")
+
+    st.markdown('<div class="ciano-label" style="margin-top:14px;">💲 Preço justo do dólar — três réguas</div>',
+                unsafe_allow_html=True)
+    st.caption("Não existe um único preço justo: cada régua soma uma camada. A diferença entre a última régua "
+               "e o dólar de hoje é o prêmio de risco que o mercado cobra do Brasil.")
+
+    lo = min(m["valor"] for m in modelos) if modelos else None
+    hi = max(m["valor"] for m in modelos) if modelos else None
+    pr_lo, pr_hi = cmb.premio_sobre_justo(dolar, hi), cmb.premio_sobre_justo(dolar, lo)
+
+    cards = _card_alavanca(
+        "1 · Só inflação (PPC)", "",
+        _fmt_rs(p19) if p19 else "—",
+        [f"dólar de dez/2019 ({_fmt_rs(ppc['dolar_2019'])}) corrigido pela diferença IPCA × CPI"
+         if ppc.get("dolar_2019") else "dólar de dez/2019 corrigido pela inflação BR × EUA",
+         f"com base em dez/2017: {_fmt_rs(p17)}" if p17 else ""])
+    cards += _card_alavanca(
+        "2 · Modelos de fundamentos", "",
+        f"{_fmt_rs(lo)} a {_fmt_rs(hi)}" if modelos else "—",
+        [f"{m['fonte']} ({m['data']}): {_fmt_rs(m['valor'])}" for m in modelos] or ["sem referências cadastradas"])
+    cards += _card_alavanca("3 · Dólar hoje", "", _fmt_rs(dolar) if dolar else "—", "USD/BRL (Yahoo)")
+    cards += _card_alavanca(
+        "Prêmio de risco", "vermelho" if (pr_lo or 0) > 5 else "amarelo",
+        f"{_pt(pr_lo, 0, True)}% a {_pt(pr_hi, 0, True)}%" if pr_lo is not None and pr_hi is not None else "—",
+        "dólar de hoje acima da faixa dos modelos")
+    st.markdown(f'<div style="display:flex;flex-wrap:wrap;gap:12px;">{cards}</div>', unsafe_allow_html=True)
+
+    if pr_lo is not None and pr_lo > 0 and dolar and lo and hi:
+        centavos_lo, centavos_hi = (dolar - hi) * 100, (dolar - lo) * 100
+        st.markdown(
+            '<div style="background:#FFF7ED;border:1px solid #FED7AA;border-left:3px solid #B45309;'
+            'border-radius:12px;padding:13px 16px;margin:14px 0 6px;font-size:0.95rem;color:#132244;">'
+            f'Leitura: o dólar está <b>{centavos_lo:.0f} a {centavos_hi:.0f} centavos acima</b> do que os fundamentos '
+            'explicam. Essa diferença é basicamente <b>prêmio de risco fiscal</b> — o mesmo que aparece na Selic '
+            'acima dos vizinhos (aba Macro). O real só volta para perto da faixa dos modelos se esse prêmio cair.'
+            '</div>', unsafe_allow_html=True)
+
+    with st.expander("Como cada régua é calculada"):
+        st.markdown(
+            "**1. Paridade do poder de compra (PPC).** No longo prazo o câmbio compensa a diferença de inflação: "
+            "`dólar justo = dólar na data-base × (IPCA acumulado ÷ CPI acumulado)`. Calculada ao vivo com o IPCA "
+            "mensal (BCB) e o CPI (BLS)"
+            + (f", até {ppc['ate']}" if ppc.get("ate") else "") + ". "
+            "**Limite:** depende quase toda da data-base — só funciona se o câmbio estava 'certo' naquele ano. "
+            "Por isso mostramos duas bases (dez/2019 e dez/2017).\n\n"
+            "**2. Modelos de fundamentos.** Partem da PPC e somam o que muda o equilíbrio de forma permanente: "
+            "termos de troca, passivo externo, conta corrente, produtividade. São estimativas publicadas por bancos, "
+            "com a data de cada uma (atualizadas à mão em `data/cambio_valor_justo.json`).\n\n"
+            "**3. Dólar de hoje.** Inclui tudo o que os modelos não captam — sobretudo o **risco-país**. "
+            "Os gráficos abaixo mostram por quê: risco (CDS/EMBI) e dólar andam quase colados.\n\n"
+            "*Preço justo diz se o real está barato ou caro frente aos fundamentos; não prevê o dólar de amanhã. "
+            "O câmbio pode ficar longe do equilíbrio por anos.*"
+        )
+        if modelos:
+            st.dataframe(pd.DataFrame([{"Fonte": m["fonte"], "Data": m["data"], "Dólar justo": m["valor"],
+                                        "Método": m.get("metodo", "")} for m in modelos]),
+                         hide_index=True, use_container_width=True)
+
+
+def _bloco_premio_fiscal(b: dict) -> None:
+    """Macro: o risco fiscal aparece em dois preços — Selic acima dos vizinhos e dólar acima do justo."""
+    import cambio as cmb
+
+    vj = cmb.carregar_valor_justo()
+    jv = vj.get("juros_vizinhos") or {}
+    viz = cmb.media_vizinhos(jv.get("taxas"))
+    selic = (b.get("selic") or {}).get("valor")
+    linhas = []
+    if selic is not None and viz is not None:
+        ref = jv.get("referencia_2019") or {}
+        ref_txt = ""
+        if ref.get("selic") is not None and ref.get("media_vizinhos") is not None:
+            ref_txt = f" Em 2019 essa diferença era de só {_pt(ref['selic'] - ref['media_vizinhos'])} p.p."
+        linhas.append(
+            f"<b>Juros:</b> Selic de {_pt(selic, 2)}% contra média de {_pt(viz, 2)}% em Chile, Peru, Colômbia "
+            f"e México ({jv.get('data', '')}) — <b>{_pt(selic - viz, 1, True)} p.p.</b> de prêmio.{ref_txt}")
+    # dólar: usa o que já estiver carregado (não força a coleta lenta do câmbio aqui)
+    dc = st.session_state.get("cambio") or cmb._carregar_cache() or {}
+    dolar = (dc.get("atual") or {}).get("dolar")
+    modelos = [m["valor"] for m in vj.get("modelos", []) if m.get("valor")]
+    if dolar and modelos:
+        lo, hi = min(modelos), max(modelos)
+        linhas.append(
+            f"<b>Dólar:</b> {_fmt_rs(dolar)} contra {_fmt_rs(lo)}–{_fmt_rs(hi)} nos modelos de fundamentos — "
+            f"<b>{_pt(cmb.premio_sobre_justo(dolar, hi), 0, True)}% a "
+            f"{_pt(cmb.premio_sobre_justo(dolar, lo), 0, True)}%</b> acima.")
+    else:
+        linhas.append("<b>Dólar:</b> abra a aba Câmbio para carregar a régua de preço justo.")
+    if not linhas:
+        return
+    corpo = "".join(f'<div style="margin-top:5px;">{l}</div>' for l in linhas)
+    st.markdown(
+        '<div style="background:#FFF7ED;border:1px solid #FED7AA;border-left:3px solid #B45309;'
+        'border-radius:12px;padding:13px 16px;margin:10px 0 16px;font-size:0.93rem;color:#132244;">'
+        '<div style="font-size:0.7rem;letter-spacing:.12em;text-transform:uppercase;color:#9A3412;'
+        'font-weight:700;">O fiscal também está no preço</div>'
+        f'{corpo}'
+        '<div style="margin-top:7px;color:#475569;font-size:0.85rem;">Os dois prêmios têm a mesma origem: '
+        'a desconfiança sobre a trajetória da dívida. O juro americano subiu bem menos que esse prêmio desde 2019 '
+        f'(Fed de 1,75% para {_pt(jv.get("fed") or 4.0, 2)}%): a maior parte da diferença é risco Brasil, não mundo. '
+        'Detalhes na aba Câmbio.</div></div>',
+        unsafe_allow_html=True,
+    )
+
+
 def _aba_cambio() -> None:
     import cambio as cmb
 
@@ -4476,6 +4600,8 @@ def _aba_cambio() -> None:
         f"worldgovernmentbonds (CDS{f', {_cds_dt}' if _cds_dt else ''}{_stale}). "
         f"Painel montado em {dados.get('atualizado_em', '—')} · cache 12h."
     )
+
+    _bloco_preco_justo_dolar(a)
 
     df = pd.DataFrame(dados["serie"])
     df["data"] = pd.to_datetime(df["data"] + "-01")
